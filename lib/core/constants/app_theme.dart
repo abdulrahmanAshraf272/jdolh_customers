@@ -10,10 +10,10 @@ ThemeData themeEnglish = ThemeData(
     fontFamily: 'Cairo',
     textTheme: const TextTheme(
         displayLarge: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 26, color: AppColors.grey),
+            fontWeight: FontWeight.w700, fontSize: 26, color: AppColors.black),
         displayMedium: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 24, color: AppColors.grey),
-        bodyLarge: TextStyle(height: 2, color: AppColors.grey)));
+            fontWeight: FontWeight.w500, fontSize: 24, color: AppColors.black),
+        bodyLarge: TextStyle(height: 2, color: AppColors.gray)));
 
 ThemeData themeArabic = ThemeData(
     appBarTheme: const AppBarTheme(color: AppColors.primaryColor),
@@ -22,7 +22,7 @@ ThemeData themeArabic = ThemeData(
     fontFamily: 'Cairo',
     textTheme: const TextTheme(
         displayLarge: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 26, color: AppColors.grey),
+            fontWeight: FontWeight.bold, fontSize: 26, color: AppColors.black),
         displayMedium: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 24, color: AppColors.grey),
-        bodyLarge: TextStyle(height: 2, color: AppColors.grey)));
+            fontWeight: FontWeight.bold, fontSize: 24, color: AppColors.black),
+        bodyLarge: TextStyle(height: 2, color: AppColors.gray)));

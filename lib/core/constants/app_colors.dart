@@ -2,6 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class AppColors {
-  static const Color grey = Color(0xff515151);
-  static const primaryColor = Color(0xFFFE5E22);
+  static const primaryColor = Color(0xff3623B7);
+  static const secondaryColor = Color(0xff05CBE7);
+  static const secondaryLight = Color(0xffF0FCFE);
+
+  static const black = Color(0xff121212);
+  static const white = Color(0xffFFFFFF);
+  static const gray = Color(0xffF8F8FB);
+  static const textLight = Color(0xff9FA9CA);
+  static const textDark = Color(0xff322E57);
+
+  static const greenButton = Color(0xff00BF63);
+  static const redButton = Color(0xffF55B80);
+
+  static const yellow = Color(0xffE5AE5A);
+  static const blue = Color(0xff3F77C1);
+  static const green = Color(0xff5BD3BE);
+  static const yellowStar = Color(0xffFFBD59);
+
+  static const orange = Color(0xffFFA640);
+  static const greenSuccess = Color(0xff25AE88);
+  static const redLight = Color(0xffFEF5F8);
+  static const redText = Color(0xffF66E8F);
 }
