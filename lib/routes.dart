@@ -12,7 +12,7 @@ import 'package:jdolh_customers/view/screens/home_screen.dart';
 import 'package:jdolh_customers/view/screens/language_screen.dart';
 
 List<GetPage> routes = [
-  GetPage(name: '/', page: () => const SignupScreen()),
+  GetPage(name: '/', page: () => const TestScreen()),
   //GetPage(name: '/', page: () => const LanguageScreen()),
   GetPage(name: AppRouteName.home, page: () => const HomeScreen()),
 ];

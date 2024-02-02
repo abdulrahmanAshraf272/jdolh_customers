@@ -4,11 +4,15 @@ import 'package:flutter/cupertino.dart';
 class AppColors {
   static const primaryColor = Color(0xff3623B7);
   static const secondaryColor = Color(0xff05CBE7);
-  static const secondaryLight = Color(0xffF0FCFE);
+  static const secondaryColorLight = Color(0xff4CE0F5);
+  static const secondaryLightCardAppointment = Color(0xffF0FCFE);
+  static const activityCard = Color(0xffF8F7F9);
 
   static const black = Color(0xff121212);
   static const white = Color(0xffFFFFFF);
   static const gray = Color(0xffF8F8FB);
+  static const grayText = Color(0xff575757);
+  static const textLight2 = Color(0xff768487);
   static const textLight = Color(0xff9FA9CA);
   static const textDark = Color(0xff322E57);
 

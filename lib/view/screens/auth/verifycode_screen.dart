@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/auth/verifycode_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
+import 'package:jdolh_customers/core/constants/text_syles.dart';
 
 class VerifycodeScreen extends StatelessWidget {
   const VerifycodeScreen({super.key});
@@ -16,11 +17,9 @@ class VerifycodeScreen extends StatelessWidget {
           centerTitle: true,
           //backgroundColor: AppColor.primaryColor,
           elevation: 0,
-          title: Text('Verification Code',
-              style: Theme.of(context)
-                  .textTheme
-                  .displayMedium!
-                  .copyWith(color: Colors.white))),
+          title: Text(
+            'Verification Code',
+          )),
       body: GetBuilder<VerifycodeController>(
           builder: (controller) => HandlingDataRequest(
                 statusRequest: controller.statusRequest,
@@ -31,8 +30,7 @@ class VerifycodeScreen extends StatelessWidget {
                     children: [
                       const SizedBox(height: 20),
                       Text('Check Your Phone',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.displayLarge),
+                          textAlign: TextAlign.center, style: headline2),
                       const SizedBox(height: 10),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 25),

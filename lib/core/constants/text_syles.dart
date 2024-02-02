@@ -1,0 +1,32 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+//import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jdolh_customers/core/constants/app_colors.dart';
+
+TextStyle titleMedium = TextStyle(
+  fontWeight: FontWeight.w600,
+  fontSize: 14.sp,
+  color: AppColors.textDark,
+);
+TextStyle headline2 = TextStyle(
+  fontWeight: FontWeight.w600,
+  fontSize: 25.sp,
+  color: AppColors.black,
+);
+
+TextStyle titleSmall = TextStyle(
+  fontWeight: FontWeight.w600,
+  fontSize: 12.sp,
+  color: AppColors.textDark,
+);
+TextStyle titleSmall2 = TextStyle(
+  fontWeight: FontWeight.w600,
+  fontSize: 10.sp,
+  color: AppColors.textDark,
+);
+
+TextStyle titleSmallGray = TextStyle(
+  fontWeight: FontWeight.w500,
+  fontSize: 10.sp,
+  color: AppColors.textLight2,
+);

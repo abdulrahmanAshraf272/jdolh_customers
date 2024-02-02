@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/auth/send_verifycode_controller.dart';
+import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/valid_input.dart';
 import 'package:jdolh_customers/view/widgets/auth/custom_textform_auth.dart';
 import 'package:jdolh_customers/view/widgets/custom_button_one.dart';
@@ -22,8 +23,7 @@ class SendVerifycodeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   //SizedBox(height: Get.height * 0.1),
-                  Text('Enter Your Phone Number',
-                      style: Theme.of(context).textTheme.displayLarge),
+                  Text('Enter Your Phone Number', style: headline2),
                   SizedBox(height: Get.height * 0.06),
 
                   CustomTextFormAuth(
