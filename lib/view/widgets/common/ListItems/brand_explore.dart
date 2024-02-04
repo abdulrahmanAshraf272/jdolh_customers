@@ -13,7 +13,9 @@ class BrandExploreListItem extends StatelessWidget {
     return Container(
       height: 90.h,
       width: 120.w,
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      margin: EdgeInsets.symmetric(
+        horizontal: 10,
+      ),
       child: Column(
         children: [
           Expanded(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_name_image.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_toggle_buttons.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/custom_toggle_buttons.dart';
 
 class PersonWithToggleListItem extends StatelessWidget {
   const PersonWithToggleListItem({

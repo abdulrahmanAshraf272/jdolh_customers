@@ -25,12 +25,13 @@ import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/per
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_toggle.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/person_explore.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/wallet_operation.dart';
+import 'package:jdolh_customers/view/widgets/common/apptDetails/appt_number_and_date.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/confirm_refuse_buttons.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_toggle_buttons.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/custom_toggle_buttons.dart';
 import 'package:jdolh_customers/view/widgets/common/rating.dart';
 
 class TestScreen extends StatefulWidget {
@@ -183,7 +184,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
           //elevation: 2,
         ),
         iconStyleData: const IconStyleData(
-          icon: Icon(Icons.arrow_drop_down),
+          icon: ImageIcon(AssetImage('assets/icons/arrow_down2.png')),
           iconSize: 18,
           iconEnabledColor: AppColors.gray600,
           iconDisabledColor: Colors.grey,
@@ -206,81 +207,6 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
           height: 40,
           padding: EdgeInsets.only(left: 14, right: 14),
         ),
-      ),
-    );
-  }
-}
-
-class AppointmentNumberAndDate extends StatelessWidget {
-  final int number;
-  final String date;
-  const AppointmentNumberAndDate({
-    super.key,
-    required this.number,
-    required this.date,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Row(
-        children: [
-          Expanded(
-              child: Container(
-            height: 42.h,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: AppColors.secondaryColor300,
-                borderRadius: BorderRadius.circular(14)),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.timer_outlined,
-                  color: AppColors.secondaryColor,
-                  size: 23,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Expanded(
-                  child: AutoSizeText(date,
-                      maxLines: 1, minFontSize: 3, style: titleSmall),
-                ),
-              ],
-            ),
-          )),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Container(
-              height: 42.h,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  color: AppColors.secondaryColor300,
-                  borderRadius: BorderRadius.circular(14)),
-              child: Row(
-                children: [
-                  Text('#',
-                      style: TextStyle(
-                        fontFamily: 'Cairo',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20.sp,
-                        color: AppColors.secondaryColor,
-                      )),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text('رقم الحجز:', style: titleSmall),
-                  SizedBox(width: 4),
-                  Text('$number',
-                      style: titleSmall.copyWith(fontWeight: FontWeight.bold))
-                ],
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

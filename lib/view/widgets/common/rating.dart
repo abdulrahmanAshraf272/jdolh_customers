@@ -5,10 +5,10 @@ import 'package:jdolh_customers/core/constants/text_syles.dart';
 
 class Rating extends StatelessWidget {
   final double rating;
-  const Rating({
-    Key? key,
-    required this.rating,
-  }) : super(key: key);
+  final Color textColor;
+  const Rating(
+      {Key? key, required this.rating, this.textColor = AppColors.grayText})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +16,7 @@ class Rating extends StatelessWidget {
       children: [
         Text(
           '$rating',
-          style: titleSmallGray.copyWith(
-              fontSize: 13.sp, color: AppColors.grayText),
+          style: titleSmallGray.copyWith(fontSize: 13.sp, color: textColor),
         ),
         const SizedBox(width: 2),
         const Icon(

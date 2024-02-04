@@ -9,10 +9,21 @@ TextStyle titleLarge = TextStyle(
   color: AppColors.black,
 );
 
+TextStyle titleLargeWhite = TextStyle(
+  fontWeight: FontWeight.w600,
+  fontSize: 16.sp,
+  color: AppColors.white,
+);
+
 TextStyle titleMedium = TextStyle(
   fontWeight: FontWeight.w600,
   fontSize: 14.sp,
   color: AppColors.textDark,
+);
+TextStyle titleMediumWhite = TextStyle(
+  fontWeight: FontWeight.w600,
+  fontSize: 14.sp,
+  color: AppColors.white,
 );
 TextStyle headline2 = TextStyle(
   fontWeight: FontWeight.w600,

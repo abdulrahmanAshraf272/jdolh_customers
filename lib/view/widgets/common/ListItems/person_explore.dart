@@ -11,7 +11,7 @@ class PersonExploreListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //height: 80.h,
+      height: 115.h,
       width: 60.h,
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: Column(
@@ -27,7 +27,7 @@ class PersonExploreListItem extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: 5),
           AutoSizeText(
             'عبدالرحمن العنزي',
             maxLines: 2,
