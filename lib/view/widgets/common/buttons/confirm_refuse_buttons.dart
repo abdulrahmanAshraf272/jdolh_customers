@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 
@@ -21,7 +22,7 @@ class ConfirmRefuseButtons extends StatelessWidget {
               onPressed: onTapConfirm,
               color: AppColors.secondaryColor,
               child: Container(
-                height: 55,
+                height: 44.h,
                 alignment: Alignment.center,
                 child: Text(
                   'تأكيد حضور',
@@ -35,7 +36,7 @@ class ConfirmRefuseButtons extends StatelessWidget {
             onPressed: onTapRefuse,
             color: AppColors.redButton,
             child: Container(
-              height: 55,
+              height: 44.h,
               alignment: Alignment.center,
               child: Text(
                 'رفض',

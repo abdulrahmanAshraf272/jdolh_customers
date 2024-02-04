@@ -21,8 +21,8 @@ class AppointmentListItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             child: Image.asset(
               'assets/images/avatar_person.jpg',
-              height: 50,
-              width: 50,
+              height: 40.h,
+              width: 40.h,
             ),
           ),
           const SizedBox(width: 12),
@@ -71,8 +71,8 @@ class AppointmentListItemNotApproved extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             child: Image.asset(
               'assets/images/avatar_person.jpg',
-              height: 50,
-              width: 50,
+              height: 40.h,
+              width: 40.h,
             ),
           ),
           const SizedBox(width: 12),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 
@@ -43,7 +44,7 @@ class _LargeToggleButtonsState extends State<LargeToggleButtons> {
               });
             },
             child: Container(
-              height: 55,
+              height: 44.h,
               color: selectedOption == 1 ? firstColor : null,
               alignment: Alignment.center,
               child: Text(
@@ -67,7 +68,7 @@ class _LargeToggleButtonsState extends State<LargeToggleButtons> {
               });
             },
             child: Container(
-              height: 55,
+              height: 44.h,
               color: selectedOption == 2 ? secondColor : null,
               alignment: Alignment.center,
               child: Text(

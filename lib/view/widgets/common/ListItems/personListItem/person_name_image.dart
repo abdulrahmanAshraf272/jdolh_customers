@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 
 class PersonImageAndName extends StatelessWidget {
@@ -16,8 +17,8 @@ class PersonImageAndName extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
           child: Image.asset(
             image,
-            height: 25,
-            width: 25,
+            height: 22.h,
+            width: 22.h,
           ),
         ),
         const SizedBox(width: 12),

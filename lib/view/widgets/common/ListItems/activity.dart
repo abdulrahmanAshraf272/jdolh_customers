@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
+import 'package:jdolh_customers/view/widgets/common/rating.dart';
 
 class ActivityListItem extends StatelessWidget {
   const ActivityListItem({
@@ -21,8 +22,8 @@ class ActivityListItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             child: Image.asset(
               'assets/images/avatar_person.jpg',
-              height: 50,
-              width: 50,
+              height: 40.h,
+              width: 40.h,
             ),
           ),
           const SizedBox(width: 12),
@@ -57,33 +58,6 @@ class ActivityListItem extends StatelessWidget {
           //Icon(Icons.pin_drop_outlined)
         ],
       ),
-    );
-  }
-}
-
-class Rating extends StatelessWidget {
-  final double rating;
-  const Rating({
-    Key? key,
-    required this.rating,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          '$rating',
-          style: titleSmallGray.copyWith(
-              fontSize: 13.sp, color: AppColors.grayText),
-        ),
-        const SizedBox(width: 2),
-        const Icon(
-          Icons.star,
-          size: 22,
-          color: AppColors.yellowStar,
-        ),
-      ],
     );
   }
 }
