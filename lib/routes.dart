@@ -10,6 +10,7 @@ import 'package:jdolh_customers/view/screens/auth/send_verifycode_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/signup_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/success_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/verifycode_screen.dart';
+import 'package:jdolh_customers/view/screens/brand_profile_screen.dart';
 import 'package:jdolh_customers/view/screens/home_screen.dart';
 import 'package:jdolh_customers/view/screens/language_screen.dart';
 import 'package:jdolh_customers/view/screens/main_screen.dart';

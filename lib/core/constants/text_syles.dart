@@ -8,6 +8,11 @@ TextStyle titleLarge = TextStyle(
   fontSize: 16.sp,
   color: AppColors.black,
 );
+TextStyle titleLargeNotBold = TextStyle(
+  fontWeight: FontWeight.w600,
+  fontSize: 16.sp,
+  color: AppColors.black,
+);
 
 TextStyle titleLargeWhite = TextStyle(
   fontWeight: FontWeight.w600,
@@ -46,6 +51,11 @@ TextStyle titleSmall2 = TextStyle(
   fontWeight: FontWeight.w600,
   fontSize: 10.sp,
   color: AppColors.textDark,
+);
+TextStyle titleSmall3Gray = TextStyle(
+  fontWeight: FontWeight.w600,
+  fontSize: 11.sp,
+  color: Colors.white.withOpacity(0.85),
 );
 
 TextStyle titleSmallGray = TextStyle(

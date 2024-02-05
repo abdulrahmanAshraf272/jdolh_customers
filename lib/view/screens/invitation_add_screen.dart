@@ -32,15 +32,11 @@ import 'package:jdolh_customers/view/widgets/common/custom_dropdown_button.dart'
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/common/guaranteed_icon.dart';
 import 'package:jdolh_customers/view/widgets/common/rating.dart';
+import 'package:jdolh_customers/view/widgets/common/search_textfield.dart';
 
-class TestScreen2 extends StatefulWidget {
-  const TestScreen2({super.key});
+class InvitationAddScreen extends StatelessWidget {
+  const InvitationAddScreen({super.key});
 
-  @override
-  State<TestScreen2> createState() => _TestScreen2State();
-}
-
-class _TestScreen2State extends State<TestScreen2> {
   @override
   Widget build(BuildContext context) {
     print('=========ssss======');
@@ -49,7 +45,34 @@ class _TestScreen2State extends State<TestScreen2> {
         title: 'اضف للدعوة',
       ),
       body: Column(
-        children: [],
+        children: [
+          Container(
+            height: 100,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            color: AppColors.gray,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 6,
+              itemBuilder: (context, index) => AddGroupIconListItem(),
+            ),
+          ),
+          SizedBox(height: 15),
+          SearchTextField(),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              itemCount: 6,
+              itemBuilder: (context, index) => PersonWithButtonListItem(
+                name: 'عبدالرحمن',
+                onTap: () {
+                  // Get.to(() => ApptScreen())!.then((value) {
+                  //   setState(() {});
+                  // });
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

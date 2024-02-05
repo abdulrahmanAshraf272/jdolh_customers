@@ -8,6 +8,8 @@ class CustomTitle extends StatelessWidget {
   final void Function()? onTap;
   final double topPadding;
   final double bottomPadding;
+  final double rightPdding;
+  final double leftPadding;
   final TextStyle? customTextStyle;
   const CustomTitle(
       {super.key,
@@ -15,13 +17,18 @@ class CustomTitle extends StatelessWidget {
       this.onTap,
       this.topPadding = 0,
       this.bottomPadding = 0,
+      this.rightPdding = 20,
+      this.leftPadding = 20,
       this.customTextStyle});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-          left: 15, right: 20, top: topPadding, bottom: bottomPadding),
+          left: leftPadding,
+          right: rightPdding,
+          top: topPadding,
+          bottom: bottomPadding),
       child: Row(
         children: [
           Expanded(

@@ -33,7 +33,7 @@ class PersonWithButtonListItem extends StatelessWidget {
             ),
           ),
           TextButton(
-              onPressed: () {},
+              onPressed: onTap,
               child: Text(
                 'إضافة',
                 style: titleSmall2.copyWith(color: buttonColor),

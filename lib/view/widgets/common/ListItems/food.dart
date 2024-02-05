@@ -14,7 +14,7 @@ class FoodListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         width: Get.width - 40,
-        height: 100.h,
+        height: 110.h,
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Stack(
           children: [
@@ -22,7 +22,7 @@ class FoodListItem extends StatelessWidget {
                 child: ClipRRect(
               borderRadius: BorderRadius.circular(25),
               child: Image.asset(
-                'assets/images/avatar_person.jpg',
+                'assets/images/breakfastDishe24.jpg',
                 fit: BoxFit.cover,
               ),
             )),
@@ -31,7 +31,7 @@ class FoodListItem extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                height: 70.h,
+                height: 80.h,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(25),
@@ -55,16 +55,14 @@ class FoodListItem extends StatelessWidget {
                       Expanded(
                         child: AutoSizeText(
                           'بان كيك',
-                          style: titleLarge.copyWith(
-                            color: AppColors.white,
-                          ),
+                          style: titleMedium.copyWith(
+                              color: AppColors.white, fontSize: 16.sp),
                           maxLines: 2,
                         ),
                       ),
                       Text('25 ريال',
-                          style: titleLarge.copyWith(
-                            color: AppColors.secondaryColor,
-                          ))
+                          style: titleMedium.copyWith(
+                              color: AppColors.secondaryColor, fontSize: 16.sp))
                     ],
                   ),
                 ))
