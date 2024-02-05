@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/activity.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/appointment.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/bill.dart';
@@ -32,8 +30,6 @@ import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_dropdown_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/custom_toggle_buttons.dart';
-import 'package:jdolh_customers/view/widgets/common/rating.dart';
 
 class TestScreen extends StatefulWidget {
   const TestScreen({super.key});
