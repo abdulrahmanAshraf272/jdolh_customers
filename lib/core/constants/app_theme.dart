@@ -13,7 +13,7 @@ ThemeData themeEnglish = ThemeData(
 );
 
 ThemeData themeArabic = ThemeData(
-  primaryColor: AppColors.gray,
+  primaryColor: AppColors.primaryColor,
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: const AppBarTheme(color: AppColors.primaryColor),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(

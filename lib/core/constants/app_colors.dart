@@ -6,6 +6,8 @@ class AppColors {
   static const secondaryColor = Color(0xff05CBE7);
   static const secondaryColorLight = Color(0xff4CE0F5);
   static const secondaryColor300 = Color(0xffDFF3F9);
+  static const secondaryColor600 = Color(0xffCCF4FA);
+  static const secondaryColor700 = Color(0xff67DFF0);
   static const secondaryLightCardAppointment = Color(0xffF0FCFE);
   static const activityCard = Color(0xffF8F7F9);
 

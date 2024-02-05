@@ -41,7 +41,8 @@ class OrderTotalPriceWithFees extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               '20 ريال',
-              style: titleMedium.copyWith(fontWeight: FontWeight.bold),
+              style: titleMedium.copyWith(
+                  fontWeight: FontWeight.bold, color: AppColors.white),
             ),
           ),
         ),

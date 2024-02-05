@@ -1,13 +1,7 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/constants/text_syles.dart';
-import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_text.dart';
 import 'package:jdolh_customers/view/widgets/common/apptDetails/address_title.dart';
 import 'package:jdolh_customers/view/widgets/common/apptDetails/appt_brand_name_and_by_who.dart';
 import 'package:jdolh_customers/view/widgets/common/apptDetails/appt_number_and_date.dart';
-import 'package:jdolh_customers/view/widgets/common/apptDetails/list_of_invited_people.dart';
 import 'package:jdolh_customers/view/widgets/common/apptDetails/order_content.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/confirm_refuse_buttons.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';

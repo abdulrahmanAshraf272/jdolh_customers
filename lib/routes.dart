@@ -12,9 +12,11 @@ import 'package:jdolh_customers/view/screens/auth/success_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/verifycode_screen.dart';
 import 'package:jdolh_customers/view/screens/home_screen.dart';
 import 'package:jdolh_customers/view/screens/language_screen.dart';
+import 'package:jdolh_customers/view/screens/main_screen.dart';
+import 'package:jdolh_customers/view/screens/schedule_screen.dart';
 
 List<GetPage> routes = [
-  GetPage(name: '/', page: () => const ApptDetailsScreen()),
+  GetPage(name: '/', page: () => const TestScreen2()),
   //GetPage(name: '/', page: () => const LanguageScreen()),
   GetPage(name: AppRouteName.home, page: () => const HomeScreen()),
 ];

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:jdolh_customers/core/binding/initial_binding.dart';
 import 'package:jdolh_customers/core/localization/change_locale.dart';
 import 'package:jdolh_customers/core/localization/translation.dart';
@@ -13,6 +14,7 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await initialServices();
+  initializeDateFormatting('ar');
   runApp(const MyApp());
 }
 

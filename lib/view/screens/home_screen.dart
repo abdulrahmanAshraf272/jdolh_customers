@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
-import 'package:jdolh_customers/core/localization/words/home.dart';
 import 'package:jdolh_customers/test_screen2.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/activity.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/appointment.dart';
@@ -25,9 +24,7 @@ class HomeScreen extends StatelessWidget {
             CustomAds(),
             CustomTitle(
               title: 'مواعيد قريبة',
-              onTap: () {
-                Get.to(TestScreen2());
-              },
+              onTap: () {},
               bottomPadding: 5,
               topPadding: 10,
             ),

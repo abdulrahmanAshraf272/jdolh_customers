@@ -53,3 +53,8 @@ TextStyle titleSmallGray = TextStyle(
   fontSize: 10.sp,
   color: AppColors.textLight2,
 );
+
+BoxShadow boxShadow1 = BoxShadow(
+    offset: const Offset(0, 3),
+    blurRadius: 4,
+    color: Colors.black45.withOpacity(0.23));
