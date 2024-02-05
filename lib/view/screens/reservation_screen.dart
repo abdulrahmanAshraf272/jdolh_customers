@@ -24,10 +24,7 @@ class ReservationScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20),
-          CustomTitle(
-            title: 'القسم',
-            customTextStyle: titleMedium,
-          ),
+          const CustomSmallTitle(title: 'القسم'),
           CustomDropdownButton(
               width: Get.width * 0.65,
               horizontalPadding: 20,
@@ -38,9 +35,8 @@ class ReservationScreen extends StatelessWidget {
               Expanded(
                   child: Column(
                 children: [
-                  CustomTitle(
+                  const CustomSmallTitle(
                     title: 'نوع المطعم',
-                    customTextStyle: titleMedium,
                     rightPdding: 0,
                     leftPadding: 0,
                   ),
@@ -51,9 +47,8 @@ class ReservationScreen extends StatelessWidget {
               Expanded(
                   child: Column(
                 children: [
-                  CustomTitle(
+                  CustomSmallTitle(
                     title: 'المدينة',
-                    customTextStyle: titleMedium,
                     rightPdding: 0,
                     leftPadding: 0,
                   ),

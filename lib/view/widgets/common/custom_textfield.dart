@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 
-class SearchTextField extends StatelessWidget {
-  const SearchTextField({
+///Common used TextField -be careful when modify the original code-
+class CustomTextField extends StatelessWidget {
+  final TextEditingController textEditingController;
+  final String hintText;
+  final IconData? iconData;
+  const CustomTextField({
     super.key,
+    required this.textEditingController,
+    required this.hintText,
+    this.iconData,
   });
 
   @override
@@ -22,7 +29,7 @@ class SearchTextField extends StatelessWidget {
           Expanded(
             child: TextFormField(
               decoration: InputDecoration(
-                hintText: 'ابحث في قائمة الأصدقاء',
+                hintText: hintText,
                 hintStyle: const TextStyle(fontSize: 14),
                 // contentPadding: const EdgeInsets.symmetric(
                 //     vertical: 5, horizontal: 30),
@@ -30,11 +37,13 @@ class SearchTextField extends StatelessWidget {
               ),
             ),
           ),
-          Icon(
-            Icons.search,
-            size: 30,
-            color: Colors.grey,
-          )
+          iconData != null
+              ? Icon(
+                  iconData,
+                  size: 30,
+                  color: Colors.grey,
+                )
+              : SizedBox()
         ],
       ),
     );

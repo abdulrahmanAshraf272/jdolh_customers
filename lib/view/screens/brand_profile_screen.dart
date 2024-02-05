@@ -16,6 +16,7 @@ import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_dropdown_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
+import 'package:jdolh_customers/view/widgets/common/data_or_location_display_container.dart';
 import 'package:jdolh_customers/view/widgets/common/guaranteed_icon.dart';
 import 'package:jdolh_customers/view/widgets/common/rating.dart';
 
@@ -42,12 +43,15 @@ class BrandProfileScreen extends StatelessWidget {
                 onTapTwo: () {}),
             SizedBox(height: 16),
             ReservationOptionsAndExtraSeats(),
-            CustomTitle(
+            CustomSmallTitle(
               title: 'وقت الحجز',
               topPadding: 20,
-              customTextStyle: titleMedium,
             ),
-            ReservationDateDisplay(),
+            DateOrLocationDisplayContainer(
+              hintText: 'اختر وقت الحجز',
+              iconData: Icons.date_range_outlined,
+              onTap: () {},
+            ),
             CustomToggleButtonsOneOption(
               firstOption: 'ارسال دعوة',
               onTapOne: () {},
@@ -57,10 +61,9 @@ class BrandProfileScreen extends StatelessWidget {
               verticalPadding: 10,
             ),
             Invitors(),
-            CustomTitle(
+            CustomSmallTitle(
               title: 'تفاصيل الطلب',
               topPadding: 20,
-              customTextStyle: titleMedium,
             ),
             ListView.builder(
                 shrinkWrap: true,
@@ -193,45 +196,6 @@ class Invitors extends StatelessWidget {
           thickness: 2,
         ),
       ],
-    );
-  }
-}
-
-class ReservationDateDisplay extends StatelessWidget {
-  const ReservationDateDisplay({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-        //border: Border.all(color: Colors.black26),
-        color: AppColors.gray,
-      ),
-      child: Row(
-        children: [
-          Expanded(
-              child: Text(
-            'اختر وقت الحجز',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 13.sp,
-              color: Colors.grey.shade500,
-            ),
-          )),
-          Icon(
-            Icons.date_range_outlined,
-            color: Colors.grey.shade500,
-          )
-        ],
-      ),
     );
   }
 }

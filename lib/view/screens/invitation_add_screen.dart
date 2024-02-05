@@ -4,7 +4,7 @@ import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
-import 'package:jdolh_customers/view/widgets/common/search_textfield.dart';
+import 'package:jdolh_customers/view/widgets/common/custom_textfield.dart';
 
 class InvitationAddScreen extends StatelessWidget {
   const InvitationAddScreen({super.key});
@@ -29,7 +29,11 @@ class InvitationAddScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 15),
-          SearchTextField(),
+          CustomTextField(
+            hintText: 'ابحث في قائمة الأصدقاء',
+            iconData: Icons.search,
+            textEditingController: TextEditingController(),
+          ),
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(vertical: 10),
