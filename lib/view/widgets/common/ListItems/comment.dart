@@ -20,11 +20,30 @@ class CommentListItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
-            child: AutoSizeText('تجربة ممتازة واجواء رائعة',
-                maxLines: 2,
-                minFontSize: 15,
-                overflow: TextOverflow.ellipsis,
-                style: titleSmall),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AutoSizeText('تجربة ممتازة واجواء رائعة',
+                    maxLines: 2,
+                    minFontSize: 15,
+                    overflow: TextOverflow.ellipsis,
+                    style: titleSmall),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.handshake_outlined,
+                      color: AppColors.secondaryColor,
+                    ),
+                    Text(
+                      '23',
+                      style: TextStyle(
+                          fontSize: 14, color: AppColors.secondaryColor),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
           const SizedBox(width: 5),
           Rating(rating: 4.5),

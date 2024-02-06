@@ -5,7 +5,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
+import 'package:jdolh_customers/view/widgets/common/ListItems/activity.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/bill.dart';
+import 'package:jdolh_customers/view/widgets/common/ListItems/comment.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
@@ -25,10 +27,8 @@ class TestScreen2 extends StatelessWidget {
     return Scaffold(
       //appBar: customAppBar(title: 'الفواتير'),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [],
-          ),
+        child: Column(
+          children: [],
         ),
       ),
     );
