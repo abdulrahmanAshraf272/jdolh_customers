@@ -21,7 +21,7 @@ import 'package:jdolh_customers/view/screens/schedule_screen.dart';
 import 'package:jdolh_customers/view/screens/select_product_features_screen.dart';
 
 List<GetPage> routes = [
-  GetPage(name: '/', page: () => const PaymentScreen()),
+  GetPage(name: '/', page: () => const TestScreen2()),
   //GetPage(name: '/', page: () => const LanguageScreen()),
   GetPage(name: AppRouteName.home, page: () => const HomeScreen()),
 ];

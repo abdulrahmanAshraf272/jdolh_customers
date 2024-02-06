@@ -1,25 +1,37 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 
 class DateOrLocationDisplayContainer extends StatelessWidget {
   final String hintText;
-  final IconData iconData;
-  final void Function() onTap;
+  final IconData? iconData;
+  final bool iconEnd;
+  final void Function()? onTap;
+  final double horizontalMargin;
+  final double verticalMargin;
   const DateOrLocationDisplayContainer({
     super.key,
     required this.hintText,
-    required this.iconData,
-    required this.onTap,
+    this.iconData,
+    this.onTap,
+    this.iconEnd = true,
+    this.horizontalMargin = 20,
+    this.verticalMargin = 10,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        if (onTap != null) {
+          onTap!();
+        }
+      },
       child: Container(
         height: 50,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        margin: EdgeInsets.symmetric(
+            horizontal: horizontalMargin, vertical: verticalMargin),
         padding: const EdgeInsets.symmetric(
           horizontal: 20,
         ),
@@ -30,19 +42,31 @@ class DateOrLocationDisplayContainer extends StatelessWidget {
         ),
         child: Row(
           children: [
+            iconData != null && !iconEnd
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Icon(
+                      iconData,
+                      color: Colors.grey.shade700,
+                    ),
+                  )
+                : const SizedBox(),
             Expanded(
-                child: Text(
+                child: AutoSizeText(
               hintText,
+              maxLines: 1,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 13.sp,
-                color: Colors.grey.shade500,
+                color: Colors.grey.shade700,
               ),
             )),
-            Icon(
-              iconData,
-              color: Colors.grey.shade500,
-            )
+            iconData != null && iconEnd
+                ? Icon(
+                    iconData,
+                    color: Colors.grey.shade500,
+                  )
+                : const SizedBox()
           ],
         ),
       ),
