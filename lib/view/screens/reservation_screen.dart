@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/constants/text_syles.dart';
 
 import 'package:jdolh_customers/view/widgets/common/ListItems/brand_detailed.dart';
 import 'package:jdolh_customers/view/widgets/common/apptDetails/address_title.dart';

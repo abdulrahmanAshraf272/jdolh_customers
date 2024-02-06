@@ -14,7 +14,11 @@ class Brand extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      color: AppColors.secondaryLightCardAppointment,
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: AppColors.gray,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
