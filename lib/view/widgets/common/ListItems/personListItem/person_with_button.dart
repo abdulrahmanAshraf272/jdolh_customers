@@ -7,12 +7,14 @@ class PersonWithButtonListItem extends StatelessWidget {
   final String name;
   final Function() onTap;
   final Color buttonColor;
+  final String buttonText;
 
   const PersonWithButtonListItem(
       {super.key,
       required this.name,
       required this.onTap,
-      this.buttonColor = AppColors.secondaryColor});
+      this.buttonColor = AppColors.secondaryColor,
+      this.buttonText = 'إضافة'});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class PersonWithButtonListItem extends StatelessWidget {
           TextButton(
               onPressed: onTap,
               child: Text(
-                'إضافة',
+                buttonText,
                 style: titleSmall2.copyWith(color: buttonColor),
               ))
         ],
