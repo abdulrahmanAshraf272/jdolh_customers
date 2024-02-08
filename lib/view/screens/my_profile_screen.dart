@@ -5,8 +5,8 @@ import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/comment.dart';
 import 'package:jdolh_customers/view/widgets/more_screen/rect_button.dart';
 
-class TestScreen2 extends StatelessWidget {
-  const TestScreen2({super.key});
+class MyProfileScreen extends StatelessWidget {
+  const MyProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

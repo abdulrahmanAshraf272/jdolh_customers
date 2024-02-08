@@ -15,7 +15,7 @@ class OrderExtraFeeListItem extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Container(
-            height: 50.h,
+            height: 40.h,
             color: AppColors.gray350,
             padding: const EdgeInsets.symmetric(horizontal: 20),
             //alignment: Alignment.center,
@@ -35,7 +35,7 @@ class OrderExtraFeeListItem extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Container(
-            height: 50.h,
+            height: 40.h,
             color: AppColors.gray450,
             padding: const EdgeInsets.all(10),
             alignment: Alignment.center,

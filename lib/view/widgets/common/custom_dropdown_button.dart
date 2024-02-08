@@ -25,7 +25,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
   String? selectedValue;
 
   final List<String> items = [
-    'المطاعم',
+    'الفروع',
     'الكافيهات',
     'صالونات الحلاقة',
     'الملاهي',

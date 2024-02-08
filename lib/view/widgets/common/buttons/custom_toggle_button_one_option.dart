@@ -25,7 +25,7 @@ class CustomToggleButtonsOneOption extends StatefulWidget {
 
 class _CustomToggleButtonsOneOptionState
     extends State<CustomToggleButtonsOneOption> {
-  int selectedOption = 0;
+  int selectedOption = 2;
   @override
   Widget build(BuildContext context) {
     return Container(

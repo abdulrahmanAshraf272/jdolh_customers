@@ -20,7 +20,7 @@ class FoodListItem extends StatelessWidget {
           children: [
             Positioned.fill(
                 child: ClipRRect(
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: BorderRadius.circular(15),
               child: Image.asset(
                 'assets/images/breakfastDishe24.jpg',
                 fit: BoxFit.cover,
@@ -34,8 +34,8 @@ class FoodListItem extends StatelessWidget {
                 height: 80.h,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(25),
-                        bottomRight: Radius.circular(25)),
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15)),
                     gradient: LinearGradient(
                         begin: Alignment.bottomCenter,
                         end: Alignment.topCenter,

@@ -1,86 +1,36 @@
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:jdolh_customers/core/constants/app_colors.dart';
+import 'package:jdolh_customers/core/constants/text_syles.dart';
+import 'package:jdolh_customers/view/widgets/common/ListItems/activity.dart';
+import 'package:jdolh_customers/view/widgets/common/ListItems/bill.dart';
+import 'package:jdolh_customers/view/widgets/common/ListItems/brand.dart';
+import 'package:jdolh_customers/view/widgets/common/ListItems/comment.dart';
+import 'package:jdolh_customers/view/widgets/common/ListItems/group.dart';
+import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
+import 'package:jdolh_customers/view/widgets/common/ListItems/wallet_operation.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
+import 'package:jdolh_customers/view/widgets/common/custom_textfield.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
-import 'package:date_time_format/date_time_format.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:jdolh_customers/view/widgets/common/data_or_location_display_container.dart';
+import 'package:jdolh_customers/view/widgets/common/flexable_toggle_button.dart';
 
-import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
-
-class TestScreen2 extends StatefulWidget {
+class TestScreen2 extends StatelessWidget {
   const TestScreen2({super.key});
-
-  @override
-  State<TestScreen2> createState() => _TestScreen2State();
-}
-
-class _TestScreen2State extends State<TestScreen2> {
-  List<DateTime?> _dates = [DateTime.now()];
-  //TODO: Refactor this code to be Clean code , and able to use it any where any time
-  String getArabicDate(DateTime dateTime) {
-    // Create a DateFormat object with the desired format and locale.
-    //final formatter = DateFormat('EEEE, dd MMMM, yyyy', 'ar');
-    final formatter = DateFormat('EEEE, dd MMMM, yyyy', 'ar');
-    // Format the date using the DateFormat object.
-    final formattedDate = formatter.format(dateTime);
-
-    final dayName = DateFormat('EEEE', 'ar');
-    final month = DateFormat('MMMM', 'ar');
-    final day = DateFormat('dd');
-    final year = DateFormat('yyyy');
-
-    final dayNameFormat = dayName.format(dateTime);
-    final monthFormat = month.format(dateTime);
-    final dayFormat = day.format(dateTime);
-    final yearFormat = year.format(dateTime);
-
-    print("$dayNameFormat, $dayFormat $monthFormat, $yearFormat");
-
-    final date = "$dayNameFormat, $dayFormat $monthFormat, $yearFormat";
-
-    //String modifiedDate =formattedDate.replaceAll(RegExp('٠١٢٣٤٥٦٧٨٩'), '0123456789');
-
-    return date;
-
-    // Return the formatted date.
-    //return formattedDate;
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(title: 'وقت الحجز'),
       body: Column(
-        children: [
-          CustomSmallTitle(
-            title: 'اختر التاريخ',
-            topPadding: 20,
-            leftPadding: 20,
-            rightPdding: 20,
-          ),
-          CalendarDatePicker2(
-            config: CalendarDatePicker2Config(
-              calendarType: CalendarDatePicker2Type.single,
-            ),
-            value: _dates,
-            onValueChanged: (dates) {
-              _dates = dates;
-              print(_dates[0]!.format(AmericanDateFormats.dayOfWeek));
-              print(_dates[0]!.format('l'));
-              print(_dates[0]!.format('F'));
-              //print(DateTimeFormat.format(_dates[0]!,format: AmericanDateFormats.dayOfWeek));
-              setState(() {});
-              // final formatter = DateFormat('EEEE', 'ar');
-              // final arabicDate = formatter.format(_dates[0]!);
-              // print(arabicDate);
-
-              print(getArabicDate(_dates[0]!));
-            },
-          )
-        ],
+        children: [],
       ),
     );
   }

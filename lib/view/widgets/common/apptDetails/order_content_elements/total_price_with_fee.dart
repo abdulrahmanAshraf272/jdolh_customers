@@ -15,7 +15,7 @@ class OrderTotalPriceWithFees extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Container(
-            height: 50.h,
+            height: 40.h,
             color: AppColors.secondaryLightCardAppointment,
             padding: const EdgeInsets.symmetric(horizontal: 20),
             //alignment: Alignment.center,
@@ -35,7 +35,7 @@ class OrderTotalPriceWithFees extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Container(
-            height: 50.h,
+            height: 40.h,
             color: AppColors.secondaryColor,
             padding: const EdgeInsets.all(10),
             alignment: Alignment.center,
