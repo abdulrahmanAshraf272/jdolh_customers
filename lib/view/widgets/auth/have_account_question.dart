@@ -16,10 +16,10 @@ class HaveAccountQuestion extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(text, style: TextStyle(color: AppColors.gray)),
+        Text(text, style: TextStyle(color: Colors.grey)),
         TextButton(
             onPressed: onPress,
-            child: const Text("Sign In",
+            child: Text(buttonText,
                 style: TextStyle(color: AppColors.primaryColor)))
       ],
     );

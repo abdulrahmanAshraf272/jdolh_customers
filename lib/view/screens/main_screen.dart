@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/main_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/view/widgets/custom_bottom_appbar.dart';
 
 class MainScreen extends StatelessWidget {
@@ -13,7 +14,9 @@ class MainScreen extends StatelessWidget {
     return GetBuilder<MainController>(
         builder: (controller) => Scaffold(
               floatingActionButton: FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.toNamed(AppRouteName.reservation);
+                },
                 backgroundColor: AppColors.secondaryColor,
                 shape: const CircleBorder(),
                 child: const Icon(Icons.list),

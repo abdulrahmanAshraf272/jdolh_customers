@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'dart:async';
 
 import 'package:jdolh_customers/core/constants/strings.dart';
@@ -11,7 +12,7 @@ class BrandProfileController extends GetxController {
 
   //Timer variables
   late Timer timer;
-  int minutesTimeAllowedToConfirmReservation = 1;
+  int minutesTimeAllowedToConfirmReservation = 1800;
   late int remainingTime;
   late RxInt remainingMin;
   late RxInt remainingSec;
@@ -51,6 +52,7 @@ class BrandProfileController extends GetxController {
 
   confirmReservation() {
     print('confirm reservation and going to pay secreen');
+    Get.toNamed(AppRouteName.payment);
     inactiveTimer();
   }
 

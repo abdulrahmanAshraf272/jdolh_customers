@@ -3,8 +3,10 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:date_time_format/date_time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 
 import 'package:jdolh_customers/view/widgets/common/ListItems/appointment.dart';
@@ -113,7 +115,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: 3,
-                itemBuilder: (context, index) => AppointmentListItem()),
+                itemBuilder: (context, index) => AppointmentListItem(onTap: () {
+                      Get.toNamed(AppRouteName.apptDetails);
+                    })),
             CustomTitle(
               title: 'بحاجة لموافقتك',
               bottomPadding: 10,

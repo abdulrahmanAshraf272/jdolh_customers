@@ -8,6 +8,7 @@ import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_scree
 import 'package:jdolh_customers/view/widgets/common/apptDetails/order_content_elements/extra_fee_list_item.dart';
 import 'package:jdolh_customers/view/widgets/common/apptDetails/order_content_elements/total_price.dart';
 import 'package:jdolh_customers/view/widgets/common/apptDetails/order_content_elements/total_price_with_fee.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_toggle_button_one_option.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/common/data_or_location_display_container.dart';
@@ -73,7 +74,12 @@ class ReservationSubScreen extends StatelessWidget {
                 ),
               )
             : const SizedBox(),
-        const SizedBox(height: 80)
+        const SizedBox(height: 80),
+        BottomButton(
+            onTap: () {
+              controller.onTabBottomButton();
+            },
+            text: controller.buttonText),
       ],
     );
   }

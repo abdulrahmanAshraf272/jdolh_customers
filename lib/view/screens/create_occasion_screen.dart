@@ -55,6 +55,8 @@ class CreateOccasionScreen extends StatelessWidget {
               itemCount: 6,
               itemBuilder: (context, index) => PersonWithButtonListItem(
                 name: 'عبدالرحمن',
+                userName: '@abdo22',
+                image: '',
                 onTap: () {},
               ),
             ),

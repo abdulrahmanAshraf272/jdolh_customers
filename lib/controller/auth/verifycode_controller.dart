@@ -2,12 +2,21 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/data/data_source/remote/auth/resend_verifycode.dart';
+import 'package:jdolh_customers/data/data_source/remote/auth/verifycode.dart';
 
 class VerifycodeController extends GetxController {
+  late String email;
+  late int resetPasswordOperation;
   StatusRequest statusRequest = StatusRequest.none;
   late String verifycode;
   late Timer timer;
-  RxInt remainingSeconds = 10.obs;
+  RxInt remainingSeconds = 60.obs;
+  VerifycodeData verifycodeData = VerifycodeData(Get.find());
+  ResendVerifycodeData resendVerifycodeData = ResendVerifycodeData(Get.find());
+  bool resendVerifycodeButtonActive = false;
 
   void _startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -21,21 +30,66 @@ class VerifycodeController extends GetxController {
   }
 
   timerFinished() {
-    print('====== Timer Finished');
+    resendVerifycodeButtonActive = true;
+    update();
   }
 
-  checkVerifyIsCorrect() {
-    print(verifycode);
+  checkVerifyIsCorrect() async {
+    statusRequest = StatusRequest.loading;
+    update();
+    var response = await verifycodeData.postData(email, verifycode);
+    statusRequest = handlingData(response);
+    print('============= $statusRequest ============');
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('Response ===== ${response['status']}');
+        update();
+        goToSuccessScreenOrResetPassword();
+      } else {
+        statusRequest = StatusRequest.none;
+        update();
+        Get.defaultDialog(
+          title: 'تنبيه',
+          middleText: "الرمز الذي ادخلته غير صحيح!",
+          textCancel: 'حسنا',
+        );
+      }
+    }
   }
 
-  resendVerifycode() {
-    Get.snackbar('Resend Done!', 'go check your email.');
+  goToSuccessScreenOrResetPassword() {
+    if (resetPasswordOperation == 1) {
+      Get.offAllNamed(AppRouteName.resetPassword, arguments: {"email": email});
+    } else {
+      Get.offAllNamed(AppRouteName.successOperation);
+    }
+  }
+
+  resendVerifycode() async {
+    if (!resendVerifycodeButtonActive) {
+      return;
+    }
+
+    var response = await resendVerifycodeData.postData(email);
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        Get.rawSnackbar(message: "تم ارسال الرمز بنجاح!");
+      } else {
+        Get.rawSnackbar(message: "حدث خطأ حاول مرة اخرى");
+      }
+    } //else => will be hendled by HandlingDataView.
+    remainingSeconds.value = 60;
+    resendVerifycodeButtonActive = false;
+    _startTimer();
+    update();
   }
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
+    email = Get.arguments['email'];
+    resetPasswordOperation = Get.arguments['resetPassword'];
     _startTimer();
   }
 }

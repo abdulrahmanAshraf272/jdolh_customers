@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/test_screen2.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/activity.dart';
@@ -17,14 +18,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customHomeAppBar(onTapSearch: () {}, onTapNotification: () {}),
+      appBar: customHomeAppBar(
+          onTapSearch: () {
+            Get.toNamed(AppRouteName.search);
+          },
+          onTapNotification: () {}),
       body: SingleChildScrollView(
         child: Column(
           children: [
             CustomAds(),
             CustomTitle(
               title: 'مواعيد قريبة',
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(AppRouteName.appt);
+              },
               bottomPadding: 5,
               topPadding: 10,
             ),
@@ -32,10 +39,14 @@ class HomeScreen extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: 3,
-                itemBuilder: (context, index) => AppointmentListItem()),
+                itemBuilder: (context, index) => AppointmentListItem(onTap: () {
+                      Get.toNamed(AppRouteName.apptDetails);
+                    })),
             CustomTitle(
               title: 'نشاطات الأصدقاء',
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(AppRouteName.friendsActivities);
+              },
               bottomPadding: 5,
               topPadding: 20,
             ),
@@ -52,7 +63,9 @@ class HomeScreen extends StatelessWidget {
             CustomTitle(
               title: 'أكثر الأماكن زيارة خلال اسبوع',
               bottomPadding: 5,
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(AppRouteName.exploreBrand);
+              },
               customTextStyle: titleMedium,
             ),
             SizedBox(
@@ -68,7 +81,9 @@ class HomeScreen extends StatelessWidget {
             CustomTitle(
               title: 'أكثر الأماكن تسجيل وصول خلال ساعتين',
               bottomPadding: 5,
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(AppRouteName.exploreBrand);
+              },
               customTextStyle: titleMedium,
             ),
             SizedBox(
@@ -84,7 +99,9 @@ class HomeScreen extends StatelessWidget {
             CustomTitle(
               title: 'اكثر المستخدمين تقييم خلال اسبوع',
               bottomPadding: 5,
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(AppRouteName.explorePeople);
+              },
               customTextStyle: titleMedium,
             ),
             SizedBox(

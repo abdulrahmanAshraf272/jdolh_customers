@@ -26,8 +26,9 @@ class FollowersAndFollowingScreen extends StatelessWidget {
                 itemCount: 12,
                 itemBuilder: (context, index) => PersonWithButtonListItem(
                   name: 'عبدالرحمن',
+                  userName: '@abdo22',
+                  image: '',
                   onTap: () {},
-                  buttonText: 'تابع',
                 ),
                 // Add separatorBuilder
               ),

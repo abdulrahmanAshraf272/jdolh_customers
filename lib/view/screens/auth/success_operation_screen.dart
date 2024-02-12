@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/custom_button_one.dart';
 
 class SuccessOperation extends StatelessWidget {
@@ -15,20 +18,19 @@ class SuccessOperation extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Spacer(),
-            const Center(
+            Center(
                 child: Icon(Icons.check_circle_outline,
-                    size: 200, color: AppColors.primaryColor)),
-            Text('Congratulations!',
-                style: Theme.of(context).textTheme.displayMedium),
+                    size: 150.w, color: AppColors.secondaryColor)),
+            Text('تهانيا!', style: headline4),
             const SizedBox(height: 15),
-            Text('Operation is Done Successfuly',
+            Text('تمت العملية بنجاح, يمكن تسجيل الدخول الآن',
                 style: TextStyle(
                     fontSize: 16, color: Colors.black.withOpacity(0.5))),
             const Spacer(),
             CustomButtonOne(
-                textButton: 'Start',
+                textButton: 'ابدأ',
                 onPressed: () {
-                  //Get.offAllNamed(AppRoute.login);
+                  Get.offAllNamed(AppRouteName.login);
                 })
           ],
         ),

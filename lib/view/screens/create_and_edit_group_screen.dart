@@ -54,9 +54,9 @@ class CreateAndEditGroupScreen extends StatelessWidget {
                 itemCount: 12,
                 itemBuilder: (context, index) => PersonWithButtonListItem(
                   name: 'عبدالرحمن',
+                  userName: '@abdo22',
+                  image: '',
                   onTap: () {},
-                  buttonText: 'ازالة',
-                  buttonColor: Colors.red,
                 ),
                 // Add separatorBuilder
               ),

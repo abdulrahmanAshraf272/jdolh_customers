@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:jdolh_customers/controller/more_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/view/widgets/more_screen/rect_button.dart';
 import 'package:jdolh_customers/view/widgets/more_screen/settings_button.dart';
 
@@ -9,6 +12,7 @@ class MoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(MoreController());
     return Scaffold(
       //appBar: customAppBar(title: 'الفواتير'),
       body: SafeArea(
@@ -74,18 +78,32 @@ class MoreScreen extends StatelessWidget {
                   onTap: () {},
                   iconData: Icons.people_alt_rounded),
               SettingsButton(
-                  text: 'المجموعات', onTap: () {}, iconData: Icons.group),
+                  text: 'المجموعات',
+                  onTap: () {
+                    Get.toNamed(AppRouteName.gourps);
+                  },
+                  iconData: Icons.group),
               SettingsButton(
                   text: 'اللغة', onTap: () {}, iconData: Icons.language),
               SettingsButton(
-                  text: 'المحفظة', onTap: () {}, iconData: Icons.wallet),
+                  text: 'المحفظة',
+                  onTap: () {
+                    Get.toNamed(AppRouteName.walletDetails);
+                  },
+                  iconData: Icons.wallet),
               SettingsButton(
-                  text: 'الفواتير', onTap: () {}, iconData: Icons.receipt),
+                  text: 'الفواتير',
+                  onTap: () {
+                    Get.toNamed(AppRouteName.bills);
+                  },
+                  iconData: Icons.receipt),
               SettingsButton(
                   text: 'تواصل معنا', onTap: () {}, iconData: Icons.receipt),
               SettingsButton(
                 text: 'تسجيل الخروج',
-                onTap: () {},
+                onTap: () {
+                  controller.logout();
+                },
                 iconData: Icons.logout,
                 cancelArrowForward: true,
               ),

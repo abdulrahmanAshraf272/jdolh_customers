@@ -40,11 +40,9 @@ class InvitationAddScreen extends StatelessWidget {
               itemCount: 6,
               itemBuilder: (context, index) => PersonWithButtonListItem(
                 name: 'عبدالرحمن',
-                onTap: () {
-                  // Get.to(() => ApptScreen())!.then((value) {
-                  //   setState(() {});
-                  // });
-                },
+                userName: '@abdo22',
+                image: '',
+                onTap: () {},
               ),
             ),
           ),

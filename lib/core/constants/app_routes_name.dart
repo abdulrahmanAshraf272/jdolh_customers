@@ -3,10 +3,10 @@ class AppRouteName {
   static const login = '/login';
   static const signUp = '/signUp';
   static const onBoarding = '/onboarding';
-  static const checkEmail = '/checkEmail';
+  static const forgetPassword = '/forgetPassword';
   static const verifyCode = '/verifyCode';
   static const resetPassword = '/resetPassword';
-  static const successAuth = '/successAuth';
+  static const successOperation = '/successOperation';
 
   static const addToGroup = '/addToGroup';
   static const appt = '/appt';
@@ -18,7 +18,7 @@ class AppRouteName {
   static const exploreBrand = '/exploreBrand';
   static const explorePeople = '/explorePeople';
   static const followersAndFollowing = '/followersAndfollowing';
-  static const friendsActivities = 'friendsActivities';
+  static const friendsActivities = '/friendsActivities';
   static const gourps = '/groups';
   static const invitationAdd = '/invitationAdd';
   static const language = '/language';

@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 
 import 'package:jdolh_customers/view/widgets/common/ListItems/activity.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/appointment.dart';
@@ -59,7 +60,7 @@ class _TestScreenState extends State<TestScreen> {
               onTap: () {},
             ),
             EventListItem(),
-            GroupListItem(),
+            //GroupListItem(),
             WalletOperationListItem(),
             HairCutServiceListItem(),
             BillListItem(paid: false),
@@ -68,14 +69,13 @@ class _TestScreenState extends State<TestScreen> {
             Brand(),
             CommentListItem(),
             AppointmentListItemNotApproved(),
-            AppointmentListItem(),
+            AppointmentListItem(onTap: () {
+              Get.toNamed(AppRouteName.apptDetails);
+            }),
             ActivityListItem(),
             PersonListItem(),
             PersonWithTextListItem(),
-            PersonWithButtonListItem(
-              name: 'عبدالرحمن',
-              onTap: () {},
-            ),
+
             PersonWithToggleListItem(),
             LargeToggleButtons(
               optionOne: 'مواعيد قريبة',

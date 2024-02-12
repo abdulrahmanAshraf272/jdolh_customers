@@ -38,13 +38,6 @@ class BrandProfileScreen extends StatelessWidget {
               appBar: customAppBar(
                 title: 'جدولة',
               ),
-              floatingActionButton: BottomButton(
-                  onTap: () {
-                    controller.onTabBottomButton();
-                  },
-                  text: controller.buttonText),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
               body: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

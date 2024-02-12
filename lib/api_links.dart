@@ -1,5 +1,5 @@
 class ApiLinks {
-  static const String server = "http://10.0.2.2/ecommerce";
+  static const String server = "http://10.0.2.2/jdolh";
   static const String test = "$server/test.php";
 
   //=================== Images ================//
@@ -8,14 +8,17 @@ class ApiLinks {
   static const String imagesItems = '$images/items';
 
   //=============== Auth ===============//
-  static const String signUp = '$server/auth/signup.php';
-  static const String verifycode = '$server/auth/verifycode.php';
-  static const String login = '$server/auth/login.php';
-  static const String checkEmail = '$server/forget_password/check_email.php';
-  static const String verifycodeForgetPassword =
-      '$server/forget_password/verifycode.php';
+  static const String signUp = '$server/jdolh_customers/auth/signup.php';
+  static const String login = '$server/jdolh_customers/auth/login.php';
+  static const String verifycode =
+      '$server/jdolh_customers/auth/verifycode.php';
+  static const String resendVerifycode =
+      '$server/jdolh_customers/auth/resend_verifycode.php';
+  static const String forgetPassword =
+      '$server/jdolh_customers/auth/forget_password.php';
   static const String resetPassword =
-      '$server/forget_password/reset_password.php';
-  static const String resend = '$server/auth/resend.php';
-  static const String home = '$server/home.php';
+      '$server/jdolh_customers/auth/reset_password.php';
+
+  static const String searchPerson =
+      '$server/jdolh_customers/search_person.php';
 }

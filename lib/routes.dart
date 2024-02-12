@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/auth/send_verifycode_controller.dart';
+import 'package:jdolh_customers/controller/auth/forget_password_controller.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/middleware/my_middleware.dart';
 import 'package:jdolh_customers/test_screen.dart';
 import 'package:jdolh_customers/test_screen2.dart';
 import 'package:jdolh_customers/view/screens/add_to_group_screen.dart';
@@ -8,9 +9,9 @@ import 'package:jdolh_customers/view/screens/appt_details_screen.dart';
 import 'package:jdolh_customers/view/screens/appt_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/login_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/reset_password_screen.dart';
-import 'package:jdolh_customers/view/screens/auth/send_verifycode_screen.dart';
+import 'package:jdolh_customers/view/screens/auth/forget_password_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/signup_screen.dart';
-import 'package:jdolh_customers/view/screens/auth/success_screen.dart';
+import 'package:jdolh_customers/view/screens/auth/success_operation_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/verifycode_screen.dart';
 import 'package:jdolh_customers/view/screens/bills_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile_screen.dart';
@@ -38,11 +39,37 @@ import 'package:jdolh_customers/view/screens/wallet_charging_screen.dart';
 import 'package:jdolh_customers/view/screens/wallet_details_screen.dart';
 
 List<GetPage> routes = [
+  //Replace Login with onBoarding
   GetPage(
     name: '/',
-    page: () => const BrandProfileScreen(),
+    page: () => const LoginScreen(),
+    middlewares: [MyMiddleware()],
   ),
   //GetPage(name: '/', page: () => const const LanguageScreen(),),
+  GetPage(
+    name: AppRouteName.login,
+    page: () => const LoginScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.signUp,
+    page: () => const SignupScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.resetPassword,
+    page: () => const ResetPasswordScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.verifyCode,
+    page: () => const VerifycodeScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.forgetPassword,
+    page: () => const ForgetPasswordScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.successOperation,
+    page: () => const SuccessOperation(),
+  ),
   GetPage(
     name: AppRouteName.home,
     page: () => const HomeScreen(),
@@ -55,6 +82,8 @@ List<GetPage> routes = [
     name: AppRouteName.appt,
     page: () => const ApptScreen(),
   ),
+  GetPage(
+      name: AppRouteName.apptDetails, page: () => const ApptDetailsScreen()),
   GetPage(
     name: AppRouteName.bills,
     page: () => const BillsScreen(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/group.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
 
@@ -11,7 +12,9 @@ class GroupsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: groupsAppBar(onTapCreateGroup: () {}),
+      appBar: groupsAppBar(onTapCreateGroup: () {
+        Get.toNamed(AppRouteName.createAndEditGroup);
+      }),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -20,7 +23,9 @@ class GroupsScreen extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.only(bottom: 30, top: 20),
               itemCount: 12,
-              itemBuilder: (context, index) => GroupListItem(),
+              itemBuilder: (context, index) => GroupListItem(onTap: () {
+                Get.toNamed(AppRouteName.addToGroup);
+              }),
               // Add separatorBuilder
             ),
           ),

@@ -16,7 +16,7 @@ class CustomButtonOne extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: MaterialButton(
-            color: AppColors.primaryColor,
+            color: AppColors.secondaryColor,
             textColor: Colors.white,
             onPressed: onPressed,
             child: Text(textButton,

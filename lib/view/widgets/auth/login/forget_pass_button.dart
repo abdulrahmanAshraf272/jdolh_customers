@@ -11,7 +11,7 @@ class ForgetPassButton extends StatelessWidget {
       child: TextButton(
           onPressed: onPress,
           child: Text(
-            'Forget Password?',
+            'نسيت كلمة السر؟',
             style: TextStyle(
                 color: Colors.black.withOpacity(0.5),
                 decoration: TextDecoration.underline),
