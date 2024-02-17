@@ -11,7 +11,8 @@ class OccasionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(OccasionsController());
+    final controller = Get.put(OccasionsController());
+
     return GetBuilder<OccasionsController>(
         builder: (controller) => Scaffold(
               appBar: appBarWithButtonCreate(
@@ -53,8 +54,8 @@ class OccasionsScreen extends StatelessWidget {
                                     .occasionUsername!,
                                 title: controller
                                     .occasionsToDisplay[index].occasionTitle!,
-                                date: controller.occasionsToDisplay[index]
-                                    .occasionDatecreated!,
+                                date:
+                                    controller.displayFormateDateInCard(index),
                                 location: controller.occasionsToDisplay[index]
                                     .occasionLocation!,
                                 creator: controller

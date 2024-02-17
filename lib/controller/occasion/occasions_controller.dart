@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/controller/main_controller.dart';
@@ -8,36 +10,19 @@ import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
 
 class OccasionsController extends GetxController {
-  MainController mainController = Get.find();
-
+  ValuesController valuesController = Get.find();
   List<Occasion> occasionsToDisplay = [];
-  List<Occasion> acceptedOccasions = [];
-  List<Occasion> suspendedOccasions = [];
-  List<Occasion> myOccasions = [];
   bool needApprove = false;
-
-  parsingDataFromJsonToDartList(response) {
-    List responseOccasoins = response['data'];
-    myOccasions = responseOccasoins.map((e) => Occasion.fromJson(e)).toList();
-    //make acceptedOccasionList and suspended list
-    for (var element in myOccasions) {
-      if (element.acceptstatus == 1) {
-        acceptedOccasions.add(element);
-      } else {
-        suspendedOccasions.add(element);
-      }
-    }
-  }
 
   activeNeedApprove() {
     needApprove = true;
-    occasionsToDisplay = suspendedOccasions;
+    occasionsToDisplay = valuesController.suspendedOccasions;
     update();
   }
 
   inactiveNeedAprrove() {
     needApprove = false;
-    occasionsToDisplay = acceptedOccasions;
+    occasionsToDisplay = valuesController.acceptedOccasions;
     update();
   }
 
@@ -46,7 +31,8 @@ class OccasionsController extends GetxController {
   }
 
   refreshScreen() {
-    getOccasionFromMainController();
+    //getOccasionFromMainController();
+    inactiveNeedAprrove();
     update();
   }
 
@@ -62,24 +48,21 @@ class OccasionsController extends GetxController {
     }
   }
 
-  getOccasionFromMainController() {
-    acceptedOccasions.clear();
-    suspendedOccasions.clear();
-    myOccasions = List.from(mainController.myOccasions);
+  String formatDateTime(String inputDateTime) {
+    DateTime dateTime = DateTime.parse(inputDateTime);
+    String formattedDateTime = DateFormat('yyyy-MM-dd h:mm a').format(dateTime);
+    return formattedDateTime;
+  }
 
-    for (var element in myOccasions) {
-      if (element.acceptstatus == 1) {
-        acceptedOccasions.add(element);
-      } else {
-        suspendedOccasions.add(element);
-      }
-    }
-    inactiveNeedAprrove();
+  String displayFormateDateInCard(int index) {
+    String dateFormated =
+        formatDateTime(occasionsToDisplay[index].occasionDatetime.toString());
+    return dateFormated;
   }
 
   @override
   void onInit() {
-    getOccasionFromMainController();
+    //getOccasionFromMainController();
     inactiveNeedAprrove();
 
     super.onInit();

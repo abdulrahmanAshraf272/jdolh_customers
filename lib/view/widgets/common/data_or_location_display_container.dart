@@ -53,6 +53,8 @@ class DateOrLocationDisplayContainer extends StatelessWidget {
                 : const SizedBox(),
             Expanded(
                 child: AutoSizeText(
+              textDirection: TextDirection.ltr,
+              textAlign: TextAlign.end,
               hintText,
               maxLines: 1,
               style: TextStyle(

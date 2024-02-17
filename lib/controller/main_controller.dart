@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
@@ -21,6 +22,7 @@ class MainController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
   MyProfileData myProfileData = MyProfileData(Get.find());
   MyServices myServices = Get.find();
+  ValuesController valuesController = Get.put(ValuesController());
   List<PersonWithFollowState> myfollowers = [];
   List<PersonWithFollowState> myfollowing = [];
   List<Occasion> myOccasions = [];
@@ -79,6 +81,13 @@ class MainController extends GetxController {
         suspendedOccasions.add(element);
       }
     }
+
+    //Save Date in ValuesController
+    valuesController.myOccasions = List.from(myOccasions);
+    valuesController.acceptedOccasions = List.from(acceptedOccasions);
+    valuesController.suspendedOccasions = List.from(suspendedOccasions);
+    valuesController.myfollowing = List.from(myfollowing);
+    valuesController.myfollowers = List.from(myfollowers);
   }
 
   startLoadingAndClearLists() {
@@ -122,6 +131,7 @@ class MainController extends GetxController {
   @override
   void onInit() {
     getMyProfileData();
+
     super.onInit();
   }
 }

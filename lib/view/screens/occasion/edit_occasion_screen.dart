@@ -43,13 +43,17 @@ class EditOccasionScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     const CustomSmallBoldTitle(title: 'وقت المناسبة'),
                     DateOrLocationDisplayContainer(
-                        hintText: 'اختر وقت و تاريخ الموعد',
+                        hintText: controller.occasionDateTime == ''
+                            ? 'اختر وقت و تاريخ الموعد'
+                            : controller.occasionDateTime,
                         iconData: Icons.date_range,
-                        onTap: () {}),
+                        onTap: () {
+                          controller.pickDateTime(context);
+                        }),
                     const SizedBox(height: 10),
                     const CustomSmallBoldTitle(title: 'الموقع'),
                     DateOrLocationDisplayContainer(
-                        hintText: 'عنوان المناسبة',
+                        hintText: 'حدد موقع المناسبة',
                         iconData: Icons.date_range,
                         onTap: () {}),
                     Padding(
