@@ -4,14 +4,15 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/search_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
+import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/brand.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';
+import 'package:jdolh_customers/view/widgets/search_app_bar.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     Get.put(SearchScreenController());
@@ -20,9 +21,11 @@ class SearchScreen extends StatelessWidget {
         builder: (controller) => Column(
           children: [
             SearchAppBar(
+              textEditingController: controller.name,
               onTapSearch: () {
                 controller.seachOnTap();
               },
+              autoFocus: true,
             ),
             LargeToggleButtons(
                 optionOne: 'اشخاص',
@@ -41,74 +44,15 @@ class SearchScreen extends StatelessWidget {
                     userName: controller.data[index].userUsername!,
                     image: controller.data[index].userImage!,
                     buttonText: controller.data[index].following!
-                        ? 'الغاء المتابعة'
-                        : 'متابعة',
+                        ? textUnfollow
+                        : textFollow,
                     buttonColor: controller.data[index].following!
                         ? AppColors.redButton
                         : AppColors.secondaryColor,
-                    onTap: () {},
+                    onTap: () => controller.followUnfollow(index),
+                    onTapCard: () => controller.onTapCard(index),
                   ),
                   // Add separatorBuilder
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class SearchAppBar extends StatelessWidget {
-  final void Function() onTapSearch;
-  const SearchAppBar({
-    super.key,
-    required this.onTapSearch,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.primaryColor,
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      child: SafeArea(
-        child: Row(
-          children: [
-            IconButton(
-                onPressed: () {
-                  Get.back();
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.white,
-                )),
-            TextButton(
-                onPressed: onTapSearch,
-                child: Text(
-                  'بحث',
-                  style: TextStyle(color: Colors.white, fontSize: 14.sp),
-                )),
-            Expanded(
-              child: Container(
-                height: 40,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: Colors.grey.shade200),
-                  color: AppColors.white,
-                ),
-                child: GetBuilder<SearchScreenController>(
-                  builder: (controller) => TextFormField(
-                    controller: controller.name,
-                    autofocus: true,
-                    maxLines: 1,
-                    decoration: InputDecoration(
-                      hintText: 'اكتب اسم الشخص',
-                      hintStyle: const TextStyle(fontSize: 14),
-                      border: InputBorder.none,
-                    ),
-                  ),
                 ),
               ),
             )

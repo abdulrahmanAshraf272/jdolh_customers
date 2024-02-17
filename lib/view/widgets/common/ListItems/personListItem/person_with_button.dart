@@ -10,6 +10,7 @@ class PersonWithButtonListItem extends StatelessWidget {
   final String userName;
   final String image;
   final Function() onTap;
+  final Function()? onTapCard;
   final Color buttonColor;
   final String buttonText;
 
@@ -20,57 +21,71 @@ class PersonWithButtonListItem extends StatelessWidget {
       this.buttonColor = AppColors.secondaryColor,
       this.buttonText = 'إضافة',
       required this.userName,
-      required this.image});
+      required this.image,
+      required this.onTapCard});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       decoration: BoxDecoration(
           color: AppColors.gray, borderRadius: BorderRadius.circular(10)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Expanded(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTapCard,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: image == ''
-                        ? Image.asset(
-                            'assets/images/avatar_person.jpg',
-                            height: 22.h,
-                            width: 22.h,
-                          )
-                        : Image.network(''),
-                  ),
-                  const SizedBox(width: 12),
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AutoSizeText(name,
-                            maxLines: 1,
-                            minFontSize: 11,
-                            overflow: TextOverflow.ellipsis,
-                            style: titleSmall),
-                        Text(userName, style: titleSmallGray)
-                      ],
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: image == ''
+                                ? Image.asset(
+                                    'assets/images/avatar_person.jpg',
+                                    height: 34.w,
+                                    width: 34.w,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(''),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AutoSizeText(name,
+                                    maxLines: 1,
+                                    minFontSize: 11,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: titleSmall),
+                                Text(userName, style: titleSmallGray)
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                  TextButton(
+                      onPressed: onTap,
+                      child: Text(
+                        buttonText,
+                        style: titleSmall2.copyWith(color: buttonColor),
+                      ))
                 ],
               ),
             ),
           ),
-          TextButton(
-              onPressed: onTap,
-              child: Text(
-                buttonText,
-                style: titleSmall2.copyWith(color: buttonColor),
-              ))
-        ],
+        ),
       ),
     );
   }

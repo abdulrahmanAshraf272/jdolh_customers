@@ -12,6 +12,11 @@ class ListOfInvitedPeople extends StatelessWidget {
         physics: BouncingScrollPhysics(),
         padding: EdgeInsets.symmetric(vertical: 10),
         itemCount: 12,
-        itemBuilder: (context, index) => PersonWithTextListItem());
+        itemBuilder: (context, index) => PersonWithTextListItem(
+              name: '',
+              userName: '',
+              image: '',
+              onTapCard: () {},
+            ));
   }
 }

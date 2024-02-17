@@ -6,12 +6,13 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController textEditingController;
   final String hintText;
   final IconData? iconData;
-  const CustomTextField({
-    super.key,
-    required this.textEditingController,
-    required this.hintText,
-    this.iconData,
-  });
+  final Function(String)? onChange;
+  const CustomTextField(
+      {super.key,
+      required this.textEditingController,
+      required this.hintText,
+      this.iconData,
+      this.onChange});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,8 @@ class CustomTextField extends StatelessWidget {
         children: [
           Expanded(
             child: TextFormField(
+              onChanged: onChange,
+              controller: textEditingController,
               decoration: InputDecoration(
                 hintText: hintText,
                 hintStyle: const TextStyle(fontSize: 14),

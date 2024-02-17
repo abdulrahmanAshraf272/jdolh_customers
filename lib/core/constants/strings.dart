@@ -3,6 +3,13 @@ const textSendInvication = 'ارسال دعوة';
 const textFollow = 'متابعة';
 const textUnfollow = 'الغاء المتابعة';
 const textBranches = 'الفروع';
+const textFollowers = 'المتابعين';
+const textFollowing = 'المتابعون';
+const textAdd = 'إضافة';
+const textRemove = 'إزالة';
+const textAccept = 'قبول';
+const textReject = 'اعتذار';
+const textOpenLocation = 'فتح الموقع';
 
 const creatAccount = 'إنشاء حساب جديد';
 

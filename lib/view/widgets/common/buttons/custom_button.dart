@@ -8,13 +8,15 @@ class CustomButton extends StatelessWidget {
   final IconData? iconData;
   final double size;
   final Color buttonColor;
+  final Color textColor;
   const CustomButton(
       {super.key,
       required this.onTap,
       required this.text,
       this.iconData,
       this.size = 1,
-      this.buttonColor = AppColors.secondaryColor});
+      this.buttonColor = AppColors.secondaryColor,
+      this.textColor = AppColors.white});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class CustomButton extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: (12 * size),
-                          color: AppColors.white,
+                          color: textColor,
                         ),
                       ),
                       iconData != null
@@ -52,9 +54,9 @@ class CustomButton extends StatelessWidget {
                           : SizedBox(),
                       iconData != null
                           ? Icon(
-                              Icons.pin_drop_outlined,
+                              iconData,
                               size: 16 * size,
-                              color: AppColors.white,
+                              color: AppColors.textDark,
                             )
                           : SizedBox()
                     ],

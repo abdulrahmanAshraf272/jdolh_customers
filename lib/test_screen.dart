@@ -14,7 +14,7 @@ import 'package:jdolh_customers/view/widgets/common/ListItems/brand.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/brand_detailed.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/brand_explore.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/comment.dart';
-import 'package:jdolh_customers/view/widgets/common/ListItems/event.dart';
+import 'package:jdolh_customers/view/widgets/common/ListItems/occasion.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/food.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/group.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/haircut_service.dart';
@@ -59,7 +59,7 @@ class _TestScreenState extends State<TestScreen> {
               title: 'جدولك القادم',
               onTap: () {},
             ),
-            EventListItem(),
+            //OccasionListItem(),
             //GroupListItem(),
             WalletOperationListItem(),
             HairCutServiceListItem(),
@@ -74,7 +74,6 @@ class _TestScreenState extends State<TestScreen> {
             }),
             ActivityListItem(),
             PersonListItem(),
-            PersonWithTextListItem(),
 
             PersonWithToggleListItem(),
             LargeToggleButtons(

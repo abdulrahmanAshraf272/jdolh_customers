@@ -8,13 +8,25 @@ class AppRouteName {
   static const resetPassword = '/resetPassword';
   static const successOperation = '/successOperation';
 
+  static const personProfile = '/personProfile';
   static const addToGroup = '/addToGroup';
+  static const addToGroupCreated = '/addToGroupCreated';
+  static const groupDetails = '/groupDetails';
   static const appt = '/appt';
   static const apptDetails = '/apptDetails';
   static const bills = '/bills';
   static const brandProfile = '/brandProfile';
-  static const createAndEditGroup = '/createAndEditGroup';
+  static const createGroup = '/createGroup';
+  static const editGroup = '/editGroup';
+  // occasion screen
+
   static const createOccasion = '/createOccasion';
+  static const occasionDetails = '/occasionDetails';
+  static const editOccasion = '/editOccasion';
+  static const occasions = '/occasions';
+  static const addToOccasion = '/addToOccasion';
+  static const addToOccasionCreated = '/addToOccasionCreated';
+
   static const exploreBrand = '/exploreBrand';
   static const explorePeople = '/explorePeople';
   static const followersAndFollowing = '/followersAndfollowing';

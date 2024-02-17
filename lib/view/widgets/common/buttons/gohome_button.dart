@@ -25,7 +25,7 @@ class GoHomeButton extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
       child: MaterialButton(
-        onPressed: () {},
+        onPressed: onTap,
         color: buttonColor,
         child: Container(
           height: height.h,

@@ -4,7 +4,8 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/middleware/my_middleware.dart';
 import 'package:jdolh_customers/test_screen.dart';
 import 'package:jdolh_customers/test_screen2.dart';
-import 'package:jdolh_customers/view/screens/add_to_group_screen.dart';
+import 'package:jdolh_customers/view/screens/groups/add_to_group_created_screen.dart';
+import 'package:jdolh_customers/view/screens/groups/add_to_group_screen.dart';
 import 'package:jdolh_customers/view/screens/appt_details_screen.dart';
 import 'package:jdolh_customers/view/screens/appt_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/login_screen.dart';
@@ -15,20 +16,27 @@ import 'package:jdolh_customers/view/screens/auth/success_operation_screen.dart'
 import 'package:jdolh_customers/view/screens/auth/verifycode_screen.dart';
 import 'package:jdolh_customers/view/screens/bills_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile_screen.dart';
-import 'package:jdolh_customers/view/screens/create_and_edit_group_screen.dart';
-import 'package:jdolh_customers/view/screens/create_occasion_screen.dart';
+import 'package:jdolh_customers/view/screens/groups/create_group_screen.dart';
+import 'package:jdolh_customers/view/screens/occasion/add_to_occasion_created_screen.dart';
+import 'package:jdolh_customers/view/screens/occasion/create_occasion_screen.dart';
 import 'package:jdolh_customers/view/screens/explore_brand_screen.dart';
 import 'package:jdolh_customers/view/screens/explore_people_screen.dart';
 import 'package:jdolh_customers/view/screens/followers_and_following_screen.dart';
 import 'package:jdolh_customers/view/screens/friends_activities_screen.dart';
-import 'package:jdolh_customers/view/screens/groups_screen.dart';
+import 'package:jdolh_customers/view/screens/groups/edit_group_screen.dart';
+import 'package:jdolh_customers/view/screens/groups/group_details_screen.dart';
+import 'package:jdolh_customers/view/screens/groups/groups_screen.dart';
 import 'package:jdolh_customers/view/screens/home_screen.dart';
-import 'package:jdolh_customers/view/screens/invitation_add_screen.dart';
+import 'package:jdolh_customers/view/screens/occasion/add_to_occasion_screen.dart';
 import 'package:jdolh_customers/view/screens/language_screen.dart';
 import 'package:jdolh_customers/view/screens/main_screen.dart';
 import 'package:jdolh_customers/view/screens/more_screen.dart';
 import 'package:jdolh_customers/view/screens/my_profile_screen.dart';
+import 'package:jdolh_customers/view/screens/occasion/edit_occasion_screen.dart';
+import 'package:jdolh_customers/view/screens/occasion/occasion_details_screen.dart';
+import 'package:jdolh_customers/view/screens/occasion/occasions_screen.dart';
 import 'package:jdolh_customers/view/screens/payment_screen.dart';
+import 'package:jdolh_customers/view/screens/person_profile_screen.dart';
 import 'package:jdolh_customers/view/screens/reservation_done_screen.dart';
 import 'package:jdolh_customers/view/screens/reservation_screen.dart';
 import 'package:jdolh_customers/view/screens/schedule_screen.dart';
@@ -45,7 +53,10 @@ List<GetPage> routes = [
     page: () => const LoginScreen(),
     middlewares: [MyMiddleware()],
   ),
-  //GetPage(name: '/', page: () => const const LanguageScreen(),),
+  // GetPage(
+  //   name: '/',
+  //   page: () => const TestScreen(),
+  // ),
   GetPage(
     name: AppRouteName.login,
     page: () => const LoginScreen(),
@@ -71,6 +82,10 @@ List<GetPage> routes = [
     page: () => const SuccessOperation(),
   ),
   GetPage(
+    name: AppRouteName.personProfile,
+    page: () => const PersonProfile(),
+  ),
+  GetPage(
     name: AppRouteName.home,
     page: () => const HomeScreen(),
   ),
@@ -93,13 +108,41 @@ List<GetPage> routes = [
     page: () => const BrandProfileScreen(),
   ),
   GetPage(
-    name: AppRouteName.createAndEditGroup,
-    page: () => const CreateAndEditGroupScreen(),
+    name: AppRouteName.createGroup,
+    page: () => const CreateGroupScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.editGroup,
+    page: () => const EditGroupScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.addToGroupCreated,
+    page: () => const AddToGroupCreatedScreen(),
   ),
 
   GetPage(
     name: AppRouteName.createOccasion,
     page: () => const CreateOccasionScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.occasions,
+    page: () => const OccasionsScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.occasionDetails,
+    page: () => const OccasionDetailsScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.editOccasion,
+    page: () => const EditOccasionScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.addToOccasion,
+    page: () => const AddToOccasionScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.addToOccasionCreated,
+    page: () => const AddToOccasionCreatedScreen(),
   ),
   GetPage(
     name: AppRouteName.exploreBrand,
@@ -109,22 +152,23 @@ List<GetPage> routes = [
     name: AppRouteName.explorePeople,
     page: () => const ExplorePeopleScreen(),
   ),
-  GetPage(
-    name: AppRouteName.followersAndFollowing,
-    page: () => const FollowersAndFollowingScreen(),
-  ),
+  // GetPage(
+  //   name: AppRouteName.followersAndFollowing,
+  //   page: () => const FollowersAndFollowingScreen(),
+  // ),
   GetPage(
     name: AppRouteName.friendsActivities,
     page: () => const FriendsActivitiesScreen(),
   ),
   GetPage(
+    name: AppRouteName.groupDetails,
+    page: () => const GroupDetails(),
+  ),
+  GetPage(
     name: AppRouteName.gourps,
     page: () => const GroupsScreen(),
   ),
-  GetPage(
-    name: AppRouteName.invitationAdd,
-    page: () => const InvitationAddScreen(),
-  ),
+
   GetPage(
     name: AppRouteName.language,
     page: () => const LanguageScreen(),

@@ -14,7 +14,7 @@ class CustomAds extends StatelessWidget {
       child: CarouselSlider.builder(
         itemCount: 3,
         options: CarouselOptions(
-          autoPlay: true,
+          autoPlay: false,
           aspectRatio: 2.1,
           enlargeCenterPage: true,
           autoPlayCurve: Curves.fastOutSlowIn,
