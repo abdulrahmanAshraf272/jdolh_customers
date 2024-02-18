@@ -11,6 +11,7 @@ import 'package:jdolh_customers/core/functions/formatDateTime.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
 import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
@@ -32,7 +33,7 @@ class EditOccasionController extends GetxController {
 
   bool isEditHappend = false;
 
-  List<PersonWithFollowState> members = [];
+  List<Friend> members = [];
   //List<int> membersId = [];
   //MainController mainController = Get.find();
   ValuesController valuesController = Get.find();
@@ -88,9 +89,8 @@ class EditOccasionController extends GetxController {
         List responseOccasionMembers = response['data'];
         print(responseOccasionMembers);
         //parsing jsonList to DartList.
-        members = responseOccasionMembers
-            .map((e) => PersonWithFollowState.fromJson(e))
-            .toList();
+        members =
+            responseOccasionMembers.map((e) => Friend.fromJson(e)).toList();
         //remove me form list
         members.removeWhere((element) => element.userId == myId);
       } else {

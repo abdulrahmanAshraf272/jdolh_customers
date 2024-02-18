@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/group/edit_group_controller.dart';
 import 'package:jdolh_customers/controller/main_controller.dart';
+import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/data/data_source/remote/groups.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
 
 class AddToGroupCreatedController extends GetxController {
   EditGroupController editGroupController = Get.put(EditGroupController());
-  MainController mainController = Get.put(MainController());
   TextEditingController searchController = TextEditingController();
-  List<PersonWithFollowState> following = [];
-  List<PersonWithFollowState> myfollowingFiltered = [];
+  ValuesController valuesController = Get.find();
+  List<Friend> following = [];
+  List<Friend> myfollowingFiltered = [];
   StatusRequest statusRequest = StatusRequest.none;
   GroupsData groupsData = GroupsData(Get.find());
 
@@ -55,8 +57,7 @@ class AddToGroupCreatedController extends GetxController {
   }
 
   getMyFollowing() {
-    following = List.from(mainController.myfollowing);
-    print(mainController.myfollowing.length);
+    following = List.from(valuesController.myfollowing);
     List members = List.from(editGroupController.groupMembers);
 
     for (int i = 0; i < members.length; i++) {
@@ -68,7 +69,6 @@ class AddToGroupCreatedController extends GetxController {
       }
     }
 
-    print(editGroupController.groupMembers.length);
     return following;
   }
 

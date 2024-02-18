@@ -3,20 +3,22 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/group/create_group_controller.dart';
 import 'package:jdolh_customers/controller/main_controller.dart';
 import 'package:jdolh_customers/controller/occasion/create_occasion_controller.dart';
+import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
 
 class AddToOccasionController extends GetxController {
-  MainController mainController = Get.put(MainController());
+  ValuesController valuesController = Get.find();
   CreateOccasionController createOccasionController = Get.find();
   TextEditingController searchController = TextEditingController();
 
-  List<PersonWithFollowState> myfollowing = [];
+  List<Friend> myfollowing = [];
 
   List<int> _membersId = [];
-  List<PersonWithFollowState> _members = [];
-  List<PersonWithFollowState> myfollowingFiltered = [];
+  List<Friend> _members = [];
+  List<Friend> myfollowingFiltered = [];
 
   addRemoveMember(index) {
     int userId = myfollowingFiltered[index].userId!;
@@ -67,7 +69,7 @@ class AddToOccasionController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    myfollowing = List.from(mainController.myfollowing);
+    myfollowing = List.from(valuesController.myfollowing);
     myfollowingFiltered = List.from(myfollowing);
     _members = List.from(createOccasionController.members);
     _membersId = List.from(createOccasionController.membersId);

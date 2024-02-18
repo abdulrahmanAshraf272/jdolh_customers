@@ -5,6 +5,7 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/groups.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/group.dart';
 import 'package:jdolh_customers/data/models/group_member.dart';
 import 'package:jdolh_customers/data/models/person.dart';
@@ -16,7 +17,7 @@ class GroupDetailsController extends GetxController {
   MyServices myServices = Get.find();
   late Group groupSelected;
   late int groupid;
-  List<GroupMember> groupMembers = [];
+  List<Friend> groupMembers = [];
 
   getGroupMembers(String groupid) async {
     statusRequest = StatusRequest.loading;
@@ -31,7 +32,7 @@ class GroupDetailsController extends GetxController {
         print(responseGroupMembers);
         //parsing jsonList to DartList.
         groupMembers =
-            responseGroupMembers.map((e) => GroupMember.fromJson(e)).toList();
+            responseGroupMembers.map((e) => Friend.fromJson(e)).toList();
       } else {
         statusRequest = StatusRequest.failure;
       }
@@ -42,12 +43,12 @@ class GroupDetailsController extends GetxController {
   onTapPersonCard(index) {
     int myId = int.parse(myServices.sharedPreferences.getString("id")!);
     if (groupMembers[index].userId != myId) {
-      final person = Person(
-          userId: groupMembers[index].userId,
-          userName: groupMembers[index].userName,
-          userUsername: groupMembers[index].userUsername,
-          userImage: groupMembers[index].userImage);
-      Get.toNamed(AppRouteName.personProfile, arguments: person);
+      // final person = Person(
+      //     userId: groupMembers[index].userId,
+      //     userName: groupMembers[index].userName,
+      //     userUsername: groupMembers[index].userUsername,
+      //     userImage: groupMembers[index].userImage);
+      Get.toNamed(AppRouteName.personProfile, arguments: groupMembers[index]);
     }
   }
 

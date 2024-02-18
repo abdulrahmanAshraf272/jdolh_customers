@@ -6,6 +6,7 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/groups.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/group.dart';
 import 'package:jdolh_customers/data/models/group_member.dart';
 import 'package:jdolh_customers/data/models/person.dart';
@@ -20,7 +21,7 @@ class EditGroupController extends GetxController {
   late Group groupSelected;
   late String groupid;
   TextEditingController newGroupNameController = TextEditingController();
-  List<PersonWithFollowState> groupMembers = [];
+  List<Friend> groupMembers = [];
   void showGroupNameDialog(BuildContext context) {
     Get.dialog(
       AlertDialog(
@@ -74,9 +75,8 @@ class EditGroupController extends GetxController {
         List responseGroupMembers = response['data'];
         print(responseGroupMembers);
         //parsing jsonList to DartList.
-        groupMembers = responseGroupMembers
-            .map((e) => PersonWithFollowState.fromJson(e))
-            .toList();
+        groupMembers =
+            responseGroupMembers.map((e) => Friend.fromJson(e)).toList();
         //remove me form list
         groupMembers.removeWhere((element) => element.userId == myId);
       } else {

@@ -5,6 +5,7 @@ import 'package:jdolh_customers/controller/person_profile_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/person.dart';
 import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
 import 'package:jdolh_customers/view/screens/followers_and_following_screen.dart';
@@ -28,9 +29,9 @@ class _PersonProfileState extends State<PersonProfile> {
   PersonProfileData personProfileData = PersonProfileData(Get.find());
   FollowUnfollowData followUnfollowData = FollowUnfollowData(Get.find());
   MyServices myServices = Get.find();
-  List<PersonWithFollowState> followers = [];
-  List<PersonWithFollowState> following = [];
-  late Person person;
+  List<Friend> followers = [];
+  List<Friend> following = [];
+  late Friend person;
 
   getFollowersAndFollowing() async {
     statusRequest = StatusRequest.loading;
@@ -46,16 +47,13 @@ class _PersonProfileState extends State<PersonProfile> {
         List responseFollowers = response['followers'];
         List responseFollowing = response['following'];
         //parsing jsonList to DartList.
-        followers = responseFollowers
-            .map((e) => PersonWithFollowState.fromJson(e))
-            .toList();
-        following = responseFollowing
-            .map((e) => PersonWithFollowState.fromJson(e))
-            .toList();
+        followers = responseFollowers.map((e) => Friend.fromJson(e)).toList();
+        following = responseFollowing.map((e) => Friend.fromJson(e)).toList();
         print('followersNo: ${followers.length}');
         print('followingNo: ${following.length}');
       } else {
         statusRequest = StatusRequest.failure;
+        print('getFollowersAndFollowing failed');
       }
     }
     setState(() {});

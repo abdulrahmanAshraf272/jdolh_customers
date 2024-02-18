@@ -7,6 +7,7 @@ import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/my_profile.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
 import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
 import 'package:jdolh_customers/view/screens/appt_details_screen.dart';
@@ -23,8 +24,8 @@ class MainController extends GetxController {
   MyProfileData myProfileData = MyProfileData(Get.find());
   MyServices myServices = Get.find();
   ValuesController valuesController = Get.put(ValuesController());
-  List<PersonWithFollowState> myfollowers = [];
-  List<PersonWithFollowState> myfollowing = [];
+  List<Friend> myfollowers = [];
+  List<Friend> myfollowing = [];
   List<Occasion> myOccasions = [];
   List<Occasion> acceptedOccasions = [];
   List<Occasion> suspendedOccasions = [];
@@ -53,7 +54,7 @@ class MainController extends GetxController {
         parsingDataFromJsonToDartList(response);
         print('MyfollowersNo: ${myfollowers.length}');
         print('MyfollowingNo: ${myfollowing.length}');
-        //print('occasions: ${myOccasions.length}');
+        print('occasions: ${myOccasions.length}');
       } else {
         statusRequest = StatusRequest.failure;
       }
@@ -65,12 +66,8 @@ class MainController extends GetxController {
     List responseFollowers = response['followers'];
     List responseFollowing = response['following'];
     List responseOccasoins = response['occasions'];
-    myfollowers = responseFollowers
-        .map((e) => PersonWithFollowState.fromJson(e))
-        .toList();
-    myfollowing = responseFollowing
-        .map((e) => PersonWithFollowState.fromJson(e))
-        .toList();
+    myfollowers = responseFollowers.map((e) => Friend.fromJson(e)).toList();
+    myfollowing = responseFollowing.map((e) => Friend.fromJson(e)).toList();
 
     myOccasions = responseOccasoins.map((e) => Occasion.fromJson(e)).toList();
     // //make acceptedOccasionList and suspended list

@@ -1,10 +1,11 @@
 import 'package:get/get.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
 import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
 
 class ValuesController extends GetxController {
-  List<PersonWithFollowState> myfollowers = [];
-  List<PersonWithFollowState> myfollowing = [];
+  List<Friend> myfollowers = [];
+  List<Friend> myfollowing = [];
   List<Occasion> myOccasions = [];
   List<Occasion> acceptedOccasions = [];
   List<Occasion> suspendedOccasions = [];
@@ -31,6 +32,29 @@ class ValuesController extends GetxController {
     desireOccasion.occasionLat = lat;
     desireOccasion.occasionLong = long;
     resetAcceptedAndSuspendedList();
+  }
+
+  void addAndRemoveFollowing(Friend friend) {
+    bool found = false;
+    int foundIndex = -1;
+
+    for (int i = 0; i < myfollowing.length; i++) {
+      if (myfollowing[i].userId == friend.userId) {
+        found = true;
+        foundIndex = i;
+        break;
+      }
+    }
+
+    if (found) {
+      // Remove the friend from the list
+      myfollowing..removeAt(foundIndex);
+      print('Friend removed from the list.');
+    } else {
+      // Add the friend to the list
+      myfollowing.add(friend);
+      print('Friend  added to the list.');
+    }
   }
 
   resetAcceptedAndSuspendedList() {

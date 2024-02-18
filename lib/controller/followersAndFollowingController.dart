@@ -7,6 +7,7 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/followUnfollow.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/person.dart';
 import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
 
@@ -14,7 +15,7 @@ class FollowersAndFollowingController extends GetxController {
   FollowUnfollowData followUnfollowData = FollowUnfollowData(Get.find());
   MyServices myServices = Get.find();
   TextEditingController name = TextEditingController();
-  List<PersonWithFollowState> data = [];
+  List<Friend> data = [];
   StatusRequest statusRequest = StatusRequest.none;
   late String title;
 
@@ -43,12 +44,12 @@ class FollowersAndFollowingController extends GetxController {
 
   onTapCard(int index) {
     //Get.toNamed(AppRouteName.personProfile);
-    final person = Person(
-        userId: data[index].userId,
-        userName: data[index].userName,
-        userUsername: data[index].userUsername,
-        userImage: data[index].userImage);
-    Get.toNamed(AppRouteName.personProfile, arguments: person);
+    // final person = Person(
+    //     userId: data[index].userId,
+    //     userName: data[index].userName,
+    //     userUsername: data[index].userUsername,
+    //     userImage: data[index].userImage);
+    Get.toNamed(AppRouteName.personProfile, arguments: data[index]);
   }
 
   @override

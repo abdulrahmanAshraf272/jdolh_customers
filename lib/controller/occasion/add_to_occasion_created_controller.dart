@@ -4,23 +4,25 @@ import 'package:jdolh_customers/controller/group/create_group_controller.dart';
 import 'package:jdolh_customers/controller/main_controller.dart';
 import 'package:jdolh_customers/controller/occasion/create_occasion_controller.dart';
 import 'package:jdolh_customers/controller/occasion/edit_occasion_controller.dart';
+import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
 
 class AddToOccasionCreatedController extends GetxController {
-  MainController mainController = Get.put(MainController());
   TextEditingController searchController = TextEditingController();
+  ValuesController valuesController = Get.find();
   OccasionsData occasionsData = OccasionsData(Get.find());
   StatusRequest statusRequest = StatusRequest.none;
 
   EditOccasionController editOccasionController = Get.find();
 
-  List<PersonWithFollowState> following = [];
-  List<PersonWithFollowState> myfollowingFiltered = [];
+  List<Friend> following = [];
+  List<Friend> myfollowingFiltered = [];
 
   addMember(int index) async {
     var response = await occasionsData.addToOccasion(
@@ -48,8 +50,8 @@ class AddToOccasionCreatedController extends GetxController {
   }
 
   getMyFollowing() {
-    following = List.from(mainController.myfollowing);
-    print(mainController.myfollowing.length);
+    following = List.from(valuesController.myfollowing);
+    print(valuesController.myfollowing.length);
     List members = List.from(editOccasionController.members);
 
     for (int i = 0; i < members.length; i++) {

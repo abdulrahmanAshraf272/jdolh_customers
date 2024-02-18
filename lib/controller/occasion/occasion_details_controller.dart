@@ -49,16 +49,15 @@ class OccasionDetailsController extends GetxController {
     update();
   }
 
-//TODO: conver Person to Friend , and delete Person,personWithFolowState and gropmember
   onTapPersonCard(index) {
     int myId = int.parse(myServices.sharedPreferences.getString("id")!);
     if (members[index].userId != myId) {
-      final person = Person(
-          userId: members[index].userId,
-          userName: members[index].userName,
-          userUsername: members[index].userUsername,
-          userImage: members[index].userImage);
-      Get.toNamed(AppRouteName.personProfile, arguments: person);
+      // final person = Person(
+      //     userId: members[index].userId,
+      //     userName: members[index].userName,
+      //     userUsername: members[index].userUsername,
+      //     userImage: members[index].userImage);
+      Get.toNamed(AppRouteName.personProfile, arguments: members[index]);
     }
   }
 

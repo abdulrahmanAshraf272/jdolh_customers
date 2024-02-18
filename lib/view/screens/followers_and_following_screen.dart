@@ -7,6 +7,7 @@ import 'package:jdolh_customers/controller/search_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/brand.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person.dart';
@@ -17,13 +18,13 @@ import 'package:jdolh_customers/view/widgets/search_app_bar.dart';
 
 class FollowersAndFollowingScreen extends StatelessWidget {
   final String title;
-  final List<PersonWithFollowState> data;
+  final List<Friend> data;
   const FollowersAndFollowingScreen(
       {super.key, required this.title, required this.data});
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(FollowersAndFollowingController());
-    controller.data = data;
+    controller.data = List.from(data);
     return GetBuilder<FollowersAndFollowingController>(
       builder: (controller) => Scaffold(
         appBar: customAppBar(title: title),

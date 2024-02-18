@@ -9,6 +9,7 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
 import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
@@ -23,7 +24,7 @@ class CreateOccasionController extends GetxController {
   OccasionsData occasionData = OccasionsData(Get.find());
   MyServices myServices = Get.find();
 
-  List<PersonWithFollowState> members = [];
+  List<Friend> members = [];
   List<int> membersId = [];
   //MainController mainController = Get.find();
   ValuesController valuesController = Get.find();

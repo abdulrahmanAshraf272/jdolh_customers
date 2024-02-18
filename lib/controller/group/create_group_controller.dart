@@ -6,6 +6,7 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/groups.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/group.dart';
 import 'package:jdolh_customers/data/models/group_member.dart';
 import 'package:jdolh_customers/data/models/person.dart';
@@ -19,7 +20,7 @@ class CreateGroupController extends GetxController {
   MyServices myServices = Get.find();
   // late Group groupSelected;
   // late int groupid;
-  List<PersonWithFollowState> members = [];
+  List<Friend> members = [];
   List<int> membersId = [];
 
   createGroup() async {
