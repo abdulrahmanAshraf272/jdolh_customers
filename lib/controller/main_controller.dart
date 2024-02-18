@@ -53,7 +53,7 @@ class MainController extends GetxController {
         parsingDataFromJsonToDartList(response);
         print('MyfollowersNo: ${myfollowers.length}');
         print('MyfollowingNo: ${myfollowing.length}');
-        print('occasions: ${myOccasions.length}');
+        //print('occasions: ${myOccasions.length}');
       } else {
         statusRequest = StatusRequest.failure;
       }
@@ -73,21 +73,23 @@ class MainController extends GetxController {
         .toList();
 
     myOccasions = responseOccasoins.map((e) => Occasion.fromJson(e)).toList();
-    //make acceptedOccasionList and suspended list
-    for (var element in myOccasions) {
-      if (element.acceptstatus == 1) {
-        acceptedOccasions.add(element);
-      } else {
-        suspendedOccasions.add(element);
-      }
-    }
+    // //make acceptedOccasionList and suspended list
+    // for (var element in myOccasions) {
+    //   if (element.acceptstatus == 1) {
+    //     acceptedOccasions.add(element);
+    //   } else {
+    //     suspendedOccasions.add(element);
+    //   }
+    // }
 
     //Save Date in ValuesController
     valuesController.myOccasions = List.from(myOccasions);
-    valuesController.acceptedOccasions = List.from(acceptedOccasions);
-    valuesController.suspendedOccasions = List.from(suspendedOccasions);
+    valuesController.resetAcceptedAndSuspendedList();
     valuesController.myfollowing = List.from(myfollowing);
     valuesController.myfollowers = List.from(myfollowers);
+    //Get value from ValuesController after done operation
+    acceptedOccasions = List.from(valuesController.acceptedOccasions);
+    suspendedOccasions = List.from(valuesController.suspendedOccasions);
   }
 
   startLoadingAndClearLists() {

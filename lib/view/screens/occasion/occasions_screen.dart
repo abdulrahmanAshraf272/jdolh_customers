@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/appt_controller.dart';
 import 'package:jdolh_customers/controller/occasion/occasions_controller.dart';
+import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/occasion.dart';
 import 'package:jdolh_customers/view/widgets/common/appBarWithButtonCreate.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';
@@ -29,42 +30,55 @@ class OccasionsScreen extends StatelessWidget {
                     onTapTwo: () => controller.activeNeedApprove(),
                     twoColors: true,
                   ),
-                  Expanded(
-                    child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        itemCount: controller.occasionsToDisplay.length,
-                        itemBuilder: (context, index) => controller.needApprove
-                            ? OccasionListItem(
-                                from: controller.occasionsToDisplay[index]
-                                    .occasionUsername!,
-                                title: controller
-                                    .occasionsToDisplay[index].occasionTitle!,
-                                date: controller.occasionsToDisplay[index]
-                                    .occasionDatecreated!,
-                                location: controller.occasionsToDisplay[index]
-                                    .occasionLocation!,
-                                creator: controller
-                                    .occasionsToDisplay[index].creator!,
-                                onTapAccept: () {},
-                                onTapReject: () {},
-                                onTapCard: () =>
-                                    controller.onTapOccasionCard(index))
-                            : OccasionAcceptedListItem(
-                                from: controller.occasionsToDisplay[index]
-                                    .occasionUsername!,
-                                title: controller
-                                    .occasionsToDisplay[index].occasionTitle!,
-                                date:
-                                    controller.displayFormateDateInCard(index),
-                                location: controller.occasionsToDisplay[index]
-                                    .occasionLocation!,
-                                creator: controller
-                                    .occasionsToDisplay[index].creator!,
-                                onTapOpenLocation: () {},
-                                onTapCard: () =>
-                                    controller.onTapOccasionCard(index),
-                              )),
-                  ),
+                  HandlingDataView(
+                    statusRequest: controller.statusRequest,
+                    widget: Expanded(
+                      child: ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          itemCount: controller.occasionsToDisplay.length,
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          itemBuilder: (context, index) =>
+                              controller.needApprove
+                                  ? OccasionListItem(
+                                      from: controller.occasionsToDisplay[index]
+                                          .occasionUsername!,
+                                      title: controller
+                                          .occasionsToDisplay[index]
+                                          .occasionTitle!,
+                                      date: controller.occasionsToDisplay[index]
+                                          .occasionDatecreated!,
+                                      location: controller
+                                          .occasionsToDisplay[index]
+                                          .occasionLocation!,
+                                      creator: controller
+                                          .occasionsToDisplay[index].creator!,
+                                      onTapAccept: () {
+                                        controller.onTapAcceptInvitation(index);
+                                      },
+                                      onTapReject: () {
+                                        controller.onTapRejectInvitation(index);
+                                      },
+                                      onTapCard: () =>
+                                          controller.onTapOccasionCard(index))
+                                  : OccasionAcceptedListItem(
+                                      from: controller.occasionsToDisplay[index]
+                                          .occasionUsername!,
+                                      title: controller
+                                          .occasionsToDisplay[index]
+                                          .occasionTitle!,
+                                      date: controller
+                                          .displayFormateDateInCard(index),
+                                      location: controller
+                                          .occasionsToDisplay[index]
+                                          .occasionLocation!,
+                                      creator: controller
+                                          .occasionsToDisplay[index].creator!,
+                                      onTapOpenLocation: () {},
+                                      onTapCard: () =>
+                                          controller.onTapOccasionCard(index),
+                                    )),
+                    ),
+                  )
                 ],
               ),
             ));

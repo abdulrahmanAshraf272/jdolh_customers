@@ -10,17 +10,18 @@ class PersonWithTextListItem extends StatelessWidget {
   final String userName;
   final String image;
   final Function()? onTapCard;
-  final Color buttonColor;
+  final Color endTextColor;
   final String endText;
 
-  const PersonWithTextListItem(
-      {super.key,
-      required this.name,
-      this.buttonColor = AppColors.secondaryColor,
-      this.endText = 'إضافة',
-      required this.userName,
-      required this.image,
-      required this.onTapCard});
+  const PersonWithTextListItem({
+    super.key,
+    required this.name,
+    this.endTextColor = AppColors.secondaryColor,
+    this.endText = 'إضافة',
+    required this.userName,
+    required this.image,
+    required this.onTapCard,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,7 @@ class PersonWithTextListItem extends StatelessWidget {
                   ),
                   Text(
                     endText,
-                    style: titleSmall2.copyWith(color: buttonColor),
+                    style: titleSmall2.copyWith(color: endTextColor),
                   )
                 ],
               ),

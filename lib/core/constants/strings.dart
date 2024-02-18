@@ -10,6 +10,10 @@ const textRemove = 'إزالة';
 const textAccept = 'قبول';
 const textReject = 'اعتذار';
 const textOpenLocation = 'فتح الموقع';
+const textConfirmAttend = 'مؤكد';
+const textSuspendAttend = 'لم يتم التأكيد';
+const textCreator = 'منشئ';
+const textRejectAttend = 'اعتذر';
 
 const creatAccount = 'إنشاء حساب جديد';
 

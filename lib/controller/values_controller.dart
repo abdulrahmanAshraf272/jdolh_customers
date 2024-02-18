@@ -39,9 +39,16 @@ class ValuesController extends GetxController {
     for (var element in myOccasions) {
       if (element.acceptstatus == 1) {
         acceptedOccasions.add(element);
-      } else {
+      } else if (element.acceptstatus == 0) {
         suspendedOccasions.add(element);
       }
     }
+  }
+
+  changeInvitorStatus(int occasionId, int status) {
+    Occasion desireOccasion =
+        myOccasions.firstWhere((element) => element.occasionId == occasionId);
+    desireOccasion.acceptstatus = status;
+    resetAcceptedAndSuspendedList();
   }
 }

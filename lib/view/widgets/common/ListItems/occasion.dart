@@ -28,7 +28,7 @@ class OccasionListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
       decoration: BoxDecoration(
           color: AppColors.gray, borderRadius: BorderRadius.circular(10)),
       child: ClipRRect(
@@ -100,7 +100,7 @@ class OccasionAcceptedListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
       decoration: BoxDecoration(
           color: AppColors.gray, borderRadius: BorderRadius.circular(10)),
       child: ClipRRect(

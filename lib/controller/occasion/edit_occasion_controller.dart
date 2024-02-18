@@ -33,10 +33,10 @@ class EditOccasionController extends GetxController {
   bool isEditHappend = false;
 
   List<PersonWithFollowState> members = [];
-  List<int> membersId = [];
+  //List<int> membersId = [];
   //MainController mainController = Get.find();
   ValuesController valuesController = Get.find();
-  OccasionsController occasionsController = Get.find();
+  //OccasionsController occasionsController = Get.find();
   DateTime? myDateTime;
 
   editOccasion() async {
@@ -112,7 +112,7 @@ class EditOccasionController extends GetxController {
   onTapRemoveMember(int index) {
     Get.defaultDialog(
         title: "أزالة",
-        middleText: "هل تريد ازالة ${members[index].userName} المناسبة؟",
+        middleText: "هل تريد ازالة ${members[index].userName} من المناسبة؟",
         onConfirm: () {
           Get.back();
           removeMember(index);
