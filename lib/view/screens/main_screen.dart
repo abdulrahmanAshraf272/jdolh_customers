@@ -31,16 +31,16 @@ class _MainScreenState extends State<MainScreen> {
         builder: (controller) => RefreshIndicator(
               onRefresh: () => controller.getMyProfileData(),
               child: Scaffold(
-                // floatingActionButton: FloatingActionButton(
-                //   onPressed: () {
-                //     Get.toNamed(AppRouteName.reservation);
-                //   },
-                //   backgroundColor: AppColors.secondaryColor,
-                //   shape: const CircleBorder(),
-                //   child: const Icon(Icons.list),
-                // ),
-                // floatingActionButtonLocation:
-                //     FloatingActionButtonLocation.centerDocked,
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () {
+                    Get.toNamed(AppRouteName.checkin);
+                  },
+                  backgroundColor: AppColors.secondaryColor,
+                  shape: const CircleBorder(),
+                  child: const Icon(Icons.list),
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
                 bottomNavigationBar: const CustomBottomAppBar(),
                 body: controller.listPage.elementAt(controller.currentPage),
               ),

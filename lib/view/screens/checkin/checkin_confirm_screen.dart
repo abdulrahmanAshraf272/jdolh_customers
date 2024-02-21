@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/group/create_group_controller.dart';
-import 'package:jdolh_customers/controller/occasion/create_occasion_controller.dart';
+import 'package:jdolh_customers/controller/checkin/checkin_confirm_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
+import 'package:jdolh_customers/view/screens/checkin/checkin_screen.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_textfield.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
-import 'package:jdolh_customers/view/widgets/common/data_or_location_display_container.dart';
 
-class CreateOccasionScreen extends StatelessWidget {
-  const CreateOccasionScreen({super.key});
+class CheckinConfirmScreen extends StatelessWidget {
+  const CheckinConfirmScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(CreateOccasionController());
-    return GetBuilder<CreateOccasionController>(
+    Get.put(CheckinConfirmController());
+    return GetBuilder<CheckinConfirmController>(
         builder: (controller) => Scaffold(
-              appBar: customAppBar(title: 'انشاء مناسبة'),
+              appBar: customAppBar(title: 'تسجيل وصول'),
               floatingActionButton: BottomButton(
-                onTap: () => controller.createOccasion(),
-                text: 'انشاء',
+                onTap: () => controller.checkin(context),
+                text: 'تأكيد',
                 buttonColor: AppColors.secondaryColor,
               ),
               floatingActionButtonLocation:
@@ -32,30 +31,15 @@ class CreateOccasionScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
-                    const CustomSmallBoldTitle(title: 'عنوان المناسبة'),
+                    PlacesListItem(
+                        name: controller.placeSelected.name ?? '',
+                        location: controller.placeSelected.location ?? '',
+                        type: controller.placeSelected.type ?? '',
+                        onTapCard: () {}),
                     const SizedBox(height: 10),
                     CustomTextField(
-                        textEditingController: controller.occasionTitle,
-                        hintText: 'مثال: عشاء, عيد ميلاد, ..'),
-                    const SizedBox(height: 10),
-                    const CustomSmallBoldTitle(title: 'وقت المناسبة'),
-                    DateOrLocationDisplayContainer(
-                      hintText: controller.occasionDateTime == ''
-                          ? 'اختر وقت و تاريخ الموعد'
-                          : controller.occasionDateTime,
-                      iconData: Icons.date_range,
-                      onTap: () {
-                        controller.pickDateTime(context);
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    const CustomSmallBoldTitle(title: 'الموقع'),
-                    DateOrLocationDisplayContainer(
-                        hintText: 'حدد موقع المناسبة',
-                        iconData: Icons.date_range,
-                        onTap: () {
-                          controller.goToAddLocation();
-                        }),
+                        textEditingController: controller.comment,
+                        hintText: 'ما هو رأيك في المكان؟'),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 20),
@@ -63,7 +47,7 @@ class CreateOccasionScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: CustomSmallBoldTitle(
-                              title: 'المضافين للمناسبة',
+                              title: 'اضافة اصدقاء',
                               topPadding: 20,
                               bottomPadding: 20,
                             ),
@@ -72,7 +56,7 @@ class CreateOccasionScreen extends StatelessWidget {
                               onTap: () {
                                 controller.onTapAddMembers();
                               },
-                              text: 'أضف للمجموعة'),
+                              text: 'أضافة'),
                           SizedBox(width: 20)
                         ],
                       ),
@@ -96,24 +80,26 @@ class CreateOccasionScreen extends StatelessWidget {
                             // Add separatorBuilder
                           )
                         : Padding(
-                            padding: const EdgeInsets.only(top: 50),
+                            padding: const EdgeInsets.only(top: 30),
                             child: RichText(
+                                textAlign: TextAlign.center,
                                 text: TextSpan(children: [
-                              TextSpan(
-                                text: 'المجموعة فارغة!\n',
-                                style: TextStyle(
-                                    color: AppColors.black.withOpacity(0.7),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Cairo'),
-                              ),
-                              TextSpan(
-                                  text: 'اضف بعد الاصدقاء',
-                                  style: TextStyle(
-                                      color: AppColors.black.withOpacity(0.4),
-                                      fontSize: 14,
-                                      fontFamily: 'Cairo'))
-                            ])),
+                                  TextSpan(
+                                    text: 'اذا كنت مع اصدقائك\n',
+                                    style: TextStyle(
+                                        color: AppColors.black.withOpacity(0.7),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Cairo'),
+                                  ),
+                                  TextSpan(
+                                      text: 'يمنك تسجيل الوصول لهم ايضا',
+                                      style: TextStyle(
+                                          color:
+                                              AppColors.black.withOpacity(0.4),
+                                          fontSize: 14,
+                                          fontFamily: 'Cairo'))
+                                ])),
                           ),
                   ],
                 ),

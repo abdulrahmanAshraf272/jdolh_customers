@@ -26,6 +26,7 @@ class AppRouteName {
   static const occasions = '/occasions';
   static const addToOccasion = '/addToOccasion';
   static const addToOccasionCreated = '/addToOccasionCreated';
+  static const addOccasionLocation = '/addOccasionLocation';
 
   static const exploreBrand = '/exploreBrand';
   static const explorePeople = '/explorePeople';
@@ -46,4 +47,9 @@ class AppRouteName {
   static const setDate = '/setDate';
   static const walletCharging = '/walletCharging';
   static const walletDetails = '/walletDetails';
+
+  //Checkin
+  static const checkin = '/checkin';
+  static const checkinConfirm = '/checkinConfirm';
+  static const addMembersCheckin = '/addMembersCheckin';
 }

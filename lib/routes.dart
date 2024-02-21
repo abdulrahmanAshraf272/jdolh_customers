@@ -4,6 +4,9 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/middleware/my_middleware.dart';
 import 'package:jdolh_customers/test_screen.dart';
 import 'package:jdolh_customers/test_screen2.dart';
+import 'package:jdolh_customers/view/screens/checkin/add_members_checkin_screen.dart';
+import 'package:jdolh_customers/view/screens/checkin/checkin_confirm_screen.dart';
+import 'package:jdolh_customers/view/screens/checkin/checkin_screen.dart';
 import 'package:jdolh_customers/view/screens/groups/add_to_group_created_screen.dart';
 import 'package:jdolh_customers/view/screens/groups/add_to_group_screen.dart';
 import 'package:jdolh_customers/view/screens/appt_details_screen.dart';
@@ -17,6 +20,7 @@ import 'package:jdolh_customers/view/screens/auth/verifycode_screen.dart';
 import 'package:jdolh_customers/view/screens/bills_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile_screen.dart';
 import 'package:jdolh_customers/view/screens/groups/create_group_screen.dart';
+import 'package:jdolh_customers/view/screens/occasion/add_occasion_location_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/add_to_occasion_created_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/create_occasion_screen.dart';
 import 'package:jdolh_customers/view/screens/explore_brand_screen.dart';
@@ -55,11 +59,23 @@ List<GetPage> routes = [
   ),
   // GetPage(
   //   name: '/',
-  //   page: () => const TestScreen(),
+  //   page: () => const LanguageScreen(),
   // ),
   GetPage(
     name: AppRouteName.login,
     page: () => const LoginScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.checkin,
+    page: () => const CheckinScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.checkinConfirm,
+    page: () => const CheckinConfirmScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.addMembersCheckin,
+    page: () => const AddMembersCheckinScreen(),
   ),
   GetPage(
     name: AppRouteName.signUp,
@@ -76,6 +92,10 @@ List<GetPage> routes = [
   GetPage(
     name: AppRouteName.forgetPassword,
     page: () => const ForgetPasswordScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.addOccasionLocation,
+    page: () => const AddOccasionLocationScreen(),
   ),
   GetPage(
     name: AppRouteName.successOperation,

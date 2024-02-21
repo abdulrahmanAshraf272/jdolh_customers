@@ -130,7 +130,7 @@ class HomeScreen extends StatelessWidget {
                           customTextStyle: titleMedium,
                         ),
                         SizedBox(
-                          height: 115.h,
+                          height: 125.h,
                           child: ListView.builder(
                               shrinkWrap: true,
                               padding:

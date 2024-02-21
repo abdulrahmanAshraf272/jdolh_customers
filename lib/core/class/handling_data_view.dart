@@ -19,7 +19,10 @@ class HandlingDataView extends StatelessWidget {
                 ? const Center(child: Text('server failure'))
                 : statusRequest == StatusRequest.failure
                     ? const Center(child: Text('لا توجد نتائج'))
-                    : widget;
+                    : statusRequest == StatusRequest.unableToGetLocation
+                        ? const Center(
+                            child: Text('غير قارد للوصول لمكانك الحالي'))
+                        : widget;
   }
 }
 

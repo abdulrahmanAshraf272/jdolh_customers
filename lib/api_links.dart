@@ -1,4 +1,9 @@
 class ApiLinks {
+  //Localhost ios emulator 127.0.0.1 or localhost
+  //Localhost android emulator 10.0.2.2
+  //Localhost on Real device mean
+  //yousef devie: fe80::cf:baff:fe0a:fc4c
+  //192.168.1.3
   static const String server = "http://10.0.2.2/jdolh";
   static const String test = "$server/test.php";
 
@@ -66,4 +71,7 @@ class ApiLinks {
       '$server/jdolh_customers/occasion/view_occasions.php';
   static const String viewOccasionInvitors =
       '$server/jdolh_customers/occasion/view_invitors.php';
+
+  //============= Checkin ================//
+  static const String checkin = '$server/jdolh_customers/checkin/checkin.php';
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:jdolh_customers/controller/main_controller.dart';
 import 'package:jdolh_customers/controller/occasion/occasions_controller.dart';
@@ -19,6 +20,7 @@ class CreateOccasionController extends GetxController {
   TextEditingController occasionTitle = TextEditingController();
   String occasionDateTime = '';
   String occasionLocation = '';
+  LatLng? latLngSelected;
   String occasionLat = '';
   String occasionLong = '';
   OccasionsData occasionData = OccasionsData(Get.find());
@@ -27,8 +29,8 @@ class CreateOccasionController extends GetxController {
   List<Friend> members = [];
   List<int> membersId = [];
   //MainController mainController = Get.find();
-  ValuesController valuesController = Get.find();
-  OccasionsController occasionsController = Get.find();
+  ValuesController valuesController = Get.put(ValuesController());
+  OccasionsController occasionsController = Get.put(OccasionsController());
   DateTime? dateTime;
 
   createOccasion() async {
@@ -146,6 +148,11 @@ class CreateOccasionController extends GetxController {
     String parsedDateTime =
         DateFormat('yyyy-MM-dd HH:mm:ss.S').format(dateTime);
     return parsedDateTime;
+  }
+
+  goToAddLocation() {
+    Get.toNamed(AppRouteName.addOccasionLocation)!.then((value) => print(
+        'lat: ${latLngSelected!.latitude}, long: ${latLngSelected!.latitude}'));
   }
 
   @override

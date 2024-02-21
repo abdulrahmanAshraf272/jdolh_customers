@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
+import 'package:jdolh_customers/core/functions/dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/my_profile.dart';
@@ -20,6 +23,9 @@ import 'package:jdolh_customers/view/screens/occasion/occasions_screen.dart';
 import 'package:jdolh_customers/view/screens/schedule_screen.dart';
 
 class MainController extends GetxController {
+  late bool serviceEnabled;
+  LocationPermission? permission;
+  late Position position;
   StatusRequest statusRequest = StatusRequest.none;
   MyProfileData myProfileData = MyProfileData(Get.find());
   MyServices myServices = Get.find();
@@ -127,10 +133,67 @@ class MainController extends GetxController {
     update();
   }
 
-  @override
-  void onInit() {
-    getMyProfileData();
+  getCurrentPosition() async {
+    //First check: Check if the user is active the gps in his phone.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      openGpsAlert();
+      return false;
+    }
+    //Second check: Check if the user allow the app to use loaction.
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        allowToUseLocationAlert();
+        return false;
+      }
+    }
+    //Get the currrent loction of the user.
+    position = await Geolocator.getCurrentPosition();
+    valuesController.currentPosition =
+        LatLng(position.latitude, position.longitude);
+  }
 
+  openGpsAlert() {
+    Get.defaultDialog(
+        title: "الGPS غير مفعل",
+        middleText: "فعل الgps لتجربة استخدام افضل",
+        //onWillPop: () => getCurrentPosition(),
+        textConfirm: 'قمت بالتفعيل',
+        onConfirm: () {
+          Get.back();
+          getCurrentPosition();
+        },
+        textCancel: "الغاء",
+        onCancel: () {});
+  }
+
+  allowToUseLocationAlert() {
+    Get.defaultDialog(
+        title: "تحذير",
+        middleText: "يجب عليك تفعيل اماكنية الوصل للموقع لتجربة استخدام افضل",
+        //onWillPop: () => getCurrentPosition(),
+        textConfirm: 'حسنا',
+        onConfirm: () => getCurrentPosition());
+  }
+
+  // handleGetCurrentPositionResult() async {
+  //   GetCurrentPositionResult result = await getCurrentPosition();
+  //   if (result.status == 'success') {
+  //     valuesController.currentPosition = result.latLng!;
+  //   } else {
+  //     result.error == 'permission' ? activePermissionAlert() : activeGpsAlert();
+  //     print('get current location result = ${result.status}');
+  //   }
+  // }
+
+  @override
+  void onInit() async {
+    getMyProfileData();
+    getCurrentPosition();
     super.onInit();
   }
 }

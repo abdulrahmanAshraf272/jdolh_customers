@@ -9,7 +9,7 @@ class LocaleController extends GetxController {
 
   MyServices myServices = Get.find();
 
-  ThemeData appTheme = themeEnglish;
+  ThemeData appTheme = themeArabic;
 
   changeLanguage(String languageCode) {
     Locale locale = Locale(languageCode);
@@ -31,8 +31,9 @@ class LocaleController extends GetxController {
       language = const Locale('en');
       appTheme = themeEnglish;
     } else {
-      language = Locale(Get.deviceLocale!.languageCode);
-      appTheme = themeEnglish;
+      //language = Locale(Get.deviceLocale!.languageCode);
+      language = const Locale('ar');
+      appTheme = themeArabic;
     }
   }
 }

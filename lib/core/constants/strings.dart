@@ -1,3 +1,5 @@
+const GOOGLE_MAPS_API_KEY = 'AIzaSyAGgfliZLRN6OE4sP5EGuwQv3ZWQPzaEGo';
+
 const textConfirmReservation = 'تأكيد الحجز';
 const textSendInvication = 'ارسال دعوة';
 const textFollow = 'متابعة';
