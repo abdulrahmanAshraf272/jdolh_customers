@@ -11,6 +11,8 @@ class ValuesController extends GetxController {
   List<Occasion> acceptedOccasions = [];
   List<Occasion> suspendedOccasions = [];
 
+  static LatLng? latLngSelected;
+
   LatLng? currentPosition;
 
   bool isRefresh = false;

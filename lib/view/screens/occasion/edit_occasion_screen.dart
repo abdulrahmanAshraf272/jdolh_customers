@@ -7,6 +7,7 @@ import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
+import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button_and_status.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
@@ -72,7 +73,7 @@ class EditOccasionScreen extends StatelessWidget {
                               onTap: () {
                                 controller.onTapAddMembers();
                               },
-                              text: 'أضف للمجموعة'),
+                              text: 'إضافة مدعوين'),
                           SizedBox(width: 20)
                         ],
                       ),
@@ -86,7 +87,7 @@ class EditOccasionScreen extends StatelessWidget {
                               shrinkWrap: true,
                               itemCount: controller.members.length,
                               itemBuilder: (context, index) =>
-                                  PersonWithButtonListItem(
+                                  PersonWithButtonAndStatus(
                                 name: controller.members[index].userName!,
                                 userName:
                                     controller.members[index].userUsername!,
@@ -96,6 +97,10 @@ class EditOccasionScreen extends StatelessWidget {
                                 onTapCard: () {},
                                 buttonColor: AppColors.redButton,
                                 buttonText: textRemove,
+                                invitorStatus:
+                                    controller.displayMemberStatus(index),
+                                statusColor:
+                                    controller.displayMemberStatusColor(index),
                               ),
                               // Add separatorBuilder
                             )

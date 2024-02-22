@@ -5,6 +5,7 @@ import 'package:jdolh_customers/core/middleware/my_middleware.dart';
 import 'package:jdolh_customers/test_screen.dart';
 import 'package:jdolh_customers/test_screen2.dart';
 import 'package:jdolh_customers/view/screens/checkin/add_members_checkin_screen.dart';
+import 'package:jdolh_customers/view/screens/checkin/add_new_place_screen.dart';
 import 'package:jdolh_customers/view/screens/checkin/checkin_confirm_screen.dart';
 import 'package:jdolh_customers/view/screens/checkin/checkin_screen.dart';
 import 'package:jdolh_customers/view/screens/groups/add_to_group_created_screen.dart';
@@ -45,6 +46,7 @@ import 'package:jdolh_customers/view/screens/reservation_done_screen.dart';
 import 'package:jdolh_customers/view/screens/reservation_screen.dart';
 import 'package:jdolh_customers/view/screens/schedule_screen.dart';
 import 'package:jdolh_customers/view/screens/search_screen.dart';
+import 'package:jdolh_customers/view/screens/select_address_screen.dart';
 import 'package:jdolh_customers/view/screens/select_product_features_screen.dart';
 import 'package:jdolh_customers/view/screens/set_date_screen.dart';
 import 'package:jdolh_customers/view/screens/wallet_charging_screen.dart';
@@ -70,8 +72,16 @@ List<GetPage> routes = [
     page: () => const CheckinScreen(),
   ),
   GetPage(
+    name: AppRouteName.selectAddressScreen,
+    page: () => const SelectAddressScreen(),
+  ),
+  GetPage(
     name: AppRouteName.checkinConfirm,
     page: () => const CheckinConfirmScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.addNewPlace,
+    page: () => const AddNewPlaceScreen(),
   ),
   GetPage(
     name: AppRouteName.addMembersCheckin,

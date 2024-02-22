@@ -51,7 +51,9 @@ class CreateOccasionScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     const CustomSmallBoldTitle(title: 'الموقع'),
                     DateOrLocationDisplayContainer(
-                        hintText: 'حدد موقع المناسبة',
+                        hintText: controller.occasionLocation == ''
+                            ? 'حدد موقع المناسبة'
+                            : controller.occasionLocation,
                         iconData: Icons.date_range,
                         onTap: () {
                           controller.goToAddLocation();
@@ -72,7 +74,7 @@ class CreateOccasionScreen extends StatelessWidget {
                               onTap: () {
                                 controller.onTapAddMembers();
                               },
-                              text: 'أضف للمجموعة'),
+                              text: 'إضافة مدعوين'),
                           SizedBox(width: 20)
                         ],
                       ),

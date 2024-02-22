@@ -74,4 +74,6 @@ class ApiLinks {
 
   //============= Checkin ================//
   static const String checkin = '$server/jdolh_customers/checkin/checkin.php';
+  static const String jdolhPlaces =
+      '$server/jdolh_customers/checkin/view_places.php';
 }

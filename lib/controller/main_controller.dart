@@ -8,6 +8,7 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/functions/dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/functions/location_services.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/my_profile.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
@@ -23,8 +24,9 @@ import 'package:jdolh_customers/view/screens/occasion/occasions_screen.dart';
 import 'package:jdolh_customers/view/screens/schedule_screen.dart';
 
 class MainController extends GetxController {
-  late bool serviceEnabled;
-  LocationPermission? permission;
+  // late bool serviceEnabled;
+  // LocationPermission? permission;
+  final LocationService locationService = LocationService();
   late Position position;
   StatusRequest statusRequest = StatusRequest.none;
   MyProfileData myProfileData = MyProfileData(Get.find());
@@ -133,51 +135,64 @@ class MainController extends GetxController {
     update();
   }
 
-  getCurrentPosition() async {
-    //First check: Check if the user is active the gps in his phone.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      openGpsAlert();
-      return false;
-    }
-    //Second check: Check if the user allow the app to use loaction.
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied ||
-        permission == LocationPermission.deniedForever) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        allowToUseLocationAlert();
-        return false;
-      }
-    }
-    //Get the currrent loction of the user.
-    position = await Geolocator.getCurrentPosition();
-    valuesController.currentPosition =
-        LatLng(position.latitude, position.longitude);
-  }
+  // getCurrentPosition() async {
+  //   //First check: Check if the user is active the gps in his phone.
+  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     openGpsAlert();
+  //     return false;
+  //   }
+  //   //Second check: Check if the user allow the app to use loaction.
+  //   permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.denied ||
+  //       permission == LocationPermission.deniedForever) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied ||
+  //         permission == LocationPermission.deniedForever) {
+  //       allowToUseLocationAlert();
+  //       return false;
+  //     }
+  //   }
+  //   //Get the currrent loction of the user.
+  //   position = await Geolocator.getCurrentPosition();
+  //   valuesController.currentPosition =
+  //       LatLng(position.latitude, position.longitude);
+  // }
 
-  openGpsAlert() {
-    Get.defaultDialog(
-        title: "الGPS غير مفعل",
-        middleText: "فعل الgps لتجربة استخدام افضل",
-        //onWillPop: () => getCurrentPosition(),
-        textConfirm: 'قمت بالتفعيل',
-        onConfirm: () {
-          Get.back();
-          getCurrentPosition();
-        },
-        textCancel: "الغاء",
-        onCancel: () {});
-  }
+  // openGpsAlert() {
+  //   Get.defaultDialog(
+  //       title: "الGPS غير مفعل",
+  //       middleText: "فعل الgps لتجربة استخدام افضل",
+  //       //onWillPop: () => getCurrentPosition(),
+  //       textConfirm: 'قمت بالتفعيل',
+  //       onConfirm: () {
+  //         Get.back();
+  //         getCurrentPosition();
+  //       },
+  //       textCancel: "الغاء",
+  //       onCancel: () {});
+  // }
 
   allowToUseLocationAlert() {
     Get.defaultDialog(
-        title: "تحذير",
-        middleText: "يجب عليك تفعيل اماكنية الوصل للموقع لتجربة استخدام افضل",
-        //onWillPop: () => getCurrentPosition(),
-        textConfirm: 'حسنا',
-        onConfirm: () => getCurrentPosition());
+      title: "تحذير",
+      middleText:
+          "من فضلك فعل امكانية الوصول والموقع والGPS لتجربة استخدام افضل",
+      //onWillPop: () => getCurrentPosition(),
+      textConfirm: 'حسنا',
+      onConfirm: () async {
+        Get.back();
+        Position? position = await locationService.getCurrentLocation();
+        if (position != null) {
+          print(
+              'Latitude: ${position.latitude}, Longitude: ${position.longitude}');
+          valuesController.currentPosition =
+              LatLng(position.latitude, position.longitude);
+        } else {
+          print('Failed to get location');
+        }
+      },
+    );
   }
 
   // handleGetCurrentPositionResult() async {
@@ -190,10 +205,22 @@ class MainController extends GetxController {
   //   }
   // }
 
+  getCurrentLocation() async {
+    Position? position = await locationService.getCurrentLocation();
+    if (position != null) {
+      print('Latitude: ${position.latitude}, Longitude: ${position.longitude}');
+      valuesController.currentPosition =
+          LatLng(position.latitude, position.longitude);
+    } else {
+      allowToUseLocationAlert();
+      print('Failed to get location');
+    }
+  }
+
   @override
   void onInit() async {
     getMyProfileData();
-    getCurrentPosition();
+    getCurrentLocation();
     super.onInit();
   }
 }

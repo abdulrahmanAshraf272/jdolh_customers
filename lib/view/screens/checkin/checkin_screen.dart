@@ -33,20 +33,19 @@ class CheckinScreen extends StatelessWidget {
                         physics: const BouncingScrollPhysics(),
                         padding: const EdgeInsets.only(bottom: 20, top: 20),
                         shrinkWrap: true,
-                        itemCount: controller.googlePlaces.length,
+                        itemCount: controller.allPlaces.length,
                         itemBuilder: (context, index) => PlacesListItem(
-                            name: controller.googlePlaces[index].name ?? '',
+                            name: controller.allPlaces[index].name ?? '',
                             location:
-                                controller.googlePlaces[index].location ?? '',
-                            type: controller.googlePlaces[index].type ?? '',
+                                controller.allPlaces[index].location ?? '',
+                            type: controller.allPlaces[index].type ?? '',
                             onTapCard: () {
-                              controller
-                                  .onTapCard(controller.googlePlaces[index]);
+                              controller.onTapCard(controller.allPlaces[index]);
                             })
                         // Add separatorBuilder
                         ),
                     GoHomeButton(
-                      onTap: () {},
+                      onTap: () => controller.goToAddNewPlace(),
                       text: 'اضافة مكان',
                     ),
                     SizedBox(height: 20),

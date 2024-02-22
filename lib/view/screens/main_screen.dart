@@ -37,7 +37,10 @@ class _MainScreenState extends State<MainScreen> {
                   },
                   backgroundColor: AppColors.secondaryColor,
                   shape: const CircleBorder(),
-                  child: const Icon(Icons.list),
+                  child: const Icon(
+                    Icons.place,
+                    color: Colors.white,
+                  ),
                 ),
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerDocked,

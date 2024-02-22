@@ -7,6 +7,7 @@ import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/functions/formatDateTime.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
@@ -107,6 +108,30 @@ class EditOccasionController extends GetxController {
 
   refreshScreen() {
     update();
+  }
+
+  String displayMemberStatus(int index) {
+    if (members[index].creator == 1) {
+      return textCreator;
+    } else if (members[index].invitorStatus == 0) {
+      return textSuspendAttend;
+    } else if (members[index].invitorStatus == 1) {
+      return textConfirmAttend;
+    } else {
+      return textRejectAttend;
+    }
+  }
+
+  Color displayMemberStatusColor(int index) {
+    if (members[index].creator == 1) {
+      return AppColors.secondaryColor;
+    } else if (members[index].invitorStatus == 0) {
+      return Colors.grey;
+    } else if (members[index].invitorStatus == 1) {
+      return Colors.green;
+    } else {
+      return AppColors.redText;
+    }
   }
 
   onTapRemoveMember(int index) {

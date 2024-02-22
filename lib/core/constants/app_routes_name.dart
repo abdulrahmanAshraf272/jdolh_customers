@@ -52,4 +52,6 @@ class AppRouteName {
   static const checkin = '/checkin';
   static const checkinConfirm = '/checkinConfirm';
   static const addMembersCheckin = '/addMembersCheckin';
+  static const addNewPlace = '/addNewPlace';
+  static const selectAddressScreen = '/selectAddressScreen';
 }

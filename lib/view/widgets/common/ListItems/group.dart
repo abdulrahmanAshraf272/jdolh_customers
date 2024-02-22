@@ -49,7 +49,7 @@ class GroupListItem extends StatelessWidget {
                   ),
                   isCreator == 1
                       ? Text(
-                          'منشئ',
+                          'مدير',
                           style: titleSmall.copyWith(
                               color: AppColors.secondaryColor),
                         )

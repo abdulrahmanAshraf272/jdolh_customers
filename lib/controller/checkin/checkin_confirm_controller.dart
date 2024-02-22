@@ -33,6 +33,7 @@ class CheckinConfirmController extends GetxController {
   }
 
   checkin(BuildContext context) async {
+    String membersIdString = membersId.join(",");
     statusRequest = StatusRequest.loading;
     update();
     var response = await checkinData.checkin(
@@ -44,7 +45,8 @@ class CheckinConfirmController extends GetxController {
         placeSelected.location ?? '',
         placeSelected.lat.toString(),
         placeSelected.lng.toString(),
-        comment.text);
+        comment.text,
+        membersIdString);
     statusRequest = handlingData(response);
     print('status ==== $statusRequest');
     update();

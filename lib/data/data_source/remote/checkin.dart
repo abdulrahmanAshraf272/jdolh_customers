@@ -20,6 +20,12 @@ class CheckinData {
     return response.fold((l) => l, (r) => r);
   }
 
+  getJdolhPlaces() async {
+    var response = await crud.getData(ApiLinks.jdolhPlaces);
+
+    return response.fold((l) => l, (r) => r);
+  }
+
   checkin(
       String userid,
       String fromGoogle,
@@ -29,7 +35,8 @@ class CheckinData {
       String location,
       String lat,
       String lng,
-      String comment) async {
+      String comment,
+      String friends) async {
     var response = await crud.postData(ApiLinks.checkin, {
       "userid": userid,
       "fromGoogle": fromGoogle,
@@ -39,7 +46,8 @@ class CheckinData {
       "location": location,
       "lat": lat,
       "lng": lng,
-      "comment": comment
+      "comment": comment,
+      "friends": friends
     });
 
     return response.fold((l) => l, (r) => r);

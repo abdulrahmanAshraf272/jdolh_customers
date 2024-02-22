@@ -14,10 +14,12 @@ import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
 import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
+import 'package:geocoding/geocoding.dart';
 
 class CreateOccasionController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
   TextEditingController occasionTitle = TextEditingController();
+
   String occasionDateTime = '';
   String occasionLocation = '';
   LatLng? latLngSelected;
@@ -151,8 +153,24 @@ class CreateOccasionController extends GetxController {
   }
 
   goToAddLocation() {
-    Get.toNamed(AppRouteName.addOccasionLocation)!.then((value) => print(
-        'lat: ${latLngSelected!.latitude}, long: ${latLngSelected!.latitude}'));
+    // Get.toNamed(AppRouteName.addOccasionLocation)!.then((value) => print(
+    //     'lat: ${latLngSelected!.latitude}, long: ${latLngSelected!.latitude}'));
+    Get.toNamed(AppRouteName.selectAddressScreen)!.then((value) async {
+      if (ValuesController.latLngSelected != null) {
+        latLngSelected = ValuesController.latLngSelected;
+        occasionLat = latLngSelected!.latitude.toString();
+        occasionLong = latLngSelected!.longitude.toString();
+        // print('$occasionLat, $occasionLong ========');
+
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+            latLngSelected!.latitude, latLngSelected!.longitude);
+        occasionLocation =
+            '${placemarks[0].street}, ${placemarks[0].locality}, ${placemarks[0].country}';
+        update();
+      } else {
+        print('no location selected');
+      }
+    });
   }
 
   @override
