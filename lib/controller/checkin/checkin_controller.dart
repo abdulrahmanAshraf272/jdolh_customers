@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/functions/calculate_distance.dart';
 import 'package:jdolh_customers/core/functions/dialogs.dart';
 import 'package:jdolh_customers/core/functions/get_current_position.dart';
@@ -38,7 +39,7 @@ class CheckinController extends GetxController {
       //lng: '29.9877722',
       lat: latLng.latitude.toString(),
       lng: latLng.longitude.toString(),
-      radius: '500',
+      radius: RADIUS_LIMIT.toString(),
       //keywords: 'restaurant',
     );
     statusRequest = handlingData(response);
