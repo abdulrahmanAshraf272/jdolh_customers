@@ -54,4 +54,5 @@ class AppRouteName {
   static const addMembersCheckin = '/addMembersCheckin';
   static const addNewPlace = '/addNewPlace';
   static const selectAddressScreen = '/selectAddressScreen';
+  static const diplayLocation = '/displayLocation';
 }

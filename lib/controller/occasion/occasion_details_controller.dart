@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jdolh_customers/controller/occasion/occasions_controller.dart';
 import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
@@ -8,12 +10,15 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/functions/open_url_link.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
 import 'package:jdolh_customers/data/models/person.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_textfield.dart';
+import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 
 class OccasionDetailsController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
@@ -24,6 +29,9 @@ class OccasionDetailsController extends GetxController {
   OccasionsData occasionData = OccasionsData(Get.find());
   MyServices myServices = Get.find();
   List<Friend> members = [];
+
+  String occasionLocation = '';
+  String occasionLocationLink = '';
 
   getOccasionMembers(String occasionId) async {
     int myId = int.parse(myServices.sharedPreferences.getString("id")!);
@@ -210,6 +218,8 @@ class OccasionDetailsController extends GetxController {
   @override
   void onInit() {
     occasionSelected = Get.arguments;
+    occasionLocation = occasionSelected.occasionLocation ?? 'لم يتم تحديد موقع';
+    occasionLocationLink = occasionSelected.locationLink ?? 'لم يتم تحديد رابط';
     getOccasionMembers(occasionSelected.occasionId.toString());
     super.onInit();
   }

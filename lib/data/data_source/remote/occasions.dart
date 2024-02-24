@@ -13,6 +13,7 @@ class OccasionsData {
       String occasionLocation,
       String lat,
       String long,
+      String locationLink,
       String invitors) async {
     var response = await crud.postData(ApiLinks.createOccasion, {
       "myId": myId,
@@ -22,14 +23,21 @@ class OccasionsData {
       "location": occasionLocation,
       "lat": lat,
       "long": long,
+      "locationLink": locationLink,
       "invitors": invitors,
     });
 
     return response.fold((l) => l, (r) => r);
   }
 
-  editOccasion(String occasionId, String occasionTitle, String occasionDate,
-      occasionLocation, lat, long) async {
+  editOccasion(
+      String occasionId,
+      String occasionTitle,
+      String occasionDate,
+      String occasionLocation,
+      String lat,
+      String long,
+      String locationLink) async {
     var response = await crud.postData(ApiLinks.editOccasion, {
       "occasionId": occasionId,
       "title": occasionTitle,
@@ -37,6 +45,7 @@ class OccasionsData {
       "location": occasionLocation,
       "lat": lat,
       "long": long,
+      "locationLink": locationLink
     });
 
     return response.fold((l) => l, (r) => r);

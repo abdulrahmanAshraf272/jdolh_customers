@@ -55,8 +55,13 @@ class EditOccasionScreen extends StatelessWidget {
                     const CustomSmallBoldTitle(title: 'الموقع'),
                     DateOrLocationDisplayContainer(
                         hintText: 'حدد موقع المناسبة',
-                        iconData: Icons.date_range,
+                        iconData: Icons.place,
                         onTap: () {}),
+                    const CustomSmallBoldTitle(title: 'رابط الموقع'),
+                    const SizedBox(height: 10),
+                    CustomTextField(
+                        textEditingController: controller.locationLink,
+                        hintText: 'يمكنك اضافة رابط الموقع من خرائط جوجل'),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 20),

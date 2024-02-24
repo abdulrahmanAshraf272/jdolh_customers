@@ -21,6 +21,7 @@ class EditOccasionController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
   TextEditingController occasionTitleOld = TextEditingController();
   TextEditingController occasionTitle = TextEditingController();
+  TextEditingController locationLink = TextEditingController();
   late Occasion occasionSelected;
   late int occasionId;
   String occasionDateTime = '';
@@ -42,36 +43,47 @@ class EditOccasionController extends GetxController {
   DateTime? myDateTime;
 
   editOccasion() async {
-    if (occasionTitle.text.isEmpty) {
-      Get.rawSnackbar(message: 'اضف عنوان للمناسبة!');
-      return;
-    }
-    //check if no value change
-    if (occasionTitle.text == occasionTitleOld.text &&
-        occasionDateTime == occasionDateTimeOld) {
-      print('nothing changed');
-      Get.back();
-      return;
-    }
+    // if (occasionTitle.text.isEmpty) {
+    //   Get.rawSnackbar(message: 'اضف عنوان للمناسبة!');
+    //   return;
+    // }
+    // //check if no value change
+    // if (occasionTitle.text == occasionTitleOld.text &&
+    //     occasionDateTime == occasionDateTimeOld) {
+    //   print('nothing changed');
+    //   Get.back();
+    //   return;
+    // }
     statusRequest = StatusRequest.loading;
     occasionDateTime = myDateTime.toString();
     update();
     var response = await occasionData.editOccasion(
-      occasionId.toString(),
-      occasionTitle.text,
-      occasionDateTime,
-      occasionLocation,
-      occasionLat,
-      occasionLong,
-    );
+        occasionId.toString(),
+        occasionTitle.text,
+        occasionDateTime,
+        occasionLocation,
+        occasionLat,
+        occasionLong,
+        locationLink.text);
     statusRequest = handlingData(response);
     print('status ==== $statusRequest');
     if (statusRequest == StatusRequest.success) {
+      print(response['status']);
+      //status = success => update is done
+      //status = failure => udate fail, because the user didn't change anything.
       if (response['status'] == 'success') {
-        valuesController.editOccasion(occasionId, occasionTitle.text,
-            occasionDateTime, occasionLocation, occasionLat, occasionLong);
+        valuesController.editOccasion(
+            occasionId,
+            occasionTitle.text,
+            occasionDateTime,
+            occasionLocation,
+            occasionLat,
+            occasionLong,
+            locationLink.text);
         Get.back();
         Get.rawSnackbar(message: 'تم التعديل بنجاح!');
+      } else {
+        Get.back();
       }
     }
     update();
@@ -253,9 +265,10 @@ class EditOccasionController extends GetxController {
     myDateTime = DateTime.parse(occasionSelected.occasionDatetime!);
     occasionDateTime = formatDateTime(myDateTime.toString());
     occasionDateTimeOld = formatDateTime(myDateTime.toString());
-    occasionLocation = occasionSelected.occasionLocation!;
+    occasionLocation = occasionSelected.occasionLocation ?? '';
     occasionLat = occasionSelected.occasionLat!;
     occasionLong = occasionSelected.occasionLong!;
+    locationLink.text = occasionSelected.locationLink ?? '';
   }
 
   @override

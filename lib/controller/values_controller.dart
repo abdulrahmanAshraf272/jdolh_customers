@@ -28,7 +28,7 @@ class ValuesController extends GetxController {
   }
 
   editOccasion(int occasionId, String title, String datetime, String location,
-      String lat, String long) {
+      String lat, String long, String locatinLink) {
     Occasion desireOccasion =
         myOccasions.firstWhere((element) => element.occasionId == occasionId);
     desireOccasion.occasionTitle = title;
@@ -36,6 +36,7 @@ class ValuesController extends GetxController {
     desireOccasion.occasionLocation = location;
     desireOccasion.occasionLat = lat;
     desireOccasion.occasionLong = long;
+    desireOccasion.locationLink = locatinLink;
     resetAcceptedAndSuspendedList();
   }
 

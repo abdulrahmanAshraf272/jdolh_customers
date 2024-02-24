@@ -54,13 +54,18 @@ class CreateOccasionScreen extends StatelessWidget {
                         hintText: controller.occasionLocation == ''
                             ? 'حدد موقع المناسبة'
                             : controller.occasionLocation,
-                        iconData: Icons.date_range,
+                        iconData: Icons.place,
                         onTap: () {
                           controller.goToAddLocation();
                         }),
+                    const CustomSmallBoldTitle(title: 'رابط الموقع'),
+                    const SizedBox(height: 10),
+                    CustomTextField(
+                        textEditingController: controller.locationLink,
+                        hintText: 'يمكنك اضافة رابط الموقع من خرائط جوجل'),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 20),
+                          horizontal: 20, vertical: 10),
                       child: Row(
                         children: [
                           Expanded(

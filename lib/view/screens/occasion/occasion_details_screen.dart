@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/occasion/edit_occasion_controller.dart';
 import 'package:jdolh_customers/controller/occasion/occasion_details_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/formatDateTime.dart';
-import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
+import 'package:jdolh_customers/core/functions/open_url_link.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_text.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/confirm_refuse_buttons.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_textfield.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/common/data_or_location_display_container.dart';
 
@@ -56,12 +50,18 @@ class OccasionDetailsScreen extends StatelessWidget {
                             controller.occasionSelected.occasionDatetime!),
                         iconData: Icons.date_range,
                         onTap: () {}),
-                    const SizedBox(height: 10),
                     const CustomSmallBoldTitle(title: 'الموقع'),
                     DateOrLocationDisplayContainer(
-                        hintText: 'حدد موقع المناسبة',
-                        iconData: Icons.date_range,
+                        hintText: controller.occasionLocation,
+                        iconData: Icons.place,
                         onTap: () {}),
+                    const CustomSmallBoldTitle(title: 'رابط الموقع'),
+                    DateOrLocationDisplayContainer(
+                        hintText: controller.occasionLocationLink,
+                        iconData: Icons.link,
+                        onTap: () {
+                          openUrlLink(controller.occasionLocationLink);
+                        }),
                     CustomSmallBoldTitle(
                       title: 'المضافين للمناسبة',
                       topPadding: 20,

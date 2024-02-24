@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -13,12 +14,15 @@ import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
 import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
+import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
+import 'package:jdolh_customers/view/widgets/custom_button_one.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:geocoding/geocoding.dart';
 
 class CreateOccasionController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
   TextEditingController occasionTitle = TextEditingController();
+  TextEditingController locationLink = TextEditingController();
 
   String occasionDateTime = '';
   String occasionLocation = '';
@@ -55,6 +59,7 @@ class CreateOccasionController extends GetxController {
         occasionLocation,
         occasionLat,
         occasionLong,
+        locationLink.text,
         membersIdString);
     statusRequest = handlingData(response);
 
@@ -122,14 +127,14 @@ class CreateOccasionController extends GetxController {
       },
       transitionDuration: const Duration(milliseconds: 200),
       barrierDismissible: true,
-      selectableDayPredicate: (dateTime) {
-        // Disable 25th Feb 2023
-        if (dateTime == DateTime(2024, 2, 25)) {
-          return false;
-        } else {
-          return true;
-        }
-      },
+      // selectableDayPredicate: (dateTime) {
+      //   // Disable 25th Feb 2023
+      //   if (dateTime == DateTime(2024, 2, 26)) {
+      //     return false;
+      //   } else {
+      //     return true;
+      //   }
+      // },
     );
     if (dateTime != null) {
       occasionDateTime = formatDateTime(dateTime.toString());
@@ -153,8 +158,6 @@ class CreateOccasionController extends GetxController {
   }
 
   goToAddLocation() {
-    // Get.toNamed(AppRouteName.addOccasionLocation)!.then((value) => print(
-    //     'lat: ${latLngSelected!.latitude}, long: ${latLngSelected!.latitude}'));
     Get.toNamed(AppRouteName.selectAddressScreen)!.then((value) async {
       if (ValuesController.latLngSelected != null) {
         latLngSelected = ValuesController.latLngSelected;

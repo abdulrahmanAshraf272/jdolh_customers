@@ -8,6 +8,7 @@ import 'package:jdolh_customers/view/screens/checkin/add_members_checkin_screen.
 import 'package:jdolh_customers/view/screens/checkin/add_new_place_screen.dart';
 import 'package:jdolh_customers/view/screens/checkin/checkin_confirm_screen.dart';
 import 'package:jdolh_customers/view/screens/checkin/checkin_screen.dart';
+import 'package:jdolh_customers/view/screens/display_location_screen.dart';
 import 'package:jdolh_customers/view/screens/groups/add_to_group_created_screen.dart';
 import 'package:jdolh_customers/view/screens/groups/add_to_group_screen.dart';
 import 'package:jdolh_customers/view/screens/appt_details_screen.dart';
@@ -78,6 +79,10 @@ List<GetPage> routes = [
   GetPage(
     name: AppRouteName.checkinConfirm,
     page: () => const CheckinConfirmScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.diplayLocation,
+    page: () => const DisplayLocationScreen(),
   ),
   GetPage(
     name: AppRouteName.addNewPlace,

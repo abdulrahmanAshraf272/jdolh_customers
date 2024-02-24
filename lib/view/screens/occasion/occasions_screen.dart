@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/appt_controller.dart';
 import 'package:jdolh_customers/controller/occasion/occasions_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
+import 'package:jdolh_customers/core/functions/open_url_link.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/occasion.dart';
 import 'package:jdolh_customers/view/widgets/common/appBarWithButtonCreate.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';
@@ -73,7 +74,9 @@ class OccasionsScreen extends StatelessWidget {
                                           .occasionLocation!,
                                       creator: controller
                                           .occasionsToDisplay[index].creator!,
-                                      onTapOpenLocation: () {},
+                                      onTapOpenLocation: () {
+                                        controller.onTapDisplayLocation(index);
+                                      },
                                       onTapCard: () =>
                                           controller.onTapOccasionCard(index),
                                     )),

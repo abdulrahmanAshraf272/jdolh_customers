@@ -10,6 +10,7 @@ class Occasion {
   String? occasionDatecreated;
   int? creator;
   int? acceptstatus;
+  String? locationLink;
 
   Occasion(
       {this.occasionId,
@@ -22,7 +23,8 @@ class Occasion {
       this.occasionLong,
       this.occasionDatecreated,
       this.creator,
-      this.acceptstatus});
+      this.acceptstatus,
+      this.locationLink});
 
   Occasion.fromJson(Map<String, dynamic> json) {
     occasionId = json['occasion_id'];
@@ -36,5 +38,6 @@ class Occasion {
     occasionDatecreated = json['occasion_datecreated'];
     creator = json['creator'];
     acceptstatus = json['acceptstatus'];
+    locationLink = json['occasion_locationLink'];
   }
 }
