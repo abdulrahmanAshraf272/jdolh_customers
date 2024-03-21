@@ -20,7 +20,7 @@ import 'package:jdolh_customers/view/screens/auth/signup_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/success_operation_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/verifycode_screen.dart';
 import 'package:jdolh_customers/view/screens/bills_screen.dart';
-import 'package:jdolh_customers/view/screens/brand_profile_screen.dart';
+import 'package:jdolh_customers/view/screens/brand_profile/brand_profile_screen.dart';
 import 'package:jdolh_customers/view/screens/groups/create_group_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/add_occasion_location_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/add_to_occasion_created_screen.dart';
@@ -44,26 +44,33 @@ import 'package:jdolh_customers/view/screens/occasion/occasions_screen.dart';
 import 'package:jdolh_customers/view/screens/payment_screen.dart';
 import 'package:jdolh_customers/view/screens/person_profile_screen.dart';
 import 'package:jdolh_customers/view/screens/reservation_done_screen.dart';
-import 'package:jdolh_customers/view/screens/reservation_screen.dart';
+import 'package:jdolh_customers/view/screens/reservation_search_screen.dart';
 import 'package:jdolh_customers/view/screens/schedule_screen.dart';
 import 'package:jdolh_customers/view/screens/search_screen.dart';
 import 'package:jdolh_customers/view/screens/select_address_screen.dart';
-import 'package:jdolh_customers/view/screens/select_product_features_screen.dart';
+import 'package:jdolh_customers/view/screens/brand_profile/items_details_screen.dart';
 import 'package:jdolh_customers/view/screens/set_date_screen.dart';
 import 'package:jdolh_customers/view/screens/wallet_charging_screen.dart';
 import 'package:jdolh_customers/view/screens/wallet_details_screen.dart';
 
 List<GetPage> routes = [
   //Replace Login with onBoarding
-  GetPage(
-    name: '/',
-    page: () => const LoginScreen(),
-    middlewares: [MyMiddleware()],
-  ),
   // GetPage(
   //   name: '/',
-  //   page: () => const LanguageScreen(),
+  //   page: () => const LoginScreen(),
+  //   middlewares: [MyMiddleware()],
   // ),
+  //For testing
+  GetPage(
+    name: '/',
+    page: () => const ReservationSearchScreen(),
+  ),
+
+  GetPage(
+    name: AppRouteName.brandProfile,
+    page: () => const BrandProfileScreen(),
+  ),
+
   GetPage(
     name: AppRouteName.login,
     page: () => const LoginScreen(),
@@ -138,10 +145,7 @@ List<GetPage> routes = [
     name: AppRouteName.bills,
     page: () => const BillsScreen(),
   ),
-  GetPage(
-    name: AppRouteName.brandProfile,
-    page: () => const BrandProfileScreen(),
-  ),
+
   GetPage(
     name: AppRouteName.createGroup,
     page: () => const CreateGroupScreen(),
@@ -231,7 +235,7 @@ List<GetPage> routes = [
   ),
   GetPage(
     name: AppRouteName.reservation,
-    page: () => const ReservationScreen(),
+    page: () => const ReservationSearchScreen(),
   ),
   GetPage(
     name: AppRouteName.schedule,
@@ -243,8 +247,8 @@ List<GetPage> routes = [
     page: () => const SearchScreen(),
   ),
   GetPage(
-    name: AppRouteName.selectProductFeature,
-    page: () => const SelectProductFeaturesScreen(),
+    name: AppRouteName.itemsDetails,
+    page: () => const ItemsDetailsScreen(),
   ),
   GetPage(
     name: AppRouteName.setDate,

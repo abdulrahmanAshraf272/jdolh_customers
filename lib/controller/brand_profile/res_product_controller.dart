@@ -8,7 +8,7 @@ class BrandProfileController extends GetxController {
   //Checker variables
   bool withInvitation = false;
   bool timerIsActive = false;
-  int activeSubScreen = 1;
+  int activeSubScreen = 2;
 
   //Timer variables
   late Timer timer;

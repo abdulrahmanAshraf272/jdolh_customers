@@ -8,9 +8,10 @@ class ApiLinks {
   static const String test = "$server/test.php";
 
   //=================== Images ================//
-  static const String images = '$server/upload';
-  static const String imagesCategories = '$images/categories';
-  static const String imagesItems = '$images/items';
+  static const String imagesBrands = '$server/jdolh_brands/upload';
+  static const String logoImage = '$imagesBrands/logo';
+  static const String branchImage = '$imagesBrands/branches';
+  static const String itemsImage = '$imagesBrands/items';
 
   //=============== Auth ===============//
   static const String signUp = '$server/jdolh_customers/auth/signup.php';
@@ -76,4 +77,13 @@ class ApiLinks {
   static const String checkin = '$server/jdolh_customers/checkin/checkin.php';
   static const String jdolhPlaces =
       '$server/jdolh_customers/checkin/view_places.php';
+
+// =========== About Get Brand data ===========//
+  static const brandTypesAndsubtypes =
+      '$server/jdolh_brands/view_types_and_subtypes.php';
+  static const searchBrand =
+      '$server/jdolh_customers/get_brand/search_brand.php';
+  static const getBch = '$server/jdolh_customers/get_brand/get_bch.php';
+  static const getItemOptions =
+      '$server/jdolh_customers/get_brand/get_itemsoptions.php';
 }

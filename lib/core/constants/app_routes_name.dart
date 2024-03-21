@@ -15,7 +15,7 @@ class AppRouteName {
   static const appt = '/appt';
   static const apptDetails = '/apptDetails';
   static const bills = '/bills';
-  static const brandProfile = '/brandProfile';
+
   static const createGroup = '/createGroup';
   static const editGroup = '/editGroup';
   // occasion screen
@@ -43,7 +43,7 @@ class AppRouteName {
   static const reservation = '/reservation';
   static const schedule = '/schedule';
   static const search = '/search';
-  static const selectProductFeature = '/selectProductFeature';
+  static const itemsDetails = '/itemsDetails';
   static const setDate = '/setDate';
   static const walletCharging = '/walletCharging';
   static const walletDetails = '/walletDetails';
@@ -55,4 +55,9 @@ class AppRouteName {
   static const addNewPlace = '/addNewPlace';
   static const selectAddressScreen = '/selectAddressScreen';
   static const diplayLocation = '/displayLocation';
+
+  static const reservationSearch = '/reservationSearch';
+
+  //Brand profile
+  static const brandProfile = '/brandProfile';
 }

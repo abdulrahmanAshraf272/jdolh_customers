@@ -13,6 +13,7 @@ ThemeData themeEnglish = ThemeData(
 );
 
 ThemeData themeArabic = ThemeData(
+  colorScheme: ColorScheme.fromSeed(seedColor: AppColors.secondaryColor),
   primaryColor: AppColors.primaryColor,
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: const AppBarTheme(color: AppColors.primaryColor),

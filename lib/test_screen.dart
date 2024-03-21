@@ -65,7 +65,7 @@ class _TestScreenState extends State<TestScreen> {
             HairCutServiceListItem(),
             BillListItem(paid: false),
             FoodListItem(),
-            BrandDetailedListItem(),
+            //BrandDetailedListItem(),
             Brand(),
             CommentListItem(),
             AppointmentListItemNotApproved(),

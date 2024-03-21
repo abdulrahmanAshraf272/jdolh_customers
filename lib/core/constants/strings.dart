@@ -21,6 +21,7 @@ const creatAccount = 'إنشاء حساب جديد';
 
 const List<String> cities = [
   'الرياض',
+  'جدة',
   'الدمام',
   'بريدة',
   'تبوك',

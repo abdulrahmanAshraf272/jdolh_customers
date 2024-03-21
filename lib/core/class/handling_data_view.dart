@@ -12,13 +12,14 @@ class HandlingDataView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return statusRequest == StatusRequest.loading
-        ? const Center(child: CircularProgressIndicator())
+        ? Expanded(child: const Center(child: CircularProgressIndicator()))
         : statusRequest == StatusRequest.offlineFailure
             ? const Center(child: Text('offline failure'))
             : statusRequest == StatusRequest.serverFailure
                 ? const Center(child: Text('server failure'))
                 : statusRequest == StatusRequest.failure
-                    ? const Center(child: Text('لا توجد نتائج'))
+                    ? Expanded(
+                        child: const Center(child: Text('لا توجد نتائج')))
                     : statusRequest == StatusRequest.unableToGetLocation
                         ? const Center(
                             child: Text('غير قارد للوصول لمكانك الحالي'))

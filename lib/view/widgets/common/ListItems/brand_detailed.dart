@@ -7,8 +7,24 @@ import 'package:jdolh_customers/view/widgets/common/guaranteed_icon.dart';
 import 'package:jdolh_customers/view/widgets/common/rating.dart';
 
 class BrandDetailedListItem extends StatelessWidget {
+  final String brandName;
+  final String type;
+  final String subtype;
+  final String address;
+  final double rate;
+  final int isVerified;
+  final String? image;
+  final void Function() onTap;
   const BrandDetailedListItem({
     super.key,
+    required this.brandName,
+    required this.type,
+    required this.subtype,
+    required this.address,
+    required this.rate,
+    required this.isVerified,
+    required this.image,
+    required this.onTap,
   });
 
   @override
@@ -25,16 +41,30 @@ class BrandDetailedListItem extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: onTap,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Image.asset(
-                  'assets/images/avatar_person.jpg',
-                  height: 85.h,
-                  width: 85.h,
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: image != null
+                        ? FadeInImage.assetNetwork(
+                            width: 84.w,
+                            height: 84.w,
+                            placeholder: 'assets/images/loading2.gif',
+                            image: image!,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            'assets/images/noImageAvailable.jpg',
+                            fit: BoxFit.cover,
+                            width: 84.w,
+                            height: 84.w,
+                          ),
+                  ),
                 ),
-                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     children: [
@@ -48,7 +78,7 @@ class BrandDetailedListItem extends StatelessWidget {
                                 children: [
                                   Row(
                                     children: [
-                                      AutoSizeText('حجز البيك',
+                                      AutoSizeText(brandName,
                                           maxLines: 1,
                                           minFontSize: 15,
                                           overflow: TextOverflow.ellipsis,
@@ -56,11 +86,13 @@ class BrandDetailedListItem extends StatelessWidget {
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      GuaranteedIcon(active: true)
+                                      GuaranteedIcon(
+                                          active:
+                                              isVerified == 1 ? true : false)
                                     ],
                                   ),
                                   AutoSizeText(
-                                    'المطاعم, المشويات',
+                                    '$type, $subtype',
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: titleSmallGray,
@@ -69,7 +101,7 @@ class BrandDetailedListItem extends StatelessWidget {
                               ),
                             ),
                             SizedBox(width: 5),
-                            Rating(rating: 5.0)
+                            Rating(rating: rate)
                           ],
                         ),
                       ),
@@ -80,7 +112,7 @@ class BrandDetailedListItem extends StatelessWidget {
                           children: [
                             Expanded(
                               child: AutoSizeText(
-                                'الرياض, النظيم-شارع الصحابة',
+                                address,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: titleSmallGray,

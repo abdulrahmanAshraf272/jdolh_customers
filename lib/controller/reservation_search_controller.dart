@@ -1,0 +1,136 @@
+import 'package:get/get.dart';
+import 'package:jdolh_customers/core/class/status_request.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/constants/strings.dart';
+import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/data/data_source/remote/brand_search.dart';
+import 'package:jdolh_customers/data/models/bch.dart';
+import 'package:jdolh_customers/data/models/brand.dart';
+import 'package:jdolh_customers/data/models/brand_subtype.dart';
+import 'package:jdolh_customers/data/models/brand_type.dart';
+
+class ReservationSearchController extends GetxController {
+  StatusRequest statusRequestType = StatusRequest.none;
+  StatusRequest statusRequest = StatusRequest.none;
+  BrandSearchData brandSearchData = BrandSearchData(Get.find());
+
+  BrandType? selectedType;
+  BrandSubtype? selectedSubtype;
+  List<BrandType> brandTypes = [];
+  List<BrandSubtype> brandSubtypes = [];
+
+  List<String> brandTypesString = [];
+  List<String> brandSubtypesToDisplay = [];
+  String city = cities[0];
+  //To solve the problem of the subtype .
+  String? selectedValue;
+
+  List<Brand> brands = [];
+  List<Bch> bchs = [];
+
+  onTapCard(int index) {
+    Get.toNamed(AppRouteName.brandProfile,
+        arguments: {"brand": brands[index], "bch": bchs[index]});
+  }
+
+  searchBrand() async {
+    String subtype = '';
+    String type = '';
+
+    if (selectedType != null) {
+      type = selectedType!.type ?? '';
+    }
+
+    if (selectedSubtype != null) {
+      subtype = selectedSubtype!.subtype ?? '';
+    }
+
+    statusRequest = StatusRequest.loading;
+    update();
+    var response = await brandSearchData.searchBrand(city, type, subtype);
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        parseSearchResults(response);
+        print(bchs[0].bchLocation);
+      } else {
+        statusRequest = StatusRequest.failure;
+      }
+    }
+    update();
+    print('======$statusRequest');
+  }
+
+  parseSearchResults(response) {
+    brands.clear();
+    bchs.clear();
+    List data = response['data'];
+    brands = data.map((e) => Brand.fromJson(e)).toList();
+    bchs = data.map((e) => Bch.fromJson(e)).toList();
+    update();
+    print('brand: ${brands[0].brandStoreName}');
+    print('bch: ${bchs[0].bchBranchName}');
+  }
+
+  getBrandTypesAndSubtypes() async {
+    statusRequestType = StatusRequest.loading;
+    update();
+    var response = await brandSearchData.getTypesAndSubtypes();
+    statusRequestType = handlingData(response);
+    update();
+    if (statusRequestType == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        parseTypesAndSubtypes(response);
+      } else {
+        Get.rawSnackbar(message: 'لا يوجد بيانات');
+      }
+    } //
+  }
+
+  parseTypesAndSubtypes(response) {
+    brandTypes.clear();
+    brandSubtypes.clear();
+
+    List typesJson = response['types'];
+    List subtypesJson = response['subtypes'];
+
+    brandTypes = typesJson.map((e) => BrandType.fromJson(e)).toList();
+    brandSubtypes = subtypesJson.map((e) => BrandSubtype.fromJson(e)).toList();
+
+    for (int i = 0; i < brandTypes.length; i++) {
+      brandTypesString.add(brandTypes[i].type!);
+    }
+    update();
+  }
+
+  setSelectedBrandType(String? value) {
+    if (value != null) {
+      selectedType = brandTypes.firstWhere((element) => element.type == value);
+
+      selectedValue = null;
+      selectedSubtype = null;
+      brandSubtypesToDisplay.clear();
+      for (int i = 0; i < brandSubtypes.length; i++) {
+        if (brandSubtypes[i].typeId == selectedType!.id) {
+          brandSubtypesToDisplay.add(brandSubtypes[i].subtype!);
+        }
+      }
+      update();
+      print(selectedType!.type);
+    }
+  }
+
+  setSelectedSubtypeType(String? value) {
+    if (value != null) {
+      selectedSubtype =
+          brandSubtypes.firstWhere((element) => element.subtype == value);
+      print(selectedSubtype!.subtype);
+    }
+  }
+
+  @override
+  void onInit() {
+    getBrandTypesAndSubtypes();
+    super.onInit();
+  }
+}

@@ -56,7 +56,7 @@ class CheckinConfirmController extends GetxController {
           context: context,
           dialogType: DialogType.success,
           animType: AnimType.rightSlide,
-          title: 'تم تسجيل الوصول',
+          title: 'تم حفظ البيانات التجارية',
           btnOkText: 'حسنا',
           onDismissCallback: (dismissType) {
             Get.offAllNamed(AppRouteName.mainScreen);

@@ -1,13 +1,19 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 
 class ProductImageAndName extends StatelessWidget {
+  final String? image;
+  final String name;
   const ProductImageAndName({
     super.key,
+    required this.image,
+    required this.name,
   });
 
   @override
@@ -17,10 +23,17 @@ class ProductImageAndName extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-                child: Image.asset(
-              'assets/images/breakfastDishe24.jpg',
-              fit: BoxFit.cover,
-            )),
+              child: image != null
+                  ? FadeInImage.assetNetwork(
+                      placeholder: 'assets/images/loading2.gif',
+                      image: '${ApiLinks.itemsImage}/$image',
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      'assets/images/noImageAvailable.jpg',
+                      fit: BoxFit.cover,
+                    ),
+            ),
             Positioned(
               bottom: 0,
               left: 0,
@@ -43,11 +56,21 @@ class ProductImageAndName extends StatelessWidget {
                   width: Get.width - 40,
                   padding: EdgeInsets.only(left: 15.w, right: 15.w),
                   child: AutoSizeText(
-                    'بان كيك',
+                    name,
                     style: titleMedium.copyWith(
                         color: AppColors.white, fontSize: 18.sp),
                     maxLines: 2,
                   ),
+                )),
+            Positioned(
+                top: 0,
+                right: 0,
+                child: SafeArea(
+                  child: IconButton(
+                      icon: Icon(Icons.arrow_back_ios),
+                      onPressed: () {
+                        Get.back();
+                      }),
                 ))
           ],
         ));

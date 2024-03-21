@@ -4,8 +4,14 @@ import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/rating.dart';
 
 class BrandScheduledAndRating extends StatelessWidget {
+  final int scheduledNo;
+  final int ratedBy;
+  final double rate;
   const BrandScheduledAndRating({
     super.key,
+    required this.scheduledNo,
+    required this.rate,
+    required this.ratedBy,
   });
 
   @override
@@ -15,7 +21,7 @@ class BrandScheduledAndRating extends StatelessWidget {
         Row(
           children: [
             Text(
-              '120 مجدولين',
+              '$scheduledNo مجدولين',
               style: titleSmall3Gray.copyWith(color: AppColors.secondaryColor),
             ),
             Icon(
@@ -29,12 +35,12 @@ class BrandScheduledAndRating extends StatelessWidget {
         Row(
           children: [
             Text(
-              '120 تقييم',
+              '$ratedBy تقييم',
               style: titleSmall3Gray,
             ),
             SizedBox(width: 3),
             Rating(
-              rating: 4.5,
+              rating: rate,
               textColor: Colors.white.withOpacity(0.7),
             )
           ],

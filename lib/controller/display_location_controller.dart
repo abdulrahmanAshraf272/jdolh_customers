@@ -10,7 +10,7 @@ import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/functions/calculate_distance.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/location_services.dart';
-import 'package:jdolh_customers/data/data_source/remote/auth/google_maps_sevice.dart';
+import 'package:jdolh_customers/data/data_source/remote/google_maps_sevice.dart';
 import 'package:jdolh_customers/data/models/suggestion_place.dart';
 import 'package:uuid/uuid.dart';
 

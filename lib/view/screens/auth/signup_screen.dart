@@ -97,7 +97,7 @@ class SignupScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 20),
                                 CustomButtonOne(
-                                    textButton: 'تسجيل دخول',
+                                    textButton: 'إنشاء حساب',
                                     onPressed: () async {
                                       await controller.signUp();
                                     }),

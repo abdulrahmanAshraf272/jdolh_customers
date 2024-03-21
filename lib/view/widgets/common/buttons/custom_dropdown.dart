@@ -4,44 +4,55 @@ import 'package:flutter/material.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 
-class CustomDropdownButton extends StatefulWidget {
+class CustomDropdown extends StatefulWidget {
   final double? width;
   final double horizontalPadding;
   final double verticalPadding;
-
   final double buttonHeight;
-  const CustomDropdownButton(
+  final double displacement;
+  final String title;
+  final List<String> items;
+  final ValueChanged<String?> onChanged;
+  final double listWidth;
+  final double horizontalMargin;
+  final double verticalMargin;
+  final bool withInitValue;
+
+  const CustomDropdown(
       {super.key,
       this.width,
       this.horizontalPadding = 0,
       this.verticalPadding = 0,
-      this.buttonHeight = 50});
+      this.buttonHeight = 50,
+      this.displacement = -20,
+      this.listWidth = 200,
+      this.horizontalMargin = 20,
+      this.verticalMargin = 0,
+      this.withInitValue = false,
+      required this.items,
+      required this.onChanged,
+      required this.title});
 
   @override
-  State<CustomDropdownButton> createState() => _CustomDropdownButtonState();
+  State<CustomDropdown> createState() => _CustomDropdownState();
 }
 
-class _CustomDropdownButtonState extends State<CustomDropdownButton> {
+class _CustomDropdownState extends State<CustomDropdown> {
   String? selectedValue;
-
-  final List<String> items = [
-    'جدة',
-    'الكافيهات',
-    'صالونات الحلاقة',
-    'الملاهي',
-    'جيم',
-  ];
 
   @override
   void initState() {
-    // TODO: implement initState
-    selectedValue = items[0];
+    if (widget.withInitValue == true) {
+      selectedValue = widget.items[0];
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.symmetric(
+          horizontal: widget.horizontalMargin, vertical: widget.verticalMargin),
       padding: EdgeInsets.symmetric(
           horizontal: widget.horizontalPadding,
           vertical: widget.verticalPadding),
@@ -49,32 +60,20 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
       child: DropdownButtonHideUnderline(
         child: DropdownButton2<String>(
           isExpanded: true,
-          hint: Row(
-            children: [
-              Icon(
-                Icons.restaurant,
-                size: 16,
-                color: AppColors.gray600,
-              ),
-              SizedBox(
-                width: 4,
-              ),
-              Expanded(
-                child: AutoSizeText(
-                  'المطاعم',
-                  maxLines: 1,
-                  minFontSize: 1,
-                  style: titleSmall.copyWith(color: AppColors.gray600),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
+          hint: AutoSizeText(
+            widget.title,
+            maxLines: 1,
+            minFontSize: 1,
+            style: titleSmall.copyWith(color: AppColors.gray600),
+            overflow: TextOverflow.ellipsis,
           ),
-          items: items
+          items: widget.items
               .map((String item) => DropdownMenuItem<String>(
                     value: item,
-                    child: Text(
+                    child: AutoSizeText(
                       item,
+                      minFontSize: 9,
+                      maxLines: 1,
                       style: titleSmall.copyWith(color: AppColors.gray600),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -84,7 +83,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
           onChanged: (String? value) {
             setState(() {
               selectedValue = value;
-              print(selectedValue);
+              widget.onChanged(value);
             });
           },
           buttonStyleData: ButtonStyleData(
@@ -106,12 +105,12 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
           ),
           dropdownStyleData: DropdownStyleData(
             maxHeight: 200,
-            width: 200,
+            width: widget.listWidth,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
               color: AppColors.gray,
             ),
-            offset: const Offset(-20, 0),
+            offset: Offset(widget.displacement, 0),
             scrollbarTheme: ScrollbarThemeData(
               radius: const Radius.circular(40),
               thickness: MaterialStateProperty.all<double>(6),

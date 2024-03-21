@@ -4,8 +4,10 @@ import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 
 class PriceAndConfirmReservationButton extends StatelessWidget {
+  final String price;
   final Function() onTap;
-  const PriceAndConfirmReservationButton({super.key, required this.onTap});
+  const PriceAndConfirmReservationButton(
+      {super.key, required this.onTap, required this.price});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class PriceAndConfirmReservationButton extends StatelessWidget {
               alignment: Alignment.center,
               color: AppColors.secondaryColor700,
               child: Text(
-                '23 ريال',
+                '$price ريال',
                 style: titleMedium.copyWith(color: AppColors.white),
               ),
             )),
@@ -31,7 +33,7 @@ class PriceAndConfirmReservationButton extends StatelessWidget {
               height: 44.h,
               alignment: Alignment.center,
               child: Text(
-                'تأكيد الحجز',
+                'إضافة الحجز',
                 style: titleMedium.copyWith(color: AppColors.white),
               ),
             ),

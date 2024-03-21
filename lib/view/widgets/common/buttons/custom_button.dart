@@ -9,12 +9,14 @@ class CustomButton extends StatelessWidget {
   final double size;
   final Color buttonColor;
   final Color textColor;
+  final double? height;
   const CustomButton(
       {super.key,
       required this.onTap,
       required this.text,
       this.iconData,
       this.size = 1,
+      this.height,
       this.buttonColor = AppColors.secondaryColor,
       this.textColor = AppColors.white});
 
@@ -22,6 +24,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IntrinsicWidth(
       child: Container(
+        height: height,
         //padding: EdgeInsets.symmetric(vertical: 6 * size, horizontal: 12 * size),
         decoration: BoxDecoration(
           color: buttonColor,
