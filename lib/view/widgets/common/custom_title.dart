@@ -149,7 +149,7 @@ class CustomSmallBoldTitle extends StatelessWidget {
                     maxLines: 1,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 14.sp,
+                      fontSize: 13.sp,
                       color: AppColors.textDark,
                     ),
                   )

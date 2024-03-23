@@ -8,9 +8,6 @@ import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/groups.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/group.dart';
-import 'package:jdolh_customers/data/models/group_member.dart';
-import 'package:jdolh_customers/data/models/person.dart';
-import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
 
 class CreateGroupController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;

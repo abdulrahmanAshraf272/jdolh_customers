@@ -77,9 +77,9 @@
 //         const SizedBox(height: 80),
 //         BottomButton(
 //             onTap: () {
-//               controller.onTabBottomButton();
+              
 //             },
-//             text: controller.buttonText),
+//             text: ''),
 //       ],
 //     );
 //   }

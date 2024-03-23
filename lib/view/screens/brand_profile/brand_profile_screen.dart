@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/res_service_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/res_product_subcreen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/res_service_subscreen.dart';
@@ -8,19 +9,16 @@ import 'package:jdolh_customers/view/widgets/brand_profile/categories.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/desc_branchesButton_workTime.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/header.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/items_to_display.dart';
-import 'package:jdolh_customers/view/widgets/brand_profile/products.dart';
-import 'package:jdolh_customers/view/widgets/brand_profile/services.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 
 class BrandProfileScreen extends StatelessWidget {
   const BrandProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(BrandProfileController());
+    Get.put(BrandProfileController());
     return Scaffold(
-      appBar: customAppBar(title: controller.brand.brandStoreName ?? ''),
+      //appBar: customAppBar(title: controller.brand.brandStoreName ?? ''),
       body: GetBuilder<BrandProfileController>(
         builder: (controller) => Column(
           children: [
@@ -49,8 +47,8 @@ class BrandProfileScreen extends StatelessWidget {
                       ),
                     ))
                 : controller.subscreen == 1
-                    ? ResProductSubscreen()
-                    : ResServiceSubscreen()
+                    ? const Expanded(child: ResProductSubscreen())
+                    : const Expanded(child: ResServiceSubscreen())
           ],
         ),
       ),

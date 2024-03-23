@@ -15,36 +15,26 @@ class ItemsToDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<BrandProfileController>(
         builder: (controller) => ListView.builder(
-              itemCount: controller.itemsToDisplay.length,
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) => controller
-                          .brand.brandIsService ==
-                      1
-                  ? ServiceListItem(
-                      image: controller.itemsToDisplay[index].itemsImage,
-                      name: controller.itemsToDisplay[index].itemsTitle ?? '',
-                      price: controller.itemsToDisplay[index].itemsPrice == 0
-                          ? ''
-                          : controller.itemsToDisplay[index].itemsPrice
-                              .toString(),
-                      onTap: () {
-                        controller.onTapItem(index);
-                      },
-                      duration:
-                          controller.itemsToDisplay[index].itemsDuration ?? 0,
-                    )
-                  : ProductListItem(
-                      image: controller.itemsToDisplay[index].itemsImage,
-                      name: controller.itemsToDisplay[index].itemsTitle ?? '',
-                      price: controller.itemsToDisplay[index].itemsPrice == 0
-                          ? ''
-                          : controller.itemsToDisplay[index].itemsPrice
-                              .toString(),
-                      onTap: () {
-                        controller.onTapItem(index);
-                      },
-                    ),
-            ));
+            itemCount: controller.itemsToDisplay.length,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) => ServiceListItem(
+                  image: controller.itemsToDisplay[index].itemsImage,
+                  name: controller.itemsToDisplay[index].itemsTitle ?? '',
+                  isService:
+                      controller.brand.brandIsService == 1 ? true : false,
+                  desc: controller.itemsToDisplay[index].itemsDesc ?? '',
+                  discount: controller.itemsToDisplay[index].itemsDiscount ?? 0,
+                  discountPercent: controller
+                          .itemsToDisplay[index].itemsDiscountPercentage ??
+                      0,
+                  price: controller.itemsToDisplay[index].itemsPrice == 0
+                      ? 'السعر حسب الإختيار'
+                      : '${controller.itemsToDisplay[index].itemsPrice} ريال',
+                  onTap: () {
+                    controller.onTapItem(index);
+                  },
+                  duration: controller.itemsToDisplay[index].itemsDuration ?? 0,
+                )));
   }
 }
 
@@ -53,96 +43,147 @@ class ServiceListItem extends StatelessWidget {
   final String name;
   final String price;
   final int duration;
+  final String desc;
+  final int discount;
+  final int discountPercent;
   final void Function() onTap;
+  final bool isService;
   const ServiceListItem(
       {super.key,
       required this.image,
       required this.name,
       required this.price,
       required this.duration,
-      required this.onTap});
+      required this.onTap,
+      required this.discount,
+      required this.discountPercent,
+      required this.isService,
+      required this.desc});
 
   @override
   Widget build(BuildContext context) {
+    String discountString = discount != 0
+        ? 'خصم $discount ريال'
+        : discountPercent != 0
+            ? 'خصم $discountPercent%'
+            : '';
     return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 85.h,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        decoration: BoxDecoration(
-          color: AppColors.gray,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: image != null
-                  ? FadeInImage.assetNetwork(
-                      placeholder: 'assets/images/loading2.gif',
-                      image: '${ApiLinks.itemsImage}/$image',
-                      width: 100.w,
-                      height: 75,
-                      fit: BoxFit.cover,
-                    )
-                  : Image.asset(
-                      'assets/images/noImageAvailable.jpg',
-                      height: 75,
-                      width: 100.w,
-                      fit: BoxFit.cover,
-                    ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AutoSizeText(
-                    name,
-                    maxLines: 2,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 13.sp,
-                      color: AppColors.textDark,
+        onTap: onTap,
+        child: Container(
+          height: 90.h,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+          child: Stack(
+            children: [
+              Positioned(
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: Container(
+                  height: 85.h,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: AppColors.gray,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: image != null
+                            ? FadeInImage.assetNetwork(
+                                placeholder: 'assets/images/loading2.gif',
+                                image: '${ApiLinks.itemsImage}/$image',
+                                width: 100.w,
+                                height: 75,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                'assets/images/noImageAvailable.jpg',
+                                height: 75,
+                                width: 100.w,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          //mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 5),
+                            AutoSizeText(
+                              name,
+                              maxLines: 2,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14.sp,
+                                color: AppColors.textDark,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            isService
+                                ? Text(
+                                    '$duration دقيقة',
+                                    style: titleSmall2,
+                                  )
+                                : AutoSizeText(
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    desc,
+                                    style: titleSmallGray,
+                                  )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 3),
+                      Text(
+                        price,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12.sp,
+                          color: AppColors.textDark,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+
+                      // Expanded(
+                      //     child: Text(
+                      //   '$price ريال',
+                      //   style: TextStyle(
+                      //     fontWeight: FontWeight.w600,
+                      //     fontSize: 11.sp,
+                      //     color: AppColors.textDark,
+                      //   ),
+                      // )),
+                      // CustomButton(
+                      //   onTap: onTap,
+                      //   text: 'اضف للحجز',
+                      //   height: 25.h,
+                      // )
+                    ],
+                  ),
+                ),
+              ),
+              if (discountString != '')
+                Positioned(
+                  top: 0,
+                  left: 3,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: AppColors.secondaryColor),
+                    child: Text(
+                      discountString,
+                      style: TextStyle(fontSize: 9.sp, color: Colors.white),
                     ),
                   ),
-                  Text(
-                    '$duration دقيقة',
-                    style: titleSmall2,
-                  )
-                ],
-              ),
-            ),
-            SizedBox(width: 3),
-            Text(
-              '$price ريال',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 12.sp,
-                color: AppColors.textDark,
-              ),
-            ),
-            const SizedBox(width: 10),
-
-            // Expanded(
-            //     child: Text(
-            //   '$price ريال',
-            //   style: TextStyle(
-            //     fontWeight: FontWeight.w600,
-            //     fontSize: 11.sp,
-            //     color: AppColors.textDark,
-            //   ),
-            // )),
-            // CustomButton(
-            //   onTap: onTap,
-            //   text: 'اضف للحجز',
-            //   height: 25.h,
-            // )
-          ],
-        ),
-      ),
-    );
+                )
+            ],
+          ),
+        ));
   }
 }
 

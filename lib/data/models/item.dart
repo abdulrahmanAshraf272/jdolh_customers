@@ -1,11 +1,9 @@
-import 'package:jdolh_customers/data/models/ioption_element.dart';
-
 class Item {
   int? itemsId;
   int? itemsCategoriesid;
   int? itemsBchid;
   String? itemsTitle;
-  int? itemsPrice;
+  num? itemsPrice;
   int? itemsDiscount;
   int? itemsDiscountPercentage;
   String? itemsImage;

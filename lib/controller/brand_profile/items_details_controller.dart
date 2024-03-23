@@ -1,44 +1,116 @@
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/brand_search.dart';
+import 'package:jdolh_customers/data/data_source/remote/cart.dart';
+import 'package:jdolh_customers/data/models/bch.dart';
+import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/ioption_element.dart';
 import 'package:jdolh_customers/data/models/item.dart';
 import 'package:jdolh_customers/data/models/item_option.dart';
 
 class ItemsDetailsController extends GetxController {
-  StatusRequest statusRequest = StatusRequest.loading;
+  StatusRequest statusRequest = StatusRequest.none;
   BrandSearchData brandSearchData = BrandSearchData(Get.find());
+  MyServices myServices = Get.find();
+  CartData cartData = CartData(Get.find());
   late Item item;
+  late Bch bch;
+  late Brand brand;
   List<ItemOption> itemOptions = [];
   String desc = '';
   String shortDesc = '';
+  int discountAmount = 0;
+  int quantity = 1;
 
   List<IOptionElement> elementSelected = [];
+  num itemPrice = 0;
+  num itemPriceAfterDiscount = 0;
 
-  int totalPrice = 0;
+  num totalPrice = 0;
 
-  onTapAddToCart() {
+  num optionsPrice = 0;
+
+  onTapIncrease() {
+    quantity++;
+    totalPrice = (itemPriceAfterDiscount + optionsPrice) * quantity;
+    update();
+  }
+
+  onTapDecrease() {
+    if (quantity == 1) return;
+    quantity--;
+    totalPrice = (itemPriceAfterDiscount + optionsPrice) * quantity;
+    update();
+  }
+
+  Future<bool> onTapAddToCart() async {
     if (checkBasicOptionSelected()) {
       desc = extractDesc();
-      print('desc: $desc');
       shortDesc = extractShortDesc();
-      print('shortDesc $shortDesc');
-      print('all basic elements selected');
+
+      bool isAddDone = await addCart();
+      return isAddDone;
     }
+    return false;
+  }
+
+  Future<bool> addCart() async {
+    statusRequest = StatusRequest.loading;
+    update();
+    var response = await cartData.addCart(
+        userid: myServices.getUserid(),
+        bchid: bch.bchId.toString(),
+        itemid: item.itemsId.toString(),
+        price: itemPriceAfterDiscount.toString(),
+        totalPrice: totalPrice.toString(),
+        discount: discountAmount.toString(),
+        desc: desc,
+        shortDesc: shortDesc,
+        quantity: quantity.toString());
+    statusRequest = handlingData(response);
+    update();
+    print('addCart: $statusRequest');
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('cart success');
+        return true;
+      } else {
+        statusRequest = StatusRequest.failure;
+        print('cart failed');
+      }
+    }
+    return false;
   }
 
   String extractDesc() {
     String desc = '';
 
     for (int i = 0; i < elementSelected.length; i++) {
-      desc += '${elementSelected[i].name}: price = ${elementSelected[i].price}';
+      String optionTitle = getOptionTitle(elementSelected[i]);
+
+      desc +=
+          '$optionTitle: ${elementSelected[i].name}, price = ${elementSelected[i].price} SAR';
       if (i < elementSelected.length - 1) {
         desc += '\n';
       }
     }
 
     return desc;
+  }
+
+  String getOptionTitle(IOptionElement element) {
+    for (int i = 0; i < itemOptions.length; i++) {
+      List<IOptionElement> elements = itemOptions[i].elements!;
+
+      for (int j = 0; j < elements.length; j++) {
+        if (elements[j] == element) {
+          return itemOptions[i].title!;
+        }
+      }
+    }
+    return '';
   }
 
   String extractShortDesc() {
@@ -75,11 +147,11 @@ class ItemsDetailsController extends GetxController {
   }
 
   updateTotalPrice() {
-    totalPrice = 0;
-    totalPrice = item.itemsPrice ?? 0;
+    optionsPrice = 0;
     for (int i = 0; i < elementSelected.length; i++) {
-      totalPrice += elementSelected[i].price ?? 0;
+      optionsPrice += elementSelected[i].price ?? 0;
     }
+    totalPrice = (itemPriceAfterDiscount + optionsPrice) * quantity;
     update();
   }
 
@@ -87,7 +159,8 @@ class ItemsDetailsController extends GetxController {
     if (item.itemsWithOptions == 0) {
       return;
     }
-
+    statusRequest = StatusRequest.loading;
+    update();
     var response = await brandSearchData.getItemOptionsWithElements(
         itemId: item.itemsId.toString());
     statusRequest = handlingData(response);
@@ -137,11 +210,30 @@ class ItemsDetailsController extends GetxController {
 
   receiveArgument() {
     if (Get.arguments != null) {
-      item = Get.arguments;
-      totalPrice = item.itemsPrice ?? 0;
+      item = Get.arguments['item'];
+      bch = Get.arguments['bch'];
+      brand = Get.arguments['brand'];
+      getPriceAndApplyDiscount();
     } else {
       print("item didn't send to itemsDetails");
     }
+  }
+
+  getPriceAndApplyDiscount() {
+    //Get item price
+    itemPrice = item.itemsPrice ?? 0;
+    itemPriceAfterDiscount = itemPrice;
+    //Get Discount amount
+    if (item.itemsDiscount != 0) {
+      discountAmount = item.itemsDiscount!;
+    } else if (item.itemsDiscountPercentage != 0) {
+      discountAmount =
+          (itemPrice * (item.itemsDiscountPercentage! / 100)).toInt();
+    }
+    //Get item price after discount
+    itemPriceAfterDiscount = itemPrice - discountAmount;
+    //set Total price
+    totalPrice = itemPriceAfterDiscount;
   }
 
   @override

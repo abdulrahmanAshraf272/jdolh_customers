@@ -19,8 +19,9 @@ class DescAndBranshedButtonAndWorkTime extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
-      child: Column(children: [
+      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CustomSmallCard(
               title: 'مواعيد العمل',

@@ -38,7 +38,7 @@ class HandlingDataRequest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return statusRequest == StatusRequest.loading
-        ? const Center(child: Text('Loading'))
+        ? Center(child: CircularProgressIndicator())
         : statusRequest == StatusRequest.offlineFailure
             ? const Center(child: Text('offline failure'))
             : statusRequest == StatusRequest.serverFailure

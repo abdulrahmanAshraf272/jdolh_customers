@@ -46,7 +46,8 @@ class LoginController extends GetxController {
   }
 
   saveUserDataInSharedPreferences(User user) {
-    myServices.sharedPreferences.setString("id", user.userId.toString());
+    myServices.setUserid(user.userId!);
+
     myServices.sharedPreferences.setString("name", user.userName!);
     myServices.sharedPreferences.setString("username", user.userUsername!);
     myServices.sharedPreferences.setString("email", user.userEmail!);

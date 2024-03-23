@@ -4,6 +4,7 @@ import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/image_name_followers.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/scheduled_rating.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/arrow_back_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
 
 class BrandProfileHeader extends StatelessWidget {
@@ -64,7 +65,13 @@ class BrandProfileHeader extends StatelessWidget {
                       ],
                     ),
                   ),
-                )
+                ),
+                const Positioned(
+                    top: 0,
+                    right: 10,
+                    child: SafeArea(
+                      child: ArrowBackButton(),
+                    ))
               ],
             )));
   }

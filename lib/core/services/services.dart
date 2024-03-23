@@ -12,6 +12,14 @@ class MyServices extends GetxService {
     //locationPermissionRequest();
     return this;
   }
+
+  setUserid(int id) {
+    sharedPreferences.setString("id", id.toString());
+  }
+
+  String getUserid() {
+    return sharedPreferences.getString("id") ?? '0';
+  }
 }
 
 initialServices() async {

@@ -14,6 +14,8 @@ class ResOption {
   String? resoptionsThursTime;
   String? resoptionsFriTime;
 
+  List<dynamic>? itemsRelated;
+
   ResOption(
       {this.resoptionsId,
       this.resoptionsBchid,
@@ -28,7 +30,8 @@ class ResOption {
       this.resoptionsTuesTime,
       this.resoptionsWedTime,
       this.resoptionsThursTime,
-      this.resoptionsFriTime});
+      this.resoptionsFriTime,
+      this.itemsRelated});
 
   ResOption.fromJson(Map<String, dynamic> json) {
     resoptionsId = json['resoptions_id'];
@@ -45,5 +48,6 @@ class ResOption {
     resoptionsWedTime = json['resoptions_wedTime'];
     resoptionsThursTime = json['resoptions_thursTime'];
     resoptionsFriTime = json['resoptions_friTime'];
+    itemsRelated = json['itemsRelated'];
   }
 }

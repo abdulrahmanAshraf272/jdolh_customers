@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -22,11 +23,29 @@ class ItemsDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    successDialog() {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.success,
+        animType: AnimType.rightSlide,
+        title: 'تمت الاضافة',
+        desc: '',
+        btnOkText: 'حسناً',
+        btnOkOnPress: () {
+          Get.back();
+        },
+      ).show();
+    }
+
     Get.put(ItemsDetailsController());
     return GetBuilder<ItemsDetailsController>(
         builder: (controller) => Scaffold(
               floatingActionButton: PriceAndConfirmReservationButton(
-                onTap: () => controller.onTapAddToCart(),
+                onTap: () async {
+                  if (await controller.onTapAddToCart()) {
+                    successDialog();
+                  }
+                },
                 price: controller.totalPrice.toString(),
               ),
               floatingActionButtonLocation:
@@ -36,8 +55,19 @@ class ItemsDetailsScreen extends StatelessWidget {
                   ProductImageAndName(
                     image: controller.item.itemsImage,
                     name: controller.item.itemsTitle ?? '',
+                    itemPrice: controller.itemPrice.toString(),
+                    itemPriceAfterDiscount:
+                        controller.itemPriceAfterDiscount.toString(),
                   ),
-                  HandlingDataView(
+                  const SizedBox(height: 20),
+                  Text(controller.item.itemsDesc ?? ''),
+                  const SizedBox(height: 10),
+                  if (controller.brand.brandIsService == 0)
+                    QuantitySetter(
+                        quantity: controller.quantity,
+                        onTapIncrease: controller.onTapIncrease,
+                        onTapDecrease: controller.onTapDecrease),
+                  HandlingDataRequest(
                       statusRequest: controller.statusRequest,
                       widget: ListView.builder(
                           shrinkWrap: true,
@@ -48,6 +78,57 @@ class ItemsDetailsScreen extends StatelessWidget {
                 ],
               ),
             ));
+  }
+}
+
+class QuantitySetter extends StatelessWidget {
+  final int quantity;
+  final void Function() onTapIncrease;
+  final void Function() onTapDecrease;
+  const QuantitySetter({
+    super.key,
+    required this.quantity,
+    required this.onTapIncrease,
+    required this.onTapDecrease,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 40,
+      //padding: EdgeInsets.all(4.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            iconSize: 20,
+            icon: const Icon(Icons.add),
+            onPressed: onTapIncrease,
+          ),
+          Text(
+            '$quantity',
+            style: const TextStyle(fontSize: 14.0),
+          ),
+          IconButton(
+            iconSize: 20,
+            icon: const Icon(Icons.remove),
+            onPressed: onTapDecrease,
+          ),
+        ],
+      ),
+    );
   }
 }
 

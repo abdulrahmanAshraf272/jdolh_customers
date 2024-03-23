@@ -86,4 +86,13 @@ class ApiLinks {
   static const getBch = '$server/jdolh_customers/get_brand/get_bch.php';
   static const getItemOptions =
       '$server/jdolh_customers/get_brand/get_itemsoptions.php';
+  static const getBchInfo =
+      '$server/jdolh_customers/get_brand/get_bch_info.php';
+
+  // ======= Cart =======//
+  static const addCart = '$server/jdolh_customers/cart/add_cart.php';
+  static const getCart = '$server/jdolh_customers/cart/get_cart.php';
+  static const deleteCart = '$server/jdolh_customers/cart/delete_cart.php';
+  static const changeQuantity =
+      '$server/jdolh_customers/cart/change_quantity.php';
 }
