@@ -11,6 +11,7 @@ import 'package:jdolh_customers/controller/brand_profile/res_service_controller.
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
+import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/invintors.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_product/extra_seats.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_product/oreder_content_list_item.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
@@ -49,7 +50,7 @@ class ResProductSubscreen extends StatelessWidget {
                         flex: 5,
                         child: Column(
                           children: [
-                            CustomSmallBoldTitle(title: 'تفضيلات الحجز'),
+                            const CustomSmallBoldTitle(title: 'تفضيلات الحجز'),
                             const SizedBox(height: 10),
                             CustomDropdown(
                               horizontalMargin: 0,
@@ -76,11 +77,15 @@ class ResProductSubscreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   DateOrLocationDisplayContainer(
                     verticalMargin: 0,
-                    hintText: 'اختر وقت و تاريخ الحجز',
+                    hintText: controller.selectedResDateTime != ''
+                        ? controller.selectedResDateTime
+                        : 'اختر وقت و تاريخ الحجز',
                     iconData: Icons.date_range,
-                    onTap: () {},
+                    onTap: () => controller.gotoSetResTime(),
                   ),
                   const SizedBox(height: 20),
+                  Invitors(),
+                  const SizedBox(height: 15),
                   const CustomSmallBoldTitle(
                     title: 'تفاصيل الطلب',
                   ),

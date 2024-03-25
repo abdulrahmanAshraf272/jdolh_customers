@@ -17,6 +17,30 @@ import 'package:jdolh_customers/data/models/resOption.dart';
 
 class BrandProfileController extends GetxController {
   //Res Product ======================
+
+  String selectedResDateTime = '';
+  void gotoSetResTime() async {
+    if (carts.isEmpty) {
+      String message = brand.brandIsService == 1
+          ? 'من فضلك قم بإضافة الخدمات ثم قم بتحديد وقت الحجز'
+          : 'من فضلك قم بإضافة المنتجات ثم قم بتحديد وقت الحجز';
+      Get.rawSnackbar(message: message);
+      return;
+    }
+    final result = await Get.toNamed(AppRouteName.setResTime);
+    if (result != null) {
+      selectedResDateTime = result;
+      print(selectedResDateTime);
+      update();
+    }
+  }
+
+  bool withInvitros = false;
+  switchWithInvitors(bool value) {
+    withInvitros = value;
+    update();
+  }
+
   TextEditingController extraSeats = TextEditingController();
   onTapIncrease(int index) {
     //Get quantity and price (off one quantity of cart)

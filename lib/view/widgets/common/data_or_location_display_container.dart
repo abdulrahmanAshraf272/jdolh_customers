@@ -60,7 +60,7 @@ class DateOrLocationDisplayContainer extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 13.sp,
-                color: Colors.grey.shade500,
+                color: Colors.grey.shade700,
               ),
             )),
             iconData != null && iconEnd

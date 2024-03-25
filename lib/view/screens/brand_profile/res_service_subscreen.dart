@@ -54,9 +54,11 @@ class ResServiceSubscreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   DateOrLocationDisplayContainer(
                     verticalMargin: 0,
-                    hintText: 'اختر وقت و تاريخ الحجز',
+                    hintText: controller.selectedResDateTime != ''
+                        ? controller.selectedResDateTime
+                        : 'اختر وقت و تاريخ الحجز',
                     iconData: Icons.date_range,
-                    onTap: () {},
+                    onTap: () => controller.gotoSetResTime(),
                   ),
                   const SizedBox(height: 20),
                   const CustomSmallBoldTitle(

@@ -4,6 +4,7 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/middleware/my_middleware.dart';
 import 'package:jdolh_customers/test_screen.dart';
 import 'package:jdolh_customers/test_screen2.dart';
+import 'package:jdolh_customers/view/screens/brand_profile/set_res_time_screen.dart';
 import 'package:jdolh_customers/view/screens/checkin/add_members_checkin_screen.dart';
 import 'package:jdolh_customers/view/screens/checkin/add_new_place_screen.dart';
 import 'package:jdolh_customers/view/screens/checkin/checkin_confirm_screen.dart';
@@ -250,6 +251,10 @@ List<GetPage> routes = [
     name: AppRouteName.itemsDetails,
     page: () => const ItemsDetailsScreen(),
   ),
+  GetPage(
+      name: AppRouteName.setResTime,
+      page: () => const SetResTimeScreen(),
+      popGesture: true),
   GetPage(
     name: AppRouteName.setDate,
     page: () => const SetDateScreen(),

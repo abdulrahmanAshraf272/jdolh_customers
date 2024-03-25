@@ -60,4 +60,5 @@ class AppRouteName {
 
   //Brand profile
   static const brandProfile = '/brandProfile';
+  static const setResTime = '/setResTime';
 }
