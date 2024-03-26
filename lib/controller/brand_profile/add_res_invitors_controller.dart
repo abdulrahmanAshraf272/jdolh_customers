@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/reservation/res_product_controller.dart';
 import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
@@ -8,7 +9,7 @@ import 'package:jdolh_customers/data/models/friend.dart';
 
 class AddResInvitorsController extends GetxController {
   ValuesController valuesController = Get.put(ValuesController());
-  BrandProfileController brandProfileController = Get.find();
+  ResProductController resProductController = Get.find();
   TextEditingController searchController = TextEditingController();
 
   List<Friend> myfollowing = [];
@@ -30,7 +31,7 @@ class AddResInvitorsController extends GetxController {
   }
 
   saveChanges() {
-    brandProfileController.members = _members;
+    resProductController.members = _members;
     Get.back();
   }
 
@@ -67,7 +68,7 @@ class AddResInvitorsController extends GetxController {
     super.onInit();
     myfollowing = List.from(valuesController.myfollowing);
     myfollowingFiltered = List.from(myfollowing);
-    _members = List.from(brandProfileController.members);
+    _members = List.from(resProductController.members);
   }
 
   @override

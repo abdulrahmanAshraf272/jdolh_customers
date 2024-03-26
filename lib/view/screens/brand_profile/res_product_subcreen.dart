@@ -2,7 +2,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/reservation/res_product_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
+import 'package:jdolh_customers/view/widgets/brand_profile/carts.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/invintors.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_product/extra_seats.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_product/oreder_content_list_item.dart';
@@ -26,8 +28,8 @@ class ResProductSubscreen extends StatelessWidget {
       ).show();
     }
 
-    Get.put(BrandProfileController());
-    return GetBuilder<BrandProfileController>(
+    Get.put(ResProductController());
+    return GetBuilder<ResProductController>(
         builder: (controller) => SingleChildScrollView(
               child: Column(
                 children: [
@@ -44,7 +46,8 @@ class ResProductSubscreen extends StatelessWidget {
                             CustomDropdown(
                               horizontalMargin: 0,
                               items: controller.resOptionsTitles,
-                              title: controller.initalResOptionTitle,
+                              title:
+                                  controller.selectedResOption.resoptionsTitle!,
                               displacement: 0,
                               onChanged: (String? value) {
                                 controller.selectResOption(value!);
@@ -73,47 +76,16 @@ class ResProductSubscreen extends StatelessWidget {
                     onTap: () => controller.gotoSetResTime(),
                   ),
                   const SizedBox(height: 20),
-                  Invitors(),
+                  const Invitors(),
                   const SizedBox(height: 15),
                   const CustomSmallBoldTitle(
                     title: 'تفاصيل الطلب',
                   ),
-                  HandlingDataRequest(
-                    statusRequest: controller.statusRequestCart,
-                    widget: controller.carts.isEmpty
-                        ? const ListIsEmptyText()
-                        : ListView.builder(
-                            itemCount: controller.carts.length,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) =>
-                                OrderContentCreationListItem(
-                                    image: controller.carts[index].itemsImage,
-                                    name: controller.carts[index].itemsTitle ??
-                                        '',
-                                    desc:
-                                        controller.carts[index].cartShortDesc ??
-                                            '',
-                                    quantity:
-                                        controller.carts[index].cartQuantity ??
-                                            1,
-                                    price: controller
-                                        .carts[index].cartTotalPrice
-                                        .toString(),
-                                    onTapIncrease: () {
-                                      controller.onTapIncrease(index);
-                                    },
-                                    onTapDecrease: () {
-                                      controller.onTapDecrease(index);
-                                    },
-                                    onTapDelete: () {
-                                      controller.deleteCart(index);
-                                    }),
-                          ),
-                  ),
+                  const CartProduct(),
                   const SizedBox(height: 20),
                   GoHomeButton(
                     onTap: () {
+                      print('${controller.selectedResOption.resoptionsTitle}');
                       var checkResOption = controller
                           .checkAllItemsAvailableWithinResOptionSelected();
                       if (checkResOption != true) {

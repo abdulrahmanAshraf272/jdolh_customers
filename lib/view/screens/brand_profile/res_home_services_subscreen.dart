@@ -2,7 +2,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/reservation/res_home_services_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
+import 'package:jdolh_customers/view/widgets/brand_profile/carts.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_product/oreder_content_list_item.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_service/cart_list_item.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_service/service_duration.dart';
@@ -27,8 +29,8 @@ class ResHomeServicesSubscreen extends StatelessWidget {
       ).show();
     }
 
-    Get.put(BrandProfileController());
-    return GetBuilder<BrandProfileController>(
+    Get.put(ResHomeServicesController());
+    return GetBuilder<ResHomeServicesController>(
         builder: (controller) => SingleChildScrollView(
               child: Column(
                 children: [
@@ -38,11 +40,12 @@ class ResHomeServicesSubscreen extends StatelessWidget {
                       Expanded(
                         child: Column(
                           children: [
-                            CustomSmallBoldTitle(title: 'تفضيلات الحجز'),
+                            const CustomSmallBoldTitle(title: 'تفضيلات الحجز'),
                             const SizedBox(height: 10),
                             CustomDropdown(
                               items: controller.resOptionsTitles,
-                              title: controller.initalResOptionTitle,
+                              title:
+                                  controller.selectedResOption.resoptionsTitle!,
                               displacement: 0,
                               onChanged: (String? value) {
                                 controller.selectResOption(value!);
@@ -51,7 +54,7 @@ class ResHomeServicesSubscreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      ServiceDuration(duration: 45)
+                      ServiceDuration(duration: controller.resTotalDuration())
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -94,29 +97,7 @@ class ResHomeServicesSubscreen extends StatelessWidget {
                   const CustomSmallBoldTitle(
                     title: 'تفاصيل الحجز',
                   ),
-                  HandlingDataRequest(
-                      statusRequest: controller.statusRequestCart,
-                      widget: controller.carts.isEmpty
-                          ? const ListIsEmptyText()
-                          : ListView.builder(
-                              itemCount: controller.carts.length,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) => CartListItem(
-                                  image: controller.carts[index].itemsImage,
-                                  name:
-                                      controller.carts[index].itemsTitle ?? '',
-                                  desc: controller.carts[index].cartShortDesc ??
-                                      '',
-                                  price: controller.carts[index].cartTotalPrice
-                                      .toString(),
-                                  duration:
-                                      controller.carts[index].itemsDuration ??
-                                          0,
-                                  onTapDelete: () {
-                                    controller.deleteCart(index);
-                                  }),
-                            )),
+                  CartService(),
                   const SizedBox(height: 20),
                   GoHomeButton(
                     onTap: () {

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 
 class ServiceDuration extends StatelessWidget {
-  final int duration;
+  final String duration;
   const ServiceDuration({
     super.key,
     required this.duration,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/brand_profile/res_service_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/reservation/res_service_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
@@ -19,43 +19,8 @@ import 'package:jdolh_customers/data/models/resOption.dart';
 class BrandProfileController extends GetxController {
   //Res Product ======================
 
-  // === Add Invitors===//
-  bool withInvitros = false;
-  switchWithInvitors(bool value) {
-    withInvitros = value;
-    update();
-  }
-
-  List<Friend> members = [];
-  removeMember(index) {
-    members.remove(members[index]);
-    update();
-  }
-
-  onTapAddMembers() {
-    Get.toNamed(AppRouteName.addResInvitors)!.then((value) => update());
-  }
-
   ///////////////
 
-  String selectedResDateTime = '';
-  void gotoSetResTime() async {
-    if (carts.isEmpty) {
-      String message = brand.brandIsService == 1
-          ? 'من فضلك قم بإضافة الخدمات ثم قم بتحديد وقت الحجز'
-          : 'من فضلك قم بإضافة المنتجات ثم قم بتحديد وقت الحجز';
-      Get.rawSnackbar(message: message);
-      return;
-    }
-    final result = await Get.toNamed(AppRouteName.setResTime);
-    if (result != null) {
-      selectedResDateTime = result;
-      print(selectedResDateTime);
-      update();
-    }
-  }
-
-  TextEditingController extraSeats = TextEditingController();
   onTapIncrease(int index) {
     //Get quantity and price (off one quantity of cart)
     int quantityNo = carts[index].cartQuantity ?? 1;
@@ -108,25 +73,22 @@ class BrandProfileController extends GetxController {
     }
   }
 
-  checkAllItemsAvailableWithinResOptionSelected() {
-    List<dynamic> resItemsId = selectedResOption.itemsRelated!;
-    for (int i = 0; i < carts.length; i++) {
-      if (!resItemsId.contains(carts[i].itemsId)) {
-        String warningMessage =
-            '${carts[i].itemsTitle} غير متوفر ضمن تفضيل ${selectedResOption.resoptionsTitle}\n قم بإزالة ${carts[i].itemsTitle} او قم بتغيير التفضيل';
-        print(warningMessage);
-        return warningMessage;
+  deleteCart(int index) async {
+    String cartid = carts[index].cartId.toString();
+    update();
+    carts.remove(carts[index]);
+    var response = await cartData.deleteCart(cartid: cartid);
+    statusRequestCart = handlingData(response);
+    print('delete: $statusRequestCart');
+    if (statusRequestCart == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('delete cart success');
+      } else {
+        statusRequestCart = StatusRequest.failure;
+        print('delete failed');
       }
     }
-    return true;
-  }
-
-  onTapConfirmReservation() {
-    if (carts.isEmpty) {
-      Get.rawSnackbar(message: 'السلة فارغة!');
-      return;
-    }
-    print('confirm reservation');
+    print('cart: ${carts.length}');
   }
 
   int subscreen =
@@ -149,12 +111,13 @@ class BrandProfileController extends GetxController {
   List<MyCategories> categories = [];
   List<Item> items = [];
   List<Item> itemsToDisplay = [];
-  late ResOption selectedResOption;
 
   int selectedIndexCategory = 0;
 
   List<ResOption> resOptions = [];
   List<String> resOptionsTitles = [];
+  late ResOption selectedResOption;
+
   String initalResOptionTitle = '';
 
   late BchWorktime bchWorktime;
@@ -245,23 +208,6 @@ class BrandProfileController extends GetxController {
     update();
   }
 
-  deleteCart(int index) async {
-    String cartid = carts[index].cartId.toString();
-    update();
-    carts.remove(carts[index]);
-    var response = await cartData.deleteCart(cartid: cartid);
-    statusRequestCart = handlingData(response);
-    print('delete: $statusRequestCart');
-    if (statusRequestCart == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        print('delete cart success');
-      } else {
-        statusRequestCart = StatusRequest.failure;
-        print('delete failed');
-      }
-    }
-  }
-
   parseCart(response) {
     List cartListJson = response['data'];
     carts = cartListJson.map((e) => Cart.fromJson(e)).toList();
@@ -319,6 +265,6 @@ class BrandProfileController extends GetxController {
     receiveArgument();
     getBch();
     getBchInfo();
-    //getCart();
+    getCart();
   }
 }

@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/reservation/res_product_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_toggle.dart';
@@ -15,8 +16,8 @@ class Invitors extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(BrandProfileController());
-    return GetBuilder<BrandProfileController>(
+    Get.put(ResProductController());
+    return GetBuilder<ResProductController>(
         builder: (controller) => Column(
               children: [
                 SmallToggleButtons(

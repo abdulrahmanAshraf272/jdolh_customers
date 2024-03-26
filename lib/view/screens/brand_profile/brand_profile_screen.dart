@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
-import 'package:jdolh_customers/controller/brand_profile/res_service_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/res_home_services_subscreen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/res_product_subcreen.dart';
