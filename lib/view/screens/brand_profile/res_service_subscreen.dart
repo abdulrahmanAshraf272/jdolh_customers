@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -14,6 +15,7 @@ import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_scree
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_service/cart_list_item.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_service/service_duration.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_dropdown.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/common/data_or_location_display_container.dart';
 
@@ -22,6 +24,16 @@ class ResServiceSubscreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    warningDialog(String message) {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.warning,
+        animType: AnimType.rightSlide,
+        title: 'تنبيه',
+        desc: message,
+      ).show();
+    }
+
     Get.put(BrandProfileController());
     return GetBuilder<BrandProfileController>(
         builder: (controller) => SingleChildScrollView(
@@ -86,7 +98,21 @@ class ResServiceSubscreen extends StatelessWidget {
                                   onTapDelete: () {
                                     controller.deleteCart(index);
                                   }),
-                            ))
+                            )),
+                  const SizedBox(height: 20),
+                  GoHomeButton(
+                    onTap: () {
+                      var checkResOption = controller
+                          .checkAllItemsAvailableWithinResOptionSelected();
+                      if (checkResOption != true) {
+                        warningDialog(checkResOption);
+                        return;
+                      }
+                      controller.onTapConfirmReservation();
+                    },
+                    text: 'تأكيد الحجز',
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ));

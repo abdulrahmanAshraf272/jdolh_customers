@@ -16,7 +16,11 @@ class ReservationSearchController extends GetxController {
 
   BrandType? selectedType;
   BrandSubtype? selectedSubtype;
+
+  List<BrandType> brandTypesDisplay = [];
+  List<BrandType> brandTypesWithoutProduct = [];
   List<BrandType> brandTypes = [];
+
   List<BrandSubtype> brandSubtypes = [];
 
   List<String> brandTypesString = [];
@@ -24,13 +28,41 @@ class ReservationSearchController extends GetxController {
   String city = cities[0];
   //To solve the problem of the subtype .
   String? selectedValue;
+  String? selectedValueType;
 
   List<Brand> brands = [];
   List<Bch> bchs = [];
 
+  bool isHomeServices = false;
+  setIsHomeService(bool value) {
+    isHomeServices = value;
+    brands.clear();
+    bchs.clear();
+
+    if (isHomeServices) {
+      brandTypesDisplay = List.from(brandTypesWithoutProduct);
+    } else {
+      brandTypesDisplay = List.from(brandTypes);
+    }
+
+    selectedValue = null;
+    selectedSubtype = null;
+    selectedValueType = null;
+    selectedType = null;
+    brandTypesString.clear();
+    for (int i = 0; i < brandTypesDisplay.length; i++) {
+      brandTypesString.add(brandTypesDisplay[i].type!);
+    }
+
+    update();
+  }
+
   onTapCard(int index) {
-    Get.toNamed(AppRouteName.brandProfile,
-        arguments: {"brand": brands[index], "bch": bchs[index]});
+    Get.toNamed(AppRouteName.brandProfile, arguments: {
+      "brand": brands[index],
+      "bch": bchs[index],
+      "isHomeService": isHomeServices
+    });
   }
 
   searchBrand() async {
@@ -97,15 +129,22 @@ class ReservationSearchController extends GetxController {
     brandTypes = typesJson.map((e) => BrandType.fromJson(e)).toList();
     brandSubtypes = subtypesJson.map((e) => BrandSubtype.fromJson(e)).toList();
 
-    for (int i = 0; i < brandTypes.length; i++) {
-      brandTypesString.add(brandTypes[i].type!);
+    brandTypesWithoutProduct
+        .addAll(brandTypes.where((element) => element.isService == 1));
+
+    brandTypesDisplay = List.from(brandTypes);
+
+    for (int i = 0; i < brandTypesDisplay.length; i++) {
+      brandTypesString.add(brandTypesDisplay[i].type!);
     }
+
     update();
   }
 
   setSelectedBrandType(String? value) {
     if (value != null) {
-      selectedType = brandTypes.firstWhere((element) => element.type == value);
+      selectedType =
+          brandTypesDisplay.firstWhere((element) => element.type == value);
 
       selectedValue = null;
       selectedSubtype = null;

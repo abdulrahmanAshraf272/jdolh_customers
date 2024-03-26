@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
-import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/invintors.dart';
-import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_product/extra_seats.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_product/oreder_content_list_item.dart';
+import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_service/cart_list_item.dart';
+import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_service/service_duration.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_dropdown.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
+import 'package:jdolh_customers/view/widgets/common/custom_textfield.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/common/data_or_location_display_container.dart';
 
-class ResProductSubscreen extends StatelessWidget {
-  const ResProductSubscreen({super.key});
+class ResHomeServicesSubscreen extends StatelessWidget {
+  const ResHomeServicesSubscreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +35,12 @@ class ResProductSubscreen extends StatelessWidget {
                   const SizedBox(height: 15),
                   Row(
                     children: [
-                      const SizedBox(width: 20),
                       Expanded(
-                        flex: 5,
                         child: Column(
                           children: [
-                            const CustomSmallBoldTitle(title: 'تفضيلات الحجز'),
+                            CustomSmallBoldTitle(title: 'تفضيلات الحجز'),
                             const SizedBox(height: 10),
                             CustomDropdown(
-                              horizontalMargin: 0,
                               items: controller.resOptionsTitles,
                               title: controller.initalResOptionTitle,
                               displacement: 0,
@@ -53,12 +51,7 @@ class ResProductSubscreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                          flex: 2,
-                          child: ExtraSeats(
-                              textEditingController: controller.extraSeats)),
-                      const SizedBox(width: 20)
+                      ServiceDuration(duration: 45)
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -73,44 +66,57 @@ class ResProductSubscreen extends StatelessWidget {
                     onTap: () => controller.gotoSetResTime(),
                   ),
                   const SizedBox(height: 20),
-                  Invitors(),
+                  const CustomSmallBoldTitle(title: 'الموقع'),
+                  DateOrLocationDisplayContainer(
+                      hintText: 'حدد موقع المنزل',
+                      iconData: Icons.place,
+                      onTap: () {
+                        //controller.goToAddLocation();
+                      }),
+                  const CustomSmallBoldTitle(title: 'العنوان'),
+                  const SizedBox(height: 10),
+                  CustomTextField(
+                      textEditingController: TextEditingController(),
+                      labelText: 'اسم الحي'),
                   const SizedBox(height: 15),
+                  CustomTextField(
+                      textEditingController: TextEditingController(),
+                      labelText: 'اسم الشارع'),
+                  const SizedBox(height: 15),
+                  CustomTextField(
+                      textEditingController: TextEditingController(),
+                      labelText: 'اسم البرج'),
+                  const SizedBox(height: 15),
+                  CustomTextField(
+                      textEditingController: TextEditingController(),
+                      labelText: 'رقم الشقة'),
+                  const SizedBox(height: 20),
                   const CustomSmallBoldTitle(
-                    title: 'تفاصيل الطلب',
+                    title: 'تفاصيل الحجز',
                   ),
                   HandlingDataRequest(
-                    statusRequest: controller.statusRequestCart,
-                    widget: controller.carts.isEmpty
-                        ? const ListIsEmptyText()
-                        : ListView.builder(
-                            itemCount: controller.carts.length,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) =>
-                                OrderContentCreationListItem(
-                                    image: controller.carts[index].itemsImage,
-                                    name: controller.carts[index].itemsTitle ??
-                                        '',
-                                    desc:
-                                        controller.carts[index].cartShortDesc ??
-                                            '',
-                                    quantity:
-                                        controller.carts[index].cartQuantity ??
-                                            1,
-                                    price: controller
-                                        .carts[index].cartTotalPrice
-                                        .toString(),
-                                    onTapIncrease: () {
-                                      controller.onTapIncrease(index);
-                                    },
-                                    onTapDecrease: () {
-                                      controller.onTapDecrease(index);
-                                    },
-                                    onTapDelete: () {
-                                      controller.deleteCart(index);
-                                    }),
-                          ),
-                  ),
+                      statusRequest: controller.statusRequestCart,
+                      widget: controller.carts.isEmpty
+                          ? const ListIsEmptyText()
+                          : ListView.builder(
+                              itemCount: controller.carts.length,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) => CartListItem(
+                                  image: controller.carts[index].itemsImage,
+                                  name:
+                                      controller.carts[index].itemsTitle ?? '',
+                                  desc: controller.carts[index].cartShortDesc ??
+                                      '',
+                                  price: controller.carts[index].cartTotalPrice
+                                      .toString(),
+                                  duration:
+                                      controller.carts[index].itemsDuration ??
+                                          0,
+                                  onTapDelete: () {
+                                    controller.deleteCart(index);
+                                  }),
+                            )),
                   const SizedBox(height: 20),
                   GoHomeButton(
                     onTap: () {

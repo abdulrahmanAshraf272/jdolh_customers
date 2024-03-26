@@ -12,11 +12,31 @@ import 'package:jdolh_customers/data/models/bch_worktime.dart';
 import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
 import 'package:jdolh_customers/data/models/categories.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/item.dart';
 import 'package:jdolh_customers/data/models/resOption.dart';
 
 class BrandProfileController extends GetxController {
   //Res Product ======================
+
+  // === Add Invitors===//
+  bool withInvitros = false;
+  switchWithInvitors(bool value) {
+    withInvitros = value;
+    update();
+  }
+
+  List<Friend> members = [];
+  removeMember(index) {
+    members.remove(members[index]);
+    update();
+  }
+
+  onTapAddMembers() {
+    Get.toNamed(AppRouteName.addResInvitors)!.then((value) => update());
+  }
+
+  ///////////////
 
   String selectedResDateTime = '';
   void gotoSetResTime() async {
@@ -33,12 +53,6 @@ class BrandProfileController extends GetxController {
       print(selectedResDateTime);
       update();
     }
-  }
-
-  bool withInvitros = false;
-  switchWithInvitors(bool value) {
-    withInvitros = value;
-    update();
   }
 
   TextEditingController extraSeats = TextEditingController();
@@ -115,7 +129,8 @@ class BrandProfileController extends GetxController {
     print('confirm reservation');
   }
 
-  int subscreen = 0; //0 => items, 1 => resProduct, 2 => resService
+  int subscreen =
+      0; //0 => items, 1 => resProduct, 2 => resService, 3=> HomeService
   late Brand brand;
   late Bch bch;
   MyServices myServices = Get.find();
@@ -126,6 +141,8 @@ class BrandProfileController extends GetxController {
   CartData cartData = CartData(Get.find());
 
   List<Cart> carts = [];
+
+  bool isHomeServices = false;
 
   int counter = 0;
 
@@ -149,7 +166,9 @@ class BrandProfileController extends GetxController {
   }
 
   displayResSubscreen() async {
-    if (brand.brandIsService == 1) {
+    if (isHomeServices) {
+      subscreen = 3;
+    } else if (brand.brandIsService == 1) {
       subscreen = 2;
     } else {
       subscreen = 1;
@@ -210,7 +229,7 @@ class BrandProfileController extends GetxController {
     update();
     var response = await cartData.getCart(
         userid: myServices.getUserid(), bchid: bch.bchId.toString());
-    await Future.delayed(Duration(seconds: 2));
+    //await Future.delayed(Duration(seconds: 2));
 
     statusRequestCart = handlingData(response);
     print('getCart: $statusRequestCart');
@@ -285,6 +304,10 @@ class BrandProfileController extends GetxController {
     try {
       brand = Get.arguments['brand'];
       bch = Get.arguments['bch'];
+      if (Get.arguments['isHomeService'] != null) {
+        isHomeServices = Get.arguments['isHomeService'];
+        print('isHomeService: $isHomeServices');
+      }
     } catch (e) {
       print('error get the data previus page');
     }

@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/auth/forget_password_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/add_res_invitors_controller.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/middleware/my_middleware.dart';
 import 'package:jdolh_customers/test_screen.dart';
 import 'package:jdolh_customers/test_screen2.dart';
+import 'package:jdolh_customers/view/screens/brand_profile/add_res_invitors_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/set_res_time_screen.dart';
 import 'package:jdolh_customers/view/screens/checkin/add_members_checkin_screen.dart';
 import 'package:jdolh_customers/view/screens/checkin/add_new_place_screen.dart';
@@ -56,16 +58,17 @@ import 'package:jdolh_customers/view/screens/wallet_details_screen.dart';
 
 List<GetPage> routes = [
   //Replace Login with onBoarding
-  // GetPage(
-  //   name: '/',
-  //   page: () => const LoginScreen(),
-  //   middlewares: [MyMiddleware()],
-  // ),
-  //For testing
   GetPage(
     name: '/',
-    page: () => const ReservationSearchScreen(),
+    page: () => const LoginScreen(),
+    middlewares: [MyMiddleware()],
   ),
+  //For testing
+
+  // GetPage(
+  //   name: '/',
+  //   page: () => const ReservationSearchScreen(),
+  // ),
 
   GetPage(
     name: AppRouteName.brandProfile,
@@ -250,6 +253,10 @@ List<GetPage> routes = [
   GetPage(
     name: AppRouteName.itemsDetails,
     page: () => const ItemsDetailsScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.addResInvitors,
+    page: () => const AddResInvitorsScreen(),
   ),
   GetPage(
       name: AppRouteName.setResTime,

@@ -75,7 +75,7 @@ class _TestScreenState extends State<TestScreen> {
             ActivityListItem(),
             PersonListItem(),
 
-            PersonWithToggleListItem(),
+            //PersonWithToggleListItem(),
             LargeToggleButtons(
               optionOne: 'مواعيد قريبة',
               onTapOne: () {},

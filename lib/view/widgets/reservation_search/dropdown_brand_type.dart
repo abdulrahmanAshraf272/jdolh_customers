@@ -25,7 +25,7 @@ class DropdownBrandTypes extends StatefulWidget {
 }
 
 class _DropdownBrandTypesState extends State<DropdownBrandTypes> {
-  String? selectedValue;
+  //String? selectedValue;
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +59,10 @@ class _DropdownBrandTypesState extends State<DropdownBrandTypes> {
                             ),
                           ))
                       .toList(),
-                  value: selectedValue,
+                  value: controller.selectedValueType,
                   onChanged: (String? value) {
                     setState(() {
-                      selectedValue = value;
+                      controller.selectedValueType = value;
                       controller.setSelectedBrandType(value);
                     });
                   },

@@ -5,8 +5,15 @@ import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/per
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_toggle_buttons.dart';
 
 class PersonWithToggleListItem extends StatelessWidget {
+  final String name;
+  final String image;
+  final void Function() onTapRemove;
+
   const PersonWithToggleListItem({
     super.key,
+    required this.name,
+    required this.image,
+    required this.onTapRemove,
   });
 
   @override
@@ -23,14 +30,14 @@ class PersonWithToggleListItem extends StatelessWidget {
             children: [
               Expanded(
                 child: PersonImageAndName(
-                  name: 'عبدالرحمن العنزي',
+                  name: name,
                   image: 'assets/images/avatar_person.jpg',
                 ),
               ),
-              Text(
-                'منشئ الدعوة',
-                style: titleSmall2.copyWith(color: AppColors.secondaryColor),
-              )
+              // Text(
+              //   'منشئ الدعوة',
+              //   style: titleSmall2.copyWith(color: AppColors.secondaryColor),
+              // )
             ],
           ),
           SizedBox(

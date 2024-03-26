@@ -16,6 +16,7 @@ import 'package:jdolh_customers/view/widgets/common/apptDetails/address_title.da
 import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_dropdown.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';
 
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_dropdown_button.dart';
@@ -38,6 +39,11 @@ class ReservationSearchScreen extends StatelessWidget {
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  LargeToggleButtons(
+                      optionOne: 'حجز تقليدي',
+                      optionTwo: 'خدمات منزلية',
+                      onTapOne: () => controller.setIsHomeService(false),
+                      onTapTwo: () => controller.setIsHomeService(true)),
                   const SizedBox(height: 20),
                   const CustomSmallTitle(title: 'نوع المتجر'),
                   const DropdownBrandTypes(),

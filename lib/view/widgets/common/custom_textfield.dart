@@ -4,14 +4,16 @@ import 'package:jdolh_customers/core/constants/app_colors.dart';
 ///Common used TextField -be careful when modify the original code-
 class CustomTextField extends StatelessWidget {
   final TextEditingController textEditingController;
-  final String hintText;
+  final String? hintText;
   final IconData? iconData;
   final Function(String)? onChange;
+  final String? labelText;
   const CustomTextField(
       {super.key,
       required this.textEditingController,
-      required this.hintText,
+      this.hintText,
       this.iconData,
+      this.labelText,
       this.onChange});
 
   @override
@@ -34,6 +36,7 @@ class CustomTextField extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: hintText,
                 hintStyle: const TextStyle(fontSize: 14),
+                labelText: labelText,
                 // contentPadding: const EdgeInsets.symmetric(
                 //     vertical: 5, horizontal: 30),
                 border: InputBorder.none,

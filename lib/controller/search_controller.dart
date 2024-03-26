@@ -22,7 +22,7 @@ class SearchScreenController extends GetxController {
   MyServices myServices = Get.find();
   TextEditingController name = TextEditingController();
   List<Friend> data = [];
-  ValuesController valuesController = Get.find();
+  ValuesController valuesController = Get.put(ValuesController());
 
   activePersonSearch() {
     isPersonSearch = true;
