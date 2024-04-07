@@ -38,8 +38,7 @@ class ResetPasswordScreen extends StatelessWidget {
                             visiblePasswordOnTap: () {
                               controller.showPassword();
                             },
-                            hintText: 'كلمة السر',
-                            labelText: 'Password',
+                            labelText: 'كلمة السر',
                             valid: (val) {
                               return validInput(val!, 5, 100, 'password');
                             },
@@ -51,8 +50,7 @@ class ResetPasswordScreen extends StatelessWidget {
                             visiblePasswordOnTap: () {
                               controller.showPassword();
                             },
-                            hintText: 'اعد ادخال كلمة السر',
-                            labelText: 'Password Again',
+                            labelText: 'اعد ادخال كلمة السر',
                             valid: (val) {
                               return validInput(val!, 5, 100, 'password');
                             },
@@ -60,6 +58,7 @@ class ResetPasswordScreen extends StatelessWidget {
                             textEditingController:
                                 controller.checkMatchPassword,
                           ),
+                          const SizedBox(height: 20),
                           CustomButtonOne(
                               textButton: 'حفظ',
                               onPressed: () async {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
@@ -14,7 +15,9 @@ class SignUpController extends GetxController {
   TextEditingController username = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-  TextEditingController phoneNumber = TextEditingController();
+  //TextEditingController phoneNumber = TextEditingController();
+  TextEditingController phoneNumber2 = TextEditingController();
+  String countryKey = '';
   SignupData signupData = SignupData(Get.find());
 
   StatusRequest statusRequest = StatusRequest.none;
@@ -25,12 +28,23 @@ class SignUpController extends GetxController {
   }
 
   signUp() async {
+    if (phoneNumber2.text == '') {
+      return Get.rawSnackbar(message: 'من فضلك ادخل رقم الجوال');
+    }
     var formdata = formstate.currentState;
     if (formdata!.validate()) {
+      print('sign up');
+      print('$countryKey${phoneNumber2.text}');
       statusRequest = StatusRequest.loading;
       update();
-      var response = await signupData.postData(name.text, username.text,
-          password.text, email.text, phoneNumber.text, "0", "");
+      var response = await signupData.postData(
+          name.text,
+          username.text,
+          password.text,
+          email.text,
+          '$countryKey${phoneNumber2.text}',
+          "0",
+          "");
       statusRequest = handlingData(response);
       update();
       if (statusRequest == StatusRequest.success) {
@@ -94,7 +108,7 @@ class SignUpController extends GetxController {
     username.dispose();
     email.dispose();
     password.dispose();
-    phoneNumber.dispose();
+    phoneNumber2.dispose();
     super.dispose();
   }
 }

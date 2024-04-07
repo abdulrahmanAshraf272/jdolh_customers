@@ -24,7 +24,7 @@ class DescAndBranshedButtonAndWorkTime extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CustomSmallCard(
-              title: 'مواعيد العمل',
+              title: 'اوقات العمل',
               onTapCard: onTapWorktime,
             ),
             const SizedBox(width: 15),
@@ -55,23 +55,32 @@ class CustomSmallCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTapCard,
-      child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-          decoration: BoxDecoration(
-              color: AppColors.gray, borderRadius: BorderRadius.circular(30)),
-          child: Row(
-            children: [
-              AutoSizeText(title),
-              const SizedBox(width: 10),
-              const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey,
-                size: 15,
-              )
-            ],
-          )),
+    return Container(
+      decoration: BoxDecoration(
+          color: AppColors.gray, borderRadius: BorderRadius.circular(30)),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(30),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTapCard,
+            child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                child: Row(
+                  children: [
+                    AutoSizeText(title),
+                    const SizedBox(width: 10),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.grey,
+                      size: 15,
+                    )
+                  ],
+                )),
+          ),
+        ),
+      ),
     );
   }
 }

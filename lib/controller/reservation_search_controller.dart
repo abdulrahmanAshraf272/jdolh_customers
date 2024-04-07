@@ -36,6 +36,7 @@ class ReservationSearchController extends GetxController {
   bool isHomeServices = false;
   setIsHomeService(bool value) {
     isHomeServices = value;
+    print(isHomeServices);
     brands.clear();
     bchs.clear();
 
@@ -84,7 +85,6 @@ class ReservationSearchController extends GetxController {
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         parseSearchResults(response);
-        print(bchs[0].bchLocation);
       } else {
         statusRequest = StatusRequest.failure;
       }
@@ -99,9 +99,24 @@ class ReservationSearchController extends GetxController {
     List data = response['data'];
     brands = data.map((e) => Brand.fromJson(e)).toList();
     bchs = data.map((e) => Bch.fromJson(e)).toList();
+
+    print('bch length: ${bchs.length}');
+    if (isHomeServices) {
+      List<Brand> brandsHomeService = [];
+      List<Bch> bchsHomeService = [];
+      //Remove all bch that is note home service active.
+      for (int i = 0; i < bchs.length; i++) {
+        if (bchs[i].bchHomeAvailable == 1) {
+          brandsHomeService.add(brands[i]);
+          bchsHomeService.add(bchs[i]);
+        }
+      }
+
+      brands = List.from(brandsHomeService);
+      bchs = List.from(bchsHomeService);
+    }
+
     update();
-    print('brand: ${brands[0].brandStoreName}');
-    print('bch: ${bchs[0].bchBranchName}');
   }
 
   getBrandTypesAndSubtypes() async {

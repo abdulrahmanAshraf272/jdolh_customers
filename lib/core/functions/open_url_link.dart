@@ -12,3 +12,12 @@ void openUrlLink(String locationLink) async {
     print('Could not launch $locationLink');
   }
 }
+
+Future<void> openContactApp(String phoneNumber) async {
+  final url = 'tel:$phoneNumber';
+  if (await canLaunchUrl(Uri.parse(url))) {
+    await launchUrl(Uri.parse(url));
+  } else {
+    throw 'Could not launch $url';
+  }
+}

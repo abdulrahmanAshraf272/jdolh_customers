@@ -157,23 +157,24 @@ class CreateOccasionController extends GetxController {
     return parsedDateTime;
   }
 
-  goToAddLocation() {
-    Get.toNamed(AppRouteName.selectAddressScreen)!.then((value) async {
-      if (ValuesController.latLngSelected != null) {
-        latLngSelected = ValuesController.latLngSelected;
-        occasionLat = latLngSelected!.latitude.toString();
-        occasionLong = latLngSelected!.longitude.toString();
-        // print('$occasionLat, $occasionLong ========');
+  goToAddLocation() async {
+    var result = await Get.toNamed(AppRouteName.selectAddressScreen);
 
-        List<Placemark> placemarks = await placemarkFromCoordinates(
-            latLngSelected!.latitude, latLngSelected!.longitude);
-        occasionLocation =
-            '${placemarks[0].street}, ${placemarks[0].locality}, ${placemarks[0].country}';
-        update();
-      } else {
-        print('no location selected');
-      }
-    });
+    if (result != null) {
+      LatLng myLatLng = result as LatLng;
+      occasionLat = myLatLng.latitude.toString();
+      occasionLong = myLatLng.longitude.toString();
+      print('selectedLocation ===> $myLatLng');
+
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(myLatLng.latitude, myLatLng.longitude);
+      occasionLocation =
+          '${placemarks[0].street}, ${placemarks[0].locality}, ${placemarks[0].country}';
+      print('myLocation ====> $occasionLocation');
+      update();
+    } else {
+      print('no location selected');
+    }
   }
 
   @override

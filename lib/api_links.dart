@@ -95,4 +95,49 @@ class ApiLinks {
   static const deleteCart = '$server/jdolh_customers/cart/delete_cart.php';
   static const changeQuantity =
       '$server/jdolh_customers/cart/change_quantity.php';
+
+  //Home Service
+  static const String homeServiceAvailable =
+      '$server/jdolh_brands/bch/home_available_switch.php';
+
+  static const String getHomeServices =
+      '$server/jdolh_brands/bch/home_services/get_home_services.php';
+
+  //ResDetails
+  static const String getResDetails =
+      '$server/jdolh_brands/bch/get_resdetails.php';
+
+  //===== Reservation =====//
+  static const String addResLocation =
+      '$server/jdolh_customers/res/add_res_location.php';
+  static const String createRes = '$server/jdolh_customers/res/create_res.php';
+  static const String getRes = '$server/jdolh_customers/res/get_res.php';
+  static const String getReservedTime =
+      '$server/jdolh_customers/res/get_reserved_time.php';
+  static const String getPolicyTitle =
+      '$server/jdolh_customers/res/get_polies_title.php';
+  static const String changeResStatus =
+      '$server/jdolh_brands/res/change_res_status.php';
+
+  static const String getAllMyRes =
+      '$server/jdolh_customers/res/get_all_my_res.php';
+  static const String getResCart = '$server/jdolh_brands/res/get_res_cart.php';
+
+  static const String sendInvitations =
+      '$server/jdolh_customers/res/send_invitations.php';
+
+  // ===== Rate ======//
+  static const String addRate = '$server/jdolh_customers/rate/add_rate.php';
+  static const String getRate = '$server/jdolh_customers/rate/get_rate.php';
+  static const String deleteRate =
+      '$server/jdolh_customers/rate/delete_rate.php';
+
+  // ==== Activity ==== //
+  static const String getUserActivities =
+      '$server/jdolh_customers/get_user_activities.php';
+  static const String getFriendsActivities =
+      '$server/jdolh_customers/get_friends_activities.php';
+
+  // == follow bch ==//
+  static const String followBch = '$server/jdolh_customers/follow_bch.php';
 }

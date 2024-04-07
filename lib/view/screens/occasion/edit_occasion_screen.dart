@@ -54,9 +54,11 @@ class EditOccasionScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     const CustomSmallBoldTitle(title: 'الموقع'),
                     DateOrLocationDisplayContainer(
-                        hintText: 'حدد موقع المناسبة',
+                        hintText: controller.occasionLocation,
                         iconData: Icons.place,
-                        onTap: () {}),
+                        onTap: () {
+                          controller.goToAddLocation();
+                        }),
                     const CustomSmallBoldTitle(title: 'رابط الموقع'),
                     const SizedBox(height: 10),
                     CustomTextField(

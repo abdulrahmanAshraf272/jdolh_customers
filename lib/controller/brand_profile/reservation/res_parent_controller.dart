@@ -1,19 +1,40 @@
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/cart.dart';
+import 'package:jdolh_customers/data/data_source/remote/home_services.dart';
+import 'package:jdolh_customers/data/data_source/remote/res.dart';
+import 'package:jdolh_customers/data/data_source/remote/resDetails.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
+import 'package:jdolh_customers/data/models/home_services.dart';
 import 'package:jdolh_customers/data/models/resOption.dart';
+import 'package:jdolh_customers/data/models/res_details.dart';
+import 'package:jdolh_customers/data/models/reservation.dart';
 
 class ResParentController extends GetxController {
-  StatusRequest statusRequestCart = StatusRequest.none;
+  Reservation reservation = Reservation();
+  ResData resData = ResData(Get.find());
+  bool viewRefresh = false;
+  StatusRequest statusRequest = StatusRequest.none;
+  HomeServicesData homeServicesData = HomeServicesData(Get.find());
+  ResDetailsData resDetailsData = ResDetailsData(Get.find());
   CartData cartData = CartData(Get.find());
   MyServices myServices = Get.find();
   BrandProfileController brandProfileController = Get.find();
+  String selectedResDateTime = '';
+  String selectedDate = '';
+  String selectedTime = '';
+  bool withInvitation = false;
+  late int bchid;
+  late int brandid;
+  HomeServices homeServices = HomeServices();
+  ResDetails resDetails = ResDetails();
 
-  List<Cart> carts = [];
+  int reviewRes = 0;
+
   List<ResOption> resOptions = [];
   List<String> resOptionsTitles = [];
   late ResOption selectedResOption;
@@ -22,126 +43,179 @@ class ResParentController extends GetxController {
         .firstWhere((element) => element.resoptionsTitle == resOptionTitle);
   }
 
-  String totalServiceDuration = '-';
+  num resCost = 0;
 
-  getCart() async {
-    statusRequestCart = StatusRequest.loading;
-    update();
-    var response = await cartData.getCart(
-        userid: myServices.getUserid(),
-        bchid: brandProfileController.bch.bchId.toString());
-    //await Future.delayed(Duration(seconds: 2));
-
-    statusRequestCart = handlingData(response);
-    print('getCart: $statusRequestCart');
-    if (statusRequestCart == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        print('cart success');
-        parseCart(response);
-      } else {
-        statusRequestCart = StatusRequest.failure;
-        print('cart failed');
-      }
-    }
-    update();
-  }
-
-  parseCart(response) {
-    List cartListJson = response['data'];
-    carts = cartListJson.map((e) => Cart.fromJson(e)).toList();
-  }
-
-  onTapIncrease(int index) {
-    //Get quantity and price (off one quantity of cart)
-    int quantityNo = carts[index].cartQuantity ?? 1;
-    num priceNo = carts[index].cartPrice ?? 0;
-    //increase quantity
-    quantityNo++;
-    //calc new total price
-    int newQuantity = quantityNo;
-    num newTotalPrice = quantityNo * priceNo;
-    //set new quantity and totalPrice
-    carts[index].cartQuantity = newQuantity;
-    carts[index].cartTotalPrice = newTotalPrice;
-    update();
-    //set quantity and totalPrice in Db
-    changeQuantity(carts[index].cartId!, newQuantity, newTotalPrice);
-  }
-
-  onTapDecrease(int index) {
-    //Get quantity and price (off one quantity of cart)
-    int quantityNo = carts[index].cartQuantity ?? 1;
-    num priceNo = carts[index].cartPrice ?? 0;
-    if (quantityNo == 1) {
-      return;
-    }
-    //increase quantity
-    quantityNo--;
-    //calc new total price
-    int newQuantity = quantityNo;
-    num newTotalPrice = quantityNo * priceNo;
-    //set new quantity and totalPrice
-    carts[index].cartQuantity = newQuantity;
-    carts[index].cartTotalPrice = newTotalPrice;
-    update();
-    //set quantity and totalPrice in Db
-    changeQuantity(carts[index].cartId!, newQuantity, newTotalPrice);
-  }
-
-  changeQuantity(int cartid, int quantity, num totalPrice) async {
-    var response = await cartData.changeQuantity(
-        cartid: cartid.toString(),
-        quantity: quantity.toString(),
-        totalPrice: totalPrice.toString());
-    statusRequestCart = handlingData(response);
-    if (statusRequestCart == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        print('change quantity succeed');
-      } else {
-        print('change quantity failed');
-      }
-    }
-  }
-
-  deleteCart(int index) async {
-    String cartid = carts[index].cartId.toString();
-    update();
-    carts.remove(carts[index]);
-    var response = await cartData.deleteCart(cartid: cartid);
-    statusRequestCart = handlingData(response);
-    print('delete: $statusRequestCart');
-    if (statusRequestCart == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        print('delete cart success');
-      } else {
-        statusRequestCart = StatusRequest.failure;
-        print('delete failed');
-      }
-    }
-    print('cart: ${carts.length}');
-  }
+  late int resPolicy;
+  late int billPolicy;
 
   //================================
 
-  calcResTotalDuration() {
-    if (brandProfileController.carts.isEmpty) {
-      totalServiceDuration = '-';
+  getResCost() {
+    if (brandProfileController.isHomeServices) {
+      resCost = homeServices.cost!;
     } else {
-      int totalDuration = 0;
-      brandProfileController.carts.forEach((element) {
-        totalDuration += element.itemsDuration ?? 0;
-      });
-      totalServiceDuration = totalDuration.toString();
+      resCost = resDetails.cost!;
+    }
+  }
+
+  void gotoSetResTime() async {
+    print('shit');
+    if (brandProfileController.carts.isEmpty) {
+      String message = brandProfileController.brand.brandIsService == 1
+          ? 'من فضلك قم بإضافة الخدمات ثم قم بتحديد وقت الحجز'
+          : 'من فضلك قم بإضافة المنتجات ثم قم بتحديد وقت الحجز';
+      Get.rawSnackbar(message: message);
+      return;
+    }
+    int timeout = 0;
+    if (brandProfileController.isHomeServices == true) {
+      timeout = homeServices.timeout ?? 0;
+    } else {
+      timeout = resDetails.timeout ?? 0;
+    }
+
+    print('timeout=========$timeout');
+    print('bchid: $bchid');
+    final result = await Get.toNamed(AppRouteName.setResTime, arguments: {
+      "bchid": bchid,
+      "resOption": selectedResOption,
+      "timeout": timeout
+    });
+    if (result != null) {
+      selectedDate = result['date'];
+      selectedTime = result['time'];
+      selectedResDateTime = '$selectedDate $selectedTime';
+      print('date: $selectedDate ======== time: $selectedTime');
+      update();
+    }
+  }
+
+  createRes() async {
+    num totalPrice = brandProfileController.totalPrice;
+    num taxCost = brandProfileController.taxCost;
+    num totalPriceWithTax = totalPrice + taxCost + resCost;
+    //
+    int duration = 0;
+    if (brandProfileController.brand.brandIsService == 0) {
+      //if product => duration is saved in resOption
+      duration = brandProfileController.selectedResOption.resoptionsDuration!;
+    } else {
+      //if service => get the total duration from all items in cart
+      duration = brandProfileController.totalServiceDuration;
+    }
+    var response = await resData.createRes(
+        userid: myServices.getUserid(),
+        bchid: bchid.toString(),
+        brandid: brandid.toString(),
+        date: selectedDate,
+        time: selectedTime,
+        duration: duration.toString(),
+        price: totalPrice.toString(),
+        resCost: resCost.toString(),
+        taxCost: taxCost.toString(),
+        totalPrice: totalPriceWithTax.toString(),
+        billPolicy: billPolicy.toString(),
+        resPolicy: resPolicy.toString(),
+        isHomeService: brandProfileController.isHomeServices ? '1' : '0',
+        withInvitores: withInvitation ? '1' : '0',
+        resOption: selectedResOption.resoptionsTitle!,
+        status: reviewRes == 0 ? '1' : '0');
+    statusRequest = handlingData(response);
+    print('create reservation $statusRequest');
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('create reservation succeed');
+        reservation = Reservation.fromJson(response['data']);
+        return reservation;
+      } else {
+        statusRequest = StatusRequest.failure;
+      }
+    }
+  }
+
+  checkAllItemsAvailableWithinResOptionSelected() {
+    List<dynamic> resItemsId = selectedResOption.itemsRelated!;
+    for (int i = 0; i < brandProfileController.carts.length; i++) {
+      if (!resItemsId.contains(brandProfileController.carts[i].itemsId)) {
+        String warningMessage =
+            '${brandProfileController.carts[i].itemsTitle} غير متوفر ضمن تفضيل ${selectedResOption.resoptionsTitle}\n قم بإزالة ${brandProfileController.carts[i].itemsTitle} او قم بتغيير التفضيل';
+        print(warningMessage);
+        return warningMessage;
+      }
+    }
+    return true;
+  }
+
+  // onTapConfirmReservation() {
+  //   if (brandProfileController.carts.isEmpty) {
+  //     Get.rawSnackbar(message: 'السلة فارغة!');
+  //     return;
+  //   }
+  //   if (selectedDate == '') {
+  //     Get.rawSnackbar(message: 'من فضلك اختر وقت الحجز');
+  //     return;
+  //   }
+  //   createRes();
+  // }
+
+  getHomeServices() async {
+    statusRequest = StatusRequest.loading;
+    update();
+    var response =
+        await homeServicesData.getHomeServices(bchid: bchid.toString());
+    statusRequest = handlingData(response);
+
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        homeServices = HomeServices.fromJson(response['data']);
+        reviewRes = resDetails.reviewRes!;
+        print(homeServices.maxDistance);
+      }
+    } else {
+      statusRequest = StatusRequest.failure;
     }
     update();
   }
 
+  getResDetails() async {
+    statusRequest = StatusRequest.loading;
+    update();
+    var response = await resDetailsData.getResDetails(bchid: bchid.toString());
+    statusRequest = handlingData(response);
+    print('statusRequest =====$statusRequest');
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        resDetails = ResDetails.fromJson(response['data']);
+        reviewRes = resDetails.reviewRes!;
+        print('resDetails timeout : ${resDetails.timeout}');
+        print('success');
+      } else {
+        statusRequest = StatusRequest.failure;
+      }
+    }
+    update();
+  }
+
+  getData() {
+    if (brandProfileController.isHomeServices) {
+      getHomeServices();
+    } else {
+      getResDetails();
+    }
+  }
+
   @override
-  void onInit() {
+  void onInit() async {
     //Get ResOption
     resOptions = List.from(brandProfileController.resOptions);
     resOptionsTitles = List.from(brandProfileController.resOptionsTitles);
     selectedResOption = brandProfileController.selectedResOption;
+    bchid = brandProfileController.bch.bchId!;
+    brandid = brandProfileController.brand.brandId!;
+    resPolicy = brandProfileController.bch.bchResPolicyid ?? 0;
+    billPolicy = brandProfileController.bch.bchBillPolicyid ?? 0;
+    getData();
+
     super.onInit();
   }
 }

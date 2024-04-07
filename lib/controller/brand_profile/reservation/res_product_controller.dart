@@ -1,37 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/reservation/res_parent_controller.dart';
+import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'dart:async';
 
 import 'package:jdolh_customers/core/constants/strings.dart';
+import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
-import 'package:jdolh_customers/data/models/resOption.dart';
+import 'package:jdolh_customers/data/models/reservation_invitors.dart';
 
-class ResProductController extends GetxController {
-  List<ResOption> resOptions = [];
-  List<String> resOptionsTitles = [];
-  late ResOption selectedResOption;
-  selectResOption(String resOptionTitle) {
-    selectedResOption = resOptions
-        .firstWhere((element) => element.resoptionsTitle == resOptionTitle);
-    print('resOption ${selectedResOption.resoptionsTitle}');
-  }
-
-  BrandProfileController brandProfileController = Get.find();
+class ResProductController extends ResParentController {
   //Checker variables
-  bool withInvitation = false;
-  String selectedResDateTime = '';
-  TextEditingController extraSeats = TextEditingController();
 
-  // === Add Invitors===//
-  bool withInvitros = false;
-  switchWithInvitors(bool value) {
-    withInvitros = value;
-    update();
+  // Create a list of invitations
+
+  sendInvitations() async {
+    List<Resinvitors> invitations = [
+      Resinvitors(
+          resid: 27, userid: 5, type: 1, status: 0, cost: 20.4, creatorid: 18),
+      Resinvitors(
+          resid: 27, userid: 5, type: 1, status: 0, cost: 20.4, creatorid: 18),
+      Resinvitors(
+          resid: 27, userid: 5, type: 1, status: 0, cost: 20.4, creatorid: 18),
+      // Add more invitations as needed
+    ];
+
+    var response = await resData.sendInvitations(invitations);
+    statusRequest = handlingData(response);
+    print('add res location $statusRequest');
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('success');
+        return true;
+      } else {
+        statusRequest = StatusRequest.failure;
+      }
+    }
   }
 
   List<Friend> members = [];
+  TextEditingController extraSeats = TextEditingController();
+
+  // === Add Invitors===//
+  switchWithInvitors(bool value) {
+    withInvitation = value;
+    update();
+  }
+
   removeMember(index) {
     members.remove(members[index]);
     update();
@@ -41,43 +57,34 @@ class ResProductController extends GetxController {
     Get.toNamed(AppRouteName.addResInvitors)!.then((value) => update());
   }
 
-  void gotoSetResTime() async {
-    print(brandProfileController.carts.length);
-    if (brandProfileController.carts.isEmpty) {
-      String message = brandProfileController.brand.brandIsService == 1
-          ? 'من فضلك قم بإضافة الخدمات ثم قم بتحديد وقت الحجز'
-          : 'من فضلك قم بإضافة المنتجات ثم قم بتحديد وقت الحجز';
-      Get.rawSnackbar(message: message);
-      return;
-    }
-    final result = await Get.toNamed(AppRouteName.setResTime);
-    if (result != null) {
-      selectedResDateTime = result;
-      print(selectedResDateTime);
+  onTapConfirmRes() async {
+    if (checkAllFeilds()) {
+      statusRequest = StatusRequest.loading;
       update();
-    }
-  }
 
-  checkAllItemsAvailableWithinResOptionSelected() {
-    List<dynamic> resItemsId =
-        brandProfileController.selectedResOption.itemsRelated!;
-    for (int i = 0; i < brandProfileController.carts.length; i++) {
-      if (!resItemsId.contains(brandProfileController.carts[i].itemsId)) {
-        String warningMessage =
-            '${brandProfileController.carts[i].itemsTitle} غير متوفر ضمن تفضيل ${brandProfileController.selectedResOption.resoptionsTitle}\n قم بإزالة ${brandProfileController.carts[i].itemsTitle} او قم بتغيير التفضيل';
-        print(warningMessage);
-        return warningMessage;
+      var result = await createRes();
+      update();
+      if (result != null) {
+        //brandProfileController.carts.clear();
+        if (resDetails.reviewRes == 0) {
+          Get.offNamed(AppRouteName.payment, arguments: result);
+        } else {
+          Get.offNamed(AppRouteName.waitForApprove, arguments: result);
+        }
       }
     }
-    return true;
   }
 
-  onTapConfirmReservation() {
+  bool checkAllFeilds() {
     if (brandProfileController.carts.isEmpty) {
       Get.rawSnackbar(message: 'السلة فارغة!');
-      return;
+      return false;
     }
-    print('confirm reservation');
+    if (selectedDate == '') {
+      Get.rawSnackbar(message: 'من فضلك اختر وقت الحجز');
+      return false;
+    }
+    return true;
   }
 
   //Timer variables
@@ -94,15 +101,15 @@ class ResProductController extends GetxController {
     if (!withInvitation || (withInvitation && timerIsActive)) {
       confirmReservation();
     } else {
-      sendInvitations();
+      //sendInvitations();
     }
   }
 
-  sendInvitations() {
-    activeTimer();
-    //TODO: add the sending notifation function
-    print('sending notificatoin to the selected friends');
-  }
+  // sendInvitations() {
+  //   activeTimer();
+  //   //TODO: add the sending notifation function
+  //   print('sending notificatoin to the selected friends');
+  // }
 
   confirmReservation() {
     print('confirm reservation and going to pay secreen');

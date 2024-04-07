@@ -1,13 +1,10 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
 import 'package:jdolh_customers/controller/brand_profile/reservation/res_product_controller.dart';
-import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/carts.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/invintors.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_product/extra_seats.dart';
-import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_product/oreder_content_list_item.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_dropdown.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
@@ -92,7 +89,7 @@ class ResProductSubscreen extends StatelessWidget {
                         warningDialog(checkResOption);
                         return;
                       }
-                      controller.onTapConfirmReservation();
+                      controller.sendInvitations();
                     },
                     text: 'تأكيد الحجز',
                   ),

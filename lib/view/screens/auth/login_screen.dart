@@ -39,8 +39,7 @@ class LoginScreen extends StatelessWidget {
                             SizedBox(height: Get.height * 0.06),
 
                             CustomTextFormAuthTwo(
-                              hintText: 'اسم المستخدم او البريد الالكتروني',
-                              labelText: 'Email',
+                              labelText: 'اسم المستخدم او البريد الالكتروني',
                               valid: (val) {
                                 return validInput(
                                   val!,
@@ -57,8 +56,7 @@ class LoginScreen extends StatelessWidget {
                               visiblePasswordOnTap: () {
                                 controller.showPassword();
                               },
-                              hintText: 'كلمة السر',
-                              labelText: 'Password',
+                              labelText: 'كلمة السر',
                               valid: (val) {
                                 return validInput(val!, 3, 100, 'password');
                               },

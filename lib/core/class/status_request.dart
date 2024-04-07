@@ -8,3 +8,5 @@ enum StatusRequest {
   offlineFailure,
   unableToGetLocation
 }
+
+enum ApproveStatus { waiting, approved, rejected }

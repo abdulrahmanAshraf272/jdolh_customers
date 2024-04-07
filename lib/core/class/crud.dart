@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 import 'package:jdolh_customers/core/class/status_request.dart';
+import 'package:jdolh_customers/data/models/reservation_invitors.dart';
 
 class Crud {
   Future<Either<StatusRequest, Map>> postData(String linkUrl, Map data) async {
@@ -32,6 +33,31 @@ class Crud {
           //await checkInternet()
           true) {
         var response = await http.get(Uri.parse(linkUrl));
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          Map responseBody = jsonDecode(response.body);
+          return Right(responseBody);
+        } else {
+          return const Left(StatusRequest.serverFailure);
+        }
+      } else {
+        return const Left(StatusRequest.offlineFailure);
+      }
+    } catch (_) {
+      return const Left(StatusRequest.serverException);
+    }
+  }
+
+  Future<Either<StatusRequest, Map>> sendInvitations(
+      String linkUrl, List<Resinvitors> invitations) async {
+    final List<Map<String, dynamic>> invitationJsonList =
+        invitations.map((invitation) => invitation.toJson()).toList();
+    final body = jsonEncode(invitationJsonList);
+
+    try {
+      if (
+          //await checkInternet()
+          true) {
+        var response = await http.post(Uri.parse(linkUrl), body: body);
         if (response.statusCode == 200 || response.statusCode == 201) {
           Map responseBody = jsonDecode(response.body);
           return Right(responseBody);

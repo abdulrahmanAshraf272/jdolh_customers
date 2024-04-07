@@ -47,6 +47,34 @@ WorktimeDay decodeTimeCustom(String encodedString) {
   return worktimeDay;
 }
 
+Map<String, TimeOfDay?> decodeTimeCustomMoreClean(String encodedString) {
+  List<String> periods = encodedString.split('|');
+  List<String> period1 = periods[0].split('-');
+
+  TimeOfDay startTimeP1 = parseTimeString(period1[0]);
+  TimeOfDay endTimeP1 = parseTimeString(period1[1]);
+
+  if (periods.length == 2) {
+    List<String> period2 = periods[1].split('-');
+    TimeOfDay startTimeP2 = parseTimeString(period2[0]);
+    TimeOfDay endTimeP2 = parseTimeString(period2[1]);
+
+    return {
+      'startTimeP1': startTimeP1,
+      'endTimeP1': endTimeP1,
+      'startTimeP2': startTimeP2,
+      'endTimeP2': endTimeP2,
+    };
+  } else {
+    return {
+      'startTimeP1': startTimeP1,
+      'endTimeP1': endTimeP1,
+      'startTimeP2': null,
+      'endTimeP2': null,
+    };
+  }
+}
+
 TimeOfDay parseTimeString(String timeString) {
   List<String> timeComponents = timeString.split(':');
   return TimeOfDay(

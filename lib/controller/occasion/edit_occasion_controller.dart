@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:jdolh_customers/controller/main_controller.dart';
 import 'package:jdolh_customers/controller/occasion/occasions_controller.dart';
@@ -111,6 +113,26 @@ class EditOccasionController extends GetxController {
       }
     }
     update();
+  }
+
+  goToAddLocation() async {
+    var result = await Get.toNamed(AppRouteName.selectAddressScreen);
+
+    if (result != null) {
+      LatLng myLatLng = result as LatLng;
+      occasionLat = myLatLng.latitude.toString();
+      occasionLong = myLatLng.longitude.toString();
+      print('selectedLocation ===> $myLatLng');
+
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(myLatLng.latitude, myLatLng.longitude);
+      occasionLocation =
+          '${placemarks[0].street}, ${placemarks[0].locality}, ${placemarks[0].country}';
+      print('myLocation ====> $occasionLocation');
+      update();
+    } else {
+      print('no location selected');
+    }
   }
 
   onTapAddMembers() {

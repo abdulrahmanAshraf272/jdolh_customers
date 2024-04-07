@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/data/models/place.dart';
@@ -13,23 +14,26 @@ class AddNewPlaceController extends GetxController {
   double? lng;
   bool placeFromCoordinateDone = false;
 
-  goToAddLocation() {
-    // Get.toNamed(AppRouteName.addOccasionLocation)!.then((value) => print(
-    //     'lat: ${latLngSelected!.latitude}, long: ${latLngSelected!.latitude}'));
-    Get.toNamed(AppRouteName.selectAddressScreen)!.then((value) async {
-      if (ValuesController.latLngSelected != null) {
-        lat = ValuesController.latLngSelected!.latitude;
-        lng = ValuesController.latLngSelected!.longitude;
-
-        List<Placemark> placemarks = await placemarkFromCoordinates(lat!, lng!);
-        placeLocation =
-            '${placemarks[0].street}, ${placemarks[0].locality}, ${placemarks[0].country}';
-        placeFromCoordinateDone = true;
-        update();
-      } else {
-        print('no location selected');
-      }
+  goToAddLocation() async {
+    var result =
+        await Get.toNamed(AppRouteName.selectAddressScreen, arguments: {
+      "withBorder": true,
     });
+
+    if (result != null) {
+      LatLng myLatLng = result as LatLng;
+      print('selectedLocation ===> $myLatLng');
+      lat = myLatLng.latitude;
+      lng = myLatLng.longitude;
+      List<Placemark> placemarks = await placemarkFromCoordinates(lat!, lng!);
+      placeLocation =
+          '${placemarks[0].street}, ${placemarks[0].locality}, ${placemarks[0].country}';
+      placeFromCoordinateDone = true;
+      print('myLocation ====> $placeLocation');
+      update();
+    } else {
+      print('no location selected');
+    }
   }
 
   onTapConfirm() {

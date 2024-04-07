@@ -21,7 +21,7 @@ import 'package:jdolh_customers/view/screens/followers_and_following_screen.dart
 import 'package:jdolh_customers/view/screens/home_screen.dart';
 import 'package:jdolh_customers/view/screens/more_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/occasions_screen.dart';
-import 'package:jdolh_customers/view/screens/schedule_screen.dart';
+import 'package:jdolh_customers/view/screens/schedule/schedule_screen.dart';
 
 class MainController extends GetxController {
   // late bool serviceEnabled;

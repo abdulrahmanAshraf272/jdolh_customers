@@ -4,13 +4,27 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
+import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/functions/decode_encode_time.dart';
+import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/data/data_source/remote/res.dart';
 import 'package:jdolh_customers/data/models/bch_worktime.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
 import 'package:jdolh_customers/data/models/resOption.dart';
+import 'package:jdolh_customers/data/models/reserved_time.dart';
 import 'package:jdolh_customers/data/models/worktime_day.dart';
 
 class SetResTimeController extends GetxController with TimeHelper {
+  late int bchid;
+  late ResOption resOption;
+  late int timeout;
+  List<ReservedTime> reservedTimes = [];
+
+  StatusRequest statusRequest = StatusRequest.loading;
+  ResData resData = ResData(Get.find());
+
+  List<TimeOfDay> availaleWorktime = [];
+
   BrandProfileController brandProfileController = Get.find();
 
   DateTime selectedDate = DateTime.now();
@@ -34,13 +48,13 @@ class SetResTimeController extends GetxController with TimeHelper {
     }
   }
 
-  //late WorktimeDay worktimeDay;
-  List<TimeOfDay> availaleWorktime = [];
+  ///////////////////////
 
   onTapSave() {
     if (selectedTime != '') {
-      String selectedDateTime = '$selectedDateFormatted $selectedTime';
-      Get.back(result: selectedDateTime);
+      Get.back(result: {'date': selectedDateFormatted, 'time': selectedTime});
+    } else {
+      Get.rawSnackbar(message: 'من فضلك قم باختيار وقت الحجز');
     }
   }
 
@@ -143,14 +157,61 @@ class SetResTimeController extends GetxController with TimeHelper {
       selectedTime = '';
       print('date: $selectedDate , day: $selectedDateFormatted');
       getCommonAvailableTime();
+      removeReservedTimes(selectedDateFormatted);
       update();
     }
   }
 
-  @override
-  void onInit() {
-    getCommonAvailableTime();
+  removeReservedTimes(String selectedDate) {
+    List<ReservedTime> unAvailableTimes = [];
+    //get the reservation in selected data, and the exceed the countLimit
+    for (int i = 0; i < reservedTimes.length; i++) {
+      if (reservedTimes[i].resDate == selectedDate &&
+          reservedTimes[i].count! >= resOption.resoptionsCountLimit!) {
+        unAvailableTimes.add(reservedTimes[i]);
+      }
+    }
 
+    //get the time units and remove it from available times
+    for (int i = 0; i < unAvailableTimes.length; i++) {
+      int duration = unAvailableTimes[i].resDuration! + timeout;
+      List<TimeOfDay> timeUnits =
+          generateTimeUnits(unAvailableTimes[i].resTime!, duration);
+      //Remove the reserved units
+      availaleWorktime.removeWhere((element) => timeUnits.contains(element));
+    }
+  }
+
+  getReservedTime() async {
+    print('resOption: $resOption');
+    statusRequest = StatusRequest.loading;
+    update();
+    var response = await resData.getReservedTime(
+        bchid: bchid.toString(), resOption: resOption.resoptionsTitle!);
+    statusRequest = handlingData(response);
+    print('statusRequest: $statusRequest');
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('success');
+        List data = response['data'];
+        reservedTimes = data.map((e) => ReservedTime.fromJson(e)).toList();
+      }
+    } else {
+      statusRequest = StatusRequest.failure;
+    }
+    update();
+  }
+
+  @override
+  void onInit() async {
+    if (Get.arguments != null) {
+      bchid = Get.arguments['bchid'];
+      resOption = Get.arguments['resOption'];
+      timeout = Get.arguments["timeout"];
+    }
+    await getReservedTime();
+    getCommonAvailableTime();
+    removeReservedTimes(selectedDateFormatted);
     super.onInit();
   }
 }
@@ -164,13 +225,13 @@ mixin TimeHelper {
     TimeOfDay startTimeP1 = worktimeDay.startTimeP1;
     TimeOfDay endTimeP1 = worktimeDay.endTimeP1;
 
-    timeRangeP1 = getAvailaleHours(startTimeP1, endTimeP1);
+    timeRangeP1 = getAvailableHalfHours(startTimeP1, endTimeP1);
 
     //Get availabe hours in the period 2 if exist.
     if (worktimeDay.startTimeP2 != null && worktimeDay.endTimeP2 != null) {
       TimeOfDay startTimeP2 = worktimeDay.startTimeP2!;
       TimeOfDay endTimeP2 = worktimeDay.endTimeP2!;
-      timeRangeP2 = getAvailaleHours(startTimeP2, endTimeP2);
+      timeRangeP2 = getAvailableHalfHours(startTimeP2, endTimeP2);
     }
 
     //To delete any repeated time , تشيل اي وقت مكرر
@@ -198,6 +259,22 @@ mixin TimeHelper {
     }
 
     timeRange.removeLast();
+
+    return timeRange;
+  }
+
+  List<TimeOfDay> getAvailableHalfHours(
+      TimeOfDay startTime, TimeOfDay endTime) {
+    List<TimeOfDay> timeRange = [];
+
+    int startMinutes = startTime.hour * 60 + startTime.minute;
+    int endMinutes = endTime.hour * 60 + endTime.minute;
+
+    for (int i = startMinutes; i < endMinutes; i += 30) {
+      int hour = i ~/ 60;
+      int minute = i % 60;
+      timeRange.add(TimeOfDay(hour: hour, minute: minute));
+    }
 
     return timeRange;
   }
@@ -236,24 +313,24 @@ mixin TimeHelper {
     return commonTimes;
   }
 
-  List<TimeOfDay> findCommonTimes(List<List<TimeOfDay>> lists) {
-    // Create a map to store the occurrence count of each TimeOfDay in each list
-    Map<TimeOfDay, int> timeCount = {};
+  // List<TimeOfDay> findCommonTimes(List<List<TimeOfDay>> lists) {
+  //   // Create a map to store the occurrence count of each TimeOfDay in each list
+  //   Map<TimeOfDay, int> timeCount = {};
 
-    // Iterate through each list and count the occurrences of each TimeOfDay
-    for (List<TimeOfDay> timeList in lists) {
-      for (TimeOfDay time in timeList) {
-        timeCount[time] = (timeCount[time] ?? 0) + 1;
-      }
-    }
+  //   // Iterate through each list and count the occurrences of each TimeOfDay
+  //   for (List<TimeOfDay> timeList in lists) {
+  //     for (TimeOfDay time in timeList) {
+  //       timeCount[time] = (timeCount[time] ?? 0) + 1;
+  //     }
+  //   }
 
-    // Filter the TimeOfDay instances that occur in all lists
-    List<TimeOfDay> commonTimes = timeCount.keys
-        .where((time) => timeCount[time] == lists.length)
-        .toList();
+  //   // Filter the TimeOfDay instances that occur in all lists
+  //   List<TimeOfDay> commonTimes = timeCount.keys
+  //       .where((time) => timeCount[time] == lists.length)
+  //       .toList();
 
-    return commonTimes;
-  }
+  //   return commonTimes;
+  // }
 
   String displayTime(TimeOfDay? time, BuildContext context) {
     if (time != null) {
@@ -270,4 +347,30 @@ mixin TimeHelper {
     final formatter = DateFormat('HH:mm');
     return formatter.format(dateTime);
   }
+
+  /////////////
+  List<TimeOfDay> generateTimeUnits(String time, int duration) {
+    List<TimeOfDay> timeSlots = [];
+
+    // Parse the input time string
+    List<String> timeParts = time.split(':');
+    int hour = int.parse(timeParts[0]);
+    int minute = int.parse(timeParts[1]);
+
+    // Generate time slots
+    while (duration > 0) {
+      timeSlots.add(TimeOfDay(hour: hour, minute: minute));
+      minute += duration >= 60 ? 30 : duration;
+      if (minute >= 60) {
+        hour++;
+        minute -= 60;
+      }
+      duration -= duration >= 60 ? 30 : duration;
+    }
+
+    return timeSlots;
+  }
+  //example:
+// List<TimeOfDay> slots1 = generateTimeSlots('10:00', 60);
+// print(slots1); // Output: [TimeOfDay(hour: 10, minute: 0), TimeOfDay(hour: 10, minute: 30)]
 }

@@ -23,11 +23,12 @@ class Invitors extends StatelessWidget {
                 SmallToggleButtons(
                   optionOne: 'بدون دعوة',
                   optionTwo: 'ارسال دعوة',
+                  initValue: controller.withInvitation ? 1 : 0,
                   onTapOne: () => controller.switchWithInvitors(false),
                   onTapTwo: () => controller.switchWithInvitors(true),
                 ),
                 const SizedBox(height: 15),
-                if (controller.withInvitros)
+                if (controller.withInvitation)
                   Column(
                     children: [
                       Row(

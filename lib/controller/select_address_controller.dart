@@ -15,6 +15,14 @@ import 'package:jdolh_customers/data/models/suggestion_place.dart';
 import 'package:uuid/uuid.dart';
 
 class SelectAddressController extends GetxController {
+  // Arguments //
+  bool withBorder = false;
+  LatLng? borderLatlng;
+  String warningTitle = 'المكان بعيد عنك!';
+  String warningBody = 'اذهب الى هناك ثم قم بتسجيل الوصول';
+  int maxDistance = RADIUS_LIMIT;
+  /////////////
+
   StatusRequest statusRequest = StatusRequest.loading;
   StatusRequest searchStatusRequest = StatusRequest.none;
   StatusRequest placeDetailsStatusRequist = StatusRequest.none;
@@ -66,17 +74,13 @@ class SelectAddressController extends GetxController {
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
+  //TODO: this is for checkin only, what about occation location.
   setMarkAndSaveNewLatLong(LatLng latLong) {
-    int distanceBetweenMeAndPlaceSelected = calculateDistance(
-        myCurrentLatLng.latitude,
-        myCurrentLatLng.longitude,
-        latLong.latitude,
-        latLong.longitude);
-    if (distanceBetweenMeAndPlaceSelected > RADIUS_LIMIT) {
-      Get.rawSnackbar(
-          title: 'المكان بعيد عنك!',
-          message: 'اذهب الى هناك ثم قم بتسجيل الوصول');
-      return;
+    if (withBorder) {
+      bool result = isWithinBorder(latLong);
+      if (!result) {
+        return;
+      }
     }
     marker.clear();
     marker.add(Marker(
@@ -85,6 +89,64 @@ class SelectAddressController extends GetxController {
     latLngSelected = latLong;
     print('latidude: ${latLong.latitude},  longitude: ${latLong.longitude}');
     update();
+  }
+
+  bool isWithinBorder(LatLng latLngPicked) {
+    LatLng locationBorder;
+    //if i didn't send border, it means i want to calculate distance between my location and picked location.
+    if (borderLatlng != null) {
+      locationBorder = borderLatlng!;
+    } else {
+      locationBorder =
+          LatLng(myCurrentLatLng.latitude, myCurrentLatLng.longitude);
+    }
+
+    int distanceBetweenMeAndPlaceSelected = calculateDistance(
+        locationBorder.latitude,
+        locationBorder.longitude,
+        latLngPicked.latitude,
+        latLngPicked.longitude);
+    print('distance: $distanceBetweenMeAndPlaceSelected');
+
+    if (distanceBetweenMeAndPlaceSelected > maxDistance) {
+      Get.rawSnackbar(title: warningTitle, message: warningBody);
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  onTapSave() {
+    if (latLngSelected != null) {
+      ValuesController.latLngSelected = latLngSelected;
+      Get.back(result: latLngSelected);
+    } else {
+      Get.rawSnackbar(message: 'قم بتحديد المكان, ثم اضغط حفظ');
+    }
+  }
+
+  getArgument() {
+    if (Get.arguments != null) {
+      if (Get.arguments['withBorder'] != null) {
+        withBorder = Get.arguments['withBorder'];
+        print('withBorder $withBorder');
+      }
+      if (Get.arguments["borderLatlng"] != null) {
+        borderLatlng = Get.arguments["borderLatlng"];
+        print('borderLatLng $borderLatlng');
+      }
+      if (Get.arguments["maxDistance"] != null) {
+        maxDistance =
+            Get.arguments["maxDistance"] * 1000; //convert from kg to m
+        print('maxDistance $maxDistance');
+      }
+      if (Get.arguments["warningTitle"] != null) {
+        warningTitle = Get.arguments["warningTitle"];
+      }
+      if (Get.arguments["warningBody"] != null) {
+        warningBody = Get.arguments["warningBody"];
+      }
+    }
   }
 
   allowToUseLocationAlert() {
@@ -107,18 +169,6 @@ class SelectAddressController extends GetxController {
         }
       },
     );
-  }
-
-  onTapSave() {
-    if (latLngSelected != null) {
-      ValuesController.latLngSelected = latLngSelected;
-      print('======================');
-      print(latLngSelected!.latitude);
-      print(ValuesController.latLngSelected!.longitude);
-      Get.back();
-    } else {
-      Get.rawSnackbar(message: 'قم بتحديد المكان, ثم اضغط حفظ');
-    }
   }
 
   getPlacesSuggestations(String input) async {
@@ -202,6 +252,7 @@ class SelectAddressController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    getArgument();
     ValuesController.latLngSelected = null;
     mapController = Completer<GoogleMapController>();
     goToMyCurrentLocation();

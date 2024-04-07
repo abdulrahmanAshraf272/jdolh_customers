@@ -38,6 +38,7 @@ class AppRouteName {
   static const mainScreen = '/mainScreen';
   static const more = '/more';
   static const payment = '/payment';
+  static const waitForApprove = '/waitForApprove';
   static const myProfile = '/myProfile';
   static const reservationDone = '/reservationDone';
   static const reservation = '/reservation';
@@ -47,6 +48,8 @@ class AppRouteName {
   static const setDate = '/setDate';
   static const walletCharging = '/walletCharging';
   static const walletDetails = '/walletDetails';
+
+  static const displayWorktime = '/displayWorktime';
 
   //Checkin
   static const checkin = '/checkin';
@@ -62,4 +65,9 @@ class AppRouteName {
   static const brandProfile = '/brandProfile';
   static const setResTime = '/setResTime';
   static const addResInvitors = '/addResInvitros';
+
+  //Reservation
+  static const reservationDetails = '/reservationDetails';
+  static const resArchive = '/resArchive';
+  static const resArchiveDetails = '/resArchiveDetails';
 }

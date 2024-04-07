@@ -47,15 +47,13 @@ class SignupScreen extends StatelessWidget {
                                 Text('إنشاء حساب جديد', style: headline2),
                                 SizedBox(height: 20),
                                 CustomTextFormAuthTwo(
-                                  hintText: 'اسمك',
-                                  labelText: 'Name',
+                                  labelText: 'اسمك',
                                   valid: (val) => validInput(val!, 2, 100),
                                   iconData: Icons.person,
                                   textEditingController: controller.name,
                                 ),
                                 CustomTextFormAuthTwo(
-                                  hintText: 'اسم المستخدم',
-                                  labelText: 'Username',
+                                  labelText: 'اسم المستخدم',
                                   valid: (val) =>
                                       validInput(val!, 2, 50, 'username'),
                                   iconData: Icons.person,
@@ -63,8 +61,8 @@ class SignupScreen extends StatelessWidget {
                                 ),
 
                                 CustomTextFormAuthTwo(
-                                  hintText: 'البريد الإلكتروني',
-                                  labelText: 'Email',
+                                  labelText: 'البريد الإلكتروني',
+                                  keyboardType: TextInputType.emailAddress,
                                   valid: (val) {
                                     return validInput(val!, 5, 100, 'email');
                                   },
@@ -77,8 +75,7 @@ class SignupScreen extends StatelessWidget {
                                   visiblePasswordOnTap: () {
                                     controller.showPassword();
                                   },
-                                  hintText: 'الرقم السري',
-                                  labelText: 'Password',
+                                  labelText: 'الرقم السري',
                                   valid: (val) {
                                     return validInput(val!, 5, 100, 'password');
                                   },
@@ -86,15 +83,24 @@ class SignupScreen extends StatelessWidget {
                                   textEditingController: controller.password,
                                 ),
 
-                                CustomTextFormAuthTwo(
-                                  hintText: 'رقم الجوال',
-                                  labelText: 'Phone',
-                                  valid: (val) {
-                                    return validInput(val!, 10, 10, 'phone');
+                                TextFieldPhoneNumber(
+                                  textEditingController:
+                                      controller.phoneNumber2,
+                                  onChanged: (phone) {
+                                    controller.countryKey = phone.countryCode;
+                                    print('phone: ${controller.phoneNumber2}');
                                   },
-                                  iconData: Icons.phone_android_outlined,
-                                  textEditingController: controller.phoneNumber,
                                 ),
+
+                                // CustomTextFormAuthTwo(
+                                //   hintText: 'رقم الجوال',
+                                //   labelText: 'Phone',
+                                //   valid: (val) {
+                                //     return validInput(val!, 10, 10, 'phone');
+                                //   },
+                                //   iconData: Icons.phone_android_outlined,
+                                //   textEditingController: controller.phoneNumber,
+                                // ),
                                 const SizedBox(height: 20),
                                 CustomButtonOne(
                                     textButton: 'إنشاء حساب',

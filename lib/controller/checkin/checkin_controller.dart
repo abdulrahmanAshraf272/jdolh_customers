@@ -1,6 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jdolh_customers/controller/values_controller.dart';
@@ -72,7 +69,7 @@ class CheckinController extends GetxController {
               jdolhPlaces[i].lng ?? 0,
               latLng.latitude,
               latLng.longitude);
-          if (distanceBetweenMeAndPlaceSelected < 300) {
+          if (distanceBetweenMeAndPlaceSelected < 500) {
             allPlaces.add(jdolhPlaces[i]);
           }
         }

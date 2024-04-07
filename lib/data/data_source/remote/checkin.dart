@@ -15,7 +15,7 @@ class CheckinData {
     String language = 'ar',
   }) async {
     var response = await crud.getData(
-        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=$keywords&location=$lat,$lng&radius=$radius&type=$type&key=$GOOGLE_MAPS_API_KEY&language=$language');
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=$keywords&location=$lat,$lng&radius=$radius&type=$type&key=$GOOGLE_MAPS_API_KEY');
 
     return response.fold((l) => l, (r) => r);
   }

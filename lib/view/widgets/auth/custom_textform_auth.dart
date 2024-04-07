@@ -1,5 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
+import 'package:jdolh_customers/core/functions/valid_input.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_textfield.dart';
 
 class CustomTextFormAuth extends StatelessWidget {
@@ -53,8 +58,9 @@ class CustomTextFormAuth extends StatelessWidget {
 }
 
 class CustomTextFormAuthTwo extends StatelessWidget {
-  final String hintText;
+  final String? hintText;
   final String labelText;
+  final TextInputType? keyboardType;
   final IconData iconData;
   final TextEditingController textEditingController;
   final String? Function(String?) valid;
@@ -62,19 +68,20 @@ class CustomTextFormAuthTwo extends StatelessWidget {
   final void Function()? visiblePasswordOnTap;
   const CustomTextFormAuthTwo(
       {super.key,
-      required this.hintText,
+      this.hintText,
       required this.labelText,
       required this.iconData,
       required this.textEditingController,
       required this.valid,
       this.obscureText,
-      this.visiblePasswordOnTap});
+      this.visiblePasswordOnTap,
+      this.keyboardType});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: Colors.grey.shade200),
@@ -83,19 +90,53 @@ class CustomTextFormAuthTwo extends StatelessWidget {
       child: TextFormField(
         controller: textEditingController,
         obscureText: obscureText == null || obscureText == false ? false : true,
-        keyboardType: labelText == 'Email'
-            ? TextInputType.emailAddress
-            : labelText == 'Phone'
-                ? TextInputType.number
-                : TextInputType.name,
+        keyboardType: keyboardType,
         validator: valid,
         decoration: InputDecoration(
             border: InputBorder.none,
             hintText: hintText,
+            label: AutoSizeText(labelText, maxLines: 1),
+            //labelText: labelText,
             hintStyle: const TextStyle(fontSize: 14),
             suffixIcon:
                 InkWell(onTap: visiblePasswordOnTap, child: Icon(iconData))),
       ),
     );
+  }
+}
+
+class TextFieldPhoneNumber extends StatelessWidget {
+  final void Function(PhoneNumber)? onChanged;
+  final TextEditingController textEditingController;
+  const TextFieldPhoneNumber({
+    super.key,
+    this.onChanged,
+    required this.textEditingController,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: Colors.grey.shade200),
+          color: AppColors.gray,
+        ),
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: IntlPhoneField(
+            controller: textEditingController,
+            disableLengthCheck: false,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              hintText: 'رقم الجوال',
+            ),
+            invalidNumberMessage: 'الرقم غير صالح',
+            initialCountryCode: 'SA',
+            onChanged: onChanged,
+          ),
+        ));
   }
 }

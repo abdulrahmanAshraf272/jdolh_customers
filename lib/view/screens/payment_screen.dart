@@ -2,6 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:jdolh_customers/controller/brand_profile/payment_controller.dart';
+import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
@@ -37,75 +39,83 @@ class _PaymentScreenState extends State<PaymentScreen> {
   ];
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(PaymentController());
     return Scaffold(
-      appBar: customAppBar(title: 'الفواتير'),
-      floatingActionButton: BottomButton(onTap: () {}, text: 'تأكيد'),
+      appBar: customAppBar(title: 'الدفع'),
+      floatingActionButton: BottomButton(
+          onTap: () {
+            controller.onTapConfirm();
+          },
+          text: 'تأكيد'),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Container(
-        width: Get.width,
-        padding: const EdgeInsets.only(right: 20, left: 20, bottom: 60),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              IconWithTitleAndSubtitle(
-                svgPath: 'assets/icons/date_time.svg',
-                color: Color(0xffFFA640),
-                title: 'رسوم الحجز',
-                subtitle:
-                    'رسوم الحجز تخصم من الفاتورة و غير مستردة في حال الإلغاء',
-                price: '30 ريال',
+          width: Get.width,
+          padding: const EdgeInsets.only(right: 20, left: 20, bottom: 60),
+          child: GetBuilder<PaymentController>(
+            builder: (controller) => HandlingDataView(
+              statusRequest: controller.statusRequest,
+              widget: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    IconWithTitleAndSubtitle(
+                      svgPath: 'assets/icons/date_time.svg',
+                      color: const Color(0xffFFA640),
+                      title: 'رسوم الحجز',
+                      subtitle: controller.resPolicy,
+                      price: '${controller.resCost.toStringAsFixed(2)} ريال',
+                    ),
+                    const SizedBox(height: 20),
+                    IconWithTitleAndSubtitle(
+                      svgPath: 'assets/icons/bill.svg',
+                      color: const Color(0xff00BF63),
+                      title: 'قيمة الفاتورة',
+                      subtitle: controller.billPolicy,
+                      price: '${controller.billCost.toStringAsFixed(2)} ريال',
+                    ),
+                    ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: list.length,
+                        itemBuilder: (context, index) => GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedIndex = index;
+                              });
+                            },
+                            child: ToggleButtonItem(
+                              index: index,
+                              selectedIndex: selectedIndex,
+                              text: list[index],
+                              fontSize: 13,
+                            ))),
+                    Divider(
+                      thickness: 2,
+                      color: Colors.grey.shade300,
+                    ),
+                    ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: paymentMethodsOptions.length,
+                        itemBuilder: (context, index) => GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedPaymentMethod = index;
+                              });
+                            },
+                            child: ToggleButtonItem(
+                              index: index,
+                              selectedIndex: selectedIndex,
+                              text: paymentMethodsOptions[index],
+                              fontSize: 13,
+                              svgIconPath: paymentMethodsOptionsIcons[index],
+                            ))),
+                  ],
+                ),
               ),
-              SizedBox(height: 20),
-              IconWithTitleAndSubtitle(
-                svgPath: 'assets/icons/bill.svg',
-                color: Color(0xff00BF63),
-                title: 'قيمة الفاتورة',
-                subtitle: 'قيمة الفاتورة يمكن دفعها عند الوصول وتعديل الطلب',
-                price: '161 ريال',
-              ),
-              ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemCount: list.length,
-                  itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = index;
-                        });
-                      },
-                      child: ToggleButtonItem(
-                        index: index,
-                        selectedIndex: selectedIndex,
-                        text: list[index],
-                        fontSize: 13,
-                      ))),
-              Divider(
-                thickness: 2,
-                color: Colors.grey.shade300,
-              ),
-              ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemCount: paymentMethodsOptions.length,
-                  itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedPaymentMethod = index;
-                        });
-                      },
-                      child: ToggleButtonItem(
-                        index: index,
-                        selectedIndex: selectedIndex,
-                        text: paymentMethodsOptions[index],
-                        fontSize: 13,
-                        svgIconPath: paymentMethodsOptionsIcons[index],
-                      ))),
-            ],
-          ),
-        ),
-      ),
+            ),
+          )),
     );
   }
 }
@@ -155,7 +165,7 @@ class IconWithTitleAndSubtitle extends StatelessWidget {
         ),
         SizedBox(height: 15),
         Text(
-          '30 ريال',
+          price,
           style: titleLarge,
         ),
         SizedBox(height: 20),

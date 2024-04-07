@@ -69,9 +69,9 @@ class _TestScreenState extends State<TestScreen> {
             Brand(),
             CommentListItem(),
             AppointmentListItemNotApproved(),
-            AppointmentListItem(onTap: () {
-              Get.toNamed(AppRouteName.apptDetails);
-            }),
+            // AppointmentListItem(onTap: () {
+            //   Get.toNamed(AppRouteName.apptDetails);
+            // }),
             ActivityListItem(),
             PersonListItem(),
 

@@ -28,25 +28,22 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     Get.put(MainController());
     return GetBuilder<MainController>(
-        builder: (controller) => RefreshIndicator(
-              onRefresh: () => controller.getMyProfileData(),
-              child: Scaffold(
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () {
-                    Get.toNamed(AppRouteName.checkin);
-                  },
-                  backgroundColor: AppColors.secondaryColor,
-                  shape: const CircleBorder(),
-                  child: const Icon(
-                    Icons.place,
-                    color: Colors.white,
-                  ),
+        builder: (controller) => Scaffold(
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  Get.toNamed(AppRouteName.checkin);
+                },
+                backgroundColor: AppColors.secondaryColor,
+                shape: const CircleBorder(),
+                child: const Icon(
+                  Icons.place,
+                  color: Colors.white,
                 ),
-                floatingActionButtonLocation:
-                    FloatingActionButtonLocation.centerDocked,
-                bottomNavigationBar: const CustomBottomAppBar(),
-                body: controller.listPage.elementAt(controller.currentPage),
               ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              bottomNavigationBar: const CustomBottomAppBar(),
+              body: controller.listPage.elementAt(controller.currentPage),
             ));
   }
 }

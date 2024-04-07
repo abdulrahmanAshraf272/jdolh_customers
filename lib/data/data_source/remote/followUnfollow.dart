@@ -18,4 +18,13 @@ class FollowUnfollowData {
     });
     //returnresponse.fold((l) => l, (r) => r);
   }
+
+  followBch({required String userid, required String bchid}) async {
+    var response = await crud.postData(ApiLinks.followBch, {
+      "userid": userid,
+      "bchid": bchid,
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
 }

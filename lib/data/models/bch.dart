@@ -15,6 +15,8 @@ class Bch {
   String? bchContactNumber;
   int? bchIsApproved;
   int? bchIsActive;
+  int? bchHomeAvailable;
+  int? bchIsComplete;
   String? bchCreatetime;
 
   Bch(
@@ -34,6 +36,8 @@ class Bch {
       this.bchContactNumber,
       this.bchIsApproved,
       this.bchIsActive,
+      this.bchHomeAvailable,
+      this.bchIsComplete,
       this.bchCreatetime});
 
   Bch.fromJson(Map<String, dynamic> json) {
@@ -53,6 +57,8 @@ class Bch {
     bchContactNumber = json['bch_contactNumber'];
     bchIsApproved = json['bch_isApproved'];
     bchIsActive = json['bch_isActive'];
+    bchHomeAvailable = json['bch_homeAvailable'];
+    bchIsComplete = json['bch_isComplete'];
     bchCreatetime = json['bch_createtime'];
   }
 }

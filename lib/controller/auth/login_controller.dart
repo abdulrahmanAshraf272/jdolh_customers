@@ -39,7 +39,12 @@ class LoginController extends GetxController {
             goToVerifycode();
           }
         } else {
-          Get.rawSnackbar(message: 'اسم المستخدم او كلمة المرور غير صحيحة');
+          if (response['message'] == "The password is not correct") {
+            Get.rawSnackbar(message: 'كلمة السر غير صحيحة');
+          } else {
+            Get.rawSnackbar(
+                message: 'اسم المستخدم او البريد الالكتروني غير صحيح');
+          }
         }
       }
     }

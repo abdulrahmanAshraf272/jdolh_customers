@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
+import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/image_name_followers.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/scheduled_rating.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/arrow_back_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
 
 class BrandProfileHeader extends StatelessWidget {
+  final bool isFollowing;
   final void Function() onTapFollow;
-  const BrandProfileHeader({super.key, required this.onTapFollow});
+  const BrandProfileHeader(
+      {super.key, required this.onTapFollow, required this.isFollowing});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +64,14 @@ class BrandProfileHeader extends StatelessWidget {
                         const SizedBox(width: 7),
                         SizedBox(
                             height: 35,
-                            child: CustomButton(onTap: () {}, text: 'المتابعة'))
+                            child: isFollowing
+                                ? CustomButton(
+                                    onTap: onTapFollow,
+                                    text: 'الغاء المتابعة',
+                                    buttonColor: AppColors.redButton,
+                                  )
+                                : CustomButton(
+                                    onTap: onTapFollow, text: 'المتابعة'))
                       ],
                     ),
                   ),

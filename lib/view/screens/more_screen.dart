@@ -92,6 +92,12 @@ class MoreScreen extends StatelessWidget {
                   },
                   iconData: Icons.wallet),
               SettingsButton(
+                  text: 'الحجوزات السابقة',
+                  onTap: () {
+                    Get.toNamed(AppRouteName.resArchive);
+                  },
+                  iconData: Icons.task),
+              SettingsButton(
                   text: 'الفواتير',
                   onTap: () {
                     Get.toNamed(AppRouteName.bills);

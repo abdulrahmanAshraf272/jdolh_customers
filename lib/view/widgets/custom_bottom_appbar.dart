@@ -74,7 +74,11 @@ class BottomAppBarItem extends StatelessWidget {
                       AutoSizeText(
                         title,
                         maxLines: 1,
-                        style: titleSmall.copyWith(fontSize: 11.sp),
+                        style: titleSmall.copyWith(
+                            fontSize: 11.sp,
+                            color: controller.currentPage == index
+                                ? AppColors.secondaryColor
+                                : Colors.grey),
                       )
                     ],
                   )),

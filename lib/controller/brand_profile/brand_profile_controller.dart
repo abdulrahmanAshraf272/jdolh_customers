@@ -1,25 +1,24 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/brand_profile/reservation/res_service_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/brand_search.dart';
 import 'package:jdolh_customers/data/data_source/remote/cart.dart';
+import 'package:jdolh_customers/data/data_source/remote/followUnfollow.dart';
 import 'package:jdolh_customers/data/models/bch.dart';
 import 'package:jdolh_customers/data/models/bch_worktime.dart';
 import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
 import 'package:jdolh_customers/data/models/categories.dart';
-import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/item.dart';
 import 'package:jdolh_customers/data/models/resOption.dart';
 
 class BrandProfileController extends GetxController {
   //Res Product ======================
-
-  ///////////////
+  int totalServiceDuration = 0;
+  num totalPrice = 0;
+  num taxCost = 0;
 
   onTapIncrease(int index) {
     //Get quantity and price (off one quantity of cart)
@@ -33,6 +32,8 @@ class BrandProfileController extends GetxController {
     //set new quantity and totalPrice
     carts[index].cartQuantity = newQuantity;
     carts[index].cartTotalPrice = newTotalPrice;
+    calcResTotalDuration();
+    calculateTotalPrice();
     update();
     //set quantity and totalPrice in Db
     changeQuantity(carts[index].cartId!, newQuantity, newTotalPrice);
@@ -53,6 +54,8 @@ class BrandProfileController extends GetxController {
     //set new quantity and totalPrice
     carts[index].cartQuantity = newQuantity;
     carts[index].cartTotalPrice = newTotalPrice;
+    calcResTotalDuration();
+    calculateTotalPrice();
     update();
     //set quantity and totalPrice in Db
     changeQuantity(carts[index].cartId!, newQuantity, newTotalPrice);
@@ -75,8 +78,10 @@ class BrandProfileController extends GetxController {
 
   deleteCart(int index) async {
     String cartid = carts[index].cartId.toString();
-    update();
     carts.remove(carts[index]);
+    calcResTotalDuration();
+    calculateTotalPrice();
+    update();
     var response = await cartData.deleteCart(cartid: cartid);
     statusRequestCart = handlingData(response);
     print('delete: $statusRequestCart');
@@ -88,11 +93,10 @@ class BrandProfileController extends GetxController {
         print('delete failed');
       }
     }
-    print('cart: ${carts.length}');
   }
 
-  int subscreen =
-      0; //0 => items, 1 => resProduct, 2 => resService, 3=> HomeService
+//0 => items, 1 => resProduct, 2 => resService, 3=> HomeService
+  int subscreen = 0;
   late Brand brand;
   late Bch bch;
   MyServices myServices = Get.find();
@@ -101,26 +105,26 @@ class BrandProfileController extends GetxController {
 
   BrandSearchData brandSearchData = BrandSearchData(Get.find());
   CartData cartData = CartData(Get.find());
+  FollowUnfollowData followUnfollowData = FollowUnfollowData(Get.find());
 
   List<Cart> carts = [];
 
   bool isHomeServices = false;
 
-  int counter = 0;
+  //int counter = 0;
 
   List<MyCategories> categories = [];
   List<Item> items = [];
   List<Item> itemsToDisplay = [];
-
   int selectedIndexCategory = 0;
 
   List<ResOption> resOptions = [];
   List<String> resOptionsTitles = [];
   late ResOption selectedResOption;
-
   String initalResOptionTitle = '';
 
   late BchWorktime bchWorktime;
+  bool isFollowing = false;
 
   selectResOption(String resOptionTitle) {
     selectedResOption = resOptions
@@ -137,7 +141,10 @@ class BrandProfileController extends GetxController {
       subscreen = 1;
     }
     update();
-    getCart();
+    await getCart();
+    calcResTotalDuration();
+    calculateTotalPrice();
+    update();
   }
 
   diplayItemsSubscreen() {
@@ -213,8 +220,28 @@ class BrandProfileController extends GetxController {
     carts = cartListJson.map((e) => Cart.fromJson(e)).toList();
   }
 
+  calcResTotalDuration() {
+    totalServiceDuration = 0;
+    for (int i = 0; i < carts.length; i++) {
+      totalServiceDuration += carts[i].itemsDuration ?? 0;
+    }
+  }
+
+  calculateTotalPrice() {
+    totalPrice = 0;
+    for (int i = 0; i < carts.length; i++) {
+      totalPrice += carts[i].cartTotalPrice!;
+    }
+    taxCost = totalPrice * 0.15;
+  }
+
+  gotoDisplayWorktime() {
+    Get.toNamed(AppRouteName.displayWorktime, arguments: bchWorktime);
+  }
+
   getBch() async {
-    var response = await brandSearchData.getBch(bchid: bch.bchId.toString());
+    var response = await brandSearchData.getBch(
+        bchid: bch.bchId.toString(), userid: myServices.getUserid());
     statusRequest = handlingData(response);
     update();
     if (statusRequest == StatusRequest.success) {
@@ -228,6 +255,7 @@ class BrandProfileController extends GetxController {
   }
 
   parseData(response) {
+    isFollowing = response['isFollowing'];
     List categoriesJson = response['categories'];
     List itemsJson = response['items'];
     var worktimeJson = response['worktime'];
@@ -242,6 +270,21 @@ class BrandProfileController extends GetxController {
     for (int i = 0; i < items.length; i++) {
       if (items[i].itemsCategoriesid == categoryIdSelected) {
         itemsToDisplay.add(items[i]);
+      }
+    }
+  }
+
+  followUnfollow() async {
+    isFollowing = !isFollowing;
+    update();
+    var response = await followUnfollowData.followBch(
+        bchid: bch.bchId.toString(), userid: myServices.getUserid());
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('follow success');
+      } else {
+        statusRequest = StatusRequest.failure;
       }
     }
   }
@@ -265,6 +308,6 @@ class BrandProfileController extends GetxController {
     receiveArgument();
     getBch();
     getBchInfo();
-    getCart();
+    //getCart();
   }
 }
