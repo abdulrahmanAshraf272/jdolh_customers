@@ -31,11 +31,11 @@ class CustomBottomAppBar extends StatelessWidget {
             SizedBox(width: 40.w),
             Expanded(
               child: BottomAppBarItem(
-                  index: 2, title: 'مناسبات'.tr, iconData: Icons.person),
+                  index: 2, title: 'الحجز'.tr, iconData: Icons.date_range),
             ),
             Expanded(
               child: BottomAppBarItem(
-                  index: 3, title: 'المزيد'.tr, iconData: Icons.more),
+                  index: 3, title: 'المزيد'.tr, iconData: Icons.more_outlined),
             ),
           ],
         ));

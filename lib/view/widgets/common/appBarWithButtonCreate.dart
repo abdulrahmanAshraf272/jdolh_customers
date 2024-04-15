@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
+import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 
 AppBar appBarWithButtonCreate(
     {required void Function() onTapCreate,
@@ -19,12 +20,10 @@ AppBar appBarWithButtonCreate(
         color: AppColors.white,
       ),
     ),
-    leading: Get.isPopGestureEnable
-        ? IconButton(
-            onPressed: onTapBack,
-            icon: Icon(Icons.arrow_back_ios, color: AppColors.white),
-          )
-        : null,
+    leading: IconButton(
+      onPressed: () => Get.back(),
+      icon: const Icon(Icons.arrow_back_ios, color: AppColors.white),
+    ),
     actions: [
       Padding(
         padding: const EdgeInsets.all(9.0),

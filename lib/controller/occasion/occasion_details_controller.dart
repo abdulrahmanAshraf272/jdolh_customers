@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -23,7 +24,8 @@ import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 class OccasionDetailsController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
   TextEditingController excuse = TextEditingController();
-  ValuesController valuesController = Get.find();
+  OccasionsController occasionsController = Get.find();
+  //ValuesController valuesController = Get.find();
   late Occasion occasionSelected;
   late int occasionId;
   OccasionsData occasionData = OccasionsData(Get.find());
@@ -72,24 +74,24 @@ class OccasionDetailsController extends GetxController {
   String displayMemberStatus(int index) {
     if (members[index].creator == 1) {
       return textCreator;
-    } else if (members[index].invitorStatus == 0) {
-      return textSuspendAttend;
+    } else if (members[index].invitorStatus == 2) {
+      return textRejectAttend;
     } else if (members[index].invitorStatus == 1) {
       return textConfirmAttend;
     } else {
-      return textRejectAttend;
+      return textSuspendAttend;
     }
   }
 
   Color displayMemberStatusColor(int index) {
     if (members[index].creator == 1) {
       return AppColors.secondaryColor;
-    } else if (members[index].invitorStatus == 0) {
-      return Colors.grey;
+    } else if (members[index].invitorStatus == 2) {
+      return AppColors.redText;
     } else if (members[index].invitorStatus == 1) {
       return Colors.green;
     } else {
-      return AppColors.redText;
+      return Colors.grey;
     }
   }
 
@@ -102,16 +104,17 @@ class OccasionDetailsController extends GetxController {
               "هل تريد مغادرة المناسبة؟",
               style: titleMedium,
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             CustomTextField(
                 textEditingController: excuse, hintText: 'ارسال عذر (اختياري)'),
           ],
         ),
         middleText: "هل تريد مغادرة المناسبة؟",
-        onConfirm: () {
-          leaveOccasion();
-          valuesController.changeInvitorStatus(occasionSelected.occasionId!, 2);
+        onConfirm: () async {
           Get.back();
+          await occasionsController.respondToInvitation(
+              occasionSelected, 'reject', excuse.text, 'تم مغادرة المناسبة');
+          await Future.delayed(const Duration(seconds: 1));
           Get.back();
         },
         textConfirm: 'تأكيد',
@@ -119,48 +122,10 @@ class OccasionDetailsController extends GetxController {
         onCancel: () {});
   }
 
-  leaveOccasion() async {
-    var response = await occasionData.rejectInvitation(
-        occasionSelected.occasionId.toString(),
-        myServices.sharedPreferences.getString("id")!,
-        excuse.text,
-        occasionSelected.occasionUserid.toString());
-    statusRequest = handlingData(response);
-    print('status ==== $statusRequest');
-    if (statusRequest == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        print('leave group done');
-      } else {
-        print('leave group failed');
-      }
-    }
-  }
-
   onTapAcceptInvitation() async {
-    var resultSucceed = await acceptInvitation();
-    if (resultSucceed) {
-      Get.rawSnackbar(
-          message: 'تم قبول دعوة ${occasionSelected.occasionUsername}');
-      valuesController.changeInvitorStatus(occasionSelected.occasionId!, 1);
-      Get.back();
-    }
-  }
-
-  Future<bool> acceptInvitation() async {
-    var response = await occasionData.acceptInvitation(
-        myServices.sharedPreferences.getString("id")!,
-        occasionSelected.occasionId.toString());
-    statusRequest = handlingData(response);
-    print('status ==== $statusRequest');
-    if (statusRequest == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
+    await occasionsController.respondToInvitation(occasionSelected, 'accept');
+    await Future.delayed(const Duration(seconds: 1));
+    Get.back();
   }
 
   onTapRejectInvitation() async {
@@ -172,47 +137,21 @@ class OccasionDetailsController extends GetxController {
               "هل تريد رفض دعوة ${occasionSelected.occasionUsername}؟ ",
               style: titleMedium,
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             CustomTextField(
                 textEditingController: excuse, hintText: 'ارسال عذر (اختياري)'),
           ],
         ),
         onConfirm: () async {
-          var resultSucceed = await rejectInvitation();
-          if (resultSucceed) {
-            Get.back();
-            Get.rawSnackbar(
-                message: 'تم رفض دعوة ${occasionSelected.occasionUsername}');
-            valuesController.changeInvitorStatus(
-                occasionSelected.occasionId!, 2);
-            Get.back();
-          }
+          Get.back();
+          await occasionsController.respondToInvitation(
+              occasionSelected, 'reject', excuse.text);
+          await Future.delayed(const Duration(seconds: 1));
+          Get.back();
         },
         textConfirm: 'تأكيد',
         textCancel: 'الغاء',
         onCancel: () {});
-  }
-
-  Future<bool> rejectInvitation() async {
-    statusRequest = StatusRequest.loading;
-    update();
-    var response = await occasionData.rejectInvitation(
-        myServices.sharedPreferences.getString("id")!,
-        occasionSelected.occasionId.toString(),
-        excuse.text,
-        occasionSelected.occasionUserid.toString());
-    statusRequest = handlingData(response);
-    update();
-    print('status ==== $statusRequest');
-    if (statusRequest == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
   }
 
   @override

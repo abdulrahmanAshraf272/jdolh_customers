@@ -23,8 +23,8 @@ class ApptController extends GetxController {
 
   @override
   void onInit() {
-    acceptedOccasion = List.from(mainController.acceptedOccasions);
-    suspendedOccasion = List.from(mainController.suspendedOccasions);
+    // acceptedOccasion = List.from(mainController.acceptedOccasions);
+    // suspendedOccasion = List.from(mainController.suspendedOccasions);
     occasionToDisplay = acceptedOccasion;
     super.onInit();
   }

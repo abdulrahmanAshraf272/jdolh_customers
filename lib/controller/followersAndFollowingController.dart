@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
@@ -18,9 +19,11 @@ class FollowersAndFollowingController extends GetxController {
   List<Friend> data = [];
   StatusRequest statusRequest = StatusRequest.none;
   late String title;
+  ValuesController valuesController = Get.put(ValuesController());
 
   followUnfollow(int index) {
     followUnfollowRequest(data[index].userId.toString());
+    valuesController.addAndRemoveFollowing(data[index]);
     if (data[index].following!) {
       data[index].following = false;
     } else {

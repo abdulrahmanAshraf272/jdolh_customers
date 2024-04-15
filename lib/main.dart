@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:jdolh_customers/core/binding/initial_binding.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
           theme: controller.appTheme,
           initialBinding: InitialBindings(),
           getPages: routes,
+          builder: EasyLoading.init(),
         );
       },
     );

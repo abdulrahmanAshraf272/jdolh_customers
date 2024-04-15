@@ -77,22 +77,16 @@ class OccasionsData {
     return response.fold((l) => l, (r) => r);
   }
 
-  acceptInvitation(String userId, String occasionId) async {
-    var response = await crud.postData(ApiLinks.acceptOccasion, {
+  responedToInvitation(
+      {required String userId,
+      required String occasionId,
+      required String respond,
+      required String excuse}) async {
+    var response = await crud.postData(ApiLinks.responedToInvitation, {
       "occasionId": occasionId,
       "userId": userId,
-    });
-
-    return response.fold((l) => l, (r) => r);
-  }
-
-  rejectInvitation(String userId, String occasionId, String excuse,
-      String creatorUserId) async {
-    var response = await crud.postData(ApiLinks.rejectOccasion, {
-      "userId": userId,
-      "occasionId": occasionId,
-      "excuse": excuse,
-      "creatorUserId": creatorUserId
+      "respond": respond,
+      "excuse": excuse
     });
 
     return response.fold((l) => l, (r) => r);

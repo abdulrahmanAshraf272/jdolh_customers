@@ -72,7 +72,7 @@ class _TestScreenState extends State<TestScreen> {
             // AppointmentListItem(onTap: () {
             //   Get.toNamed(AppRouteName.apptDetails);
             // }),
-            ActivityListItem(),
+            //ActivityListItem(),
             PersonListItem(),
 
             //PersonWithToggleListItem(),

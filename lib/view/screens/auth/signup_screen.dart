@@ -8,9 +8,13 @@ import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/alert_exit_app.dart';
 import 'package:jdolh_customers/core/functions/valid_input.dart';
+import 'package:jdolh_customers/view/screens/auth/edit_personal_data_screen.dart';
 import 'package:jdolh_customers/view/widgets/auth/custom_textform_auth.dart';
 import 'package:jdolh_customers/view/widgets/auth/have_account_question.dart';
+import 'package:jdolh_customers/view/widgets/common/avatar_image_holder.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/custom_dropdown.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_dropdown_button.dart';
+import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/custom_button_one.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -21,8 +25,9 @@ class SignupScreen extends StatelessWidget {
     Get.put(SignUpController());
     return Scaffold(
       body: SafeArea(
-          child: WillPopScope(
-        onWillPop: alertExitApp,
+          child: PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) => alertExitAppNew(),
         child: GetBuilder<SignUpController>(
             builder: (controller) => HandlingDataView(
                   statusRequest: controller.statusRequest,
@@ -43,9 +48,13 @@ class SignupScreen extends StatelessWidget {
                                       fontSize: 33.sp,
                                       color: AppColors.primaryColor,
                                     )),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 Text('إنشاء حساب جديد', style: headline2),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
+                                AvatarImageHolder(
+                                  onTap: () => controller.uploadImage(),
+                                  selectedImage: controller.selectedImage,
+                                ),
                                 CustomTextFormAuthTwo(
                                   labelText: 'اسمك',
                                   valid: (val) => validInput(val!, 2, 100),
@@ -89,6 +98,29 @@ class SignupScreen extends StatelessWidget {
                                   onChanged: (phone) {
                                     controller.countryKey = phone.countryCode;
                                     print('phone: ${controller.phoneNumber2}');
+                                  },
+                                ),
+                                GenderSelection(
+                                  onTapMale: () {
+                                    controller.gender = 1;
+                                  },
+                                  onTapFamale: () {
+                                    controller.gender = 2;
+                                  },
+                                ),
+                                const CustomSmallTitle(
+                                    title: 'المدينة', rightPdding: 0),
+                                CustomDropdown(
+                                  items: cities,
+                                  horizontalMargin: 0,
+                                  verticalMargin: 10,
+                                  withInitValue: true,
+                                  //width: Get.width / 2.2,
+                                  title: 'اختر المدينة',
+                                  onChanged: (String? value) {
+                                    // Handle selected value
+                                    controller.city = value!;
+                                    print(value);
                                   },
                                 ),
 

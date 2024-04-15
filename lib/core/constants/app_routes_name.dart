@@ -8,13 +8,15 @@ class AppRouteName {
   static const resetPassword = '/resetPassword';
   static const successOperation = '/successOperation';
 
+  static const editPersonalData = '/editPersonalData';
+
   static const personProfile = '/personProfile';
-  static const addToGroup = '/addToGroup';
-  static const addToGroupCreated = '/addToGroupCreated';
+
   static const groupDetails = '/groupDetails';
   static const appt = '/appt';
   static const apptDetails = '/apptDetails';
   static const bills = '/bills';
+  static const addMembers = '/addMembers';
 
   static const createGroup = '/createGroup';
   static const editGroup = '/editGroup';
@@ -50,6 +52,8 @@ class AppRouteName {
   static const walletDetails = '/walletDetails';
 
   static const displayWorktime = '/displayWorktime';
+  static const myContacts = '/myContacts';
+  static const resOccasion = '/resOccasion';
 
   //Checkin
   static const checkin = '/checkin';

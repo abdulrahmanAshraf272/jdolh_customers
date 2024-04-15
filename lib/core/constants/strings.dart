@@ -16,6 +16,8 @@ const textConfirmAttend = 'مؤكد';
 const textSuspendAttend = 'لم يتم التأكيد';
 const textCreator = 'منشئ';
 const textRejectAttend = 'اعتذر';
+const pleaseWait = 'برجاء الانتظار...';
+const errorHappend = 'حدث خطأ';
 
 const creatAccount = 'إنشاء حساب جديد';
 

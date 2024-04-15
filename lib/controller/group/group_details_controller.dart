@@ -2,13 +2,12 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/group/groups_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/groups.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/group.dart';
-import 'package:jdolh_customers/data/models/group_member.dart';
-import 'package:jdolh_customers/data/models/person.dart';
 
 class GroupDetailsController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
@@ -43,11 +42,6 @@ class GroupDetailsController extends GetxController {
   onTapPersonCard(index) {
     int myId = int.parse(myServices.sharedPreferences.getString("id")!);
     if (groupMembers[index].userId != myId) {
-      // final person = Person(
-      //     userId: groupMembers[index].userId,
-      //     userName: groupMembers[index].userName,
-      //     userUsername: groupMembers[index].userUsername,
-      //     userImage: groupMembers[index].userImage);
       Get.toNamed(AppRouteName.personProfile, arguments: groupMembers[index]);
     }
   }
@@ -66,18 +60,23 @@ class GroupDetailsController extends GetxController {
   }
 
   leaveGroup() async {
-    groupController.groups.remove(groupSelected);
-    var response = await groupsData.leaveGroup(
-        myServices.sharedPreferences.getString("id")!,
-        groupSelected.groupId.toString());
+    CustomDialogs.loading();
+    var response = await groupsData.deleteMember(
+        userid: myServices.sharedPreferences.getString("id")!,
+        groupid: groupSelected.groupId.toString());
     statusRequest = handlingData(response);
+    CustomDialogs.dissmissLoading();
     print('status ==== $statusRequest');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
+        CustomDialogs.success('تم مغادرة المجموعة');
+        groupController.groups.remove(groupSelected);
         Get.back();
       } else {
-        print('leave group failed');
+        CustomDialogs.failure();
       }
+    } else {
+      update();
     }
   }
 

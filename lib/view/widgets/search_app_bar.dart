@@ -5,15 +5,17 @@ import 'package:jdolh_customers/core/constants/app_colors.dart';
 
 class SearchAppBar extends StatelessWidget {
   final TextEditingController textEditingController;
-  final void Function() onTapSearch;
+  //final void Function() onTapSearch;
+  final Function(String)? onChaneged;
   final bool withArrowBack;
   final bool autoFocus;
   final String hintText;
   const SearchAppBar(
       {super.key,
-      required this.onTapSearch,
+      // required this.onTapSearch,
       this.withArrowBack = true,
       this.autoFocus = false,
+      this.onChaneged,
       required this.textEditingController,
       this.hintText = 'اكتب اسم الشخص'});
 
@@ -21,7 +23,7 @@ class SearchAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.primaryColor,
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: SafeArea(
         child: Row(
           children: [
@@ -30,17 +32,15 @@ class SearchAppBar extends StatelessWidget {
                     onPressed: () {
                       Get.back();
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.arrow_back_ios,
                       color: Colors.white,
                     ))
-                : SizedBox(),
-            TextButton(
-                onPressed: onTapSearch,
-                child: Text(
-                  'بحث',
-                  style: TextStyle(color: Colors.white, fontSize: 14.sp),
-                )),
+                : const SizedBox(),
+            Text(
+              'بحث',
+              style: TextStyle(color: Colors.white, fontSize: 14.sp),
+            ),
             Expanded(
               child: Container(
                 height: 40,
@@ -54,6 +54,7 @@ class SearchAppBar extends StatelessWidget {
                 child: TextFormField(
                   controller: textEditingController,
                   autofocus: autoFocus,
+                  onChanged: onChaneged,
                   maxLines: 1,
                   decoration: InputDecoration(
                     hintText: hintText,

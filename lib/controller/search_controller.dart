@@ -24,33 +24,38 @@ class SearchScreenController extends GetxController {
   List<Friend> data = [];
   ValuesController valuesController = Get.put(ValuesController());
 
-  activePersonSearch() {
-    isPersonSearch = true;
-    update();
+  // activePersonSearch() {
+  //   isPersonSearch = true;
+  //   update();
+  // }
+
+  // inactivePersonSearch() {
+  //   isPersonSearch = false;
+  //   update();
+  // }
+
+  seachOnTap(String? value) {
+    // if (isPersonSearch) {
+
+    // }
+    getPeopleSearchedFor(value);
   }
 
-  inactivePersonSearch() {
-    isPersonSearch = false;
-    update();
-  }
-
-  seachOnTap() {
-    if (isPersonSearch) {
-      getPeopleSearchedFor();
+  getPeopleSearchedFor(String? value) async {
+    if (value == null || value == '') {
+      data.clear();
+      update();
+      return;
     }
-  }
-
-  getPeopleSearchedFor() async {
     statusRequest = StatusRequest.loading;
     update();
     data.clear();
     var response = await searchPersonData.postData(
-        myServices.sharedPreferences.getString("id")!, name.text);
+        myServices.sharedPreferences.getString("id")!, value);
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         List responseJsonData = response['data'];
-        print('$responseJsonData');
         //parsing jsonList to DartList.
         data = responseJsonData.map((e) => Friend.fromJson(e)).toList();
         remoreMyselfIfWriteMyName();
@@ -96,13 +101,6 @@ class SearchScreenController extends GetxController {
   }
 
   onTapCard(int index) {
-    //Get.toNamed(AppRouteName.personProfile);
-
-    // final person = Person(
-    //     userId: data[index].userId,
-    //     userName: data[index].userName,
-    //     userUsername: data[index].userUsername,
-    //     userImage: data[index].userImage);
     Get.toNamed(AppRouteName.personProfile, arguments: data[index]);
   }
 
@@ -110,5 +108,11 @@ class SearchScreenController extends GetxController {
   void dispose() {
     super.dispose();
     name.dispose();
+  }
+
+  @override
+  void onInit() {
+    //getPeopleSearchedFor('');
+    super.onInit();
   }
 }

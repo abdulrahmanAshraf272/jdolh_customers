@@ -66,7 +66,7 @@ class EditGroupScreen extends StatelessWidget {
                 ),
                 CustomButton(
                     onTap: () {
-                      controller.onTapAddMember();
+                      controller.onTapAddMembers();
                     },
                     text: 'أضف للمجموعة'),
                 SizedBox(width: 20)
@@ -78,11 +78,11 @@ class EditGroupScreen extends StatelessWidget {
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.only(bottom: 70),
-                  itemCount: controller.groupMembers.length,
+                  itemCount: controller.members.length,
                   itemBuilder: (context, index) => PersonWithButtonListItem(
-                    name: controller.groupMembers[index].userName!,
-                    userName: controller.groupMembers[index].userUsername!,
-                    image: controller.groupMembers[index].userImage!,
+                    name: controller.members[index].userName!,
+                    userName: controller.members[index].userUsername!,
+                    image: controller.members[index].userImage!,
                     onTap: () => controller.onTapRemoveMember(index),
                     onTapCard: () => controller.onTapPersonCard(index),
                     buttonColor: AppColors.redButton,

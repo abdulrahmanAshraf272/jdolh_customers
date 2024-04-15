@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/constants/text_syles.dart';
 
 AppBar customHomeAppBar(
     {required void Function() onTapSearch,
@@ -15,19 +14,23 @@ AppBar customHomeAppBar(
             onTap: onTapSearch,
             child: Container(
               height: 30.h,
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              //margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 color: AppColors.white,
               ),
               child: Row(
                 children: [
-                  Icon(Icons.search, color: Colors.grey),
-                  SizedBox(width: 5),
+                  const Icon(Icons.search, color: Colors.grey),
+                  const SizedBox(width: 5),
                   Expanded(
                     child: AutoSizeText('البحث باسم المستخدم او اسم التاجر',
-                        style: titleSmall.copyWith(color: Colors.grey)),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 10.sp,
+                          color: Colors.grey,
+                        )),
                   ),
                 ],
               ),
@@ -36,7 +39,7 @@ AppBar customHomeAppBar(
         ),
         IconButton(
             onPressed: onTapNotification,
-            icon: Icon(
+            icon: const Icon(
               Icons.notifications_active,
               color: AppColors.white,
               size: 28,

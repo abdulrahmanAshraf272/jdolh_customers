@@ -5,35 +5,35 @@ class GroupsData {
   Crud crud;
   GroupsData(this.crud);
 
-  createGroup(String myId, String groupName, String membersId) async {
+  createGroup({required String creatorid, required String groupName}) async {
     var response = await crud.postData(ApiLinks.createGroup, {
-      "myId": myId,
+      "creatorid": creatorid,
       "groupName": groupName,
-      "membersID": membersId,
     });
 
     return response.fold((l) => l, (r) => r);
   }
 
-  addToGroup(String groupId, String membersId) async {
-    var response = await crud.postData(ApiLinks.addToGroup, {
-      "groupId": groupId,
-      "membersID": membersId,
-    });
+  addGroupMemeber(
+      {required String groupid,
+      required String creatorid,
+      required String userid}) async {
+    var response = await crud.postData(ApiLinks.addGroupMember,
+        {"groupid": groupid, "creatorid": creatorid, "userid": userid});
 
     return response.fold((l) => l, (r) => r);
   }
 
-  deleteMember(String groupId, String userId) async {
+  deleteMember({required String groupid, required String userid}) async {
     var response = await crud.postData(ApiLinks.deleteMember, {
-      "groupId": groupId,
-      "userId": userId,
+      "groupid": groupid,
+      "userid": userid,
     });
 
     return response.fold((l) => l, (r) => r);
   }
 
-  editGroupName(String groupId, String newName) async {
+  editGroupName({required String groupId, required String newName}) async {
     var response = await crud.postData(ApiLinks.editGroupName, {
       "groupId": groupId,
       "newName": newName,
@@ -49,16 +49,14 @@ class GroupsData {
     return response.fold((l) => l, (r) => r);
   }
 
-  leaveGroup(String userId, String groupId) async {
-    var response = await crud.postData(ApiLinks.leaveGroup, {
-      "userId": userId,
-      "groupId": groupId,
-    });
+  clearMembers(String creatorid) async {
+    var response =
+        await crud.postData(ApiLinks.clearMembers, {"creatorid": creatorid});
 
     return response.fold((l) => l, (r) => r);
   }
 
-  groupsView(String userId) async {
+  groupsView({required String userId}) async {
     var response = await crud.postData(ApiLinks.groupsView, {"userId": userId});
 
     return response.fold((l) => l, (r) => r);

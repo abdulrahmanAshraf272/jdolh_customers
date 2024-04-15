@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_name_image.dart';
@@ -8,7 +9,7 @@ import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/per
 class PersonWithButtonAndStatus extends StatelessWidget {
   final String name;
   final String userName;
-  final String image;
+  final String? image;
   final Function() onTap;
   final Function()? onTapCard;
   final Color buttonColor;
@@ -44,21 +45,28 @@ class PersonWithButtonAndStatus extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Expanded(
+                    flex: 2,
                     child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                       child: Row(
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: image == ''
-                                ? Image.asset(
-                                    'assets/images/avatar_person.jpg',
+                            borderRadius: BorderRadius.circular(10),
+                            child: image != '' && image != null
+                                ? FadeInImage.assetNetwork(
                                     height: 34.w,
                                     width: 34.w,
+                                    placeholder: 'assets/images/loading2.gif',
+                                    image: '${ApiLinks.customerImage}/$image',
                                     fit: BoxFit.cover,
                                   )
-                                : Image.network(''),
+                                : Image.asset(
+                                    'assets/images/person4.jpg',
+                                    fit: BoxFit.cover,
+                                    height: 34.w,
+                                    width: 34.w,
+                                  ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -79,6 +87,7 @@ class PersonWithButtonAndStatus extends StatelessWidget {
                     ),
                   ),
                   Expanded(
+                    flex: 1,
                     child: Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child: AutoSizeText(invitorStatus,

@@ -6,8 +6,22 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/custom_button_one.dart';
 
-class SuccessOperation extends StatelessWidget {
+class SuccessOperation extends StatefulWidget {
   const SuccessOperation({super.key});
+
+  @override
+  State<SuccessOperation> createState() => _SuccessOperationState();
+}
+
+class _SuccessOperationState extends State<SuccessOperation> {
+  bool resetPassword = false;
+  @override
+  void initState() {
+    if (Get.arguments != null) {
+      resetPassword = Get.arguments['resetPassword'];
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +37,21 @@ class SuccessOperation extends StatelessWidget {
                     size: 150.w, color: AppColors.secondaryColor)),
             Text('تهانيا!', style: headline4),
             const SizedBox(height: 15),
-            Text('تمت العملية بنجاح, يمكن تسجيل الدخول الآن',
+            Text(
+                resetPassword
+                    ? 'تم تغيير كلمة السر بنجاح'
+                    : 'تمت انشاء الحساب بنجاح',
                 style: TextStyle(
                     fontSize: 16, color: Colors.black.withOpacity(0.5))),
             const Spacer(),
             CustomButtonOne(
                 textButton: 'ابدأ',
                 onPressed: () {
-                  Get.offAllNamed(AppRouteName.login);
+                  if (resetPassword) {
+                    Get.offAllNamed(AppRouteName.login);
+                  } else {
+                    Get.offAllNamed(AppRouteName.mainScreen);
+                  }
                 })
           ],
         ),

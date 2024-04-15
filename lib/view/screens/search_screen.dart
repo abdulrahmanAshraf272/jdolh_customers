@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/search_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
@@ -22,16 +23,17 @@ class SearchScreen extends StatelessWidget {
           children: [
             SearchAppBar(
               textEditingController: controller.name,
-              onTapSearch: () {
-                controller.seachOnTap();
-              },
+              onChaneged: (value) => controller.seachOnTap(value),
+              // onTapSearch: () {
+              //   controller.seachOnTap(value);
+              // },
               autoFocus: true,
             ),
-            LargeToggleButtons(
-                optionOne: 'اشخاص',
-                optionTwo: 'اماكن',
-                onTapOne: () => controller.activePersonSearch(),
-                onTapTwo: () => controller.inactivePersonSearch()),
+            // LargeToggleButtons(
+            //     optionOne: 'اشخاص',
+            //     optionTwo: 'اماكن',
+            //     onTapOne: () => controller.activePersonSearch(),
+            //     onTapTwo: () => controller.inactivePersonSearch()),
             HandlingDataView(
               statusRequest: controller.statusRequest,
               widget: Expanded(

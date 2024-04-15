@@ -16,7 +16,7 @@ class ScheduleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(ScheduleController());
     return Scaffold(
-        appBar: customAppBar(title: 'جدولة'),
+        appBar: customAppBar(title: 'الحجوزات'),
         body: GetBuilder<ScheduleController>(
           builder: (controller) => RefreshIndicator(
             onRefresh: () async {
@@ -41,30 +41,30 @@ class ScheduleScreen extends StatelessWidget {
                     },
                   ),
                 const SizedBox(height: 10),
-                HandlingDataView(
-                    statusRequest: controller.statusRequest,
-                    widget: controller.resToDisplay.isEmpty
-                        ? const Text('لا توجد حجوزات')
-                        : Expanded(
-                            child: ListView.builder(
-                                itemCount: controller.resToDisplay.length,
-                                itemBuilder: (context, index) =>
-                                    AppointmentListItem(
-                                        brandName: controller
-                                                .resToDisplay[index]
-                                                .brandName ??
-                                            '',
-                                        brandLogo:
-                                            '${ApiLinks.logoImage}/${controller.resToDisplay[index].brandLogo}',
-                                        bchCity: controller
-                                                .resToDisplay[index].bchCity ??
-                                            '',
-                                        dateTime:
-                                            '${controller.resToDisplay[index].resDate} ${controller.resToDisplay[index].resTime}',
-                                        onTap: () {
-                                          controller
-                                              .gotoReservationDetails(index);
-                                        }))))
+                if (controller.resToDisplay.isEmpty)
+                  const Center(child: Text('لا توجد حجوزات')),
+                if (controller.resToDisplay.isNotEmpty)
+                  HandlingDataView(
+                      statusRequest: controller.statusRequest,
+                      widget: Expanded(
+                          child: ListView.builder(
+                              itemCount: controller.resToDisplay.length,
+                              itemBuilder: (context, index) =>
+                                  AppointmentListItem(
+                                      brandName: controller
+                                              .resToDisplay[index].brandName ??
+                                          '',
+                                      brandLogo:
+                                          '${ApiLinks.logoImage}/${controller.resToDisplay[index].brandLogo}',
+                                      bchCity: controller
+                                              .resToDisplay[index].bchCity ??
+                                          '',
+                                      dateTime:
+                                          '${controller.resToDisplay[index].resDate} ${controller.resToDisplay[index].resTime}',
+                                      onTap: () {
+                                        controller
+                                            .gotoReservationDetails(index);
+                                      }))))
               ],
             ),
           ),

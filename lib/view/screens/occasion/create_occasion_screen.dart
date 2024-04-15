@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/group/create_group_controller.dart';
@@ -17,12 +18,27 @@ class CreateOccasionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // dataSavedSuccessfuly() {
+    //   AwesomeDialog(
+    //     context: context,
+    //     dialogType: DialogType.success,
+    //     animType: AnimType.rightSlide,
+    //     title: 'تم انشاء المناسبة',
+    //     btnOkText: 'حسنا',
+    //     btnOkOnPress: () {
+    //       Get.back();
+    //     },
+    //   ).show();
+    // }
+
     Get.put(CreateOccasionController());
     return GetBuilder<CreateOccasionController>(
         builder: (controller) => Scaffold(
               appBar: customAppBar(title: 'انشاء مناسبة'),
               floatingActionButton: BottomButton(
-                onTap: () => controller.createOccasion(),
+                onTap: () async {
+                  controller.createOccasion();
+                },
                 text: 'انشاء',
                 buttonColor: AppColors.secondaryColor,
               ),
@@ -70,7 +86,7 @@ class CreateOccasionScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: CustomSmallBoldTitle(
-                              title: 'المضافين للمناسبة',
+                              title: 'المدعوين للمناسبة',
                               topPadding: 20,
                               bottomPadding: 20,
                             ),

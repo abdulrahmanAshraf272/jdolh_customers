@@ -3,6 +3,8 @@
 <plist version="1.0">
 
 <dict>
+	<key>NSContactsUsageDescription</key>
+	<string>We need access to your contacts to invite them.</string>
     <key>LSApplicationQueriesSchemes</key>
 	<array>
   	<string>sms</string>

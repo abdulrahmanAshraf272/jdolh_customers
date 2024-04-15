@@ -21,6 +21,8 @@ import 'package:jdolh_customers/view/screens/followers_and_following_screen.dart
 import 'package:jdolh_customers/view/screens/home_screen.dart';
 import 'package:jdolh_customers/view/screens/more_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/occasions_screen.dart';
+import 'package:jdolh_customers/view/screens/res_occasion_screen.dart';
+import 'package:jdolh_customers/view/screens/reservation_search_screen.dart';
 import 'package:jdolh_customers/view/screens/schedule/schedule_screen.dart';
 
 class MainController extends GetxController {
@@ -34,14 +36,14 @@ class MainController extends GetxController {
   ValuesController valuesController = Get.put(ValuesController());
   List<Friend> myfollowers = [];
   List<Friend> myfollowing = [];
-  List<Occasion> myOccasions = [];
-  List<Occasion> acceptedOccasions = [];
-  List<Occasion> suspendedOccasions = [];
+  // List<Occasion> myOccasions = [];
+  // List<Occasion> acceptedOccasions = [];
+  // List<Occasion> suspendedOccasions = [];
   int currentPage = 0;
   List<Widget> listPage = [
     const HomeScreen(),
-    const ScheduleScreen(),
-    const OccasionsScreen(),
+    const ResOccasionScreen(),
+    const ReservationSearchScreen(),
     const MoreScreen()
   ];
   @override
@@ -62,7 +64,6 @@ class MainController extends GetxController {
         parsingDataFromJsonToDartList(response);
         print('MyfollowersNo: ${myfollowers.length}');
         print('MyfollowingNo: ${myfollowing.length}');
-        print('occasions: ${myOccasions.length}');
       } else {
         statusRequest = StatusRequest.failure;
       }
@@ -73,11 +74,11 @@ class MainController extends GetxController {
   parsingDataFromJsonToDartList(response) {
     List responseFollowers = response['followers'];
     List responseFollowing = response['following'];
-    List responseOccasoins = response['occasions'];
+    //List responseOccasoins = response['occasions'];
     myfollowers = responseFollowers.map((e) => Friend.fromJson(e)).toList();
     myfollowing = responseFollowing.map((e) => Friend.fromJson(e)).toList();
 
-    myOccasions = responseOccasoins.map((e) => Occasion.fromJson(e)).toList();
+    //myOccasions = responseOccasoins.map((e) => Occasion.fromJson(e)).toList();
     // //make acceptedOccasionList and suspended list
     // for (var element in myOccasions) {
     //   if (element.acceptstatus == 1) {
@@ -88,13 +89,13 @@ class MainController extends GetxController {
     // }
 
     //Save Date in ValuesController
-    valuesController.myOccasions = List.from(myOccasions);
-    valuesController.resetAcceptedAndSuspendedList();
+    //valuesController.myOccasions = List.from(myOccasions);
+    // valuesController.resetAcceptedAndSuspendedList();
     valuesController.myfollowing = List.from(myfollowing);
     valuesController.myfollowers = List.from(myfollowers);
     //Get value from ValuesController after done operation
-    acceptedOccasions = List.from(valuesController.acceptedOccasions);
-    suspendedOccasions = List.from(valuesController.suspendedOccasions);
+    //acceptedOccasions = List.from(valuesController.acceptedOccasions);
+    // suspendedOccasions = List.from(valuesController.suspendedOccasions);
   }
 
   startLoadingAndClearLists() {
@@ -102,33 +103,11 @@ class MainController extends GetxController {
     update();
     myfollowers.clear();
     myfollowing.clear();
-    myOccasions.clear();
-  }
-
-  goToFollwersAndFollowingScreen(bool isFollowers) {
-    if (isFollowers) {
-      Get.to(() =>
-          FollowersAndFollowingScreen(title: textFollowers, data: myfollowers));
-    } else {
-      Get.to(() =>
-          FollowersAndFollowingScreen(title: textFollowing, data: myfollowing));
-    }
+    //myOccasions.clear();
   }
 
   goToOccasionsScreen() {
     Get.toNamed(AppRouteName.occasions);
-  }
-
-  onTapOccasionCard(int index) {
-    if (acceptedOccasions[index].creator == 1) {
-      Get.toNamed(AppRouteName.editOccasion,
-              arguments: acceptedOccasions[index])!
-          .then((value) => refreshScreen());
-    } else {
-      Get.toNamed(AppRouteName.occasionDetails,
-              arguments: acceptedOccasions[index])!
-          .then((value) => refreshScreen());
-    }
   }
 
   refreshScreen() {
@@ -219,6 +198,10 @@ class MainController extends GetxController {
 
   @override
   void onInit() async {
+    if (Get.arguments != null) {
+      currentPage = Get.arguments['page'];
+      update();
+    }
     getMyProfileData();
     getCurrentLocation();
     super.onInit();

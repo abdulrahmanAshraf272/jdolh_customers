@@ -15,11 +15,23 @@ class ActivityData {
     return response.fold((l) => l, (r) => r);
   }
 
-  getUserActivities({
-    required String userid,
-  }) async {
-    var response = await crud.postData(ApiLinks.getUserActivities, {
+  getUserActivities({required String userid, required String myId}) async {
+    var response = await crud
+        .postData(ApiLinks.getUserActivities, {"userid": userid, "myId": myId});
+
+    return response.fold((l) => l, (r) => r);
+  }
+
+  likeUnlikeActivity(
+      {required String userid,
+      required String activityType,
+      required String activityId,
+      required String like}) async {
+    var response = await crud.postData(ApiLinks.likeUnlikeActivity, {
       "userid": userid,
+      "activityType": activityType,
+      "activityId": activityId,
+      "like": like,
     });
 
     return response.fold((l) => l, (r) => r);

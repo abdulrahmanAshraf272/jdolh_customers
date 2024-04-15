@@ -1,20 +1,4 @@
-import 'dart:convert';
-
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/core/class/status_request.dart';
-import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/constants/app_routes_name.dart';
-import 'package:jdolh_customers/core/constants/strings.dart';
-import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
-import 'package:jdolh_customers/core/services/services.dart';
-import 'package:jdolh_customers/data/data_source/remote/followUnfollow.dart';
-import 'package:jdolh_customers/data/data_source/remote/person_profile.dart';
-import 'package:jdolh_customers/data/data_source/remote/search_person.dart';
-import 'package:jdolh_customers/data/models/person.dart';
-import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
-import 'package:jdolh_customers/view/screens/followers_and_following_screen.dart';
-import 'package:jdolh_customers/view/screens/person_profile_screen.dart';
 
 class PersonProfileController extends GetxController {
   // StatusRequest statusRequest = StatusRequest.none;

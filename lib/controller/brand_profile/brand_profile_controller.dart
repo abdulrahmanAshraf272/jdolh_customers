@@ -289,23 +289,48 @@ class BrandProfileController extends GetxController {
     }
   }
 
-  receiveArgument() {
-    try {
-      brand = Get.arguments['brand'];
-      bch = Get.arguments['bch'];
-      if (Get.arguments['isHomeService'] != null) {
-        isHomeServices = Get.arguments['isHomeService'];
-        print('isHomeService: $isHomeServices');
+  receiveArgument() async {
+    if (Get.arguments != null) {
+      if (Get.arguments['fromActivity'] != null) {
+        int bchid = Get.arguments['bchid'];
+        await getBrandBch(bchid);
+      } else {
+        try {
+          brand = Get.arguments['brand'];
+          bch = Get.arguments['bch'];
+          if (Get.arguments['isHomeService'] != null) {
+            isHomeServices = Get.arguments['isHomeService'];
+            print('isHomeService: $isHomeServices');
+          }
+        } catch (e) {
+          print('error get the data previus page');
+        }
       }
-    } catch (e) {
-      print('error get the data previus page');
     }
   }
 
+  getBrandBch(int bchid) async {
+    statusRequest = StatusRequest.loading;
+    update();
+    var response = await brandSearchData.getBrandBch(bchid: bchid.toString());
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        var data = response['data'];
+        brand = Brand.fromJson(data);
+        bch = Bch.fromJson(data);
+      } else {
+        statusRequest = StatusRequest.failure;
+      }
+    }
+    update();
+    print('======$statusRequest');
+  }
+
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    receiveArgument();
+    await receiveArgument();
     getBch();
     getBchInfo();
     //getCart();

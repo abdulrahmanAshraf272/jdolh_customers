@@ -1,72 +1,74 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
-import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
-import 'package:jdolh_customers/controller/main_controller.dart';
+import 'package:jdolh_customers/core/constants/const_int.dart';
+import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
-import 'package:jdolh_customers/core/functions/open_url_link.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_textfield.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 
 class OccasionsController extends GetxController {
+  OccasionsData occasionData = OccasionsData(Get.find());
+  MyServices myServices = Get.find();
   StatusRequest statusRequest = StatusRequest.none;
   TextEditingController excuse = TextEditingController();
 
-  ValuesController valuesController = Get.find();
   List<Occasion> occasionsToDisplay = [];
-
-  OccasionsData occasionData = OccasionsData(Get.find());
-  MyServices myServices = Get.find();
-
-  bool needApprove = false;
-  activeNeedApprove() {
-    needApprove = true;
-    occasionsToDisplay = List.from(valuesController.suspendedOccasions);
-    update();
-  }
-
-  inactiveNeedAprrove() {
-    needApprove = false;
-    occasionsToDisplay = List.from(valuesController.acceptedOccasions);
-    update();
-  }
-
-  onTapCreate() {
-    Get.toNamed(AppRouteName.createOccasion)!.then((value) => refreshScreen());
-  }
-
-  refreshScreen() {
-    //getOccasionFromMainController();
-    inactiveNeedAprrove();
-    update();
-  }
+  ///////
+  List<Occasion> myOccasions = [];
+  List<Occasion> acceptedOccasions = [];
+  List<Occasion> suspendedOccasions = [];
 
   onTapOccasionCard(int index) {
     if (occasionsToDisplay[index].creator == 1) {
       Get.toNamed(AppRouteName.editOccasion,
               arguments: occasionsToDisplay[index])!
-          .then((value) => update());
+          .then((value) => getMyOccasion());
     } else {
       Get.toNamed(AppRouteName.occasionDetails,
               arguments: occasionsToDisplay[index])!
-          .then((value) => update());
+          .then((value) {
+        if (needApprove) {
+          activeNeedApprove();
+        } else {
+          inactiveNeedAprrove();
+        }
+      });
     }
   }
 
-  String formatDateTime(String inputDateTime) {
-    DateTime dateTime = DateTime.parse(inputDateTime);
-    String formattedDateTime = DateFormat('yyyy-MM-dd h:mm a').format(dateTime);
-    return formattedDateTime;
+  ////
+
+  bool needApprove = false;
+  activeNeedApprove() async {
+    await getMyOccasion();
+    needApprove = true;
+    occasionsToDisplay = List.from(suspendedOccasions);
+    update();
+  }
+
+  inactiveNeedAprrove() async {
+    await getMyOccasion();
+    needApprove = false;
+    occasionsToDisplay = List.from(acceptedOccasions);
+    update();
+  }
+
+  onTapCreate() {
+    Get.toNamed(AppRouteName.createOccasion)!
+        .then((value) => resetAcceptedAndSuspendedList());
+  }
+
+  refreshScreen() {
+    inactiveNeedAprrove();
+    update();
   }
 
   String displayFormateDateInCard(int index) {
@@ -75,150 +77,140 @@ class OccasionsController extends GetxController {
     return dateFormated;
   }
 
-  onTapAcceptInvitation(int index) async {
-    var resultSucceed = await acceptInvitation(index);
-    if (resultSucceed) {
-      Get.rawSnackbar(
-          message:
-              'تم قبول دعوة ${occasionsToDisplay[index].occasionUsername}');
-      valuesController.changeInvitorStatus(
-          occasionsToDisplay[index].occasionId!, 1);
-      activeNeedApprove();
-    }
+  String formatDateTime(String inputDateTime) {
+    DateTime dateTime = DateTime.parse(inputDateTime);
+    String formattedDateTime = DateFormat('yyyy-MM-dd h:mm a').format(dateTime);
+    return formattedDateTime;
   }
 
-  Future<bool> acceptInvitation(int index) async {
-    var response = await occasionData.acceptInvitation(
-        myServices.sharedPreferences.getString("id")!,
-        occasionsToDisplay[index].occasionId.toString());
-    statusRequest = handlingData(response);
-    print('status ==== $statusRequest');
-    if (statusRequest == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
+  // ============= Accept and Reject invitation =============//
+  onTapAcceptInvitation(Occasion occasion) async {
+    respondToInvitation(occasion, 'accept');
   }
 
-  onTapDisplayLocation(int index) {
-    String occasionLocation = occasionsToDisplay[index].occasionLocation ?? '';
-    String occasionLocationLink = occasionsToDisplay[index].locationLink ?? '';
-    if (occasionLocation != '' && occasionLocationLink != '') {
-      //TODO: open bottm sheet to make user to choose if open location or location link
-      Get.bottomSheet(Container(
-        padding: const EdgeInsets.all(20),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-          color: AppColors.gray,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'اختر طريقة عرض الموقع',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 14.sp,
-                color: AppColors.textDark,
-              ),
-            ),
-            const SizedBox(height: 20),
-            GoHomeButton(
-                onTap: () {
-                  openUrlLink(occasionLocationLink);
-                },
-                text: 'تطبيق Googel Maps',
-                width: Get.width - 40,
-                height: 38.h),
-            const SizedBox(height: 10),
-            GoHomeButton(
-                onTap: () {
-                  goToDisplayLocation(index);
-                },
-                text: 'روية الموقع هنا',
-                width: Get.width - 40,
-                height: 38.h),
-          ],
-        ),
-      ));
-    } else if (occasionLocation != '') {
-      goToDisplayLocation(index);
-    } else if (occasionLocationLink != '') {
-      //the occasion only have location link
-      openUrlLink(occasionLocationLink);
-    } else {
-      //the occasion doesn't have location nor location link
-      Get.rawSnackbar(message: 'لم يتم تحديد مكان المناسبة');
-    }
-  }
-
-  goToDisplayLocation(int index) {
-    double lat = double.parse(occasionsToDisplay[index].occasionLat!);
-    double lng = double.parse(occasionsToDisplay[index].occasionLong!);
-    Get.toNamed(AppRouteName.diplayLocation, arguments: LatLng(lat, lng));
-  }
-
-  onTapRejectInvitation(int index) async {
+  onTapRejectInvitation(Occasion occasion) async {
     Get.defaultDialog(
         title: "رفض",
         content: Column(
           children: [
             Text(
-              "هل تريد رفض دعوة ${occasionsToDisplay[index].occasionUsername}؟ ",
+              "هل تريد رفض دعوة ${occasion.occasionUsername}؟ ",
               style: titleMedium,
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             CustomTextField(
                 textEditingController: excuse, hintText: 'ارسال عذر (اختياري)'),
           ],
         ),
-        onConfirm: () async {
-          var resultSucceed = await rejectInvitation(index);
-          if (resultSucceed) {
-            Get.back();
-            Get.rawSnackbar(
-                message:
-                    'تم رفض دعوة ${occasionsToDisplay[index].occasionUsername}');
-            valuesController.changeInvitorStatus(
-                occasionsToDisplay[index].occasionId!, 2);
-            activeNeedApprove();
-          }
+        onConfirm: () {
+          Get.back();
+          respondToInvitation(occasion, 'reject', excuse.text);
         },
         textConfirm: 'تأكيد',
         textCancel: 'الغاء',
         onCancel: () {});
   }
 
-  Future<bool> rejectInvitation(int index) async {
-    statusRequest = StatusRequest.loading;
-    update();
-    var response = await occasionData.rejectInvitation(
-        myServices.sharedPreferences.getString("id")!,
-        occasionsToDisplay[index].occasionId.toString(),
-        excuse.text,
-        occasionsToDisplay[index].occasionUserid.toString());
+  respondToInvitation(Occasion occasion, String respond,
+      [String excuse = '', String message = '']) async {
+    CustomDialogs.loading();
+
+    await Future.delayed(const Duration(seconds: lateDuration));
+    var response;
+    if (respond == 'accept') {
+      response = await occasionData.responedToInvitation(
+          userId: myServices.sharedPreferences.getString("id")!,
+          occasionId: occasion.occasionId.toString(),
+          respond: '1',
+          excuse: '');
+    } else {
+      response = await occasionData.responedToInvitation(
+          userId: myServices.sharedPreferences.getString("id")!,
+          occasionId: occasion.occasionId.toString(),
+          respond: '2',
+          excuse: excuse);
+    }
+    EasyLoading.dismiss();
+    statusRequest = handlingData(response);
+    print('status ==== $statusRequest');
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        if (message != '') {
+          CustomDialogs.success(message);
+        } else {
+          if (respond == 'accept') {
+            CustomDialogs.success('تم قبول الدعوة');
+          } else {
+            CustomDialogs.success('تم رفض الدعوة');
+          }
+        }
+
+        occasionsToDisplay.remove(occasion);
+        update();
+      } else {
+        CustomDialogs.failure();
+      }
+    } else {
+      CustomDialogs.failure();
+    }
+  }
+
+  getMyOccasion() async {
+    startLoadingAndClearLists();
+    var response = await occasionData
+        .viewOccasions(myServices.sharedPreferences.getString("id")!);
+    await Future.delayed(const Duration(seconds: lateDuration));
     statusRequest = handlingData(response);
     update();
     print('status ==== $statusRequest');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
-        return true;
+        parsingDataFromJsonToDartList(response);
+        print('occasions: ${myOccasions.length}');
       } else {
-        return false;
+        //statusRequest = StatusRequest.failure;
       }
-    } else {
-      return false;
     }
   }
 
+  startLoadingAndClearLists() {
+    statusRequest = StatusRequest.loading;
+    update();
+    myOccasions.clear();
+    occasionsToDisplay.clear();
+  }
+
+  parsingDataFromJsonToDartList(response) {
+    List responseOccasoins = response['data'];
+    myOccasions = responseOccasoins.map((e) => Occasion.fromJson(e)).toList();
+    resetAcceptedAndSuspendedList();
+  }
+
+  resetAcceptedAndSuspendedList() {
+    acceptedOccasions.clear();
+    suspendedOccasions.clear();
+
+    for (var element in myOccasions) {
+      DateTime occasionDateTime = DateTime.parse(element
+          .occasionDatetime!); // Convert occasionDatetime to DateTime object
+      DateTime now = DateTime.now(); // Get the current date and time
+      if (occasionDateTime.isBefore(now)) {
+        print(element.occasionTitle);
+      }
+
+      if (element.acceptstatus == 1) {
+        acceptedOccasions.add(element);
+      } else if (element.acceptstatus == 0) {
+        suspendedOccasions.add(element);
+      }
+    }
+    needApprove = false;
+    occasionsToDisplay = List.from(acceptedOccasions);
+    update();
+  }
+
   @override
-  void onInit() {
-    //getOccasionFromMainController();
+  void onInit() async {
     inactiveNeedAprrove();
 
     super.onInit();

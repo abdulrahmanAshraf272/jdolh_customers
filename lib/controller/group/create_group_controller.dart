@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/group/groups_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/groups.dart';
@@ -13,29 +14,74 @@ class CreateGroupController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
   TextEditingController groupName = TextEditingController();
   GroupsData groupsData = GroupsData(Get.find());
-  final GroupsController groupController = Get.put(GroupsController());
+  GroupsController groupsController = Get.put(GroupsController());
   MyServices myServices = Get.find();
-  // late Group groupSelected;
-  // late int groupid;
+
   List<Friend> members = [];
-  List<int> membersId = [];
+
+  removeMember(index) {
+    deleteMember(index);
+  }
+
+  onTapAddMembers() async {
+    final result = await Get.toNamed(AppRouteName.addMembers,
+        arguments: {'members': members});
+    if (result != null) {
+      Friend member = result as Friend;
+      members.add(member);
+      addMember(member);
+      update();
+    }
+  }
+
+  addMember(Friend member) async {
+    var response = await groupsData.addGroupMemeber(
+        groupid: '',
+        creatorid: myServices.getUserid(),
+        userid: member.userId.toString());
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('adding ${member.userName} is done');
+      } else {
+        print('adding memeber failed');
+      }
+    }
+  }
+
+  deleteMember(int index) async {
+    CustomDialogs.loading();
+    var response = await groupsData.deleteMember(
+        groupid: '', userid: members[index].userId.toString());
+    CustomDialogs.dissmissLoading();
+    statusRequest = handlingData(response);
+    print('status delete:${statusRequest}');
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        members.remove(members[index]);
+        print(members.length);
+      } else {
+        print('adding memeber failed');
+      }
+    }
+    update();
+  }
 
   createGroup() async {
     if (groupName.text.isEmpty) {
       Get.rawSnackbar(message: 'اضف اسم للمجموعة!');
       return;
     }
-    if (membersId.isEmpty) {
+    if (members.isEmpty) {
       Get.rawSnackbar(message: 'اضف اعضاء للمجموعة!');
       return;
     }
-    String membersIdString = membersId.join(",");
-    statusRequest = StatusRequest.loading;
-    update();
+    CustomDialogs.loading();
     var response = await groupsData.createGroup(
-        myServices.sharedPreferences.getString("id")!,
-        groupName.text,
-        membersIdString);
+      creatorid: myServices.sharedPreferences.getString("id")!,
+      groupName: groupName.text,
+    );
+    CustomDialogs.dissmissLoading();
     statusRequest = handlingData(response);
     print('status ==== $statusRequest');
     if (statusRequest == StatusRequest.success) {
@@ -43,34 +89,44 @@ class CreateGroupController extends GetxController {
         //Adding the new Group created to local data to view.
         Group groupCreated = Group.fromJson(response['data']);
         groupCreated.groupDatecreated =
-            groupController.convertDate(groupCreated.groupDatecreated!);
-        groupController.groups.add(groupCreated);
+            groupsController.convertDate(groupCreated.groupDatecreated!);
+        groupCreated.creator = 1;
+        groupsController.groups.add(groupCreated);
 
+        CustomDialogs.success('تم انشاء المجموعة');
         Get.back();
-        Get.rawSnackbar(message: 'تم انشاء المجموعة بنجاح!');
+      } else {
+        CustomDialogs.failure();
+      }
+    } else {
+      update();
+    }
+  }
+
+  clearNullMemebers() async {
+    var response = await groupsData.clearMembers(
+      myServices.sharedPreferences.getString("id")!,
+    );
+    statusRequest = handlingData(response);
+    print('status ==== $statusRequest');
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('clear memebers is Done');
+      } else {
+        print('the memebers is already empty');
       }
     }
-    update();
-  }
-
-  removeMember(index) {
-    membersId.remove(members[index].userId!);
-    members.remove(members[index]);
-
-    update();
-  }
-
-  onTapAddMembers() {
-    Get.toNamed(AppRouteName.addToGroup)!.then((value) => refreshScreen());
-  }
-
-  refreshScreen() {
-    update();
   }
 
   @override
   void dispose() {
     super.dispose();
     groupName.dispose();
+  }
+
+  @override
+  void onInit() {
+    clearNullMemebers();
+    super.onInit();
   }
 }

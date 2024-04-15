@@ -19,7 +19,6 @@ class CreateGroupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(CreateGroupController());
     return GetBuilder<CreateGroupController>(builder: (controller) {
-      print(controller.membersId);
       return Scaffold(
         appBar: customAppBar(title: 'انشاء مجموعة'),
         floatingActionButton: BottomButton(
@@ -54,10 +53,10 @@ class CreateGroupScreen extends StatelessWidget {
                         controller.onTapAddMembers();
                       },
                       text: 'أضف للمجموعة'),
-                  SizedBox(width: 20)
+                  const SizedBox(width: 20)
                 ],
               ),
-              controller.membersId.isNotEmpty
+              controller.members.isNotEmpty
                   ? Expanded(
                       child: ListView.builder(
                         physics: const BouncingScrollPhysics(),

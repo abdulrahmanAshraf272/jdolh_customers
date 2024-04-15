@@ -19,8 +19,9 @@ class LoginScreen extends StatelessWidget {
     Get.put(LoginController());
     return Scaffold(
       body: SafeArea(
-          child: WillPopScope(
-        onWillPop: alertExitApp,
+          child: PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) => alertExitAppNew(),
         child: GetBuilder<LoginController>(
           builder: (controller) => HandlingDataView(
               statusRequest: controller.statusRequest,

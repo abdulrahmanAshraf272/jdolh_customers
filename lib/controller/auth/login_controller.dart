@@ -33,7 +33,9 @@ class LoginController extends GetxController {
           print(' ======== ${response['data']} ======');
           user = User.fromJson(response['data']);
           if (user.userApprove == 1) {
-            saveUserDataInSharedPreferences(user);
+            myServices.setUserData(user);
+            myServices.setStep('2');
+
             goToMainScreen();
           } else {
             goToVerifycode();
@@ -48,18 +50,6 @@ class LoginController extends GetxController {
         }
       }
     }
-  }
-
-  saveUserDataInSharedPreferences(User user) {
-    myServices.setUserid(user.userId!);
-
-    myServices.sharedPreferences.setString("name", user.userName!);
-    myServices.sharedPreferences.setString("username", user.userUsername!);
-    myServices.sharedPreferences.setString("email", user.userEmail!);
-    myServices.sharedPreferences.setString("phone", user.userPhone!);
-    //step 0 onboarding, step 1 login, step 2 mainScreen
-    myServices.sharedPreferences.setString("step", "2");
-    print('===== Saving user data in sharedPreferences Done =====');
   }
 
   goToMainScreen() {

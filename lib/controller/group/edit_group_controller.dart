@@ -3,14 +3,12 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/group/groups_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/groups.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/group.dart';
-import 'package:jdolh_customers/data/models/group_member.dart';
-import 'package:jdolh_customers/data/models/person.dart';
-import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_textfield.dart';
 
 class EditGroupController extends GetxController {
@@ -21,25 +19,25 @@ class EditGroupController extends GetxController {
   late Group groupSelected;
   late String groupid;
   TextEditingController newGroupNameController = TextEditingController();
-  List<Friend> groupMembers = [];
+  List<Friend> members = [];
   void showGroupNameDialog(BuildContext context) {
     Get.dialog(
       AlertDialog(
-        title: Text('تغيير اسم المجموعة'),
+        title: const Text('تغيير اسم المجموعة'),
         content: CustomTextField(
             textEditingController: newGroupNameController,
             hintText: 'أضف الاسم الجديد'),
         actions: [
           TextButton(
             onPressed: () => Get.back(),
-            child: Text('الغاء'),
+            child: const Text('الغاء'),
           ),
           TextButton(
             onPressed: () {
               Get.back();
               changeGroupName();
             },
-            child: Text('حفظ'),
+            child: const Text('حفظ'),
           ),
         ],
       ),
@@ -47,14 +45,20 @@ class EditGroupController extends GetxController {
   }
 
   changeGroupName() async {
+    CustomDialogs.loading();
     var response = await groupsData.editGroupName(
-        groupSelected.groupId.toString(), newGroupNameController.text);
+        groupId: groupSelected.groupId.toString(),
+        newName: newGroupNameController.text);
     statusRequest = handlingData(response);
+    CustomDialogs.dissmissLoading();
     print('status ==== $statusRequest');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
-        print('change group name done successfuly');
+        CustomDialogs.success('تم تغيير اسم المجموعة');
         groupSelected.groupName = newGroupNameController.text;
+        groupController.groups
+            .firstWhere((element) => element == groupSelected)
+            .groupName = newGroupNameController.text;
         update();
       } else {
         statusRequest = StatusRequest.failure;
@@ -66,7 +70,7 @@ class EditGroupController extends GetxController {
     int myId = int.parse(myServices.sharedPreferences.getString("id")!);
     statusRequest = StatusRequest.loading;
     update();
-    groupMembers.clear();
+    members.clear();
     var response = await groupsData.groupMembers(groupid);
     statusRequest = handlingData(response);
     print('status ==== $statusRequest');
@@ -75,10 +79,9 @@ class EditGroupController extends GetxController {
         List responseGroupMembers = response['data'];
         print(responseGroupMembers);
         //parsing jsonList to DartList.
-        groupMembers =
-            responseGroupMembers.map((e) => Friend.fromJson(e)).toList();
+        members = responseGroupMembers.map((e) => Friend.fromJson(e)).toList();
         //remove me form list
-        groupMembers.removeWhere((element) => element.userId == myId);
+        members.removeWhere((element) => element.userId == myId);
       } else {
         statusRequest = StatusRequest.failure;
       }
@@ -86,9 +89,30 @@ class EditGroupController extends GetxController {
     update();
   }
 
-  onTapAddMember() {
-    Get.toNamed(AppRouteName.addToGroupCreated)!
-        .then((value) => refreshScreen());
+  onTapAddMembers() async {
+    final result = await Get.toNamed(AppRouteName.addMembers,
+        arguments: {'members': members});
+    if (result != null) {
+      Friend member = result as Friend;
+      members.add(member);
+      addMember(member);
+      update();
+    }
+  }
+
+  addMember(Friend member) async {
+    var response = await groupsData.addGroupMemeber(
+        groupid: groupid,
+        creatorid: myServices.getUserid(),
+        userid: member.userId.toString());
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('adding ${member.userName} is done');
+      } else {
+        print('adding memeber failed');
+      }
+    }
   }
 
   refreshScreen() {
@@ -97,20 +121,15 @@ class EditGroupController extends GetxController {
 
   onTapPersonCard(index) {
     int myId = int.parse(myServices.sharedPreferences.getString("id")!);
-    if (groupMembers[index].userId != myId) {
-      final person = Person(
-          userId: groupMembers[index].userId,
-          userName: groupMembers[index].userName,
-          userUsername: groupMembers[index].userUsername,
-          userImage: groupMembers[index].userImage);
-      Get.toNamed(AppRouteName.personProfile, arguments: person);
+    if (members[index].userId != myId) {
+      Get.toNamed(AppRouteName.personProfile, arguments: members[index]);
     }
   }
 
   onTapRemoveMember(int index) {
     Get.defaultDialog(
         title: "أزالة",
-        middleText: "هل تريد ازالة ${groupMembers[index].userName} المجموعة؟",
+        middleText: "هل تريد ازالة ${members[index].userName} المجموعة؟",
         onConfirm: () {
           Get.back();
           removeMember(index);
@@ -121,17 +140,22 @@ class EditGroupController extends GetxController {
   }
 
   removeMember(index) async {
-    if (groupMembers.length == 1) {
+    if (members.length == 1) {
       Get.rawSnackbar(message: 'لا يمكنك حذف جميع الاعضاء من المجموعة');
     } else {
+      CustomDialogs.loading();
       var response = await groupsData.deleteMember(
-          groupid, groupMembers[index].userId.toString());
+          groupid: groupid, userid: members[index].userId.toString());
+      CustomDialogs.dissmissLoading();
       statusRequest = handlingData(response);
       if (statusRequest == StatusRequest.success) {
         if (response['status'] == 'success') {
-          groupMembers.remove(groupMembers[index]);
-          print('removing member done successfuly ====');
+          CustomDialogs.success(
+              'تم حذف ${members[index].userName} من المجموعة');
+          members.remove(members[index]);
           update();
+        } else {
+          CustomDialogs.failure();
         }
       }
     }
@@ -154,17 +178,20 @@ class EditGroupController extends GetxController {
 
   deleteGroup() async {
     //Delete group local
-    groupController.groups.remove(groupSelected);
-    //Delete group server
+
+    CustomDialogs.loading();
     var response =
         await groupsData.deleteGroup(groupSelected.groupId.toString());
+    CustomDialogs.dissmissLoading();
     statusRequest = handlingData(response);
     print('status ==== $statusRequest');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
+        CustomDialogs.success('تم حذف المجموعة');
+        groupController.groups.remove(groupSelected);
         Get.back();
       } else {
-        print('leave group failed');
+        CustomDialogs.failure();
       }
     }
   }

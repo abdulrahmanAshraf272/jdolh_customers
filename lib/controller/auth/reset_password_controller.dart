@@ -48,7 +48,8 @@ class ResetPasswordController extends GetxController {
   }
 
   goToSuccessScreen() {
-    Get.offNamed(AppRouteName.successOperation);
+    Get.offNamed(AppRouteName.successOperation,
+        arguments: {"resetPassword": true});
   }
 
   @override

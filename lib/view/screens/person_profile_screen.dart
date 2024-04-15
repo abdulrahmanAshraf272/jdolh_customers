@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/person_profile_controller.dart';
+import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/data/data_source/remote/activity.dart';
+import 'package:jdolh_customers/data/models/activity.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
-import 'package:jdolh_customers/data/models/person.dart';
-import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
 import 'package:jdolh_customers/view/screens/followers_and_following_screen.dart';
+import 'package:jdolh_customers/view/widgets/common/ListItems/activity.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/comment.dart';
 import 'package:jdolh_customers/view/widgets/more_screen/rect_button.dart';
-
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/followUnfollow.dart';
@@ -26,37 +30,73 @@ class PersonProfile extends StatefulWidget {
 
 class _PersonProfileState extends State<PersonProfile> {
   StatusRequest statusRequest = StatusRequest.none;
+  StatusRequest statusFriendsActivity = StatusRequest.none;
   PersonProfileData personProfileData = PersonProfileData(Get.find());
   FollowUnfollowData followUnfollowData = FollowUnfollowData(Get.find());
+  ActivityData activityData = ActivityData(Get.find());
+  List<Activity> friendsActivities = [];
+  List<Activity> onlyRatesActivities = [];
   MyServices myServices = Get.find();
   List<Friend> followers = [];
   List<Friend> following = [];
-  late Friend person;
+  late Friend friend;
+
+  String image = '';
 
   getFollowersAndFollowing() async {
     statusRequest = StatusRequest.loading;
     setState(() {});
     followers.clear();
     following.clear();
-    var response = await personProfileData.postData(person.userId.toString(),
+    var response = await personProfileData.postData(friend.userId.toString(),
         myServices.sharedPreferences.getString("id")!);
     statusRequest = handlingData(response);
     print('status ==== $statusRequest');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
-        List responseFollowers = response['followers'];
-        List responseFollowing = response['following'];
-        //parsing jsonList to DartList.
-        followers = responseFollowers.map((e) => Friend.fromJson(e)).toList();
-        following = responseFollowing.map((e) => Friend.fromJson(e)).toList();
-        print('followersNo: ${followers.length}');
-        print('followingNo: ${following.length}');
+        parseData(response);
       } else {
         statusRequest = StatusRequest.failure;
         print('getFollowersAndFollowing failed');
       }
     }
     setState(() {});
+  }
+
+  parseData(response) {
+    List responseFollowers = response['followers'];
+    List responseFollowing = response['following'];
+    //parsing jsonList to DartList.
+    followers = responseFollowers.map((e) => Friend.fromJson(e)).toList();
+    following = responseFollowing.map((e) => Friend.fromJson(e)).toList();
+    print('followersNo: ${followers.length}');
+    print('followingNo: ${following.length}');
+  }
+
+  getUserActivities() async {
+    setState(() {
+      statusFriendsActivity = StatusRequest.loading;
+    });
+    var response = await activityData.getUserActivities(
+        userid: friend.userId.toString(), myId: myServices.getUserid());
+    await Future.delayed(const Duration(seconds: lateDuration));
+    statusFriendsActivity = handlingData(response);
+    if (statusFriendsActivity == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        parsingDataFromJsonToDartList(response);
+      } else {
+        print('failure');
+      }
+    }
+    setState(() {});
+  }
+
+  parsingDataFromJsonToDartList(response) {
+    List data = response['data'];
+    friendsActivities = data.map((e) => Activity.fromJson(e)).toList();
+
+    onlyRatesActivities = List.from(friendsActivities);
+    onlyRatesActivities.removeWhere((element) => element.type != 'rate');
   }
 
   goToFollwersAndFollowingScreen(bool isFollowers) {
@@ -75,14 +115,50 @@ class _PersonProfileState extends State<PersonProfile> {
     }
   }
 
+  onTapLike(int index) {
+    if (friendsActivities[index].isLiked == 1) {
+      likeUnlikeActivity(
+          friendsActivities[index].type!, friendsActivities[index].id!, 0);
+      friendsActivities[index].isLiked = 0;
+    } else {
+      likeUnlikeActivity(
+          friendsActivities[index].type!, friendsActivities[index].id!, 1);
+      friendsActivities[index].isLiked = 1;
+    }
+  }
+
+  likeUnlikeActivity(String activityType, int activityId, int like) async {
+    var response = await activityData.likeUnlikeActivity(
+        userid: myServices.getUserid(),
+        activityType: activityType,
+        activityId: activityId.toString(),
+        like: like.toString());
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('like/unlike success');
+      } else {
+        print('like/unlike failure');
+      }
+    }
+  }
+
+  gotoFriendsActivities() {
+    Get.toNamed(AppRouteName.friendsActivities,
+            arguments: {'activities': onlyRatesActivities, "pageStatus": 1})!
+        .then((value) => getUserActivities());
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     print('init state ================');
-    final controller = Get.put(PersonProfileController());
-    person = Get.arguments;
+    //final controller = Get.put(PersonProfileController());
+    friend = Get.arguments;
+    image = friend.userImage ?? '';
     getFollowersAndFollowing();
+    getUserActivities();
   }
 
   @override
@@ -93,25 +169,32 @@ class _PersonProfileState extends State<PersonProfile> {
         backgroundColor: Colors.white,
       ),
       body: SafeArea(
-          child: GetBuilder<PersonProfileController>(
-        builder: (controller) => Column(
+        child: Column(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(100),
-              child: Image.asset(
-                'assets/images/avatar_person.jpg',
-                fit: BoxFit.cover,
-                height: 80.h,
-                width: 80.w,
-              ),
+              child: image != ''
+                  ? FadeInImage.assetNetwork(
+                      height: 80.h,
+                      width: 80.w,
+                      placeholder: 'assets/images/loading2.gif',
+                      image: '${ApiLinks.customerImage}/$image',
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      'assets/images/person4.jpg',
+                      fit: BoxFit.cover,
+                      height: 80.h,
+                      width: 80.w,
+                    ),
             ),
             const SizedBox(height: 10),
             Text(
-              person.userName!,
+              friend.userName!,
               style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
             ),
             Text(
-              person.userUsername!,
+              friend.userUsername!,
               style: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
@@ -144,31 +227,42 @@ class _PersonProfileState extends State<PersonProfile> {
                 Expanded(
                   child: RectButton(
                       text: 'التقييم',
-                      number: 120,
-                      onTap: () {},
+                      number: onlyRatesActivities.length,
+                      onTap: () {
+                        gotoFriendsActivities();
+                      },
                       iconData: Icons.comment,
                       buttonColor: AppColors.redProfileButton),
                 ),
                 const SizedBox(width: 15),
               ],
             ),
-            Expanded(
-              child: ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                itemCount: 12,
-                itemBuilder: (context, index) => CommentListItem(),
-                separatorBuilder: (context, index) => Container(
-                  color: AppColors.gray450,
-                  height: 2,
-                  width: Get.width,
-                ), // Add separatorBuilder
+            HandlingDataView(
+              statusRequest: statusFriendsActivity,
+              widget: Expanded(
+                child: friendsActivities.isEmpty
+                    ? const Center(child: Text('لا يوجد نشاطات'))
+                    : ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: friendsActivities.length,
+                        itemBuilder: (context, index) => ActivityListItem(
+                              cardStatus: 1,
+                              activity: friendsActivities[index],
+                              onTapLike: () {
+                                if (friendsActivities[index].isLiked == 1) {
+                                  friendsActivities[index].isLiked = 0;
+                                } else {
+                                  friendsActivities[index].isLiked = 1;
+                                }
+                              },
+                            )),
               ),
             ),
             const SizedBox(height: 20)
           ],
         ),
-      )),
+      ),
     );
   }
 }

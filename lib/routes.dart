@@ -5,6 +5,8 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/middleware/my_middleware.dart';
 import 'package:jdolh_customers/test_screen.dart';
 import 'package:jdolh_customers/test_screen2.dart';
+import 'package:jdolh_customers/view/screens/add_members_screen.dart';
+import 'package:jdolh_customers/view/screens/auth/edit_personal_data_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/add_res_invitors_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/display_worktime_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/set_res_time_screen.dart';
@@ -14,8 +16,7 @@ import 'package:jdolh_customers/view/screens/checkin/add_new_place_screen.dart';
 import 'package:jdolh_customers/view/screens/checkin/checkin_confirm_screen.dart';
 import 'package:jdolh_customers/view/screens/checkin/checkin_screen.dart';
 import 'package:jdolh_customers/view/screens/display_location_screen.dart';
-import 'package:jdolh_customers/view/screens/groups/add_to_group_created_screen.dart';
-import 'package:jdolh_customers/view/screens/groups/add_to_group_screen.dart';
+
 import 'package:jdolh_customers/view/screens/appt_details_screen.dart';
 import 'package:jdolh_customers/view/screens/appt_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/login_screen.dart';
@@ -27,6 +28,7 @@ import 'package:jdolh_customers/view/screens/auth/verifycode_screen.dart';
 import 'package:jdolh_customers/view/screens/bills_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/brand_profile_screen.dart';
 import 'package:jdolh_customers/view/screens/groups/create_group_screen.dart';
+import 'package:jdolh_customers/view/screens/my_contacts_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/add_occasion_location_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/add_to_occasion_created_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/create_occasion_screen.dart';
@@ -50,6 +52,7 @@ import 'package:jdolh_customers/view/screens/payment_screen.dart';
 import 'package:jdolh_customers/view/screens/person_profile_screen.dart';
 import 'package:jdolh_customers/view/screens/res_archive_details_screen.dart';
 import 'package:jdolh_customers/view/screens/res_archive_screen.dart';
+import 'package:jdolh_customers/view/screens/res_occasion_screen.dart';
 import 'package:jdolh_customers/view/screens/reservation_done_screen.dart';
 import 'package:jdolh_customers/view/screens/reservation_search_screen.dart';
 import 'package:jdolh_customers/view/screens/schedule/reservation_details_screen.dart';
@@ -74,6 +77,18 @@ List<GetPage> routes = [
   //   name: '/',
   //   page: () => const ReservationSearchScreen(),
   // ),
+  GetPage(
+    name: AppRouteName.editPersonalData,
+    page: () => const EdtiPersonalDataScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.resOccasion,
+    page: () => const ResOccasionScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.myContacts,
+    page: () => const MyContactsScreen(),
+  ),
   GetPage(
     name: AppRouteName.displayWorktime,
     page: () => const DisplayWorktimeScreen(),
@@ -155,10 +170,7 @@ List<GetPage> routes = [
     name: AppRouteName.home,
     page: () => const HomeScreen(),
   ),
-  GetPage(
-    name: AppRouteName.addToGroup,
-    page: () => const AddToGroupScreen(),
-  ),
+
   GetPage(
     name: AppRouteName.appt,
     page: () => const ApptScreen(),
@@ -171,18 +183,18 @@ List<GetPage> routes = [
   ),
 
   GetPage(
-    name: AppRouteName.createGroup,
-    page: () => const CreateGroupScreen(),
-  ),
+      name: AppRouteName.createGroup,
+      page: () => const CreateGroupScreen(),
+      popGesture: true),
   GetPage(
     name: AppRouteName.editGroup,
     page: () => const EditGroupScreen(),
   ),
-  GetPage(
-    name: AppRouteName.addToGroupCreated,
-    page: () => const AddToGroupCreatedScreen(),
-  ),
 
+  GetPage(
+      name: AppRouteName.addMembers,
+      page: () => const AddMembersScreen(),
+      popGesture: true),
   GetPage(
     name: AppRouteName.createOccasion,
     page: () => const CreateOccasionScreen(),

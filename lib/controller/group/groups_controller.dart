@@ -6,7 +6,6 @@ import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/groups.dart';
 import 'package:jdolh_customers/data/models/group.dart';
-import 'package:jdolh_customers/data/models/group_member.dart';
 
 class GroupsController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
@@ -18,8 +17,8 @@ class GroupsController extends GetxController {
     statusRequest = StatusRequest.loading;
     update();
     groups.clear();
-    var response = await groupsData
-        .groupsView(myServices.sharedPreferences.getString("id")!);
+    var response = await groupsData.groupsView(
+        userId: myServices.sharedPreferences.getString("id")!);
     statusRequest = handlingData(response);
     print('status ==== $statusRequest');
     if (statusRequest == StatusRequest.success) {
@@ -44,19 +43,15 @@ class GroupsController extends GetxController {
   onTapGroupCard(int index) {
     if (groups[index].creator == 1) {
       Get.toNamed(AppRouteName.editGroup, arguments: groups[index])!
-          .then((value) => updateScreen());
+          .then((value) => update());
     } else {
       Get.toNamed(AppRouteName.groupDetails, arguments: groups[index])!
-          .then((value) => updateScreen());
+          .then((value) => update());
     }
   }
 
-  updateScreen() {
-    update();
-  }
-
   onTapCreateGroup() {
-    Get.toNamed(AppRouteName.createGroup)!.then((value) => updateScreen());
+    Get.toNamed(AppRouteName.createGroup)!.then((value) => update());
   }
 
   String convertDate(String dateString) {

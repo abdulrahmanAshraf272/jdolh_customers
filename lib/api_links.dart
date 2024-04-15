@@ -12,9 +12,13 @@ class ApiLinks {
   static const String logoImage = '$imagesBrands/logo';
   static const String branchImage = '$imagesBrands/branches';
   static const String itemsImage = '$imagesBrands/items';
+  static const String customerImage =
+      '$server/jdolh_customers/upload/customers_photo';
 
   //=============== Auth ===============//
   static const String signUp = '$server/jdolh_customers/auth/signup.php';
+  static const String signUpWithImage =
+      '$server/jdolh_customers/auth/signup_with_image.php';
   static const String login = '$server/jdolh_customers/auth/login.php';
   static const String verifycode =
       '$server/jdolh_customers/auth/verifycode.php';
@@ -35,23 +39,34 @@ class ApiLinks {
   static const String myProfile =
       '$server/jdolh_customers/profile/my_profile.php';
 
+  static const String editPersonalData =
+      '$server/jdolh_customers/auth/edit_personal_data.php';
+  static const String editPersonalDataWithImage =
+      '$server/jdolh_customers/auth/edit_personal_data_with_image.php';
+
+  static const String getUser = '$server/jdolh_customers/auth/get_user.php';
+
   // ================= Groups ====================//
   static const String createGroup =
       '$server/jdolh_customers/group/create_group.php';
-  static const String addToGroup =
-      '$server/jdolh_customers/group/add_to_group.php';
+  static const String addGroupMember =
+      '$server/jdolh_customers/group/add_member.php';
   static const String deleteMember =
       '$server/jdolh_customers/group/delete_member.php';
   static const String editGroupName =
       '$server/jdolh_customers/group/edit_group_name.php';
   static const String deleteGroup =
       '$server/jdolh_customers/group/delete_group.php';
-  static const String leaveGroup =
-      '$server/jdolh_customers/group/leave_group.php';
+
   static const String groupsView =
       '$server/jdolh_customers/group/groups_view.php';
   static const String groupMembers =
-      '$server/jdolh_customers/group/group_members.php';
+      '$server/jdolh_customers/group/get_group_members.php';
+
+  static const String clearMembers =
+      '$server/jdolh_customers/group/clear_members.php';
+
+  static const String testGroup = '$server/jdolh_customers/group2/test.php';
 
   //================== Occasion ====================//
   static const String createOccasion =
@@ -64,14 +79,13 @@ class ApiLinks {
       '$server/jdolh_customers/occasion/delete_invitor.php';
   static const String editOccasion =
       '$server/jdolh_customers/occasion/edit_occasion.php';
-  static const String acceptOccasion =
-      '$server/jdolh_customers/occasion/accept_invitation.php';
-  static const String rejectOccasion =
-      '$server/jdolh_customers/occasion/reject_invitation.php';
+
   static const String viewOccasion =
       '$server/jdolh_customers/occasion/view_occasions.php';
   static const String viewOccasionInvitors =
       '$server/jdolh_customers/occasion/view_invitors.php';
+  static const String responedToInvitation =
+      '$server/jdolh_customers/occasion/responed_to_invitation.php';
 
   //============= Checkin ================//
   static const String checkin = '$server/jdolh_customers/checkin/checkin.php';
@@ -137,6 +151,11 @@ class ApiLinks {
       '$server/jdolh_customers/get_user_activities.php';
   static const String getFriendsActivities =
       '$server/jdolh_customers/get_friends_activities.php';
+  static const String likeUnlikeActivity =
+      '$server/jdolh_customers/like_unlike_activity.php';
+
+  static const String getBrandBch =
+      '$server/jdolh_customers/get_brand/get_brand_bch.php';
 
   // == follow bch ==//
   static const String followBch = '$server/jdolh_customers/follow_bch.php';

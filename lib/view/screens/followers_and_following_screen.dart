@@ -31,7 +31,6 @@ class FollowersAndFollowingScreen extends StatelessWidget {
         body: Column(
           children: [
             SearchAppBar(
-              onTapSearch: () {},
               textEditingController: controller.name,
               withArrowBack: false,
             ),

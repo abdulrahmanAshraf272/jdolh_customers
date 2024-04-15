@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -20,13 +21,31 @@ class EditOccasionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    dataSavedSuccessfuly() {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.success,
+        animType: AnimType.rightSlide,
+        title: 'تم حفظ البيانات',
+        btnOkText: 'حسنا',
+        btnOkOnPress: () {
+          Get.back();
+        },
+      ).show();
+    }
+
     Get.put(EditOccasionController());
     return GetBuilder<EditOccasionController>(
         builder: (controller) => Scaffold(
               appBar: _appBarWithTextButton(
                   onTapLeave: () => controller.onTapDeleteOccasion()),
               floatingActionButton: BottomButton(
-                onTap: () => controller.editOccasion(),
+                onTap: () async {
+                  var result = await controller.editOccasion();
+                  if (result == true) {
+                    dataSavedSuccessfuly();
+                  }
+                },
                 text: 'حفظ',
                 buttonColor: AppColors.secondaryColor,
               ),
@@ -69,11 +88,13 @@ class EditOccasionScreen extends StatelessWidget {
                           horizontal: 20, vertical: 20),
                       child: Row(
                         children: [
-                          Expanded(
+                          const Expanded(
                             child: CustomSmallBoldTitle(
-                              title: 'المضافين للمناسبة',
+                              title: 'المدعوين للمناسبة',
                               topPadding: 20,
                               bottomPadding: 20,
+                              rightPdding: 0,
+                              leftPadding: 0,
                             ),
                           ),
                           CustomButton(
@@ -81,7 +102,6 @@ class EditOccasionScreen extends StatelessWidget {
                                 controller.onTapAddMembers();
                               },
                               text: 'إضافة مدعوين'),
-                          SizedBox(width: 20)
                         ],
                       ),
                     ),

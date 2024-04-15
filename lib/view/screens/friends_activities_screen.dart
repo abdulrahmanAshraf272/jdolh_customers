@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/core/constants/app_colors.dart';
+import 'package:jdolh_customers/controller/friends_activity_controller.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/activity.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 
@@ -9,24 +9,28 @@ class FriendsActivitiesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(FriendsActivitiesController());
     return Scaffold(
       appBar: customAppBar(
-        title: 'نشاطات اللأصدقاء',
+        title: controller.appBarTitle(),
       ),
       body: Column(
         children: [
           Expanded(
-            child: ListView.separated(
-              physics: BouncingScrollPhysics(),
-              itemCount: 3,
-              itemBuilder: (context, index) => ActivityListItem(),
-              separatorBuilder: (context, index) => Container(
-                color: AppColors.gray450,
-                height: 2,
-                width: Get.width,
-              ), // Add separatorBuilder
-            ),
-          ),
+              child: ListView.builder(
+                  itemCount: controller.friendsActivities.length,
+                  itemBuilder: (context, index) => ActivityListItem(
+                        cardStatus: controller.pageStatus,
+                        activity: controller.friendsActivities[index],
+                        onTapLike: () {
+                          if (controller.friendsActivities[index].isLiked ==
+                              1) {
+                            controller.friendsActivities[index].isLiked = 0;
+                          } else {
+                            controller.friendsActivities[index].isLiked = 1;
+                          }
+                        },
+                      ))),
         ],
       ),
     );

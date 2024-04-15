@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -9,7 +10,9 @@ import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/formatDateTime.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
@@ -21,6 +24,7 @@ import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 class EditOccasionController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
+  OccasionsController occasionsController = Get.find();
   TextEditingController occasionTitleOld = TextEditingController();
   TextEditingController occasionTitle = TextEditingController();
   TextEditingController locationLink = TextEditingController();
@@ -40,25 +44,13 @@ class EditOccasionController extends GetxController {
   List<Friend> members = [];
   //List<int> membersId = [];
   //MainController mainController = Get.find();
-  ValuesController valuesController = Get.find();
+  //ValuesController valuesController = Get.find();
   //OccasionsController occasionsController = Get.find();
   DateTime? myDateTime;
 
   editOccasion() async {
-    // if (occasionTitle.text.isEmpty) {
-    //   Get.rawSnackbar(message: 'اضف عنوان للمناسبة!');
-    //   return;
-    // }
-    // //check if no value change
-    // if (occasionTitle.text == occasionTitleOld.text &&
-    //     occasionDateTime == occasionDateTimeOld) {
-    //   print('nothing changed');
-    //   Get.back();
-    //   return;
-    // }
-    statusRequest = StatusRequest.loading;
+    CustomDialogs.loading();
     occasionDateTime = myDateTime.toString();
-    update();
     var response = await occasionData.editOccasion(
         occasionId.toString(),
         occasionTitle.text,
@@ -68,27 +60,21 @@ class EditOccasionController extends GetxController {
         occasionLong,
         locationLink.text);
     statusRequest = handlingData(response);
+    await Future.delayed(const Duration(seconds: lateDuration));
+    CustomDialogs.dissmissLoading();
     print('status ==== $statusRequest');
     if (statusRequest == StatusRequest.success) {
-      print(response['status']);
-      //status = success => update is done
-      //status = failure => udate fail, because the user didn't change anything.
       if (response['status'] == 'success') {
-        valuesController.editOccasion(
-            occasionId,
-            occasionTitle.text,
-            occasionDateTime,
-            occasionLocation,
-            occasionLat,
-            occasionLong,
-            locationLink.text);
+        CustomDialogs.success('تم تعديل المناسبة');
+        await Future.delayed(const Duration(seconds: 1));
         Get.back();
-        Get.rawSnackbar(message: 'تم التعديل بنجاح!');
       } else {
         Get.back();
       }
+    } else {
+      CustomDialogs.failure();
+      update();
     }
-    update();
   }
 
   getOccasionMembers(String occasionId) async {
@@ -200,8 +186,8 @@ class EditOccasionController extends GetxController {
         title: "حذف",
         middleText: "هل تريد حذف المناسبة؟",
         onConfirm: () {
-          deleteOccasion();
           Get.back();
+          deleteOccasion();
         },
         textConfirm: 'تأكيد',
         textCancel: 'الغاء',
@@ -258,6 +244,8 @@ class EditOccasionController extends GetxController {
   }
 
   deleteOccasion() async {
+    occasionsController.myOccasions.remove(occasionSelected);
+    Get.back();
     //Delete group server
     var response = await occasionData.deleteOccasion(occasionId.toString());
     statusRequest = handlingData(response);
@@ -265,8 +253,6 @@ class EditOccasionController extends GetxController {
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         //Delete group local
-        valuesController.removeOccasion(occasionSelected);
-        Get.back();
       } else {
         print('leave group failed');
       }

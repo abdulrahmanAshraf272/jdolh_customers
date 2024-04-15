@@ -22,43 +22,44 @@ class BrandProfileScreen extends StatelessWidget {
     return Scaffold(
       //appBar: customAppBar(title: controller.brand.brandStoreName ?? ''),
       body: GetBuilder<BrandProfileController>(
-          builder: (controller) => HandlingDataView(
-                statusRequest: controller.statusRequest,
-                widget: Column(
-                  children: [
-                    BrandProfileHeader(
-                        isFollowing: controller.isFollowing,
-                        onTapFollow: () => controller.followUnfollow()),
-                    DescAndBranshedButtonAndWorkTime(
-                      desc: controller.bch.bchDesc ?? '',
-                      onTapWorktime: () => controller.gotoDisplayWorktime(),
-                      onTapBchs: () {},
-                    ),
-                    LargeToggleButtons(
-                        optionOne: controller.brand.brandIsService == 1
-                            ? 'الخدمات'
-                            : 'القائمة',
-                        optionTwo: 'تفاصيل الحجز',
-                        onTapOne: () => controller.diplayItemsSubscreen(),
-                        onTapTwo: () => controller.displayResSubscreen()),
-                    controller.subscreen == 0
-                        ? const Expanded(
-                            child: Column(
-                              children: [
-                                Categories(),
-                                Expanded(child: ItemsToDisplay())
-                              ],
-                            ),
-                          )
-                        : controller.subscreen == 1
-                            ? const Expanded(child: ResProductSubscreen())
-                            : controller.subscreen == 2
-                                ? const Expanded(child: ResServiceSubscreen())
-                                : const Expanded(
-                                    child: ResHomeServicesSubscreen())
-                  ],
-                ),
-              )),
+        builder: (controller) =>
+            controller.statusRequest != StatusRequest.success
+                ? HandlingDataView2(statusRequest: controller.statusRequest)
+                : Column(
+                    children: [
+                      BrandProfileHeader(
+                          isFollowing: controller.isFollowing,
+                          onTapFollow: () => controller.followUnfollow()),
+                      DescAndBranshedButtonAndWorkTime(
+                        desc: controller.bch.bchDesc ?? '',
+                        onTapWorktime: () => controller.gotoDisplayWorktime(),
+                        onTapBchs: () {},
+                      ),
+                      LargeToggleButtons(
+                          optionOne: controller.brand.brandIsService == 1
+                              ? 'الخدمات'
+                              : 'القائمة',
+                          optionTwo: 'تفاصيل الحجز',
+                          onTapOne: () => controller.diplayItemsSubscreen(),
+                          onTapTwo: () => controller.displayResSubscreen()),
+                      controller.subscreen == 0
+                          ? const Expanded(
+                              child: Column(
+                                children: [
+                                  Categories(),
+                                  Expanded(child: ItemsToDisplay())
+                                ],
+                              ),
+                            )
+                          : controller.subscreen == 1
+                              ? const Expanded(child: ResProductSubscreen())
+                              : controller.subscreen == 2
+                                  ? const Expanded(child: ResServiceSubscreen())
+                                  : const Expanded(
+                                      child: ResHomeServicesSubscreen())
+                    ],
+                  ),
+      ),
     );
   }
 }

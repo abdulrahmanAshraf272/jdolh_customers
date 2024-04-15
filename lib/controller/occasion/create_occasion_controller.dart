@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +9,7 @@ import 'package:jdolh_customers/controller/occasion/occasions_controller.dart';
 import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
@@ -34,8 +36,6 @@ class CreateOccasionController extends GetxController {
 
   List<Friend> members = [];
   List<int> membersId = [];
-  //MainController mainController = Get.find();
-  ValuesController valuesController = Get.put(ValuesController());
   OccasionsController occasionsController = Get.put(OccasionsController());
   DateTime? dateTime;
 
@@ -48,9 +48,8 @@ class CreateOccasionController extends GetxController {
       Get.rawSnackbar(message: 'حدد تاريخ المناسبة!');
       return;
     }
+    CustomDialogs.loading();
     String membersIdString = membersId.join(",");
-    statusRequest = StatusRequest.loading;
-    update();
     var response = await occasionData.createOccasion(
         myServices.sharedPreferences.getString("id")!,
         myServices.sharedPreferences.getString("name")!,
@@ -61,25 +60,25 @@ class CreateOccasionController extends GetxController {
         occasionLong,
         locationLink.text,
         membersIdString);
+    CustomDialogs.dissmissLoading();
     statusRequest = handlingData(response);
-
+    update();
     print('status ==== $statusRequest');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         Occasion newOccasion = Occasion.fromJson(response['data']);
         print(newOccasion.occasionTitle);
-        valuesController.addOccasion(newOccasion);
+        //occasionsController.addOccasion(newOccasion);
+        occasionsController.myOccasions.add(newOccasion);
+        CustomDialogs.success('تم انشاء المناسبة');
         Get.back();
-        Get.rawSnackbar(message: 'تم انشاء المجموعة بنجاح!');
+      } else {
+        CustomDialogs.failure();
       }
+    } else {
+      update();
     }
-    update();
   }
-
-  // addOccasionToLocale(response) {
-  //   Occasion newOccasion = Occasion.fromJson(response['data']);
-  //   valuesController.acceptedOccasions.add(newOccasion);
-  // }
 
   removeMember(index) {
     membersId.remove(members[index].userId!);
