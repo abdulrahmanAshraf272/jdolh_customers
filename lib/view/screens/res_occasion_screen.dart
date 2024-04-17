@@ -16,7 +16,7 @@ class ResOccasionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(title: 'جدولة'),
+      appBar: customAppBar(title: 'جدولة', withBack: false),
       body: SingleChildScrollView(
         child: Column(
           children: [

@@ -27,4 +27,12 @@ class FollowUnfollowData {
 
     return response.fold((l) => l, (r) => r);
   }
+
+  getAllUsers({required String myId}) async {
+    var response = await crud.postData(ApiLinks.getAllUsers, {
+      "myId": myId,
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
 }

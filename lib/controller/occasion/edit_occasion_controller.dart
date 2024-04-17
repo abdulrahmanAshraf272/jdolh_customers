@@ -20,18 +20,17 @@ import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
 import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
+import 'package:jdolh_customers/view/widgets/custom_time_picker.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 class EditOccasionController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
   OccasionsController occasionsController = Get.find();
-  TextEditingController occasionTitleOld = TextEditingController();
   TextEditingController occasionTitle = TextEditingController();
   TextEditingController locationLink = TextEditingController();
   late Occasion occasionSelected;
   late int occasionId;
   String occasionDateTime = '';
-  String occasionDateTimeOld = '';
   String occasionLocation = '';
   String occasionLat = '';
   String occasionLong = '';
@@ -47,6 +46,10 @@ class EditOccasionController extends GetxController {
   //ValuesController valuesController = Get.find();
   //OccasionsController occasionsController = Get.find();
   DateTime? myDateTime;
+  TimeOfDay? timeSelected;
+  String? selectedTimeFormatted;
+  DateTime selectedDate = DateTime.now();
+  String? selectedDateFormatted = '';
 
   editOccasion() async {
     CustomDialogs.loading();
@@ -54,7 +57,8 @@ class EditOccasionController extends GetxController {
     var response = await occasionData.editOccasion(
         occasionId.toString(),
         occasionTitle.text,
-        occasionDateTime,
+        selectedDateFormatted ?? '',
+        selectedTimeFormatted ?? '',
         occasionLocation,
         occasionLat,
         occasionLong,
@@ -66,7 +70,6 @@ class EditOccasionController extends GetxController {
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         CustomDialogs.success('تم تعديل المناسبة');
-        await Future.delayed(const Duration(seconds: 1));
         Get.back();
       } else {
         Get.back();
@@ -121,9 +124,32 @@ class EditOccasionController extends GetxController {
     }
   }
 
-  onTapAddMembers() {
-    Get.toNamed(AppRouteName.addToOccasionCreated)!
-        .then((value) => refreshScreen());
+  onTapAddMembers() async {
+    final result = await Get.toNamed(AppRouteName.addMembers,
+        arguments: {'members': members});
+    if (result != null) {
+      Friend member = result as Friend;
+      member.creator = 0;
+      member.invitorStatus = 0;
+      members.add(member);
+      addMember(member);
+      update();
+    }
+  }
+
+  addMember(Friend member) async {
+    var response = await occasionData.addMember(
+        occasionid: occasionSelected.occasionId.toString(),
+        userid: member.userId.toString(),
+        creatorid: myServices.getUserid());
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('adding ${member.userName} is done');
+      } else {
+        print('adding memeber failed');
+      }
+    }
   }
 
   refreshScreen() {
@@ -168,14 +194,18 @@ class EditOccasionController extends GetxController {
   }
 
   removeMember(index) async {
-    var response = await occasionData.deleteInvitors(
+    CustomDialogs.loading();
+    var response = await occasionData.deleteMember(
         occasionSelected.occasionId.toString(),
         members[index].userId.toString());
+    CustomDialogs.dissmissLoading();
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         members.remove(members[index]);
         print('removing member done successfuly ====');
+      } else {
+        CustomDialogs.failure();
       }
     }
     update();
@@ -194,70 +224,97 @@ class EditOccasionController extends GetxController {
         onCancel: () {});
   }
 
-  pickDateTime(BuildContext context) async {
-    DateTime? dateTime = await showOmniDateTimePicker(
-      type: OmniDateTimePickerType.dateAndTime,
-      context: context,
-      initialDate: myDateTime,
-      firstDate: DateTime(1600).subtract(const Duration(days: 3652)),
-      lastDate: DateTime.now().add(
-        const Duration(days: 3652),
-      ),
-      is24HourMode: false,
-      isShowSeconds: false,
-      minutesInterval: 1,
-      secondsInterval: 1,
-      isForce2Digits: true,
-      borderRadius: const BorderRadius.all(Radius.circular(16)),
-      constraints: const BoxConstraints(
-        maxWidth: 350,
-        maxHeight: 650,
-      ),
-      transitionBuilder: (context, anim1, anim2, child) {
-        return FadeTransition(
-          opacity: anim1.drive(
-            Tween(
-              begin: 0,
-              end: 1,
-            ),
-          ),
-          child: child,
-        );
-      },
-      transitionDuration: const Duration(milliseconds: 200),
-      barrierDismissible: true,
-      selectableDayPredicate: (dateTime) {
-        // Disable 25th Feb 2023
-        if (dateTime == DateTime(2024, 2, 25)) {
-          return false;
-        } else {
-          return true;
-        }
-      },
-    );
-    if (dateTime != null) {
-      myDateTime = dateTime;
-      occasionDateTime = formatDateTime(myDateTime.toString());
-      update();
-      print("dateTime: $myDateTime");
-    }
-  }
-
   deleteOccasion() async {
-    occasionsController.myOccasions.remove(occasionSelected);
-    Get.back();
-    //Delete group server
+    CustomDialogs.loading();
     var response = await occasionData.deleteOccasion(occasionId.toString());
+    CustomDialogs.dissmissLoading();
     statusRequest = handlingData(response);
     print('status ==== $statusRequest');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
+        CustomDialogs.success('تم حذف المناسبة');
+        occasionsController.myOccasions.remove(occasionSelected);
+        Get.back();
         //Delete group local
       } else {
         print('leave group failed');
       }
     }
   }
+
+  void showCustomTimePicker(BuildContext context) {
+    final initialTime = TimeOfDay.now();
+    TimeOfDay timeHelper = TimeOfDay.now();
+
+    //timeHelper = initialAdjustedTime;
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext builder) {
+        return SizedBox(
+          height: MediaQuery.of(context).copyWith().size.height / 3,
+          child: CustomTimePicker(
+            initialTime: initialTime,
+            onTimeSelected: (selectedTime) {
+              timeHelper = selectedTime;
+            },
+            onTapSave: () {
+              Get.back();
+
+              timeSelected = timeHelper;
+              selectedTimeFormatted = formatTimeOfDay(timeSelected!);
+              update();
+            },
+            onTapReset: () {
+              Get.back();
+              timeSelected = null;
+              selectedTimeFormatted = null;
+              update();
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    );
+    if (picked != null && picked != selectedDate) {
+      selectedDate = picked;
+      print(selectedDate);
+      selectedDateFormatted = DateFormat('yyyy-MM-dd').format(selectedDate);
+      update();
+    }
+  }
+
+  String formatTimeOfDay(TimeOfDay timeOfDay) => DateFormat('HH:mm')
+      .format(DateTime(0, 0, 0, timeOfDay.hour, timeOfDay.minute));
+
+  String timeInAmPm() {
+    if (selectedTimeFormatted != null) {
+      final parts = selectedTimeFormatted!.split(':');
+      final hour = int.parse(parts[0]);
+      final minute = int.parse(parts[1]);
+
+      final dateTime = DateTime(0, 0, 0, hour, minute);
+      final formatter = DateFormat('h:mm a');
+      return formatter.format(dateTime);
+    } else {
+      return 'اختر وقت المناسبة';
+    }
+  }
+
+  // String formatTimeOfDay(TimeOfDay timeOfDay) {
+  //   final now = DateTime.now();
+  //   final dateTime = DateTime(
+  //       now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+  //   final formatter = DateFormat.jm(); // Adjust the pattern as needed
+  //   return formatter.format(dateTime);
+  // }
 
   @override
   void dispose() {
@@ -269,10 +326,11 @@ class EditOccasionController extends GetxController {
     occasionSelected = Get.arguments;
     occasionId = occasionSelected.occasionId!;
     occasionTitle.text = occasionSelected.occasionTitle!;
-    occasionTitleOld.text = occasionSelected.occasionTitle!;
-    myDateTime = DateTime.parse(occasionSelected.occasionDatetime!);
-    occasionDateTime = formatDateTime(myDateTime.toString());
-    occasionDateTimeOld = formatDateTime(myDateTime.toString());
+    //myDateTime = DateTime.parse(occasionSelected.occasionDatetime!);
+    //occasionDateTime = formatDateTime(myDateTime.toString());
+    //occasionDateTimeOld = formatDateTime(myDateTime.toString());
+    selectedDateFormatted = occasionSelected.occasionDate ?? '';
+    selectedTimeFormatted = occasionSelected.occasionTime ?? '';
     occasionLocation = occasionSelected.occasionLocation ?? '';
     occasionLat = occasionSelected.occasionLat!;
     occasionLong = occasionSelected.occasionLong!;

@@ -33,9 +33,7 @@ class ReservationSearchScreen extends StatelessWidget {
     Get.put(ReservationSearchController());
     return GetBuilder<ReservationSearchController>(
         builder: (controller) => Scaffold(
-              appBar: customAppBar(
-                title: 'الحجز',
-              ),
+              appBar: customAppBar(title: 'الحجز', withBack: false),
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

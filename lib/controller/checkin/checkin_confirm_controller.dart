@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
@@ -21,8 +22,15 @@ class CheckinConfirmController extends GetxController {
   List<int> membersId = [];
   ValuesController valuesController = Get.put(ValuesController());
 
-  onTapAddMembers() {
-    Get.toNamed(AppRouteName.addMembersCheckin)!.then((value) => update());
+  onTapAddMembers() async {
+    //Get.toNamed(AppRouteName.addMembersCheckin)!.then((value) => update());
+    final result = await Get.toNamed(AppRouteName.addMembers,
+        arguments: {'members': members});
+    if (result is Friend) {
+      members.add(result);
+      membersId.add(result.userId!);
+      update();
+    }
   }
 
   removeMember(index) {
@@ -34,8 +42,7 @@ class CheckinConfirmController extends GetxController {
 
   checkin(BuildContext context) async {
     String membersIdString = membersId.join(",");
-    statusRequest = StatusRequest.loading;
-    update();
+    CustomDialogs.loading();
     var response = await checkinData.checkin(
         myServices.sharedPreferences.getString("id")!,
         placeSelected.fromGoogle ?? '0',
@@ -47,24 +54,26 @@ class CheckinConfirmController extends GetxController {
         placeSelected.lng.toString(),
         comment.text,
         membersIdString);
+    CustomDialogs.dissmissLoading();
     statusRequest = handlingData(response);
     print('status ==== $statusRequest');
-    update();
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.success,
-          animType: AnimType.rightSlide,
-          title: 'تم تسجيل الوصول',
-          btnOkText: 'حسنا',
-          onDismissCallback: (dismissType) {
-            Get.offAllNamed(AppRouteName.mainScreen);
-          },
-        ).show();
+        CustomDialogs.success('تم تسجيل الوصول');
+        Get.offAllNamed(AppRouteName.mainScreen);
+        // AwesomeDialog(
+        //   context: context,
+        //   dialogType: DialogType.success,
+        //   animType: AnimType.rightSlide,
+        //   title: 'تم تسجيل الوصول',
+        //   btnOkText: 'حسنا',
+        //   onDismissCallback: (dismissType) {
+        //     Get.offAllNamed(AppRouteName.mainScreen);
+        //   },
+        // ).show();
       }
     } else {
-      statusRequest = StatusRequest.failure;
+      update();
     }
   }
 

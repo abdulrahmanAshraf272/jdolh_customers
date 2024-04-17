@@ -26,9 +26,8 @@ class AppRouteName {
   static const occasionDetails = '/occasionDetails';
   static const editOccasion = '/editOccasion';
   static const occasions = '/occasions';
-  static const addToOccasion = '/addToOccasion';
-  static const addToOccasionCreated = '/addToOccasionCreated';
   static const addOccasionLocation = '/addOccasionLocation';
+  static const finishedOccasions = '/finishedOccasions';
 
   static const exploreBrand = '/exploreBrand';
   static const explorePeople = '/explorePeople';
@@ -62,6 +61,8 @@ class AppRouteName {
   static const addNewPlace = '/addNewPlace';
   static const selectAddressScreen = '/selectAddressScreen';
   static const diplayLocation = '/displayLocation';
+
+  static const exploreCheckin = '/exploreCheckin';
 
   static const reservationSearch = '/reservationSearch';
 

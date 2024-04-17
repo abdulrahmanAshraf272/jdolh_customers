@@ -1,5 +1,11 @@
 import 'package:get/get.dart';
+import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/services/services.dart';
+import 'package:jdolh_customers/data/data_source/remote/followUnfollow.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart';
@@ -14,6 +20,10 @@ class Contacts {
 
 class MyContactsController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
+  ValuesController valuesController = Get.put(ValuesController());
+  FollowUnfollowData followUnfollowData = FollowUnfollowData(Get.find());
+  MyServices myServices = Get.find();
+  List<Friend> users = [];
   List<Contacts> contacts = [];
   bool readContact = true;
 
@@ -72,10 +82,78 @@ class MyContactsController extends GetxController {
     }
   }
 
+  followUnfollow(int index) {
+    followUnfollowRequest(users[index].userId.toString());
+    valuesController.addAndRemoveFollowing(users[index]);
+    if (users[index].following!) {
+      users[index].following = false;
+    } else {
+      users[index].following = true;
+    }
+    update();
+  }
+
+  followUnfollowRequest(String personId) async {
+    var response = await followUnfollowData.postData(
+        myServices.sharedPreferences.getString("id")!, personId);
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('operation followUnfollow done succussfuly');
+      } else {
+        print('operation followUnfollow done failed');
+      }
+    }
+  }
+
+  onTapCard(int index) {
+    Get.toNamed(AppRouteName.personProfile, arguments: users[index])!
+        .then((value) => update());
+  }
+
+  getAllUsers() async {
+    statusRequest = StatusRequest.loading;
+    update();
+    var response = await followUnfollowData.getAllUsers(
+        myId: myServices.sharedPreferences.getString("id")!);
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        List responseJsonData = response['data'];
+        //parsing jsonList to DartList.
+        users = responseJsonData.map((e) => Friend.fromJson(e)).toList();
+        removeUsersNotExistInMyContact();
+        removeContactsExistInJdolh();
+      } else {
+        statusRequest = StatusRequest.failure;
+      }
+    }
+    update();
+  }
+
+  removeUsersNotExistInMyContact() {
+    List<String> contactsNumber =
+        contacts.map((e) => removeSpaces(e.number)).toList();
+
+    users.removeWhere(
+        (user) => !contactsNumber.contains(removeSpaces(user.phone!)));
+  }
+
+  removeContactsExistInJdolh() {
+    List<String> usersPhone = users.map((e) => removeSpaces(e.phone!)).toList();
+    contacts.removeWhere(
+        (element) => usersPhone.contains(removeSpaces(element.number)));
+  }
+
+  String removeSpaces(String input) {
+    return input.replaceAll(' ', '');
+  }
+
   @override
   void onInit() async {
     try {
       contacts = await getContacts();
+      getAllUsers();
       statusRequest = StatusRequest.success;
       update();
       // Do something with the fetched contacts

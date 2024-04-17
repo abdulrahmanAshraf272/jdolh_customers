@@ -101,7 +101,8 @@ class SearchScreenController extends GetxController {
   }
 
   onTapCard(int index) {
-    Get.toNamed(AppRouteName.personProfile, arguments: data[index]);
+    Get.toNamed(AppRouteName.personProfile, arguments: data[index])!
+        .then((value) => update());
   }
 
   @override

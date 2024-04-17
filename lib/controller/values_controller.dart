@@ -27,12 +27,13 @@ class ValuesController extends GetxController {
     resetAcceptedAndSuspendedList();
   }
 
-  editOccasion(int occasionId, String title, String datetime, String location,
-      String lat, String long, String locatinLink) {
+  editOccasion(int occasionId, String title, String date, String time,
+      String location, String lat, String long, String locatinLink) {
     Occasion desireOccasion =
         myOccasions.firstWhere((element) => element.occasionId == occasionId);
     desireOccasion.occasionTitle = title;
-    desireOccasion.occasionDatetime = datetime;
+    desireOccasion.occasionDate = date;
+    desireOccasion.occasionTime = time;
     desireOccasion.occasionLocation = location;
     desireOccasion.occasionLat = lat;
     desireOccasion.occasionLong = long;

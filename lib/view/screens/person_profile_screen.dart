@@ -1,13 +1,18 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/person_profile_controller.dart';
+import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
+import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/data/data_source/remote/activity.dart';
 import 'package:jdolh_customers/data/models/activity.dart';
@@ -15,6 +20,8 @@ import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/view/screens/followers_and_following_screen.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/activity.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/comment.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 import 'package:jdolh_customers/view/widgets/more_screen/rect_button.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/services/services.dart';
@@ -37,6 +44,7 @@ class _PersonProfileState extends State<PersonProfile> {
   List<Activity> friendsActivities = [];
   List<Activity> onlyRatesActivities = [];
   MyServices myServices = Get.find();
+  ValuesController valuesController = Get.put(ValuesController());
   List<Friend> followers = [];
   List<Friend> following = [];
   late Friend friend;
@@ -149,6 +157,30 @@ class _PersonProfileState extends State<PersonProfile> {
         .then((value) => getUserActivities());
   }
 
+  followUnfollow() {
+    followUnfollowRequest(friend.userId.toString());
+    valuesController.addAndRemoveFollowing(friend);
+    if (friend.following!) {
+      friend.following = false;
+    } else {
+      friend.following = true;
+    }
+    setState(() {});
+  }
+
+  followUnfollowRequest(String personId) async {
+    var response = await followUnfollowData.postData(
+        myServices.sharedPreferences.getString("id")!, personId);
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('operation followUnfollow done succussfuly');
+      } else {
+        print('operation followUnfollow done failed');
+      }
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -171,35 +203,94 @@ class _PersonProfileState extends State<PersonProfile> {
       body: SafeArea(
         child: Column(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: image != ''
-                  ? FadeInImage.assetNetwork(
-                      height: 80.h,
-                      width: 80.w,
-                      placeholder: 'assets/images/loading2.gif',
-                      image: '${ApiLinks.customerImage}/$image',
-                      fit: BoxFit.cover,
-                    )
-                  : Image.asset(
-                      'assets/images/person4.jpg',
-                      fit: BoxFit.cover,
-                      height: 80.h,
-                      width: 80.w,
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(width: 20),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: image != ''
+                            ? FadeInImage.assetNetwork(
+                                height: 70.h,
+                                width: 70.w,
+                                placeholder: 'assets/images/loading2.gif',
+                                image: '${ApiLinks.customerImage}/$image',
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                'assets/images/person4.jpg',
+                                fit: BoxFit.cover,
+                                height: 70.h,
+                                width: 70.w,
+                              ),
+                      ),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 3),
+                            AutoSizeText(
+                              friend.userName ?? '',
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontSize: 16.sp, fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              friend.userUsername!,
+                              style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black.withOpacity(0.6)),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                    ],
+                  ),
+                ),
+                FollowButton(
+                    onTap: () => followUnfollow(),
+                    following: friend.following!),
+                const SizedBox(width: 20)
+              ],
             ),
-            const SizedBox(height: 10),
-            Text(
-              friend.userName!,
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
-            ),
-            Text(
-              friend.userUsername!,
-              style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black.withOpacity(0.6)),
-            ),
+
+            // ClipRRect(
+            //   borderRadius: BorderRadius.circular(100),
+            //   child: image != ''
+            //       ? FadeInImage.assetNetwork(
+            //           height: 80.h,
+            //           width: 80.w,
+            //           placeholder: 'assets/images/loading2.gif',
+            //           image: '${ApiLinks.customerImage}/$image',
+            //           fit: BoxFit.cover,
+            //         )
+            //       : Image.asset(
+            //           'assets/images/person4.jpg',
+            //           fit: BoxFit.cover,
+            //           height: 80.h,
+            //           width: 80.w,
+            //         ),
+            // ),
+            // const SizedBox(height: 10),
+            // Text(
+            //   friend.userName!,
+            //   style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
+            // ),
+            // Text(
+            //   friend.userUsername!,
+            //   style: TextStyle(
+            //       fontSize: 12.sp,
+            //       fontWeight: FontWeight.w500,
+            //       color: Colors.black.withOpacity(0.6)),
+            // ),
             const SizedBox(height: 20),
             Row(
               children: [
@@ -232,7 +323,7 @@ class _PersonProfileState extends State<PersonProfile> {
                         gotoFriendsActivities();
                       },
                       iconData: Icons.comment,
-                      buttonColor: AppColors.redProfileButton),
+                      buttonColor: AppColors.blue2),
                 ),
                 const SizedBox(width: 15),
               ],
@@ -261,6 +352,60 @@ class _PersonProfileState extends State<PersonProfile> {
             ),
             const SizedBox(height: 20)
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class FollowButton extends StatelessWidget {
+  final void Function() onTap;
+
+  final bool following;
+  const FollowButton({super.key, required this.onTap, required this.following});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 80.w,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.horizontal(
+          left: Radius.circular(15.0),
+          right: Radius.circular(15.0),
+        ),
+        color: following
+            ? AppColors.redProfileButton
+            : AppColors.secondaryColor, // Border color
+      ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.horizontal(
+          left: Radius.circular(15.0),
+          right: Radius.circular(15.0),
+        ),
+        child: Material(
+          borderRadius: const BorderRadius.horizontal(
+            left: Radius.circular(15.0),
+            right: Radius.circular(15.0),
+          ),
+          color: Colors.transparent, // Transparent background
+          child: InkWell(
+            onTap: onTap,
+            child: Container(
+              alignment: Alignment.center,
+              width: 80.w,
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
+              child: AutoSizeText(
+                maxLines: 1,
+                minFontSize: 6,
+                following ? 'الغاء المتابعة' : 'متابعة',
+                style: TextStyle(
+                    fontSize: 11.sp,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600),
+              ),
+            ),
+          ),
         ),
       ),
     );

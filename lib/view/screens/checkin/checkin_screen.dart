@@ -24,33 +24,36 @@ class CheckinScreen extends StatelessWidget {
     return GetBuilder<CheckinController>(builder: (controller) {
       return Scaffold(
           appBar: customAppBar(title: 'تسجيل الوصول'),
-          body: SingleChildScrollView(
-            child: HandlingDataView(
-                statusRequest: controller.statusRequest,
-                widget: Column(
-                  children: [
-                    ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.only(bottom: 20, top: 20),
-                        shrinkWrap: true,
-                        itemCount: controller.allPlaces.length,
-                        itemBuilder: (context, index) => PlacesListItem(
-                            name: controller.allPlaces[index].name ?? '',
-                            location:
-                                controller.allPlaces[index].location ?? '',
-                            type: controller.allPlaces[index].type ?? '',
-                            onTapCard: () {
-                              controller.onTapCard(controller.allPlaces[index]);
-                            })
-                        // Add separatorBuilder
-                        ),
-                    GoHomeButton(
-                      onTap: () => controller.goToAddNewPlace(),
-                      text: 'اضافة مكان',
-                    ),
-                    SizedBox(height: 20),
-                  ],
-                )),
+          body: Center(
+            child: SingleChildScrollView(
+              child: HandlingDataView(
+                  statusRequest: controller.statusRequest,
+                  widget: Column(
+                    children: [
+                      ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          padding: const EdgeInsets.only(bottom: 20, top: 20),
+                          shrinkWrap: true,
+                          itemCount: controller.allPlaces.length,
+                          itemBuilder: (context, index) => PlacesListItem(
+                              name: controller.allPlaces[index].name ?? '',
+                              location:
+                                  controller.allPlaces[index].location ?? '',
+                              type: controller.allPlaces[index].type ?? '',
+                              onTapCard: () {
+                                controller
+                                    .onTapCard(controller.allPlaces[index]);
+                              })
+                          // Add separatorBuilder
+                          ),
+                      GoHomeButton(
+                        onTap: () => controller.goToAddNewPlace(),
+                        text: 'اضافة مكان',
+                      ),
+                      SizedBox(height: 20),
+                    ],
+                  )),
+            ),
           ));
     });
   }

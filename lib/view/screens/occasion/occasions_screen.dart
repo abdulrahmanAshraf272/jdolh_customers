@@ -58,9 +58,8 @@ class OccasionsScreen extends StatelessWidget {
                                         title: controller
                                             .occasionsToDisplay[index]
                                             .occasionTitle!,
-                                        date: controller
-                                            .occasionsToDisplay[index]
-                                            .occasionDatecreated!,
+                                        date:
+                                            '${controller.occasionsToDisplay[index].occasionDate} ${controller.timeInAmPm(index)}',
                                         location: controller
                                             .occasionsToDisplay[index]
                                             .occasionLocation!,
@@ -85,8 +84,8 @@ class OccasionsScreen extends StatelessWidget {
                                         title: controller
                                             .occasionsToDisplay[index]
                                             .occasionTitle!,
-                                        date: controller
-                                            .displayFormateDateInCard(index),
+                                        date:
+                                            '${controller.occasionsToDisplay[index].occasionDate} ${controller.timeInAmPm(index)}',
                                         location: controller
                                             .occasionsToDisplay[index]
                                             .occasionLocation!,

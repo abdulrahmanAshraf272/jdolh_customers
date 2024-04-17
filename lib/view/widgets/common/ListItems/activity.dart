@@ -58,7 +58,11 @@ class _ActivityListItemState extends State<ActivityListItem> {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        color: AppColors.activityCard,
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: AppColors.activityCard,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

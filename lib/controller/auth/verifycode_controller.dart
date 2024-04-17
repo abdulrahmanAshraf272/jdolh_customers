@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/auth/resend_verifycode.dart';
 import 'package:jdolh_customers/data/data_source/remote/auth/verifycode.dart';
 
@@ -17,6 +19,7 @@ class VerifycodeController extends GetxController {
   VerifycodeData verifycodeData = VerifycodeData(Get.find());
   ResendVerifycodeData resendVerifycodeData = ResendVerifycodeData(Get.find());
   bool resendVerifycodeButtonActive = false;
+  MyServices myServices = Get.find();
 
   void _startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -35,10 +38,10 @@ class VerifycodeController extends GetxController {
   }
 
   checkVerifyIsCorrect() async {
-    statusRequest = StatusRequest.loading;
-    update();
+    CustomDialogs.loading();
     var response = await verifycodeData.postData(email, verifycode);
     statusRequest = handlingData(response);
+    CustomDialogs.dissmissLoading();
     print('============= $statusRequest ============');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
@@ -61,6 +64,7 @@ class VerifycodeController extends GetxController {
     if (resetPasswordOperation == 1) {
       Get.offAllNamed(AppRouteName.resetPassword, arguments: {"email": email});
     } else {
+      myServices.setStep('2');
       Get.offAllNamed(AppRouteName.successOperation);
     }
   }

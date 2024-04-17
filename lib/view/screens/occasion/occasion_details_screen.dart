@@ -22,9 +22,11 @@ class OccasionDetailsScreen extends StatelessWidget {
         builder: (controller) => Scaffold(
               appBar: _appBarWithTextButton(
                   onTapLeave: () => controller.onTapLeaveOccasion(),
-                  acceptStatus: controller.occasionSelected.acceptstatus!),
+                  acceptStatus: controller.occasionSelected.acceptstatus!,
+                  inPast: controller.inPast),
               floatingActionButton:
-                  controller.occasionSelected.acceptstatus != 1
+                  controller.occasionSelected.acceptstatus != 1 &&
+                          controller.inPast == false
                       ? ConfirmRefuseButtons(onTapConfirm: () {
                           controller.onTapAcceptInvitation();
                         }, onTapRefuse: () {
@@ -44,10 +46,16 @@ class OccasionDetailsScreen extends StatelessWidget {
                         iconData: Icons.date_range,
                         onTap: () {}),
                     const SizedBox(height: 10),
+                    const CustomSmallBoldTitle(title: 'تاريخ المناسبة'),
+                    DateOrLocationDisplayContainer(
+                        hintText:
+                            controller.occasionSelected.occasionDate ?? '',
+                        iconData: Icons.date_range,
+                        onTap: () {}),
+                    const SizedBox(height: 10),
                     const CustomSmallBoldTitle(title: 'وقت المناسبة'),
                     DateOrLocationDisplayContainer(
-                        hintText: formatDateTime(
-                            controller.occasionSelected.occasionDatetime!),
+                        hintText: controller.timeInAmPm(),
                         iconData: Icons.date_range,
                         onTap: () {}),
                     const CustomSmallBoldTitle(title: 'الموقع'),
@@ -121,11 +129,13 @@ class OccasionDetailsScreen extends StatelessWidget {
 }
 
 AppBar _appBarWithTextButton(
-    {required void Function() onTapLeave, required int acceptStatus}) {
+    {required void Function() onTapLeave,
+    required int acceptStatus,
+    bool inPast = false}) {
   return AppBar(
     centerTitle: true,
     title: Text(
-      'المناسبة',
+      'تفاصيل المناسبة',
       style: TextStyle(
         fontWeight: FontWeight.w600,
         fontSize: 18.sp,
@@ -137,7 +147,7 @@ AppBar _appBarWithTextButton(
       icon: Icon(Icons.arrow_back_ios, color: AppColors.white),
     ),
     actions: [
-      acceptStatus == 1
+      acceptStatus == 1 && inPast == false
           ? TextButton(
               onPressed: onTapLeave,
               child: Text(

@@ -53,8 +53,8 @@ class _TestScreenState extends State<TestScreen> {
               date: '3:00 15/3/2022',
               number: 132,
             ),
-            PersonExploreListItem(),
-            BrandExploreListItem(),
+            //PersonExploreListItem(),
+            //BrandExploreListItem(),
             CustomTitle(
               title: 'جدولك القادم',
               onTap: () {},

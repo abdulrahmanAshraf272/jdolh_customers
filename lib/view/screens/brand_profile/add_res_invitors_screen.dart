@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/add_res_invitors_controller.dart';
-import 'package:jdolh_customers/controller/occasion/add_to_occasion_controller.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';

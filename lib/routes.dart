@@ -27,10 +27,9 @@ import 'package:jdolh_customers/view/screens/auth/success_operation_screen.dart'
 import 'package:jdolh_customers/view/screens/auth/verifycode_screen.dart';
 import 'package:jdolh_customers/view/screens/bills_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/brand_profile_screen.dart';
+import 'package:jdolh_customers/view/screens/explore_checkin_screen.dart';
 import 'package:jdolh_customers/view/screens/groups/create_group_screen.dart';
 import 'package:jdolh_customers/view/screens/my_contacts_screen.dart';
-import 'package:jdolh_customers/view/screens/occasion/add_occasion_location_screen.dart';
-import 'package:jdolh_customers/view/screens/occasion/add_to_occasion_created_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/create_occasion_screen.dart';
 import 'package:jdolh_customers/view/screens/explore_brand_screen.dart';
 import 'package:jdolh_customers/view/screens/explore_people_screen.dart';
@@ -40,12 +39,12 @@ import 'package:jdolh_customers/view/screens/groups/edit_group_screen.dart';
 import 'package:jdolh_customers/view/screens/groups/group_details_screen.dart';
 import 'package:jdolh_customers/view/screens/groups/groups_screen.dart';
 import 'package:jdolh_customers/view/screens/home_screen.dart';
-import 'package:jdolh_customers/view/screens/occasion/add_to_occasion_screen.dart';
 import 'package:jdolh_customers/view/screens/language_screen.dart';
 import 'package:jdolh_customers/view/screens/main_screen.dart';
 import 'package:jdolh_customers/view/screens/more_screen.dart';
 import 'package:jdolh_customers/view/screens/my_profile_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/edit_occasion_screen.dart';
+import 'package:jdolh_customers/view/screens/occasion/finished_occasions_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/occasion_details_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/occasions_screen.dart';
 import 'package:jdolh_customers/view/screens/payment_screen.dart';
@@ -135,9 +134,13 @@ List<GetPage> routes = [
     page: () => const AddNewPlaceScreen(),
   ),
   GetPage(
-    name: AppRouteName.addMembersCheckin,
-    page: () => const AddMembersCheckinScreen(),
+    name: AppRouteName.exploreCheckin,
+    page: () => const ExploreCheckinScreen(),
   ),
+  // GetPage(
+  //   name: AppRouteName.addMembersCheckin,
+  //   page: () => const AddMembersCheckinScreen(),
+  // ),
   GetPage(
     name: AppRouteName.signUp,
     page: () => const SignupScreen(),
@@ -154,9 +157,13 @@ List<GetPage> routes = [
     name: AppRouteName.forgetPassword,
     page: () => const ForgetPasswordScreen(),
   ),
+  // GetPage(
+  //   name: AppRouteName.addOccasionLocation,
+  //   page: () => const AddOccasionLocationScreen(),
+  // ),
   GetPage(
-    name: AppRouteName.addOccasionLocation,
-    page: () => const AddOccasionLocationScreen(),
+    name: AppRouteName.finishedOccasions,
+    page: () => const FinishedOccasionsScreen(),
   ),
   GetPage(
     name: AppRouteName.successOperation,
@@ -211,14 +218,7 @@ List<GetPage> routes = [
     name: AppRouteName.editOccasion,
     page: () => const EditOccasionScreen(),
   ),
-  GetPage(
-    name: AppRouteName.addToOccasion,
-    page: () => const AddToOccasionScreen(),
-  ),
-  GetPage(
-    name: AppRouteName.addToOccasionCreated,
-    page: () => const AddToOccasionCreatedScreen(),
-  ),
+
   GetPage(
     name: AppRouteName.exploreBrand,
     page: () => const ExploreBrandScreen(),

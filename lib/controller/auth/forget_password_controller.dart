@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/data/data_source/remote/auth/forget_password.dart';
 
@@ -11,12 +12,11 @@ class ForgetPasswordController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
 
   sendVerifycode() async {
-    statusRequest = StatusRequest.loading;
-    update();
+    CustomDialogs.loading();
 
     var response = await forgetPasswordData.postData(email);
     statusRequest = handlingData(response);
-    update();
+    CustomDialogs.dissmissLoading();
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         goToVerifycode();

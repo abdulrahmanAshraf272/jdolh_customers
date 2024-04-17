@@ -2,12 +2,14 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/my_contacts_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
+import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
+import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
+import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 
 class MyContactsScreen extends StatelessWidget {
   const MyContactsScreen({super.key});
@@ -26,11 +28,34 @@ class MyContactsScreen extends StatelessWidget {
                         padding: EdgeInsets.all(20),
                         child: Text('غير مسموح بالوصول الى جهات الاتصال لديك')),
                   )
-                : Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
+                : SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          padding: const EdgeInsets.only(bottom: 30, top: 10),
+                          itemCount: controller.users.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) =>
+                              PersonWithButtonListItem(
+                            name: controller.users[index].userName!,
+                            userName: controller.users[index].userUsername!,
+                            image: controller.users[index].userImage!,
+                            buttonText: controller.users[index].following!
+                                ? textUnfollow
+                                : textFollow,
+                            buttonColor: controller.users[index].following!
+                                ? AppColors.redButton
+                                : AppColors.secondaryColor,
+                            onTap: () => controller.followUnfollow(index),
+                            onTapCard: () => controller.onTapCard(index),
+                          ),
+                          // Add separatorBuilder
+                        ),
+                        const CustomSmallBoldTitle(title: 'دعوة الأصدقاء'),
+                        ListView.builder(
                             physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
                             padding: const EdgeInsets.only(bottom: 30, top: 10),
                             itemCount: controller.contacts.length,
                             itemBuilder: (context, index) => MyContactsListItem(
@@ -39,8 +64,8 @@ class MyContactsScreen extends StatelessWidget {
                                 phoneNumber: controller.contacts[index].number)
                             // Add separatorBuilder
                             ),
-                      ),
-                    ],
+                      ],
+                    ),
                   )),
       ),
     );

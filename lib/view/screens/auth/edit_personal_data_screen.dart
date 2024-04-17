@@ -123,12 +123,8 @@ class EdtiPersonalDataScreen extends StatelessWidget {
                                 const SizedBox(height: 20),
                                 CustomButtonOne(
                                     textButton: 'حفظ',
-                                    onPressed: () async {
-                                      var result = await controller.signUp();
-                                      if (result == true) {
-                                        print('done');
-                                        dataSavedSuccessfuly();
-                                      }
+                                    onPressed: () {
+                                      controller.editPersonalData();
                                     }),
                               ]),
                         ),

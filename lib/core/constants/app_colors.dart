@@ -30,6 +30,7 @@ class AppColors {
 
   static const yellow = Color(0xffE5AE5A);
   static const blue = Color(0xff3F77C1);
+  static const blue2 = Color(0xff3f77c1);
   static const green = Color(0xff5BD3BE);
   static const redProfileButton = Color(0xffFF8989);
   static const yellowStar = Color(0xffFFBD59);

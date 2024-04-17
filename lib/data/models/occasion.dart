@@ -3,7 +3,8 @@ class Occasion {
   int? occasionUserid;
   String? occasionUsername;
   String? occasionTitle;
-  String? occasionDatetime;
+  String? occasionDate;
+  String? occasionTime;
   String? occasionLocation;
   String? occasionLat;
   String? occasionLong;
@@ -17,7 +18,8 @@ class Occasion {
       this.occasionUserid,
       this.occasionUsername,
       this.occasionTitle,
-      this.occasionDatetime,
+      this.occasionDate,
+      this.occasionTime,
       this.occasionLocation,
       this.occasionLat,
       this.occasionLong,
@@ -31,7 +33,8 @@ class Occasion {
     occasionUserid = json['occasion_userid'];
     occasionUsername = json['occasion_username'];
     occasionTitle = json['occasion_title'];
-    occasionDatetime = json['occasion_datetime'];
+    occasionDate = json['occasion_date'];
+    occasionTime = json['occasion_time'];
     occasionLocation = json['occasion_location'];
     occasionLat = json['occasion_lat'];
     occasionLong = json['occasion_long'];

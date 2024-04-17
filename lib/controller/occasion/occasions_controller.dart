@@ -71,11 +71,11 @@ class OccasionsController extends GetxController {
     update();
   }
 
-  String displayFormateDateInCard(int index) {
-    String dateFormated =
-        formatDateTime(occasionsToDisplay[index].occasionDatetime.toString());
-    return dateFormated;
-  }
+  // String displayFormateDateInCard(int index) {
+  //   String dateFormated =
+  //       formatDateTime(occasionsToDisplay[index].occasionDatetime.toString());
+  //   return dateFormated;
+  // }
 
   String formatDateTime(String inputDateTime) {
     DateTime dateTime = DateTime.parse(inputDateTime);
@@ -190,14 +190,10 @@ class OccasionsController extends GetxController {
     acceptedOccasions.clear();
     suspendedOccasions.clear();
 
-    for (var element in myOccasions) {
-      DateTime occasionDateTime = DateTime.parse(element
-          .occasionDatetime!); // Convert occasionDatetime to DateTime object
-      DateTime now = DateTime.now(); // Get the current date and time
-      if (occasionDateTime.isBefore(now)) {
-        print(element.occasionTitle);
-      }
+    List<Occasion> occasionInFuture =
+        filterAndOrderOccasionInFuture(myOccasions);
 
+    for (var element in occasionInFuture) {
       if (element.acceptstatus == 1) {
         acceptedOccasions.add(element);
       } else if (element.acceptstatus == 0) {
@@ -207,6 +203,40 @@ class OccasionsController extends GetxController {
     needApprove = false;
     occasionsToDisplay = List.from(acceptedOccasions);
     update();
+  }
+
+  List<Occasion> filterAndOrderOccasionInFuture(List<Occasion> myOccasions) {
+    final now = DateTime.now();
+    List<Occasion> futureOccasions = [];
+
+    for (var occasion in myOccasions) {
+      DateTime occasionDateTime =
+          DateTime.parse('${occasion.occasionDate} ${occasion.occasionTime}');
+      if (occasionDateTime.isAfter(now)) {
+        futureOccasions.add(occasion);
+      }
+    }
+
+    futureOccasions.sort((a, b) {
+      DateTime aDateTime =
+          DateTime.parse('${a.occasionDate} ${a.occasionTime}');
+      DateTime bDateTime =
+          DateTime.parse('${b.occasionDate} ${b.occasionTime}');
+      return aDateTime.compareTo(bDateTime); // Sort sooner first
+    });
+
+    return futureOccasions;
+  }
+
+  String timeInAmPm(int index) {
+    String timeIn24 = occasionsToDisplay[index].occasionTime!;
+    final parts = timeIn24.split(':');
+    final hour = int.parse(parts[0]);
+    final minute = int.parse(parts[1]);
+
+    final dateTime = DateTime(0, 0, 0, hour, minute);
+    final formatter = DateFormat('h:mm a');
+    return formatter.format(dateTime);
   }
 
   @override

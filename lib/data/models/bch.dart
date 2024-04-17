@@ -19,6 +19,8 @@ class Bch {
   int? bchIsComplete;
   String? bchCreatetime;
 
+  int? resCount; //For trend: top res place
+
   Bch(
       {this.bchId,
       this.bchBrandid,
@@ -38,7 +40,8 @@ class Bch {
       this.bchIsActive,
       this.bchHomeAvailable,
       this.bchIsComplete,
-      this.bchCreatetime});
+      this.bchCreatetime,
+      this.resCount});
 
   Bch.fromJson(Map<String, dynamic> json) {
     bchId = json['bch_id'];
@@ -60,5 +63,6 @@ class Bch {
     bchHomeAvailable = json['bch_homeAvailable'];
     bchIsComplete = json['bch_isComplete'];
     bchCreatetime = json['bch_createtime'];
+    resCount = json['resCount'];
   }
 }

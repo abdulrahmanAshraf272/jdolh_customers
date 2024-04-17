@@ -15,17 +15,18 @@ class BrandDetailedListItem extends StatelessWidget {
   final int isVerified;
   final String? image;
   final void Function() onTap;
-  const BrandDetailedListItem({
-    super.key,
-    required this.brandName,
-    required this.type,
-    required this.subtype,
-    required this.address,
-    required this.rate,
-    required this.isVerified,
-    required this.image,
-    required this.onTap,
-  });
+  final int? resCount;
+  const BrandDetailedListItem(
+      {super.key,
+      required this.brandName,
+      required this.type,
+      required this.subtype,
+      required this.address,
+      required this.rate,
+      required this.isVerified,
+      required this.image,
+      required this.onTap,
+      this.resCount});
 
   @override
   Widget build(BuildContext context) {
@@ -100,8 +101,18 @@ class BrandDetailedListItem extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            SizedBox(width: 5),
-                            Rating(rating: rate)
+                            const SizedBox(width: 5),
+                            resCount != null
+                                ? Row(
+                                    children: [
+                                      Text(
+                                        '$resCount',
+                                        style: titleSmall,
+                                      ),
+                                      const Icon(Icons.person)
+                                    ],
+                                  )
+                                : Rating(rating: rate)
                           ],
                         ),
                       ),

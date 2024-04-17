@@ -26,13 +26,6 @@ class GroupsController extends GetxController {
         List responseGroups = response['data'];
         //parsing jsonList to DartList.
         groups = responseGroups.map((e) => Group.fromJson(e)).toList();
-
-        //conver data from timeStamp to data only
-        for (int i = 0; i < groups.length; i++) {
-          groups[i].groupDatecreated = convertDate(groups[i].groupDatecreated!);
-        }
-        // groups
-        //     .map((e) => e.groupDatecreated = convertDate(e.groupDatecreated!));
       } else {
         statusRequest = StatusRequest.failure;
       }

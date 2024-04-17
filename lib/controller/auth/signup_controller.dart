@@ -7,8 +7,10 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/pick_image.dart';
 import 'package:jdolh_customers/core/services/services.dart';
@@ -62,8 +64,7 @@ class SignUpController extends GetxController {
     if (formdata!.validate()) {
       print('sign up');
       print('$countryKey${phoneNumber2.text}');
-      statusRequest = StatusRequest.loading;
-      update();
+      CustomDialogs.loading();
       var response = await signupData.postData(
           name.text,
           username.text,
@@ -73,6 +74,8 @@ class SignUpController extends GetxController {
           gender.toString(),
           city,
           image);
+      await Future.delayed(Duration(seconds: lateDuration));
+      CustomDialogs.dissmissLoading();
       statusRequest = handlingData(response);
       update();
       if (statusRequest == StatusRequest.success) {
@@ -106,18 +109,18 @@ class SignUpController extends GetxController {
           );
         } else if (response['message'] == "phone exist") {
           Get.defaultDialog(
-              title: 'تنبيه',
-              middleText: "الحساب موجود بالفعل,قم بتسجيل الدخول",
-              textCancel: 'الغاء',
-              textConfirm: 'حسنا',
-              onConfirm: () => goToLogin());
+            title: 'تنبيه',
+            middleText: "الحساب موجود بالفعل,قم بتسجيل الدخول",
+            textCancel: 'حسنا',
+          );
         } else if (response['message'] == "email exist") {
           Get.defaultDialog(
-              title: 'تنبيه',
-              middleText: "الحساب موجود بالفعل,قم بتسجيل الدخول",
-              textCancel: 'الغاء',
-              textConfirm: 'حسنا',
-              onConfirm: () => goToLogin());
+            title: 'تنبيه',
+            middleText: "الحساب موجود بالفعل,قم بتسجيل الدخول",
+            textCancel: 'حسنا',
+          );
+        } else {
+          CustomDialogs.failure();
         }
       } //else => will be hendled by HandlingDataView.
     }

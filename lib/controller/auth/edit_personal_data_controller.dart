@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/pick_image.dart';
 import 'package:jdolh_customers/core/services/services.dart';
@@ -47,16 +48,14 @@ class EditPersonalDataController extends GetxController {
     }
   }
 
-  signUp() async {
+  editPersonalData() async {
     if (phoneNumber.text == '') {
       return Get.rawSnackbar(message: 'من فضلك ادخل رقم الجوال');
     }
     print('$countryKey ${phoneNumber.text}');
     var formdata = formstate.currentState;
     if (formdata!.validate()) {
-      print('sign up');
-      statusRequest = StatusRequest.loading;
-      update();
+      CustomDialogs.loading();
       var response = await signupData.editPersonalData(
           userid: myServices.getUserid(),
           name: name.text,
@@ -66,6 +65,7 @@ class EditPersonalDataController extends GetxController {
           gender: gender.toString(),
           city: city,
           file: image);
+      CustomDialogs.dissmissLoading();
       statusRequest = handlingData(response);
       print('status $statusRequest');
       update();
@@ -74,7 +74,8 @@ class EditPersonalDataController extends GetxController {
         if (response['status'] == 'success') {
           User user = User.fromJson(response['data']);
           myServices.setUserData(user);
-          return true;
+          CustomDialogs.success('تم تعديل البيانات');
+          Get.back();
         } else if (response['message'] == 'username exist') {
           Get.defaultDialog(
             title: 'تنبيه',
@@ -93,10 +94,7 @@ class EditPersonalDataController extends GetxController {
             middleText: "الحساب موجود بالفعل,قم بتسجيل الدخول",
           );
         } else {
-          Get.defaultDialog(
-            title: 'تنبيه',
-            middleText: 'لم تقم باي تعديل ليتم حفظه',
-          );
+          Get.back();
         }
       }
     }

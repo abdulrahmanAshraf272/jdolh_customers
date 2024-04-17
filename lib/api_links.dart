@@ -73,10 +73,10 @@ class ApiLinks {
       '$server/jdolh_customers/occasion/create_occasion.php';
   static const String deleteOccasion =
       '$server/jdolh_customers/occasion/delete_occasion.php';
-  static const String addToOccasion =
-      '$server/jdolh_customers/occasion/add_to_occasion.php';
+  static const String addOccasionMember =
+      '$server/jdolh_customers/occasion/add_member.php';
   static const String deleteOccasionInvitor =
-      '$server/jdolh_customers/occasion/delete_invitor.php';
+      '$server/jdolh_customers/occasion/delete_member.php';
   static const String editOccasion =
       '$server/jdolh_customers/occasion/edit_occasion.php';
 
@@ -86,6 +86,8 @@ class ApiLinks {
       '$server/jdolh_customers/occasion/view_invitors.php';
   static const String responedToInvitation =
       '$server/jdolh_customers/occasion/responed_to_invitation.php';
+  static const String clearMemberOccasion =
+      '$server/jdolh_customers/occasion/clear_members.php';
 
   //============= Checkin ================//
   static const String checkin = '$server/jdolh_customers/checkin/checkin.php';
@@ -159,4 +161,16 @@ class ApiLinks {
 
   // == follow bch ==//
   static const String followBch = '$server/jdolh_customers/follow_bch.php';
+
+  static const String getAllUsers = '$server/jdolh_customers/get_all_users.php';
+
+  // === home ===//
+  static const String getTopCheckin =
+      '$server/jdolh_customers/home/get_top_checkin.php';
+  static const String getTopRes =
+      '$server/jdolh_customers/home/get_top_res.php';
+  static const String getTopRate =
+      '$server/jdolh_customers/home/get_top_rate.php';
+  static const String geetTopCheckinPeople =
+      '$server/jdolh_customers/home/get_top_checkin_peaple.php';
 }

@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/constants/const_int.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/auth/login.dart';
@@ -22,10 +24,11 @@ class LoginController extends GetxController {
   login() async {
     var formdata = _formstate.currentState;
     if (formdata!.validate()) {
-      statusRequest = StatusRequest.loading;
-      update();
+      CustomDialogs.loading();
       var response =
           await loginData.postData(usernameOrEmail.text, password.text);
+      await Future.delayed(Duration(seconds: lateDuration));
+      CustomDialogs.dissmissLoading();
       statusRequest = handlingData(response);
       update(); //after status change to display change on the screen.
       if (statusRequest == StatusRequest.success) {

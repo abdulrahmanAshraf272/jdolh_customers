@@ -1,31 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:jdolh_customers/controller/occasion/occasions_controller.dart';
-import 'package:jdolh_customers/controller/values_controller.dart';
+import 'package:intl/intl.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
-import 'package:jdolh_customers/core/functions/open_url_link.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
-import 'package:jdolh_customers/data/models/person.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_textfield.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 
 class OccasionDetailsController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
   TextEditingController excuse = TextEditingController();
-  OccasionsController occasionsController = Get.find();
-  //ValuesController valuesController = Get.find();
   late Occasion occasionSelected;
   late int occasionId;
   OccasionsData occasionData = OccasionsData(Get.find());
@@ -34,6 +27,9 @@ class OccasionDetailsController extends GetxController {
 
   String occasionLocation = '';
   String occasionLocationLink = '';
+  String selectedTimeFormatted = '';
+
+  bool inPast = false;
 
   getOccasionMembers(String occasionId) async {
     int myId = int.parse(myServices.sharedPreferences.getString("id")!);
@@ -62,11 +58,6 @@ class OccasionDetailsController extends GetxController {
   onTapPersonCard(index) {
     int myId = int.parse(myServices.sharedPreferences.getString("id")!);
     if (members[index].userId != myId) {
-      // final person = Person(
-      //     userId: members[index].userId,
-      //     userName: members[index].userName,
-      //     userUsername: members[index].userUsername,
-      //     userImage: members[index].userImage);
       Get.toNamed(AppRouteName.personProfile, arguments: members[index]);
     }
   }
@@ -112,9 +103,8 @@ class OccasionDetailsController extends GetxController {
         middleText: "هل تريد مغادرة المناسبة؟",
         onConfirm: () async {
           Get.back();
-          await occasionsController.respondToInvitation(
+          await respondToInvitation(
               occasionSelected, 'reject', excuse.text, 'تم مغادرة المناسبة');
-          await Future.delayed(const Duration(seconds: 1));
           Get.back();
         },
         textConfirm: 'تأكيد',
@@ -123,8 +113,7 @@ class OccasionDetailsController extends GetxController {
   }
 
   onTapAcceptInvitation() async {
-    await occasionsController.respondToInvitation(occasionSelected, 'accept');
-    await Future.delayed(const Duration(seconds: 1));
+    await respondToInvitation(occasionSelected, 'accept');
     Get.back();
   }
 
@@ -144,9 +133,7 @@ class OccasionDetailsController extends GetxController {
         ),
         onConfirm: () async {
           Get.back();
-          await occasionsController.respondToInvitation(
-              occasionSelected, 'reject', excuse.text);
-          await Future.delayed(const Duration(seconds: 1));
+          await respondToInvitation(occasionSelected, 'reject', excuse.text);
           Get.back();
         },
         textConfirm: 'تأكيد',
@@ -154,12 +141,81 @@ class OccasionDetailsController extends GetxController {
         onCancel: () {});
   }
 
+  respondToInvitation(Occasion occasion, String respond,
+      [String excuse = '', String message = '']) async {
+    CustomDialogs.loading();
+
+    await Future.delayed(const Duration(seconds: lateDuration));
+    var response;
+    if (respond == 'accept') {
+      response = await occasionData.responedToInvitation(
+          userId: myServices.sharedPreferences.getString("id")!,
+          occasionId: occasion.occasionId.toString(),
+          respond: '1',
+          excuse: '');
+    } else {
+      response = await occasionData.responedToInvitation(
+          userId: myServices.sharedPreferences.getString("id")!,
+          occasionId: occasion.occasionId.toString(),
+          respond: '2',
+          excuse: excuse);
+    }
+    EasyLoading.dismiss();
+    statusRequest = handlingData(response);
+    print('status ==== $statusRequest');
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        if (message != '') {
+          CustomDialogs.success(message);
+        } else {
+          if (respond == 'accept') {
+            CustomDialogs.success('تم قبول الدعوة');
+          } else {
+            CustomDialogs.success('تم رفض الدعوة');
+          }
+        }
+      } else {
+        CustomDialogs.failure();
+      }
+    } else {
+      CustomDialogs.failure();
+    }
+  }
+
+  String timeInAmPm() {
+    if (selectedTimeFormatted != '') {
+      final parts = selectedTimeFormatted.split(':');
+      final hour = int.parse(parts[0]);
+      final minute = int.parse(parts[1]);
+
+      final dateTime = DateTime(0, 0, 0, hour, minute);
+      final formatter = DateFormat('h:mm a');
+      return formatter.format(dateTime);
+    } else {
+      return 'لم يتم تحديد وقت المناسبة';
+    }
+  }
+
+  bool checkInPast(String dateString, String timeString) {
+    DateTime dateTime =
+        DateFormat("yyyy-MM-dd HH:mm").parse("$dateString $timeString");
+    DateTime currentDateTime = DateTime.now();
+
+    return dateTime.isBefore(currentDateTime);
+  }
+
   @override
   void onInit() {
     occasionSelected = Get.arguments;
     occasionLocation = occasionSelected.occasionLocation ?? 'لم يتم تحديد موقع';
     occasionLocationLink = occasionSelected.locationLink ?? 'لم يتم تحديد رابط';
+    selectedTimeFormatted = occasionSelected.occasionTime ?? '';
     getOccasionMembers(occasionSelected.occasionId.toString());
+
+    inPast = checkInPast(
+        occasionSelected.occasionDate!, occasionSelected.occasionTime!);
+    print('inPast: $inPast');
+
     super.onInit();
   }
 }

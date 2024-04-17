@@ -6,25 +6,26 @@ class OccasionsData {
   OccasionsData(this.crud);
 
   createOccasion(
-      String myId,
-      String myName,
-      String occasionTitle,
-      String occasionDate,
-      String occasionLocation,
-      String lat,
-      String long,
-      String locationLink,
-      String invitors) async {
+    String myId,
+    String myName,
+    String occasionTitle,
+    String date,
+    String time,
+    String occasionLocation,
+    String lat,
+    String long,
+    String locationLink,
+  ) async {
     var response = await crud.postData(ApiLinks.createOccasion, {
       "myId": myId,
       "myName": myName,
       "title": occasionTitle,
-      "datetime": occasionDate,
+      "date": date,
+      "time": time,
       "location": occasionLocation,
       "lat": lat,
       "long": long,
       "locationLink": locationLink,
-      "invitors": invitors,
     });
 
     return response.fold((l) => l, (r) => r);
@@ -33,7 +34,8 @@ class OccasionsData {
   editOccasion(
       String occasionId,
       String occasionTitle,
-      String occasionDate,
+      String date,
+      String time,
       String occasionLocation,
       String lat,
       String long,
@@ -41,7 +43,8 @@ class OccasionsData {
     var response = await crud.postData(ApiLinks.editOccasion, {
       "occasionId": occasionId,
       "title": occasionTitle,
-      "date": occasionDate,
+      "date": date,
+      "time": time,
       "location": occasionLocation,
       "lat": lat,
       "long": long,
@@ -59,16 +62,17 @@ class OccasionsData {
     return response.fold((l) => l, (r) => r);
   }
 
-  addToOccasion(String occasionId, String invitorsID) async {
-    var response = await crud.postData(ApiLinks.addToOccasion, {
-      "occasionId": occasionId,
-      "invitorsID": invitorsID,
-    });
+  addMember(
+      {required String occasionid,
+      required String userid,
+      required String creatorid}) async {
+    var response = await crud.postData(ApiLinks.addOccasionMember,
+        {"occasionid": occasionid, "userid": userid, "creatorid": creatorid});
 
     return response.fold((l) => l, (r) => r);
   }
 
-  deleteInvitors(String occasionId, String userId) async {
+  deleteMember(String occasionId, String userId) async {
     var response = await crud.postData(ApiLinks.deleteOccasionInvitor, {
       "occasionId": occasionId,
       "userId": userId,
@@ -102,6 +106,13 @@ class OccasionsData {
   viewInvitors(String occasionId) async {
     var response = await crud
         .postData(ApiLinks.viewOccasionInvitors, {"occasionId": occasionId});
+
+    return response.fold((l) => l, (r) => r);
+  }
+
+  clearMembers(String creatorid) async {
+    var response = await crud
+        .postData(ApiLinks.clearMemberOccasion, {"creatorid": creatorid});
 
     return response.fold((l) => l, (r) => r);
   }

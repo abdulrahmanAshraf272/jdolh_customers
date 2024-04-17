@@ -244,10 +244,13 @@ class BrandProfileController extends GetxController {
         bchid: bch.bchId.toString(), userid: myServices.getUserid());
     statusRequest = handlingData(response);
     update();
+    print(response);
+    print('get Bch status ${statusRequest}');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         parseData(response);
       } else {
+        print('get bch failed');
         statusRequest = StatusRequest.failure;
       }
     }
@@ -314,11 +317,15 @@ class BrandProfileController extends GetxController {
     update();
     var response = await brandSearchData.getBrandBch(bchid: bchid.toString());
     statusRequest = handlingData(response);
+    update();
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         var data = response['data'];
+
         brand = Brand.fromJson(data);
+
         bch = Bch.fromJson(data);
+        bchid = bch.bchId!;
       } else {
         statusRequest = StatusRequest.failure;
       }
