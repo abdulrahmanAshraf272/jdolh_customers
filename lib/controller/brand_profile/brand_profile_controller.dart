@@ -20,6 +20,11 @@ class BrandProfileController extends GetxController {
   num totalPrice = 0;
   num taxCost = 0;
 
+  double averageRate = 0;
+  int ratesNo = 0;
+  int followingNo = 0;
+  int resNo = 0;
+
   onTapIncrease(int index) {
     //Get quantity and price (off one quantity of cart)
     int quantityNo = carts[index].cartQuantity ?? 1;
@@ -125,6 +130,10 @@ class BrandProfileController extends GetxController {
 
   late BchWorktime bchWorktime;
   bool isFollowing = false;
+
+  goDisplayAllBchs() {
+    Get.offNamed(AppRouteName.allBchs, arguments: brand.brandId);
+  }
 
   selectResOption(String resOptionTitle) {
     selectedResOption = resOptions
@@ -258,6 +267,11 @@ class BrandProfileController extends GetxController {
   }
 
   parseData(response) {
+    followingNo = response['followingNo'];
+    ratesNo = response['ratesNo'];
+    averageRate = response['averageRate'].toDouble();
+    resNo = response["resNo"];
+
     isFollowing = response['isFollowing'];
     List categoriesJson = response['categories'];
     List itemsJson = response['items'];
@@ -279,6 +293,11 @@ class BrandProfileController extends GetxController {
 
   followUnfollow() async {
     isFollowing = !isFollowing;
+    if (isFollowing) {
+      followingNo = followingNo + 1;
+    } else {
+      followingNo = followingNo - 1;
+    }
     update();
     var response = await followUnfollowData.followBch(
         bchid: bch.bchId.toString(), userid: myServices.getUserid());

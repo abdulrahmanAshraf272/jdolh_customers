@@ -116,4 +116,33 @@ class OccasionsData {
 
     return response.fold((l) => l, (r) => r);
   }
+
+  addGroupToOccasion(
+      {required String occasionid,
+      required String groupid,
+      required String creatorid,
+      required String groupName}) async {
+    var response = await crud.postData(ApiLinks.addGroupToOccasion, {
+      "occasionid": occasionid,
+      "groupid": groupid,
+      "creatorid": creatorid,
+      "groupName": groupName,
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
+
+  deleteGroupFromOccasion({
+    required String occasionid,
+    required String creatorid,
+    required String groupName,
+  }) async {
+    var response = await crud.postData(ApiLinks.deleteGroupFromOccasoin, {
+      "occasionid": occasionid,
+      "creatorid": creatorid,
+      "groupName": groupName
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
 }

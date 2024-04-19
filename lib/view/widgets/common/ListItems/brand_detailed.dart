@@ -112,7 +112,9 @@ class BrandDetailedListItem extends StatelessWidget {
                                       const Icon(Icons.person)
                                     ],
                                   )
-                                : Rating(rating: rate)
+                                : rate != 0
+                                    ? Rating(rating: rate)
+                                    : const SizedBox()
                           ],
                         ),
                       ),

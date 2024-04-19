@@ -89,6 +89,11 @@ class ApiLinks {
   static const String clearMemberOccasion =
       '$server/jdolh_customers/occasion/clear_members.php';
 
+  static const String addGroupToOccasion =
+      '$server/jdolh_customers/occasion/add_group.php';
+  static const String deleteGroupFromOccasoin =
+      '$server/jdolh_customers/occasion/delete_group.php';
+
   //============= Checkin ================//
   static const String checkin = '$server/jdolh_customers/checkin/checkin.php';
   static const String jdolhPlaces =
@@ -104,6 +109,9 @@ class ApiLinks {
       '$server/jdolh_customers/get_brand/get_itemsoptions.php';
   static const getBchInfo =
       '$server/jdolh_customers/get_brand/get_bch_info.php';
+
+  static const getAllBchs =
+      '$server/jdolh_customers/get_brand/get_all_bchs.php';
 
   // ======= Cart =======//
   static const addCart = '$server/jdolh_customers/cart/add_cart.php';

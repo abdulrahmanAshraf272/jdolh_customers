@@ -194,7 +194,7 @@ class AllGroups extends StatelessWidget {
                         groupName: controller.groups[index].groupName ?? '',
                         groupColor: getRandomColor(index),
                         isAdd: false,
-                        onTap: () => controller.onTapDeleteGroup(index),
+                        onTap: () => controller.deleteGroup(index),
                       )),
             ));
   }

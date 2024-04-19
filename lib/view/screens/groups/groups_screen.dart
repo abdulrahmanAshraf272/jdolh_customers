@@ -15,14 +15,14 @@ class GroupsScreen extends StatelessWidget {
     return GetBuilder<GroupsController>(builder: (controller) {
       print('group rebuild ======');
       return Scaffold(
-        appBar: appBarWithButtonCreate(
-            onTapCreate: () => controller.onTapCreateGroup(),
-            onTapBack: () => Get.back(),
-            title: 'المجموعات',
-            buttonText: 'انشاء مجموعة'),
-        body: controller.statusRequest != StatusRequest.success
-            ? HandlingDataView2(statusRequest: controller.statusRequest)
-            : Column(
+          appBar: appBarWithButtonCreate(
+              onTapCreate: () => controller.onTapCreateGroup(),
+              onTapBack: () => Get.back(),
+              title: 'المجموعات',
+              buttonText: 'انشاء مجموعة'),
+          body: HandlingDataRequest(
+              statusRequest: controller.statusRequest,
+              widget: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
@@ -42,8 +42,7 @@ class GroupsScreen extends StatelessWidget {
                           ),
                   ),
                 ],
-              ),
-      );
+              )));
     });
   }
 }

@@ -70,6 +70,7 @@ class AppRouteName {
   static const brandProfile = '/brandProfile';
   static const setResTime = '/setResTime';
   static const addResInvitors = '/addResInvitros';
+  static const allBchs = '/allBchs';
 
   //Reservation
   static const reservationDetails = '/reservationDetails';

@@ -81,7 +81,9 @@ class ReservationSearchScreen extends StatelessWidget {
                     ],
                   ),
                   SearchButton(onTap: () => controller.searchBrand()),
-                  AddressTitle(addressTitle: 'النتائج-25', onTap: () {}),
+                  AddressTitle(
+                      addressTitle: 'النتائج-${controller.brands.length}',
+                      onTap: () {}),
                   HandlingDataView(
                     statusRequest: controller.statusRequest,
                     widget: Expanded(
@@ -100,7 +102,7 @@ class ReservationSearchScreen extends StatelessWidget {
                                     controller.brands[index].brandIsVerified ??
                                         0,
                                 address: controller.bchs[index].bchCity ?? '',
-                                rate: 5.0,
+                                rate: controller.bchs[index].rate ?? 0,
                                 image:
                                     '${ApiLinks.logoImage}/${controller.brands[index].brandLogo}',
                                 onTap: () {

@@ -10,9 +10,19 @@ import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
 
 class BrandProfileHeader extends StatelessWidget {
   final bool isFollowing;
+  final int followingNo;
+  final int ratesNo;
+  final double averageRate;
+  final int resNo;
   final void Function() onTapFollow;
   const BrandProfileHeader(
-      {super.key, required this.onTapFollow, required this.isFollowing});
+      {super.key,
+      required this.onTapFollow,
+      required this.isFollowing,
+      required this.followingNo,
+      required this.ratesNo,
+      required this.averageRate,
+      required this.resNo});
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +64,11 @@ class BrandProfileHeader extends StatelessWidget {
                                     '${ApiLinks.logoImage}/${controller.brand.brandLogo!}',
                                 isVerified:
                                     controller.brand.brandIsVerified ?? 0,
-                                followrsNo: 0)),
-                        const BrandScheduledAndRating(
-                          scheduledNo: 0,
-                          ratedBy: 0,
-                          rate: 0,
+                                followrsNo: followingNo)),
+                        BrandScheduledAndRating(
+                          scheduledNo: resNo,
+                          ratedBy: ratesNo,
+                          rate: averageRate,
                         ),
                         //TODO: Edit Follow widget, not responsive
                         const SizedBox(width: 7),

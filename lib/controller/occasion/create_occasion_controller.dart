@@ -40,6 +40,24 @@ class CreateOccasionController extends GetxController {
 
   List<Group> groups = [];
 
+  onTapAddMembers() async {
+    final result = await Get.toNamed(AppRouteName.addMembers,
+        arguments: {'members': members, 'withGroups': true});
+    if (result != null) {
+      if (result is Friend) {
+        members.add(result);
+        addMember(result);
+      } else if (result is Group) {
+        if (checkIfGroupIsAdded(result)) {
+          return;
+        }
+        groups.add(result);
+        addGroup(result);
+      }
+      update();
+    }
+  }
+
   createOccasion() async {
     if (checkAllFieldsAdded()) {
       CustomDialogs.loading();
@@ -120,24 +138,6 @@ class CreateOccasionController extends GetxController {
     update();
   }
 
-  onTapAddMembers() async {
-    final result = await Get.toNamed(AppRouteName.addMembers,
-        arguments: {'members': members, 'withGroups': true});
-    if (result != null) {
-      if (result is Friend) {
-        members.add(result);
-        addMember(result);
-      } else if (result is Group) {
-        if (checkIfGroupIsAdded(result)) {
-          return;
-        }
-        groups.add(result);
-        addGroup(result);
-      }
-      update();
-    }
-  }
-
   bool checkIfGroupIsAdded(Group group) {
     for (var existingGroup in groups) {
       if (existingGroup.groupId == group.groupId) {
@@ -148,12 +148,37 @@ class CreateOccasionController extends GetxController {
     return false;
   }
 
-  addGroup(Group group) {}
-  deleteGroup(int index) {}
+  addGroup(Group group) async {
+    var response = await occasionData.addGroupToOccasion(
+        occasionid: '',
+        groupid: group.groupId.toString(),
+        groupName: group.groupName ?? '',
+        creatorid: myServices.getUserid());
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('adding ${group.groupName} is done');
+      } else {
+        print('adding memeber failed');
+      }
+    }
+  }
 
-  onTapDeleteGroup(int index) {
-    groups.remove(groups[index]);
-    deleteGroup(index);
+  deleteGroup(int index) async {
+    CustomDialogs.loading();
+    var response = await occasionData.deleteGroupFromOccasion(
+        occasionid: '',
+        groupName: groups[index].groupName ?? '',
+        creatorid: myServices.getUserid());
+    CustomDialogs.dissmissLoading();
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        groups.remove(groups[index]);
+      } else {
+        print('adding memeber failed');
+      }
+    }
     update();
   }
 

@@ -8,6 +8,7 @@ import 'package:jdolh_customers/test_screen2.dart';
 import 'package:jdolh_customers/view/screens/add_members_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/edit_personal_data_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/add_res_invitors_screen.dart';
+import 'package:jdolh_customers/view/screens/brand_profile/all_bchs_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/display_worktime_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/set_res_time_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/wait_for_approve_screen.dart';
@@ -136,6 +137,10 @@ List<GetPage> routes = [
   GetPage(
     name: AppRouteName.exploreCheckin,
     page: () => const ExploreCheckinScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.allBchs,
+    page: () => const AllBchsScreen(),
   ),
   // GetPage(
   //   name: AppRouteName.addMembersCheckin,

@@ -51,4 +51,12 @@ class BrandSearchData {
 
     return response.fold((l) => l, (r) => r);
   }
+
+  getAllBchs({required String brandid}) async {
+    var response = await crud.postData(ApiLinks.getAllBchs, {
+      "brandid": brandid,
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
 }
