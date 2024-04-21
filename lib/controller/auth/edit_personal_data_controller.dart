@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
@@ -75,7 +76,8 @@ class EditPersonalDataController extends GetxController {
           User user = User.fromJson(response['data']);
           myServices.setUserData(user);
           CustomDialogs.success('تم تعديل البيانات');
-          Get.back();
+          //Get.back();
+          Get.offNamed(AppRouteName.mainScreen, arguments: {'page': 3});
         } else if (response['message'] == 'username exist') {
           Get.defaultDialog(
             title: 'تنبيه',

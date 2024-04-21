@@ -162,6 +162,40 @@ class SetResTimeController extends GetxController with TimeHelper {
     }
   }
 
+  getReservedTime() async {
+    print('resOption: $resOption');
+    statusRequest = StatusRequest.loading;
+    update();
+    var response = await resData.getReservedTime(
+        bchid: bchid.toString(), resOption: resOption.resoptionsTitle!);
+    statusRequest = handlingData(response);
+    print('statusRequest: $statusRequest');
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        List data = response['data'];
+        print('bchid: $bchid');
+        print(data);
+        reservedTimes = data.map((e) => ReservedTime.fromJson(e)).toList();
+      }
+    } else {
+      statusRequest = StatusRequest.failure;
+    }
+    update();
+  }
+
+  int getNextMultipleOf30(int number) {
+    if (number < 30) {
+      return 30;
+    } else {
+      //if its 30 or 60 or 90 save the values as it is
+      if (number % 30 == 0) {
+        return number;
+      } else {
+        return ((number ~/ 30) + 1) * 30;
+      }
+    }
+  }
+
   removeReservedTimes(String selectedDate) {
     List<ReservedTime> unAvailableTimes = [];
     //get the reservation in selected data, and the exceed the countLimit
@@ -175,31 +209,14 @@ class SetResTimeController extends GetxController with TimeHelper {
     //get the time units and remove it from available times
     for (int i = 0; i < unAvailableTimes.length; i++) {
       int duration = unAvailableTimes[i].resDuration! + timeout;
+
+      // ================= Here where i approximate the durationt to mutiples of 30 ================================//
+      duration = getNextMultipleOf30(duration);
       List<TimeOfDay> timeUnits =
           generateTimeUnits(unAvailableTimes[i].resTime!, duration);
       //Remove the reserved units
       availaleWorktime.removeWhere((element) => timeUnits.contains(element));
     }
-  }
-
-  getReservedTime() async {
-    print('resOption: $resOption');
-    statusRequest = StatusRequest.loading;
-    update();
-    var response = await resData.getReservedTime(
-        bchid: bchid.toString(), resOption: resOption.resoptionsTitle!);
-    statusRequest = handlingData(response);
-    print('statusRequest: $statusRequest');
-    if (statusRequest == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        print('success');
-        List data = response['data'];
-        reservedTimes = data.map((e) => ReservedTime.fromJson(e)).toList();
-      }
-    } else {
-      statusRequest = StatusRequest.failure;
-    }
-    update();
   }
 
   @override

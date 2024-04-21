@@ -67,6 +67,8 @@ class Bch {
     bchIsComplete = json['bch_isComplete'];
     bchCreatetime = json['bch_createtime'];
     resCount = json['resCount'];
-    rate = json['averageRate'].toDouble();
+    if (json['averageRate'] != null) {
+      rate = json['averageRate'].toDouble();
+    }
   }
 }

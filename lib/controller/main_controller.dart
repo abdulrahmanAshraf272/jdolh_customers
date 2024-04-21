@@ -78,24 +78,8 @@ class MainController extends GetxController {
     myfollowers = responseFollowers.map((e) => Friend.fromJson(e)).toList();
     myfollowing = responseFollowing.map((e) => Friend.fromJson(e)).toList();
 
-    //myOccasions = responseOccasoins.map((e) => Occasion.fromJson(e)).toList();
-    // //make acceptedOccasionList and suspended list
-    // for (var element in myOccasions) {
-    //   if (element.acceptstatus == 1) {
-    //     acceptedOccasions.add(element);
-    //   } else {
-    //     suspendedOccasions.add(element);
-    //   }
-    // }
-
-    //Save Date in ValuesController
-    //valuesController.myOccasions = List.from(myOccasions);
-    // valuesController.resetAcceptedAndSuspendedList();
     valuesController.myfollowing = List.from(myfollowing);
     valuesController.myfollowers = List.from(myfollowers);
-    //Get value from ValuesController after done operation
-    //acceptedOccasions = List.from(valuesController.acceptedOccasions);
-    // suspendedOccasions = List.from(valuesController.suspendedOccasions);
   }
 
   startLoadingAndClearLists() {
@@ -191,7 +175,7 @@ class MainController extends GetxController {
       valuesController.currentPosition =
           LatLng(position.latitude, position.longitude);
     } else {
-      allowToUseLocationAlert();
+      //allowToUseLocationAlert();
       print('Failed to get location');
     }
   }

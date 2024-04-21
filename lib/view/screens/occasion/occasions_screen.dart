@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/appt_controller.dart';
 import 'package:jdolh_customers/controller/occasion/occasions_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/functions/occasion_display_location.dart';
-import 'package:jdolh_customers/core/functions/open_url_link.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/occasion.dart';
 import 'package:jdolh_customers/view/widgets/common/appBarWithButtonCreate.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';
@@ -14,7 +12,7 @@ class OccasionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(OccasionsController());
+    Get.put(OccasionsController());
 
     return GetBuilder<OccasionsController>(
         builder: (controller) => Scaffold(

@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/const_int.dart';
-import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';

@@ -90,6 +90,19 @@ class ResParentController extends GetxController {
     }
   }
 
+  int getNextMultipleOf30(int number) {
+    if (number < 30) {
+      return 30;
+    } else {
+      //if its 30 or 60 or 90 save the values as it is
+      if (number % 30 == 0) {
+        return number;
+      } else {
+        return ((number ~/ 30) + 1) * 30;
+      }
+    }
+  }
+
   createRes() async {
     num totalPrice = brandProfileController.totalPrice;
     num taxCost = brandProfileController.taxCost;
@@ -103,6 +116,9 @@ class ResParentController extends GetxController {
       //if service => get the total duration from all items in cart
       duration = brandProfileController.totalServiceDuration;
     }
+
+    //duration = getNextMultipleOf30(duration);
+
     var response = await resData.createRes(
         userid: myServices.getUserid(),
         bchid: bchid.toString(),

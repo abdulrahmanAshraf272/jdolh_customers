@@ -5,13 +5,14 @@ import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/activity.dart';
+import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
 import 'package:jdolh_customers/data/data_source/remote/trend.dart';
 import 'package:jdolh_customers/data/models/activity.dart';
 import 'package:jdolh_customers/data/models/bch.dart';
 import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
+import 'package:jdolh_customers/data/models/occasion.dart';
 import 'package:jdolh_customers/data/models/top_checkin.dart';
-import 'package:jdolh_customers/view/screens/followers_and_following_screen.dart';
 
 class HomeController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
@@ -19,6 +20,7 @@ class HomeController extends GetxController {
   StatusRequest statusTopRate = StatusRequest.none;
   StatusRequest statusTopCheckin = StatusRequest.none;
   StatusRequest statusTopRes = StatusRequest.none;
+  StatusRequest statusOccasion = StatusRequest.none;
 
   MyServices myServices = Get.find();
   ActivityData activityData = ActivityData(Get.find());
@@ -29,11 +31,85 @@ class HomeController extends GetxController {
 
   List<Brand> brands = [];
   List<Bch> bchs = [];
+  OccasionsData occasionData = OccasionsData(Get.find());
+  List<Occasion> occasionsToDisplay = [];
+  List<Occasion> myOccasions = [];
 
   gotoFriendsActivities() {
     Get.toNamed(AppRouteName.friendsActivities,
             arguments: {'activities': friendsActivities})!
         .then((value) => getFriendsActivities());
+  }
+
+  getMyOccasion() async {
+    statusOccasion = StatusRequest.loading;
+    update();
+    var response = await occasionData
+        .viewOccasions(myServices.sharedPreferences.getString("id")!);
+    await Future.delayed(const Duration(seconds: lateDuration));
+    statusOccasion = handlingData(response);
+    update();
+    print('status ==== $statusOccasion');
+    if (statusOccasion == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        parsingOccasion(response);
+        print('occasions: ${myOccasions.length}');
+      } else {
+        //statusRequest = StatusRequest.failure;
+      }
+    }
+  }
+
+  parsingOccasion(response) {
+    List responseOccasoins = response['data'];
+    myOccasions = responseOccasoins.map((e) => Occasion.fromJson(e)).toList();
+    List<Occasion> occasionInFuture =
+        filterAndOrderOccasionInFuture(myOccasions);
+    for (var element in occasionInFuture) {
+      if (element.acceptstatus == 1) {
+        occasionsToDisplay.add(element);
+      }
+    }
+    update();
+  }
+
+  List<Occasion> filterAndOrderOccasionInFuture(List<Occasion> myOccasions) {
+    final now = DateTime.now();
+    List<Occasion> futureOccasions = [];
+
+    for (var occasion in myOccasions) {
+      DateTime occasionDateTime =
+          DateTime.parse('${occasion.occasionDate} ${occasion.occasionTime}');
+      if (occasionDateTime.isAfter(now)) {
+        futureOccasions.add(occasion);
+      }
+    }
+
+    futureOccasions.sort((a, b) {
+      DateTime aDateTime =
+          DateTime.parse('${a.occasionDate} ${a.occasionTime}');
+      DateTime bDateTime =
+          DateTime.parse('${b.occasionDate} ${b.occasionTime}');
+      return aDateTime.compareTo(bDateTime); // Sort sooner first
+    });
+
+    return futureOccasions;
+  }
+
+  // onTapOccasionCard(int index) {
+  //   if (occasionsToDisplay[index].creator == 1) {
+  //     Get.toNamed(AppRouteName.editOccasion,
+  //             arguments: occasionsToDisplay[index])!
+  //         .then((value) => getMyOccasion());
+  //   } else {
+  //     Get.toNamed(AppRouteName.occasionDetails,
+  //             arguments: occasionsToDisplay[index])!
+  //         .then((value) => getMyOccasion());
+  //   }
+  // }
+
+  goToOccasionsScreen() {
+    Get.toNamed(AppRouteName.occasions);
   }
 
   getTopRate() async {
@@ -138,6 +214,7 @@ class HomeController extends GetxController {
     getTopCheckin();
     getTopRate();
     getTopRes();
+    getMyOccasion();
     super.onInit();
   }
 }

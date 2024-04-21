@@ -1,31 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:jdolh_customers/controller/main_controller.dart';
 import 'package:jdolh_customers/controller/occasion/occasions_controller.dart';
-import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
-import 'package:jdolh_customers/core/functions/formatDateTime.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
-import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
 import 'package:jdolh_customers/view/widgets/custom_time_picker.dart';
-import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 class EditOccasionController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
-  OccasionsController occasionsController = Get.find();
+  OccasionsController occasionsController = Get.put(OccasionsController());
   TextEditingController occasionTitle = TextEditingController();
   TextEditingController locationLink = TextEditingController();
   late Occasion occasionSelected;

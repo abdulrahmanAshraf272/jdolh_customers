@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/brand_search.dart';
@@ -56,9 +57,8 @@ class ItemsDetailsController extends GetxController {
     return false;
   }
 
-  Future<bool> addCart() async {
-    statusRequest = StatusRequest.loading;
-    update();
+  addCart() async {
+    CustomDialogs.loading();
     var response = await cartData.addCart(
         userid: myServices.getUserid(),
         bchid: bch.bchId.toString(),
@@ -69,19 +69,19 @@ class ItemsDetailsController extends GetxController {
         desc: desc,
         shortDesc: shortDesc,
         quantity: quantity.toString());
+    CustomDialogs.dissmissLoading();
     statusRequest = handlingData(response);
-    update();
     print('addCart: $statusRequest');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
-        print('cart success');
-        return true;
+        CustomDialogs.success('تمت الإضافة');
+        Get.back();
       } else {
-        statusRequest = StatusRequest.failure;
-        print('cart failed');
+        CustomDialogs.failure();
       }
+    } else {
+      update();
     }
-    return false;
   }
 
   String extractDesc() {

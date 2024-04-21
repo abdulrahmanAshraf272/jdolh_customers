@@ -197,8 +197,8 @@ class _MoreScreenState extends State<MoreScreen> {
                   Get.toNamed(AppRouteName.myContacts);
                 },
                 iconData: Icons.send),
-            SettingsButton(
-                text: 'اللغة', onTap: () {}, iconData: Icons.language),
+            // SettingsButton(
+            //     text: 'اللغة', onTap: () {}, iconData: Icons.language),
             SettingsButton(
                 text: 'المحفظة',
                 onTap: () {

@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/auth/forget_password_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
-import 'package:jdolh_customers/core/functions/valid_input.dart';
-import 'package:jdolh_customers/view/widgets/auth/custom_textform_auth.dart';
 import 'package:jdolh_customers/view/widgets/custom_button_one.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
@@ -26,7 +24,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                           children: [
                             //SizedBox(height: Get.height * 0.1),
                             Text(
-                              'سيتم ارسال رمز التحقق عبر whatsapp',
+                              'سيتم ارسال رمز التحقق الى بريدك الالكتروني',
                               style: headline2,
                               textAlign: TextAlign.center,
                             ),

@@ -34,62 +34,63 @@ class ReservationSearchScreen extends StatelessWidget {
     return GetBuilder<ReservationSearchController>(
         builder: (controller) => Scaffold(
               appBar: customAppBar(title: 'الحجز', withBack: false),
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  LargeToggleButtons(
-                      optionOne: 'حجز تقليدي',
-                      optionTwo: 'خدمات منزلية',
-                      onTapOne: () => controller.setIsHomeService(false),
-                      onTapTwo: () => controller.setIsHomeService(true)),
-                  const SizedBox(height: 20),
-                  const CustomSmallTitle(title: 'نوع المتجر'),
-                  const DropdownBrandTypes(),
-                  Row(
-                    children: [
-                      const SizedBox(width: 20),
-                      const Expanded(
-                          child: Column(
-                        children: [
-                          CustomSmallTitle(
-                              title: 'النوع الفرعي', rightPdding: 0),
-                          DropdownBrandSubtypes(),
-                        ],
-                      )),
-                      const SizedBox(width: 10),
-                      Expanded(
-                          child: Column(
-                        children: [
-                          const CustomSmallTitle(
-                              title: 'المدينة', rightPdding: 0),
-                          CustomDropdown(
-                            items: cities,
-                            horizontalMargin: 0,
-                            verticalMargin: 10,
-                            withInitValue: true,
-                            //width: Get.width / 2.2,
-                            title: 'اختر المدينة',
-                            onChanged: (String? value) {
-                              // Handle selected value
-                              controller.city = value!;
-                              print(value);
-                            },
-                          ),
-                        ],
-                      )),
-                      const SizedBox(width: 20),
-                    ],
-                  ),
-                  SearchButton(onTap: () => controller.searchBrand()),
-                  AddressTitle(
-                      addressTitle: 'النتائج-${controller.brands.length}',
-                      onTap: () {}),
-                  HandlingDataView(
-                    statusRequest: controller.statusRequest,
-                    widget: Expanded(
-                      child: ListView.builder(
-                          physics: BouncingScrollPhysics(),
+              body: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LargeToggleButtons(
+                        optionOne: 'حجز تقليدي',
+                        optionTwo: 'خدمات منزلية',
+                        onTapOne: () => controller.setIsHomeService(false),
+                        onTapTwo: () => controller.setIsHomeService(true)),
+                    const SizedBox(height: 20),
+                    const CustomSmallTitle(title: 'نوع المتجر'),
+                    const DropdownBrandTypes(),
+                    Row(
+                      children: [
+                        const SizedBox(width: 20),
+                        const Expanded(
+                            child: Column(
+                          children: [
+                            CustomSmallTitle(
+                                title: 'النوع الفرعي', rightPdding: 0),
+                            DropdownBrandSubtypes(),
+                          ],
+                        )),
+                        const SizedBox(width: 10),
+                        Expanded(
+                            child: Column(
+                          children: [
+                            const CustomSmallTitle(
+                                title: 'المدينة', rightPdding: 0),
+                            CustomDropdown(
+                              items: cities,
+                              horizontalMargin: 0,
+                              verticalMargin: 10,
+                              withInitValue: true,
+                              //width: Get.width / 2.2,
+                              title: 'اختر المدينة',
+                              onChanged: (String? value) {
+                                // Handle selected value
+                                controller.city = value!;
+                                print(value);
+                              },
+                            ),
+                          ],
+                        )),
+                        const SizedBox(width: 20),
+                      ],
+                    ),
+                    SearchButton(onTap: () => controller.searchBrand()),
+                    AddressTitle(
+                        addressTitle: 'النتائج-${controller.brands.length}',
+                        onTap: () {}),
+                    HandlingDataView(
+                      statusRequest: controller.statusRequest,
+                      widget: ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
                           itemCount: controller.brands.length,
+                          shrinkWrap: true,
                           itemBuilder: (context, index) =>
                               BrandDetailedListItem(
                                 brandName:
@@ -109,9 +110,9 @@ class ReservationSearchScreen extends StatelessWidget {
                                   controller.onTapCard(index);
                                 },
                               )),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ));
   }

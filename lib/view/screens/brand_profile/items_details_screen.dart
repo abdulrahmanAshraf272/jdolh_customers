@@ -1,50 +1,26 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/items_details_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/data/models/ioption_element.dart';
 import 'package:jdolh_customers/data/models/item_option.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/confirm_refuse_buttons.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/product_features/price_and_confirm_button.dart';
 import 'package:jdolh_customers/view/widgets/product_features/product_image_and_name.dart';
-import 'package:jdolh_customers/view/widgets/product_features/select_product_size.dart';
 
 class ItemsDetailsScreen extends StatelessWidget {
   const ItemsDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    successDialog() {
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.success,
-        animType: AnimType.rightSlide,
-        title: 'تمت الاضافة',
-        desc: '',
-        btnOkText: 'حسناً',
-        btnOkOnPress: () {
-          Get.back();
-        },
-      ).show();
-    }
-
     Get.put(ItemsDetailsController());
     return GetBuilder<ItemsDetailsController>(
         builder: (controller) => Scaffold(
               floatingActionButton: PriceAndConfirmReservationButton(
-                onTap: () async {
-                  if (await controller.onTapAddToCart()) {
-                    successDialog();
-                  }
+                onTap: () {
+                  controller.onTapAddToCart();
                 },
                 price: controller.totalPrice.toString(),
               ),

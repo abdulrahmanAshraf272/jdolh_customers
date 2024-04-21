@@ -181,7 +181,7 @@ class BrandProfileController extends GetxController {
         arguments: {"item": itemsToDisplay[index], "bch": bch, "brand": brand});
   }
 
-  getBchInfo() async {
+  Future getBchInfo() async {
     var response =
         await brandSearchData.getBchInfo(bchid: bch.bchId.toString());
     statusRequest = handlingData(response);
@@ -248,7 +248,7 @@ class BrandProfileController extends GetxController {
     Get.toNamed(AppRouteName.displayWorktime, arguments: bchWorktime);
   }
 
-  getBch() async {
+  Future getBch() async {
     var response = await brandSearchData.getBch(
         bchid: bch.bchId.toString(), userid: myServices.getUserid());
     statusRequest = handlingData(response);
@@ -263,7 +263,7 @@ class BrandProfileController extends GetxController {
         statusRequest = StatusRequest.failure;
       }
     }
-    update();
+    //update();
   }
 
   parseData(response) {
@@ -281,6 +281,8 @@ class BrandProfileController extends GetxController {
 
     categories = categoriesJson.map((e) => MyCategories.fromJson(e)).toList();
     items = itemsJson.map((e) => Item.fromJson(e)).toList();
+
+    //I only get the items that is items_active = 1 from backend
 
     //Dispay Items for first category
     int categoryIdSelected = categories[0].id!;
@@ -332,8 +334,8 @@ class BrandProfileController extends GetxController {
   }
 
   getBrandBch(int bchid) async {
-    statusRequest = StatusRequest.loading;
-    update();
+    // statusRequest = StatusRequest.loading;
+    // update();
     var response = await brandSearchData.getBrandBch(bchid: bchid.toString());
     statusRequest = handlingData(response);
     update();
@@ -356,9 +358,15 @@ class BrandProfileController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    statusRequest = StatusRequest.loading;
     await receiveArgument();
-    getBch();
-    getBchInfo();
+    Future<void> bothFinished = Future.wait([getBch(), getBchInfo()]);
+
+    bothFinished.then((_) {
+      update();
+      print('two of them are finished');
+    });
+
     //getCart();
   }
 }

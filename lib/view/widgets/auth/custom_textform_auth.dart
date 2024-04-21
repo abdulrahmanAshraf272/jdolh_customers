@@ -1,11 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/functions/valid_input.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_textfield.dart';
 
 class CustomTextFormAuth extends StatelessWidget {
   final String hintText;
