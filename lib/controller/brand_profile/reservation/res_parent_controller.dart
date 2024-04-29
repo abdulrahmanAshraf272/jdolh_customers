@@ -184,7 +184,7 @@ class ResParentController extends GetxController {
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         homeServices = HomeServices.fromJson(response['data']);
-        reviewRes = resDetails.reviewRes!;
+        reviewRes = homeServices.reviewRes!;
         print(homeServices.maxDistance);
       }
     } else {

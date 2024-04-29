@@ -30,7 +30,7 @@ class LoginController extends GetxController {
       await Future.delayed(Duration(seconds: lateDuration));
       CustomDialogs.dissmissLoading();
       statusRequest = handlingData(response);
-      update(); //after status change to display change on the screen.
+      print('status: $statusRequest');
       if (statusRequest == StatusRequest.success) {
         if (response['status'] == 'success') {
           print(' ======== ${response['data']} ======');
@@ -51,6 +51,8 @@ class LoginController extends GetxController {
                 message: 'اسم المستخدم او البريد الالكتروني غير صحيح');
           }
         }
+      } else {
+        update();
       }
     }
   }

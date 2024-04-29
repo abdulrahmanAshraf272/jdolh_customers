@@ -15,8 +15,13 @@ class HandlingDataView2 extends StatelessWidget {
             : statusRequest == StatusRequest.unableToGetLocation
                 ? const Center(child: Text('غير قارد للوصول لمكانك الحالي'))
                 : statusRequest == StatusRequest.offlineFailure
-                    ? Center(
-                        child: Lottie.asset('assets/icons/noInternetIcon.json'))
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Lottie.asset('assets/icons/noInternetIcon.json'),
+                          const Text('لا يوجد اتصال بلإنترنت')
+                        ],
+                      )
                     : statusRequest == StatusRequest.serverFailure
                         ? const Center(child: Text('server failure'))
                         : const Center(child: Text('لا توجد نتائج'));
@@ -36,7 +41,13 @@ class HandlingDataView extends StatelessWidget {
     return statusRequest == StatusRequest.loading
         ? const Center(child: CircularProgressIndicator())
         : statusRequest == StatusRequest.offlineFailure
-            ? const Center(child: Text('offline failure'))
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset('assets/icons/noInternetIcon.json'),
+                  const Text('لا يوجد اتصال بلإنترنت')
+                ],
+              )
             : statusRequest == StatusRequest.serverFailure
                 ? const Center(child: Text('server failure'))
                 : statusRequest == StatusRequest.failure
@@ -61,7 +72,13 @@ class HandlingDataRequest extends StatelessWidget {
     return statusRequest == StatusRequest.loading
         ? Center(child: CircularProgressIndicator())
         : statusRequest == StatusRequest.offlineFailure
-            ? const Center(child: Text('offline failure'))
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset('assets/icons/noInternetIcon.json'),
+                  const Text('لا يوجد اتصال بلإنترنت')
+                ],
+              )
             : statusRequest == StatusRequest.serverFailure
                 ? const Center(child: Text('server failure'))
                 : widget;

@@ -188,6 +188,7 @@ class CreateOccasionController extends GetxController {
         userid: member.userId.toString(),
         creatorid: myServices.getUserid());
     statusRequest = handlingData(response);
+    print('adding memeber status: $statusRequest');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         print('adding ${member.userName} is done');

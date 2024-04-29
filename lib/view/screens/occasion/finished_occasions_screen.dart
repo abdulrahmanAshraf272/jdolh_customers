@@ -21,43 +21,33 @@ class FinishedOccasionsScreen extends StatelessWidget {
     return GetBuilder<FinishedOccasionsController>(
         builder: (controller) => Scaffold(
               appBar: customAppBar(title: 'المناسبات السابقة'),
-              body: Column(
-                children: [
-                  HandlingDataView(
-                    statusRequest: controller.statusRequest,
-                    widget: Expanded(
-                      child: controller.occasionsToDisplay.isEmpty
-                          ? const Padding(
-                              padding: EdgeInsets.all(20),
-                              child: Text('لا توجد مناسبات'),
-                            )
-                          : ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: controller.occasionsToDisplay.length,
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              itemBuilder: (context, index) =>
-                                  OccasionAcceptedListItem(
-                                    from: controller.occasionsToDisplay[index]
-                                        .occasionUsername!,
-                                    title: controller.occasionsToDisplay[index]
-                                        .occasionTitle!,
-                                    date:
-                                        '${controller.occasionsToDisplay[index].occasionDate} ${controller.timeInAmPm(index)}',
-                                    location: controller
-                                        .occasionsToDisplay[index]
-                                        .occasionLocation!,
-                                    creator: controller
-                                        .occasionsToDisplay[index].creator!,
-                                    onTapOpenLocation: () {
-                                      onTapDisplayLocation(
-                                          controller.occasionsToDisplay[index]);
-                                    },
-                                    onTapCard: () =>
-                                        controller.onTapOccasionCard(index),
-                                  )),
-                    ),
-                  )
-                ],
+              body: HandlingDataRequest(
+                statusRequest: controller.statusRequest,
+                widget: controller.occasionsToDisplay.isEmpty
+                    ? Center(child: Text('لا توجد مناسبات'))
+                    : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: controller.occasionsToDisplay.length,
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        itemBuilder: (context, index) =>
+                            OccasionAcceptedListItem(
+                              from: controller
+                                  .occasionsToDisplay[index].occasionUsername!,
+                              title: controller
+                                  .occasionsToDisplay[index].occasionTitle!,
+                              date:
+                                  '${controller.occasionsToDisplay[index].occasionDate} ${controller.timeInAmPm(index)}',
+                              location: controller
+                                  .occasionsToDisplay[index].occasionLocation!,
+                              creator:
+                                  controller.occasionsToDisplay[index].creator!,
+                              onTapOpenLocation: () {
+                                onTapDisplayLocation(
+                                    controller.occasionsToDisplay[index]);
+                              },
+                              onTapCard: () =>
+                                  controller.onTapOccasionCard(index),
+                            )),
               ),
             ));
   }

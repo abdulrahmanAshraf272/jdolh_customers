@@ -91,6 +91,7 @@ class EditOccasionController extends GetxController {
             responseOccasionMembers.map((e) => Friend.fromJson(e)).toList();
         //remove me form list
         members.removeWhere((element) => element.userId == myId);
+        print(members.length);
       } else {
         statusRequest = StatusRequest.failure;
       }

@@ -253,7 +253,6 @@ class BrandProfileController extends GetxController {
         bchid: bch.bchId.toString(), userid: myServices.getUserid());
     statusRequest = handlingData(response);
     update();
-    print(response);
     print('get Bch status ${statusRequest}');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {

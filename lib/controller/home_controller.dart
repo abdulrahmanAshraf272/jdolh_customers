@@ -3,11 +3,14 @@ import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/functions/is_date_passed.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/activity.dart';
+import 'package:jdolh_customers/data/data_source/remote/ad.dart';
 import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
 import 'package:jdolh_customers/data/data_source/remote/trend.dart';
 import 'package:jdolh_customers/data/models/activity.dart';
+import 'package:jdolh_customers/data/models/ad.dart';
 import 'package:jdolh_customers/data/models/bch.dart';
 import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
@@ -15,6 +18,7 @@ import 'package:jdolh_customers/data/models/occasion.dart';
 import 'package:jdolh_customers/data/models/top_checkin.dart';
 
 class HomeController extends GetxController {
+  StatusRequest statusAds = StatusRequest.none;
   StatusRequest statusRequest = StatusRequest.none;
   StatusRequest statusFriendsActivity = StatusRequest.none;
   StatusRequest statusTopRate = StatusRequest.none;
@@ -25,6 +29,9 @@ class HomeController extends GetxController {
   MyServices myServices = Get.find();
   ActivityData activityData = ActivityData(Get.find());
   TrendData trendData = TrendData(Get.find());
+  AdData adData = AdData(Get.find());
+  List<Ad> adsBeforeFilter = [];
+  List<Ad> ads = [];
   List<Activity> friendsActivities = [];
   List<Friend> topRate = [];
   List<TopCheckin> topCheckin = [];
@@ -41,7 +48,7 @@ class HomeController extends GetxController {
         .then((value) => getFriendsActivities());
   }
 
-  getMyOccasion() async {
+  Future getMyOccasion() async {
     statusOccasion = StatusRequest.loading;
     update();
     var response = await occasionData
@@ -54,6 +61,7 @@ class HomeController extends GetxController {
       if (response['status'] == 'success') {
         parsingOccasion(response);
         print('occasions: ${myOccasions.length}');
+        print('occasions: ${occasionsToDisplay.length}');
       } else {
         //statusRequest = StatusRequest.failure;
       }
@@ -61,6 +69,8 @@ class HomeController extends GetxController {
   }
 
   parsingOccasion(response) {
+    myOccasions.clear();
+    occasionsToDisplay.clear();
     List responseOccasoins = response['data'];
     myOccasions = responseOccasoins.map((e) => Occasion.fromJson(e)).toList();
     List<Occasion> occasionInFuture =
@@ -112,7 +122,7 @@ class HomeController extends GetxController {
     Get.toNamed(AppRouteName.occasions);
   }
 
-  getTopRate() async {
+  Future getTopRate() async {
     statusTopRate = StatusRequest.loading;
     update();
     var response = await trendData.getTopRate(myServices.getUserid());
@@ -120,6 +130,7 @@ class HomeController extends GetxController {
     statusTopRate = handlingData(response);
     if (statusTopRate == StatusRequest.success) {
       if (response['status'] == 'success') {
+        topRate.clear();
         List data = response['data'];
         topRate = data.map((e) => Friend.fromJson(e)).toList();
       } else {
@@ -129,7 +140,7 @@ class HomeController extends GetxController {
     update();
   }
 
-  getTopCheckin() async {
+  Future getTopCheckin() async {
     statusTopCheckin = StatusRequest.loading;
     update();
     var response = await trendData.getTopCheckin();
@@ -137,6 +148,7 @@ class HomeController extends GetxController {
     statusTopCheckin = handlingData(response);
     if (statusTopCheckin == StatusRequest.success) {
       if (response['status'] == 'success') {
+        topCheckin.clear();
         List data = response['data'];
         topCheckin = data.map((e) => TopCheckin.fromJson(e)).toList();
       } else {
@@ -146,7 +158,7 @@ class HomeController extends GetxController {
     update();
   }
 
-  getTopRes() async {
+  Future getTopRes() async {
     statusTopRes = StatusRequest.loading;
     update();
     var response = await trendData.getTopRes();
@@ -154,6 +166,8 @@ class HomeController extends GetxController {
     statusTopRes = handlingData(response);
     if (statusTopRes == StatusRequest.success) {
       if (response['status'] == 'success') {
+        brands.clear();
+        bchs.clear();
         List data = response['data'];
         brands = data.map((e) => Brand.fromJson(e)).toList();
         bchs = data.map((e) => Bch.fromJson(e)).toList();
@@ -164,7 +178,7 @@ class HomeController extends GetxController {
     update();
   }
 
-  getFriendsActivities() async {
+  Future getFriendsActivities() async {
     statusFriendsActivity = StatusRequest.loading;
     update();
     var response =
@@ -181,7 +195,46 @@ class HomeController extends GetxController {
     update();
   }
 
+  getAds() async {
+    statusAds = StatusRequest.loading;
+    update();
+    var response = await adData.getAllAds();
+    statusAds = handlingData(response);
+    print('ads status: $statusAds');
+    if (statusAds == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        parseAds(response);
+      } else {
+        statusAds = StatusRequest.failure;
+      }
+    }
+    update();
+  }
+
+  parseAds(response) {
+    adsBeforeFilter.clear();
+    ads.clear();
+    List data = response['data'];
+    adsBeforeFilter = data.map((e) => Ad.fromJson(e)).toList();
+
+    for (int i = 0; i < adsBeforeFilter.length; i++) {
+      if (adsBeforeFilter[i].active == 1) {
+        if (adsBeforeFilter[i].endData != null) {
+          if (!isDatePassed(adsBeforeFilter[i].endData!)) {
+            ads.add(adsBeforeFilter[i]);
+          }
+        } else {
+          //if endDate is null it means it is unlimited ad
+          ads.add(adsBeforeFilter[i]);
+        }
+      }
+    }
+    print('ads before filter: ${adsBeforeFilter.length}');
+    print('ads after filter: ${ads.length}');
+  }
+
   parsingDataFromJsonToDartList(response) {
+    friendsActivities.clear();
     List data = response['data'];
     friendsActivities = data.map((e) => Activity.fromJson(e)).toList();
   }
@@ -208,13 +261,49 @@ class HomeController extends GetxController {
     Get.toNamed(AppRouteName.exploreCheckin, arguments: topCheckin);
   }
 
+  onTapAd(int index) {
+    increaseClickCount(index);
+    gotoAdProfile(index);
+  }
+
+  gotoAdProfile(int index) {
+    int? bchid = ads[index].bchId;
+    if (bchid != null) {
+      Get.toNamed(AppRouteName.brandProfile,
+          arguments: {"fromActivity": true, "bchid": bchid});
+    }
+  }
+
+  increaseClickCount(int index) async {
+    var response =
+        await adData.increaseClickNumber(adId: ads[index].adsId.toString());
+    StatusRequest status = handlingData(response);
+    print('ads status: $status');
+    if (status == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('click number increase');
+      } else {
+        print('failure: ${response['message']}');
+      }
+    }
+  }
+
+  Future<void> getAllData() async {
+    try {
+      getFriendsActivities();
+      getTopCheckin();
+      getTopRate();
+      getTopRes();
+      getMyOccasion();
+      getAds();
+    } catch (error) {
+      throw error;
+    }
+  }
+
   @override
   void onInit() {
-    getFriendsActivities();
-    getTopCheckin();
-    getTopRate();
-    getTopRes();
-    getMyOccasion();
+    getAllData();
     super.onInit();
   }
 }

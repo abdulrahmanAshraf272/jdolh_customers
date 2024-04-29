@@ -181,10 +181,10 @@ class _MoreScreenState extends State<MoreScreen> {
                   Get.toNamed(AppRouteName.editPersonalData);
                 },
                 iconData: Icons.person),
-            SettingsButton(
-                text: 'قائمة الاصدقاء',
-                onTap: () {},
-                iconData: Icons.people_alt_rounded),
+            // SettingsButton(
+            //     text: 'قائمة الاصدقاء',
+            //     onTap: () {},
+            //     iconData: Icons.people_alt_rounded),
             SettingsButton(
                 text: 'المجموعات',
                 onTap: () {

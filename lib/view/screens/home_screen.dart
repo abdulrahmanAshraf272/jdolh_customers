@@ -29,11 +29,13 @@ class HomeScreen extends StatelessWidget {
                   Get.toNamed(AppRouteName.search);
                 },
                 onTapNotification: () {}),
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            body: RefreshIndicator(
+              onRefresh: () => controller.getAllData(),
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                //crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomAds(),
+                  const CustomAds(),
                   CustomTitle(
                     title: 'مناسبات قريبة',
                     onTap: () {
@@ -44,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   HandlingDataView(
                       statusRequest: controller.statusOccasion,
-                      widget: controller.friendsActivities.isEmpty
+                      widget: controller.occasionsToDisplay.isEmpty
                           ? Center(child: Text('لا توجد مناسبات قريبة'))
                           : ListView.builder(
                               shrinkWrap: true,

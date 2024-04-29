@@ -1,6 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jdolh_customers/api_links.dart';
+import 'package:jdolh_customers/controller/home_controller.dart';
+import 'package:jdolh_customers/core/class/handling_data_view.dart';
+import 'package:jdolh_customers/data/models/ad.dart';
 
 class CustomAds extends StatelessWidget {
   const CustomAds({
@@ -9,34 +13,62 @@ class CustomAds extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: Get.width * 0.55,
-      child: CarouselSlider.builder(
-        itemCount: 3,
-        options: CarouselOptions(
-          autoPlay: false,
-          aspectRatio: 2.1,
-          enlargeCenterPage: true,
-          autoPlayCurve: Curves.fastOutSlowIn,
-          autoPlayAnimationDuration: const Duration(milliseconds: 800),
-        ),
-        itemBuilder: (context, index, realIndex) => Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                      offset: const Offset(0, 3),
-                      blurRadius: 4,
-                      color: Colors.black45.withOpacity(0.23))
-                ]),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.asset(
-                'assets/images/breakfastDishe24.jpg',
-                fit: BoxFit.cover,
-              ),
-            )),
-      ),
+    return GetBuilder<HomeController>(
+        builder: (controller) => HandlingDataRequest(
+            statusRequest: controller.statusAds,
+            widget: controller.ads.isEmpty
+                ? const SizedBox()
+                : SizedBox(
+                    height: Get.width * 0.55,
+                    child: CarouselSlider.builder(
+                      itemCount: controller.ads.length,
+                      options: CarouselOptions(
+                        autoPlay: true,
+                        aspectRatio: 2.1,
+                        enlargeCenterPage: true,
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        autoPlayAnimationDuration: const Duration(seconds: 1),
+                      ),
+                      itemBuilder: (context, index, realIndex) => AdListItem(
+                        ad: controller.ads[index],
+                        onTap: () => controller.onTapAd(index),
+                      ),
+                    ),
+                  )));
+  }
+}
+
+class AdListItem extends StatelessWidget {
+  final Ad ad;
+  final void Function() onTap;
+  const AdListItem({super.key, required this.ad, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                    offset: const Offset(0, 3),
+                    blurRadius: 4,
+                    color: Colors.black45.withOpacity(0.23))
+              ]),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: ad.image != null
+                ? FadeInImage.assetNetwork(
+                    placeholder: 'assets/images/loading2.gif',
+                    image: '${ApiLinks.adsImages}/${ad.image}',
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    'assets/images/noImageAvailable.jpg',
+                    fit: BoxFit.cover,
+                  ),
+          )),
     );
   }
 }

@@ -112,8 +112,6 @@ class MyContactsController extends GetxController {
   }
 
   getAllUsers() async {
-    statusRequest = StatusRequest.loading;
-    update();
     var response = await followUnfollowData.getAllUsers(
         myId: myServices.sharedPreferences.getString("id")!);
     statusRequest = handlingData(response);
@@ -128,7 +126,6 @@ class MyContactsController extends GetxController {
         statusRequest = StatusRequest.failure;
       }
     }
-    update();
   }
 
   removeUsersNotExistInMyContact() {
@@ -152,8 +149,10 @@ class MyContactsController extends GetxController {
   @override
   void onInit() async {
     try {
+      statusRequest = StatusRequest.loading;
+      update();
       contacts = await getContacts();
-      getAllUsers();
+      await getAllUsers();
       statusRequest = StatusRequest.success;
       update();
       // Do something with the fetched contacts

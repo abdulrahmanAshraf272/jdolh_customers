@@ -14,10 +14,19 @@ final String basicAuth =
 
 Map<String, String> myheader = {'authorization': basicAuth};
 
+bool emulator = false;
+Future<bool> checkInternet() async {
+  if (emulator) {
+    return true;
+  } else {
+    return await InternetConnectionChecker().hasConnection;
+  }
+}
+
 class Crud {
   Future<Either<StatusRequest, Map>> postData(String linkUrl, Map data) async {
     try {
-      if (await InternetConnectionChecker().hasConnection) {
+      if (await checkInternet()) {
         var response =
             await http.post(Uri.parse(linkUrl), body: data, headers: myheader);
         if (response.statusCode == 200 || response.statusCode == 201) {
@@ -37,7 +46,7 @@ class Crud {
   Future<Either<StatusRequest, Map>> postDataWithFile(
       String linkUrl, Map data, File file, String field) async {
     try {
-      if (await InternetConnectionChecker().hasConnection) {
+      if (await checkInternet()) {
         var request = http.MultipartRequest("POST", Uri.parse(linkUrl));
 
         var length = await file.length();
@@ -69,7 +78,7 @@ class Crud {
 
   Future<Either<StatusRequest, Map>> getData(String linkUrl) async {
     try {
-      if (await InternetConnectionChecker().hasConnection) {
+      if (await checkInternet()) {
         var response = await http.get(
           Uri.parse(linkUrl),
           headers: myheader,
@@ -95,7 +104,7 @@ class Crud {
     final body = jsonEncode(invitationJsonList);
 
     try {
-      if (await InternetConnectionChecker().hasConnection) {
+      if (await checkInternet()) {
         var response = await http.post(Uri.parse(linkUrl), body: body);
         if (response.statusCode == 200 || response.statusCode == 201) {
           Map responseBody = jsonDecode(response.body);

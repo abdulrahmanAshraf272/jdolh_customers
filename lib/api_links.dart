@@ -4,7 +4,8 @@ class ApiLinks {
   //Localhost on Real device mean
   //yousef devie: fe80::cf:baff:fe0a:fc4c
   //192.168.1.3
-  static const String server = "http://10.0.2.2/jdolh";
+  //static const String server = "http://10.0.2.2/jdolh1";
+  static const String server = "https://jdolh.com/jdolh1";
   static const String test = "$server/test.php";
 
   //=================== Images ================//
@@ -14,6 +15,7 @@ class ApiLinks {
   static const String itemsImage = '$imagesBrands/items';
   static const String customerImage =
       '$server/jdolh_customers/upload/customers_photo';
+  static const String adsImages = '$server/jdolh_admin/upload/ads';
 
   //=============== Auth ===============//
   static const String signUp = '$server/jdolh_customers/auth/signup.php';
@@ -181,4 +183,7 @@ class ApiLinks {
       '$server/jdolh_customers/home/get_top_rate.php';
   static const String geetTopCheckinPeople =
       '$server/jdolh_customers/home/get_top_checkin_peaple.php';
+  static const String getAllAds = '$server/jdolh_admin/ads/get_all_ads.php';
+  static const String increaseClickNumber =
+      '$server/jdolh_admin/ads/increase_click_count.php';
 }
