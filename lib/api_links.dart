@@ -5,7 +5,7 @@ class ApiLinks {
   //yousef devie: fe80::cf:baff:fe0a:fc4c
   //192.168.1.3
   //static const String server = "http://10.0.2.2/jdolh1";
-  static const String server = "https://jdolh.com/jdolh1";
+  static const String server = "https://www.jdolh.com/jdolh1";
   static const String test = "$server/test.php";
 
   //=================== Images ================//
