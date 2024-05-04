@@ -23,6 +23,7 @@ class Reservation {
 
   String? brandName;
   String? brandLogo;
+  int? bchid;
   String? bchCity;
   String? bchLat;
   String? bchLng;
@@ -52,6 +53,7 @@ class Reservation {
       this.resDatecreated,
       this.brandName,
       this.brandLogo,
+      this.bchid,
       this.bchCity,
       this.bchLat,
       this.bchLng,
@@ -82,6 +84,7 @@ class Reservation {
 
     brandName = json['brand_storeName'];
     brandLogo = json['brand_logo'];
+    bchid = json['bch_id'];
     bchCity = json['bch_city'];
     bchLat = json['bch_lat'];
     bchLng = json['bch_lng'];

@@ -30,7 +30,8 @@ class OccasionsScreen extends StatelessWidget {
                     LargeToggleButtons(
                       optionOne: 'مناسبات قريبة',
                       onTapOne: () => controller.inactiveNeedAprrove(),
-                      optionTwo: 'بحاجة لموافقتك',
+                      optionTwo:
+                          'بحاجة لموافقتك (${controller.needApproveOccasionsNo})',
                       onTapTwo: () => controller.activeNeedApprove(),
                       twoColors: true,
                     ),

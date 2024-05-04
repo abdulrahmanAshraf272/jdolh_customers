@@ -14,8 +14,8 @@ class WaitForApproveController extends GetxController {
   ResData resData = ResData(Get.find());
 
   getRes() async {
-    statusRequest = StatusRequest.loading;
-    update();
+    // statusRequest = StatusRequest.loading;
+    // update();
     var response = await resData.getRes(resid: reservation.resId.toString());
     statusRequest = handlingData(response);
     print('getRes === $statusRequest');

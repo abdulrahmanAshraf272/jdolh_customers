@@ -7,6 +7,7 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/notification/notification_sender/activity_notification.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/checkin.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
@@ -61,6 +62,10 @@ class CheckinConfirmController extends GetxController {
       if (response['status'] == 'success') {
         CustomDialogs.success('تم تسجيل الوصول');
         Get.offAllNamed(AppRouteName.mainScreen);
+
+        ActivityNotification activityNotification = ActivityNotification();
+        activityNotification
+            .sendCheckinActivityToFollowers(placeSelected.name ?? '');
         // AwesomeDialog(
         //   context: context,
         //   dialogType: DialogType.success,

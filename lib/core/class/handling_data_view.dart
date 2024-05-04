@@ -31,9 +31,13 @@ class HandlingDataView2 extends StatelessWidget {
 class HandlingDataView extends StatelessWidget {
   final StatusRequest statusRequest;
   final Widget widget;
+  final String emptyText;
 
   const HandlingDataView(
-      {super.key, required this.statusRequest, required this.widget});
+      {super.key,
+      required this.statusRequest,
+      required this.widget,
+      this.emptyText = 'لا توجد نتائج'});
 
   //TODO replace the text with Lottie animation.
   @override
@@ -51,7 +55,7 @@ class HandlingDataView extends StatelessWidget {
             : statusRequest == StatusRequest.serverFailure
                 ? const Center(child: Text('server failure'))
                 : statusRequest == StatusRequest.failure
-                    ? const Center(child: Text('لا توجد نتائج'))
+                    ? Center(child: Text(emptyText))
                     : statusRequest == StatusRequest.unableToGetLocation
                         ? const Center(
                             child: Text('غير قارد للوصول لمكانك الحالي'))

@@ -31,6 +31,7 @@ import 'package:jdolh_customers/view/screens/brand_profile/brand_profile_screen.
 import 'package:jdolh_customers/view/screens/explore_checkin_screen.dart';
 import 'package:jdolh_customers/view/screens/groups/create_group_screen.dart';
 import 'package:jdolh_customers/view/screens/my_contacts_screen.dart';
+import 'package:jdolh_customers/view/screens/notifications_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/create_occasion_screen.dart';
 import 'package:jdolh_customers/view/screens/explore_brand_screen.dart';
 import 'package:jdolh_customers/view/screens/explore_people_screen.dart';
@@ -77,6 +78,10 @@ List<GetPage> routes = [
   //   name: '/',
   //   page: () => const ReservationSearchScreen(),
   // ),
+  GetPage(
+    name: AppRouteName.notifications,
+    page: () => const NotificationsScreen(),
+  ),
   GetPage(
     name: AppRouteName.editPersonalData,
     page: () => const EdtiPersonalDataScreen(),

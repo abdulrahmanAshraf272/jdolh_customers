@@ -11,6 +11,7 @@ import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/notification/notification_sender/occasion_notification.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
@@ -64,6 +65,12 @@ class EditOccasionController extends GetxController {
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         CustomDialogs.success('تم تعديل المناسبة');
+        OccasionNotification.editOccasion(
+            members,
+            myServices.getName(),
+            myServices.getImage(),
+            occasionTitle.text,
+            occasionSelected.occasionId!);
         Get.back();
       } else {
         Get.back();

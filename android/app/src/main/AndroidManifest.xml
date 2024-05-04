@@ -22,8 +22,9 @@
 </queries>
 
     <application
-        android:label="JDOLH"
+        android:label="جدولة"
         android:name="${applicationName}"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

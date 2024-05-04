@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "901964867564",
+    "project_id": "jdolh-customers",
+    "storage_bucket": "jdolh-customers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:901964867564:android:414c00eb98608184f902c9",
+        "android_client_info": {
+          "package_name": "com.jdolh.reservations.appointments"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1j-6WxMy9qZ3LRnWZblY9eckTiQXYvOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

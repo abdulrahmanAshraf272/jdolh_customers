@@ -7,6 +7,7 @@ import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/notification/notification_sender/occasion_notification.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
@@ -83,6 +84,13 @@ class CreateOccasionController extends GetxController {
           newOccasion.creator = 1;
           occasionsController.myOccasions.add(newOccasion);
           CustomDialogs.success('تم انشاء المناسبة');
+
+          OccasionNotification.sendOccasionInvitation(
+              members,
+              occasionTitle.text,
+              myServices.getName(),
+              myServices.getImage(),
+              newOccasion.occasionId!);
           Get.back();
         } else {
           CustomDialogs.failure();

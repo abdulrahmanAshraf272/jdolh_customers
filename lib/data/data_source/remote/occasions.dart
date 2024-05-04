@@ -145,4 +145,16 @@ class OccasionsData {
 
     return response.fold((l) => l, (r) => r);
   }
+
+  getOccasion({
+    required String occasionId,
+    required String userid,
+  }) async {
+    var response = await crud.postData(ApiLinks.getOccasion, {
+      "occasionId": occasionId,
+      "userid": userid,
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
 }

@@ -13,6 +13,7 @@ import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/pick_image.dart';
+import 'package:jdolh_customers/core/notification/notification_subscribtion.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/auth/signup.dart';
 import 'package:jdolh_customers/data/models/user.dart';
@@ -81,26 +82,31 @@ class SignUpController extends GetxController {
       if (statusRequest == StatusRequest.success) {
         if (response['status'] == 'success') {
           User user = User.fromJson(response['data']);
+
           myServices.setUserData(user);
-          goToVerifycode();
-          // Get.bottomSheet(Container(
-          //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          //   height: Get.height * 0.4,
-          //   decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.only(
-          //           topLeft: Radius.circular(20),
-          //           topRight: Radius.circular(20)),
-          //       color: Colors.white,
-          //       boxShadow: [boxShadow1]),
-          //   child: Column(
-          //     children: [
-          //       Text('سوف يتم ارسال رمز التأكيد عبر الواتساب',
-          //           style: titleMedium),
-          //       SizedBox(height: 20),
-          //       GoHomeButton(text: 'حسنا', onTap: () => goToVerifycode())
-          //     ],
-          //   ),
-          // ));
+
+          NotificationSubscribtion.userSubscribeToTopic(
+              user.userId, user.userCity, user.userGender);
+
+          // goToVerifycode();
+          Get.bottomSheet(Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            height: Get.height * 0.4,
+            decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20)),
+                color: Colors.white,
+                boxShadow: [boxShadow1]),
+            child: Column(
+              children: [
+                Text('سوف يتم ارسال رمز التأكيد عبر البريد الالكتروني',
+                    style: titleMedium),
+                const SizedBox(height: 20),
+                GoHomeButton(text: 'حسنا', onTap: () => goToVerifycode())
+              ],
+            ),
+          ));
         } else if (response['message'] == 'username exist') {
           Get.defaultDialog(
             title: 'تنبيه',

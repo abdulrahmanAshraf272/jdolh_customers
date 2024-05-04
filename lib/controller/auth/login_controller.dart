@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
-import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/notification/notification_subscribtion.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/auth/login.dart';
 import 'package:jdolh_customers/data/models/user.dart';
@@ -37,6 +37,10 @@ class LoginController extends GetxController {
           user = User.fromJson(response['data']);
           if (user.userApprove == 1) {
             myServices.setUserData(user);
+
+            NotificationSubscribtion.userSubscribeToTopic(
+                user.userId, user.userCity, user.userGender);
+
             myServices.setStep('2');
 
             goToMainScreen();

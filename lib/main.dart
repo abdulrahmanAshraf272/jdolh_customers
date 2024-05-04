@@ -15,6 +15,7 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await initialServices();
+
   initializeDateFormatting('ar');
   runApp(const MyApp());
 }

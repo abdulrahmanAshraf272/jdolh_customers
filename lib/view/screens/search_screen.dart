@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/search_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
-import 'package:jdolh_customers/view/widgets/common/ListItems/brand.dart';
-import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';
 import 'package:jdolh_customers/view/widgets/search_app_bar.dart';
 
 class SearchScreen extends StatelessWidget {

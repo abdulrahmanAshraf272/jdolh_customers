@@ -24,11 +24,11 @@ class HomeScreen extends StatelessWidget {
     Get.put(HomeController());
     return GetBuilder<HomeController>(
         builder: (controller) => Scaffold(
-            appBar: customHomeAppBar(
-                onTapSearch: () {
-                  Get.toNamed(AppRouteName.search);
-                },
-                onTapNotification: () {}),
+            appBar: customHomeAppBar(onTapSearch: () {
+              Get.toNamed(AppRouteName.search);
+            }, onTapNotification: () {
+              Get.toNamed(AppRouteName.notifications);
+            }),
             body: RefreshIndicator(
               onRefresh: () => controller.getAllData(),
               child: ListView(

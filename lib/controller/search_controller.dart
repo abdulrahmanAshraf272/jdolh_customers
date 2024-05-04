@@ -2,17 +2,14 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
-import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
-import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/notification/notification_sender/notification_sender.dart';
+import 'package:jdolh_customers/core/notification/notification_subscribtion.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/followUnfollow.dart';
 import 'package:jdolh_customers/data/data_source/remote/search_person.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
-import 'package:jdolh_customers/data/models/person.dart';
-import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
-import 'package:jdolh_customers/view/screens/person_profile_screen.dart';
 
 class SearchScreenController extends GetxController {
   bool isPersonSearch = true;
@@ -71,8 +68,15 @@ class SearchScreenController extends GetxController {
     valuesController.addAndRemoveFollowing(data[index]);
     if (data[index].following!) {
       data[index].following = false;
+      NotificationSubscribtion.unfollowUserSubcribeToTopic(data[index].userId);
     } else {
       data[index].following = true;
+      NotificationSubscribtion.followUserSubcribeToTopic(data[index].userId);
+      NotificationSender.sendFollowingPerson(
+          data[index].userId,
+          int.parse(myServices.getUserid()),
+          myServices.getName(),
+          myServices.getImage());
     }
     update();
   }

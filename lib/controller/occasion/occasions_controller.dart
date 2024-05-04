@@ -8,6 +8,7 @@ import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
+import 'package:jdolh_customers/core/notification/notification_sender/occasion_notification.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
@@ -24,6 +25,8 @@ class OccasionsController extends GetxController {
   List<Occasion> myOccasions = [];
   List<Occasion> acceptedOccasions = [];
   List<Occasion> suspendedOccasions = [];
+
+  int needApproveOccasionsNo = 0;
 
   onTapOccasionCard(int index) {
     if (occasionsToDisplay[index].creator == 1) {
@@ -85,6 +88,9 @@ class OccasionsController extends GetxController {
   // ============= Accept and Reject invitation =============//
   onTapAcceptInvitation(Occasion occasion) async {
     respondToInvitation(occasion, 'accept');
+
+    OccasionNotification.acceptOccasion(occasion.occasionUserid!,
+        myServices.getName(), myServices.getImage(), occasion.occasionTitle!);
   }
 
   onTapRejectInvitation(Occasion occasion) async {
@@ -104,6 +110,13 @@ class OccasionsController extends GetxController {
         onConfirm: () {
           Get.back();
           respondToInvitation(occasion, 'reject', excuse.text);
+
+          OccasionNotification.rejectOccasion(
+              occasion.occasionUserid!,
+              myServices.getName(),
+              myServices.getImage(),
+              occasion.occasionTitle ?? '',
+              excuse.text);
         },
         textConfirm: 'تأكيد',
         textCancel: 'الغاء',
@@ -199,6 +212,7 @@ class OccasionsController extends GetxController {
         suspendedOccasions.add(element);
       }
     }
+    needApproveOccasionsNo = suspendedOccasions.length;
     needApprove = false;
     occasionsToDisplay = List.from(acceptedOccasions);
     update();

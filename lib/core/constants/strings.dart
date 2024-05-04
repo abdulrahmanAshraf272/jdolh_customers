@@ -1,4 +1,6 @@
-const GOOGLE_MAPS_API_KEY = 'AIzaSyAGgfliZLRN6OE4sP5EGuwQv3ZWQPzaEGo';
+// ignore_for_file: constant_identifier_names
+
+const String GOOGLE_MAPS_API_KEY = 'AIzaSyAGgfliZLRN6OE4sP5EGuwQv3ZWQPzaEGo';
 
 const textConfirmReservation = 'تأكيد الحجز';
 const textSendInvication = 'ارسال دعوة';
@@ -56,3 +58,22 @@ const List<String> citiesEn = [
   'Dhahran',
   'Baha'
 ];
+
+const Map<String, String> cityTranslations = {
+  'الرياض': 'Riyadh',
+  'جدة': 'Jeddah',
+  'الدمام': 'Dammam',
+  'بريدة': 'Buraydah',
+  'تبوك': 'Tabuk',
+  'الطائف': 'Taif',
+  'حائل': 'Hail',
+  'نجران': 'Najran',
+  'الجبيل': 'Jubail',
+  'الخرج': 'Al-Kharj',
+  'ينبع': 'Yanbu',
+  'أبها': 'Abha',
+  'القطيف': 'Qatif',
+  'الأحساء': 'Al-Ahsa',
+  'الظهران': 'Dhahran',
+  'الباحة': 'Al-Baha'
+};

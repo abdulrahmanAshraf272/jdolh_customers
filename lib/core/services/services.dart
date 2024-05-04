@@ -1,6 +1,8 @@
 //import 'package:geolocator/geolocator.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:jdolh_customers/core/notification/notification_data.dart';
+import 'package:jdolh_customers/core/notification/notification_handler.dart';
 import 'package:jdolh_customers/data/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,14 +11,20 @@ class MyServices extends GetxService {
 
   //Any thing want to be init when the app open but it in this function.
   Future<MyServices> init() async {
-    //await Firebase.initializeApp();
+    //Firebase
+    await Firebase.initializeApp(); // Initialize Firebase
+    requestNotificationPermission();
+    onClickNotificationOnTerminated();
+    onClickNotificatoinOnBackground();
+    handlingNotificationOnForground();
+    handlingNotificationOnBackgroundAndTerminated();
+
     sharedPreferences = await SharedPreferences.getInstance();
     //locationPermissionRequest();
     return this;
   }
 
   setUserData(User user) {
-    print('image ${user.image}');
     sharedPreferences.setString("name", user.userName ?? '');
     sharedPreferences.setString("username", user.userUsername ?? '');
     sharedPreferences.setString("image", user.image ?? '');

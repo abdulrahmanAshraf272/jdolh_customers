@@ -10,6 +10,7 @@ import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/notification/notification_sender/occasion_notification.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
@@ -18,6 +19,8 @@ import 'package:jdolh_customers/view/widgets/common/custom_textfield.dart';
 
 class OccasionDetailsController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
+  StatusRequest statusOccasion = StatusRequest.none;
+  StatusRequest statusRequestMembers = StatusRequest.none;
   TextEditingController excuse = TextEditingController();
   late Occasion occasionSelected;
   late int occasionId;
@@ -33,14 +36,14 @@ class OccasionDetailsController extends GetxController {
 
   getOccasionMembers(String occasionId) async {
     int myId = int.parse(myServices.sharedPreferences.getString("id")!);
-    statusRequest = StatusRequest.loading;
+    statusRequestMembers = StatusRequest.loading;
     update();
     members.clear();
     var response = await occasionData.viewInvitors(occasionId);
-    statusRequest = handlingData(response);
+    statusRequestMembers = handlingData(response);
 
-    print('status ==== $statusRequest');
-    if (statusRequest == StatusRequest.success) {
+    print('status ==== $statusRequestMembers');
+    if (statusRequestMembers == StatusRequest.success) {
       if (response['status'] == 'success') {
         List responseOccasionMembers = response['data'];
         //parsing jsonList to DartList.
@@ -49,7 +52,7 @@ class OccasionDetailsController extends GetxController {
         //remove me form list
         members.removeWhere((element) => element.userId == myId);
       } else {
-        statusRequest = StatusRequest.failure;
+        statusRequestMembers = StatusRequest.failure;
       }
     }
     update();
@@ -105,6 +108,14 @@ class OccasionDetailsController extends GetxController {
           Get.back();
           await respondToInvitation(
               occasionSelected, 'reject', excuse.text, 'تم مغادرة المناسبة');
+
+          //Send notification to creator
+          OccasionNotification.rejectOccasion(
+              occasionSelected.occasionUserid!,
+              myServices.getName(),
+              myServices.getImage(),
+              occasionSelected.occasionTitle ?? '',
+              excuse.text);
           Get.back();
         },
         textConfirm: 'تأكيد',
@@ -114,6 +125,12 @@ class OccasionDetailsController extends GetxController {
 
   onTapAcceptInvitation() async {
     await respondToInvitation(occasionSelected, 'accept');
+
+    OccasionNotification.acceptOccasion(
+        occasionSelected.occasionUserid!,
+        myServices.getName(),
+        myServices.getImage(),
+        occasionSelected.occasionTitle!);
     Get.back();
   }
 
@@ -134,6 +151,13 @@ class OccasionDetailsController extends GetxController {
         onConfirm: () async {
           Get.back();
           await respondToInvitation(occasionSelected, 'reject', excuse.text);
+          //Send notification to creator
+          OccasionNotification.rejectOccasion(
+              occasionSelected.occasionUserid!,
+              myServices.getName(),
+              myServices.getImage(),
+              occasionSelected.occasionTitle ?? '',
+              excuse.text);
           Get.back();
         },
         textConfirm: 'تأكيد',
@@ -204,9 +228,34 @@ class OccasionDetailsController extends GetxController {
     return dateTime.isBefore(currentDateTime);
   }
 
-  @override
-  void onInit() {
-    occasionSelected = Get.arguments;
+  getOccasion(int occasionId) async {
+    statusOccasion = StatusRequest.loading;
+    update();
+    var response = await occasionData.getOccasion(
+        occasionId: occasionId.toString(), userid: myServices.getUserid());
+    statusOccasion = handlingData(response);
+    if (statusOccasion == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        occasionSelected = Occasion.fromJson(response['data']);
+      } else {
+        statusOccasion = StatusRequest.failure;
+      }
+    }
+    update();
+  }
+
+  receiveData() async {
+    var argument = Get.arguments;
+    if (argument is Occasion) {
+      occasionSelected = argument;
+    } else if (argument is int) {
+      await getOccasion(argument);
+    } else {
+      statusOccasion = StatusRequest.failure;
+      update();
+      return;
+    }
+
     occasionLocation = occasionSelected.occasionLocation ?? 'لم يتم تحديد موقع';
     occasionLocationLink = occasionSelected.locationLink ?? 'لم يتم تحديد رابط';
     selectedTimeFormatted = occasionSelected.occasionTime ?? '';
@@ -214,8 +263,11 @@ class OccasionDetailsController extends GetxController {
 
     inPast = checkInPast(
         occasionSelected.occasionDate!, occasionSelected.occasionTime!);
-    print('inPast: $inPast');
+  }
 
+  @override
+  void onInit() {
+    receiveData();
     super.onInit();
   }
 }

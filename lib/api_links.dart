@@ -46,7 +46,8 @@ class ApiLinks {
   static const String editPersonalDataWithImage =
       '$server/jdolh_customers/auth/edit_personal_data_with_image.php';
 
-  static const String getUser = '$server/jdolh_customers/auth/get_user.php';
+  static const String getUser =
+      '$server/jdolh_customers/auth/get_user_data.php';
 
   // ================= Groups ====================//
   static const String createGroup =
@@ -96,6 +97,8 @@ class ApiLinks {
   static const String deleteGroupFromOccasoin =
       '$server/jdolh_customers/occasion/delete_group.php';
 
+  static const String getOccasion =
+      '$server/jdolh_customers/occasion/get_occasion.php';
   //============= Checkin ================//
   static const String checkin = '$server/jdolh_customers/checkin/checkin.php';
   static const String jdolhPlaces =
@@ -174,6 +177,8 @@ class ApiLinks {
 
   static const String getAllUsers = '$server/jdolh_customers/get_all_users.php';
 
+  static const getUserData = '$server/jdolh_customers/profile/get_user.php';
+
   // === home ===//
   static const String getTopCheckin =
       '$server/jdolh_customers/home/get_top_checkin.php';
@@ -186,4 +191,10 @@ class ApiLinks {
   static const String getAllAds = '$server/jdolh_admin/ads/get_all_ads.php';
   static const String increaseClickNumber =
       '$server/jdolh_admin/ads/increase_click_count.php';
+
+  //Notifications
+  static const String createNotification =
+      '$server/jdolh_customers/notification/create_notification.php';
+  static const String getNotifications =
+      '$server/jdolh_customers/notification/get_notifications.php';
 }

@@ -76,4 +76,6 @@ class AppRouteName {
   static const reservationDetails = '/reservationDetails';
   static const resArchive = '/resArchive';
   static const resArchiveDetails = '/resArchiveDetails';
+
+  static const notifications = '/notifications';
 }

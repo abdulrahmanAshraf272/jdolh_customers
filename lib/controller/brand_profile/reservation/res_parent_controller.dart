@@ -3,6 +3,7 @@ import 'package:jdolh_customers/controller/brand_profile/brand_profile_controlle
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/notification/notification_sender/reservation_notification.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/cart.dart';
 import 'package:jdolh_customers/data/data_source/remote/home_services.dart';
@@ -142,6 +143,16 @@ class ResParentController extends GetxController {
       if (response['status'] == 'success') {
         print('create reservation succeed');
         reservation = Reservation.fromJson(response['data']);
+        //send Notification
+        ReservationNotification reservationNotification =
+            ReservationNotification();
+        if (reviewRes == 0) {
+          reservationNotification.sendReserveNotification(bchid, selectedDate);
+        } else {
+          reservationNotification.sendReserveRequistNotification(
+              bchid, selectedDate);
+        }
+
         return reservation;
       } else {
         statusRequest = StatusRequest.failure;

@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/notification/notification_subscribtion.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/brand_search.dart';
 import 'package:jdolh_customers/data/data_source/remote/cart.dart';
@@ -296,8 +297,10 @@ class BrandProfileController extends GetxController {
     isFollowing = !isFollowing;
     if (isFollowing) {
       followingNo = followingNo + 1;
+      NotificationSubscribtion.followBchSubcribeToTopic(bch.bchId);
     } else {
       followingNo = followingNo - 1;
+      NotificationSubscribtion.unfollowBchSubcribeToTopic(bch.bchId);
     }
     update();
     var response = await followUnfollowData.followBch(

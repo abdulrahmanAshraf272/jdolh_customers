@@ -9,6 +9,7 @@ import 'package:jdolh_customers/controller/schedule/reservation_details_controll
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/notification/notification_sender/activity_notification.dart';
 import 'package:jdolh_customers/data/data_source/remote/rate.dart';
 import 'package:jdolh_customers/data/models/rate.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
@@ -53,6 +54,13 @@ class _ResArchiveDetailsScreenState extends State<ResArchiveDetailsScreen> {
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         rate = Rate.fromJson(response['data']);
+
+        ActivityNotification activityNotification = ActivityNotification();
+        activityNotification.sendRateActivityToFollowers(
+            reservation.brandName!, reservation.bchCity!, rateValue);
+        activityNotification.sendRateToBch(
+            reservation.resBchid!, reservation.bchCity!, rateValue);
+
         print('rate: ${rate!.rateComment}');
         setState(() {});
       } else {

@@ -8,6 +8,7 @@ import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/open_url_link.dart';
+import 'package:jdolh_customers/core/notification/notification_sender/reservation_notification.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/rate.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
@@ -39,8 +40,12 @@ class ReservationDetailsController extends GetxController {
         onConfirm: () {
           Get.back();
           cancelReservation();
+          ReservationNotification reservationNotification =
+              ReservationNotification();
+          reservationNotification.cancelReservation(
+              reservation.bchid!, reservation.resDate!);
         },
-        buttonColor: Color(0xffff6666),
+        buttonColor: const Color(0xffff6666),
         textConfirm: 'نعم',
         confirmTextColor: Colors.white);
   }

@@ -99,6 +99,7 @@ class CreateOccasionScreen extends StatelessWidget {
                               title: 'المدعوين للمناسبة',
                               topPadding: 20,
                               bottomPadding: 20,
+                              rightPdding: 0,
                             ),
                           ),
                           CustomButton(
@@ -106,7 +107,6 @@ class CreateOccasionScreen extends StatelessWidget {
                                 controller.onTapAddMembers();
                               },
                               text: 'إضافة مدعوين'),
-                          SizedBox(width: 20)
                         ],
                       ),
                     ),

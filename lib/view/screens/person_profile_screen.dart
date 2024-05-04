@@ -14,6 +14,8 @@ import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/notification/notification_sender/notification_sender.dart';
+import 'package:jdolh_customers/core/notification/notification_subscribtion.dart';
 import 'package:jdolh_customers/data/data_source/remote/activity.dart';
 import 'package:jdolh_customers/data/models/activity.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
@@ -37,6 +39,8 @@ class PersonProfile extends StatefulWidget {
 
 class _PersonProfileState extends State<PersonProfile> {
   StatusRequest statusRequest = StatusRequest.none;
+  StatusRequest statusGetUser = StatusRequest.none;
+
   StatusRequest statusFriendsActivity = StatusRequest.none;
   PersonProfileData personProfileData = PersonProfileData(Get.find());
   FollowUnfollowData followUnfollowData = FollowUnfollowData(Get.find());
@@ -162,8 +166,15 @@ class _PersonProfileState extends State<PersonProfile> {
     valuesController.addAndRemoveFollowing(friend);
     if (friend.following!) {
       friend.following = false;
+      NotificationSubscribtion.unfollowUserSubcribeToTopic(friend.userId);
     } else {
       friend.following = true;
+      NotificationSubscribtion.followUserSubcribeToTopic(friend.userId);
+      NotificationSender.sendFollowingPerson(
+          friend.userId,
+          int.parse(myServices.getUserid()),
+          myServices.getName(),
+          myServices.getImage());
     }
     setState(() {});
   }
@@ -181,16 +192,42 @@ class _PersonProfileState extends State<PersonProfile> {
     }
   }
 
+  getUser(int userid) async {
+    statusGetUser = StatusRequest.loading;
+    setState(() {});
+    var response = await personProfileData.getUserData(
+        myId: myServices.getUserid(), userid: userid.toString());
+    statusGetUser = handlingData(response);
+    print('get user data status: $statusGetUser');
+    if (statusGetUser == StatusRequest.success) {
+      if (response['status' == 'success']) {
+        friend = Friend.fromJson(response['data']);
+      } else {
+        statusGetUser = StatusRequest.failure;
+      }
+    }
+    setState(() {});
+  }
+
+  receiveData() async {
+    dynamic argument = Get.arguments;
+    if (argument is Friend) {
+      friend = Get.arguments;
+    } else if (argument is int) {
+      await getUser(argument);
+    }
+
+    image = friend.userImage ?? '';
+    getFollowersAndFollowing();
+    getUserActivities();
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     print('init state ================');
     //final controller = Get.put(PersonProfileController());
-    friend = Get.arguments;
-    image = friend.userImage ?? '';
-    getFollowersAndFollowing();
-    getUserActivities();
   }
 
   @override
@@ -201,159 +238,162 @@ class _PersonProfileState extends State<PersonProfile> {
         backgroundColor: Colors.white,
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          child: HandlingDataView(
+              statusRequest: statusGetUser,
+              widget: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(width: 20),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: image != ''
-                            ? FadeInImage.assetNetwork(
-                                height: 70.h,
-                                width: 70.w,
-                                placeholder: 'assets/images/loading2.gif',
-                                image: '${ApiLinks.customerImage}/$image',
-                                fit: BoxFit.cover,
-                              )
-                            : Image.asset(
-                                'assets/images/person4.jpg',
-                                fit: BoxFit.cover,
-                                height: 70.h,
-                                width: 70.w,
-                              ),
-                      ),
-                      const SizedBox(width: 15),
                       Expanded(
-                        child: Column(
+                        child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 3),
-                            AutoSizeText(
-                              friend.userName ?? '',
-                              maxLines: 1,
-                              style: TextStyle(
-                                  fontSize: 16.sp, fontWeight: FontWeight.w600),
+                            const SizedBox(width: 20),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: image != ''
+                                  ? FadeInImage.assetNetwork(
+                                      height: 70.h,
+                                      width: 70.w,
+                                      placeholder: 'assets/images/loading2.gif',
+                                      image: '${ApiLinks.customerImage}/$image',
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(
+                                      'assets/images/person4.jpg',
+                                      fit: BoxFit.cover,
+                                      height: 70.h,
+                                      width: 70.w,
+                                    ),
                             ),
-                            const SizedBox(height: 3),
-                            Text(
-                              friend.userUsername!,
-                              style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black.withOpacity(0.6)),
+                            const SizedBox(width: 15),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 3),
+                                  AutoSizeText(
+                                    friend.userName ?? '',
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(height: 3),
+                                  Text(
+                                    friend.userUsername!,
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black.withOpacity(0.6)),
+                                  ),
+                                ],
+                              ),
                             ),
+                            const SizedBox(width: 10),
                           ],
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      FollowButton(
+                          onTap: () => followUnfollow(),
+                          following: friend.following!),
+                      const SizedBox(width: 20)
                     ],
                   ),
-                ),
-                FollowButton(
-                    onTap: () => followUnfollow(),
-                    following: friend.following!),
-                const SizedBox(width: 20)
-              ],
-            ),
 
-            // ClipRRect(
-            //   borderRadius: BorderRadius.circular(100),
-            //   child: image != ''
-            //       ? FadeInImage.assetNetwork(
-            //           height: 80.h,
-            //           width: 80.w,
-            //           placeholder: 'assets/images/loading2.gif',
-            //           image: '${ApiLinks.customerImage}/$image',
-            //           fit: BoxFit.cover,
-            //         )
-            //       : Image.asset(
-            //           'assets/images/person4.jpg',
-            //           fit: BoxFit.cover,
-            //           height: 80.h,
-            //           width: 80.w,
-            //         ),
-            // ),
-            // const SizedBox(height: 10),
-            // Text(
-            //   friend.userName!,
-            //   style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
-            // ),
-            // Text(
-            //   friend.userUsername!,
-            //   style: TextStyle(
-            //       fontSize: 12.sp,
-            //       fontWeight: FontWeight.w500,
-            //       color: Colors.black.withOpacity(0.6)),
-            // ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                const SizedBox(width: 15),
-                Expanded(
-                  child: RectButton(
-                      text: 'متابعين',
-                      number: followers.length,
-                      onTap: () {
-                        goToFollwersAndFollowingScreen(true);
-                      },
-                      iconData: Icons.group,
-                      buttonColor: AppColors.green),
-                ),
-                Expanded(
-                  child: RectButton(
-                      text: 'متابعون',
-                      number: following.length,
-                      onTap: () {
-                        goToFollwersAndFollowingScreen(false);
-                      },
-                      iconData: Icons.groups,
-                      buttonColor: AppColors.yellow),
-                ),
-                Expanded(
-                  child: RectButton(
-                      text: 'التقييم',
-                      number: onlyRatesActivities.length,
-                      onTap: () {
-                        gotoFriendsActivities();
-                      },
-                      iconData: Icons.comment,
-                      buttonColor: AppColors.blue2),
-                ),
-                const SizedBox(width: 15),
-              ],
-            ),
-            HandlingDataView(
-              statusRequest: statusFriendsActivity,
-              widget: Expanded(
-                child: friendsActivities.isEmpty
-                    ? const Center(child: Text('لا يوجد نشاطات'))
-                    : ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: friendsActivities.length,
-                        itemBuilder: (context, index) => ActivityListItem(
-                              cardStatus: 1,
-                              activity: friendsActivities[index],
-                              onTapLike: () {
-                                if (friendsActivities[index].isLiked == 1) {
-                                  friendsActivities[index].isLiked = 0;
-                                } else {
-                                  friendsActivities[index].isLiked = 1;
-                                }
-                              },
-                            )),
-              ),
-            ),
-            const SizedBox(height: 20)
-          ],
-        ),
-      ),
+                  // ClipRRect(
+                  //   borderRadius: BorderRadius.circular(100),
+                  //   child: image != ''
+                  //       ? FadeInImage.assetNetwork(
+                  //           height: 80.h,
+                  //           width: 80.w,
+                  //           placeholder: 'assets/images/loading2.gif',
+                  //           image: '${ApiLinks.customerImage}/$image',
+                  //           fit: BoxFit.cover,
+                  //         )
+                  //       : Image.asset(
+                  //           'assets/images/person4.jpg',
+                  //           fit: BoxFit.cover,
+                  //           height: 80.h,
+                  //           width: 80.w,
+                  //         ),
+                  // ),
+                  // const SizedBox(height: 10),
+                  // Text(
+                  //   friend.userName!,
+                  //   style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
+                  // ),
+                  // Text(
+                  //   friend.userUsername!,
+                  //   style: TextStyle(
+                  //       fontSize: 12.sp,
+                  //       fontWeight: FontWeight.w500,
+                  //       color: Colors.black.withOpacity(0.6)),
+                  // ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: RectButton(
+                            text: 'متابعين',
+                            number: followers.length,
+                            onTap: () {
+                              goToFollwersAndFollowingScreen(true);
+                            },
+                            iconData: Icons.group,
+                            buttonColor: AppColors.green),
+                      ),
+                      Expanded(
+                        child: RectButton(
+                            text: 'متابعون',
+                            number: following.length,
+                            onTap: () {
+                              goToFollwersAndFollowingScreen(false);
+                            },
+                            iconData: Icons.groups,
+                            buttonColor: AppColors.yellow),
+                      ),
+                      Expanded(
+                        child: RectButton(
+                            text: 'التقييم',
+                            number: onlyRatesActivities.length,
+                            onTap: () {
+                              gotoFriendsActivities();
+                            },
+                            iconData: Icons.comment,
+                            buttonColor: AppColors.blue2),
+                      ),
+                      const SizedBox(width: 15),
+                    ],
+                  ),
+                  HandlingDataView(
+                    statusRequest: statusFriendsActivity,
+                    widget: Expanded(
+                      child: friendsActivities.isEmpty
+                          ? const Center(child: Text('لا يوجد نشاطات'))
+                          : ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: friendsActivities.length,
+                              itemBuilder: (context, index) => ActivityListItem(
+                                    cardStatus: 1,
+                                    activity: friendsActivities[index],
+                                    onTapLike: () {
+                                      if (friendsActivities[index].isLiked ==
+                                          1) {
+                                        friendsActivities[index].isLiked = 0;
+                                      } else {
+                                        friendsActivities[index].isLiked = 1;
+                                      }
+                                    },
+                                  )),
+                    ),
+                  ),
+                  const SizedBox(height: 20)
+                ],
+              ))),
     );
   }
 }

@@ -16,4 +16,11 @@ class PersonProfileData {
     });
     //returnresponse.fold((l) => l, (r) => r);
   }
+
+  getUserData({required String myId, required String userid}) async {
+    var response = await crud
+        .postData(ApiLinks.getUserData, {"myId": myId, "userid": userid});
+
+    return response.fold((l) => l, (r) => r);
+  }
 }

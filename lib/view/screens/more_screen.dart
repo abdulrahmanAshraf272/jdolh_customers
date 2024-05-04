@@ -6,6 +6,7 @@ import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/notification/notification_subscribtion.dart';
 import 'package:jdolh_customers/view/screens/followers_and_following_screen.dart';
 import 'package:jdolh_customers/view/widgets/more_screen/rect_button.dart';
 import 'package:jdolh_customers/view/widgets/more_screen/settings_button.dart';
@@ -43,6 +44,11 @@ class _MoreScreenState extends State<MoreScreen> {
           ElevatedButton(
             onPressed: () {
               Get.offAllNamed(AppRouteName.login);
+              NotificationSubscribtion.userUnsubscribeToTopic(
+                int.parse(myServices.getUserid()),
+                myServices.getCity(),
+                int.parse(myServices.getGender()),
+              );
               myServices.sharedPreferences.setString("step", "1");
             },
             child: const Text('نعم'),
