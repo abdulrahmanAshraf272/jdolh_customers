@@ -64,8 +64,8 @@ class CheckinConfirmController extends GetxController {
         Get.offAllNamed(AppRouteName.mainScreen);
 
         ActivityNotification activityNotification = ActivityNotification();
-        activityNotification
-            .sendCheckinActivityToFollowers(placeSelected.name ?? '');
+        // activityNotification
+        //     .sendCheckinActivityToFollowers(placeSelected.name ?? '');
         // AwesomeDialog(
         //   context: context,
         //   dialogType: DialogType.success,

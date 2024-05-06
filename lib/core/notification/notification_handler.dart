@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/wait_for_approve_controller.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
@@ -31,17 +32,20 @@ handlingNotificationOnBackgroundAndTerminated() {
 
 Future<void> handlingReceivedNotificationOnForground(
     RemoteMessage remoteMessage) async {
+  print(
+      '====================== Nortification received in foreground =================');
   if (remoteMessage.notification != null) {
     String title = remoteMessage.notification!.title ?? '';
     String body = remoteMessage.notification!.body ?? '';
-    Get.snackbar(title, body);
-  }
-  if (remoteMessage.data.isNotEmpty) {
-    if (remoteMessage.data['routeName'] == AppRouteName.waitForApprove) {
-      if (Get.currentRoute == AppRouteName.waitForApprove) {
-        WaitForApproveController controller = Get.find();
-        //to Refresh res status
-        controller.getRes();
+    Get.snackbar(title, body, colorText: Colors.white);
+
+    if (remoteMessage.data.isNotEmpty) {
+      if (remoteMessage.data['routeName'] == AppRouteName.waitForApprove) {
+        if (Get.currentRoute == AppRouteName.waitForApprove) {
+          WaitForApproveController controller = Get.find();
+          //to Refresh res status
+          controller.getRes();
+        }
       }
     }
   }
@@ -50,8 +54,10 @@ Future<void> handlingReceivedNotificationOnForground(
 Future<void> handlingReceivedNotificationOnBackgrundOrTerminated(
     RemoteMessage remoteMessage) async {
   if (remoteMessage.notification != null) {
-    String title = remoteMessage.notification!.title ?? '';
-    String body = remoteMessage.notification!.body ?? '';
+    print(
+        '=================== Received Notification in background or terminated ==================');
+    // String title = remoteMessage.notification!.title ?? '';
+    // String body = remoteMessage.notification!.body ?? '';
   }
 }
 

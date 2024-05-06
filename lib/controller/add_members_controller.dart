@@ -30,7 +30,9 @@ class AddMembersController extends GetxController {
 
   void updateList(String value) {
     following = followingBeforeFiltered
-        .where((element) => element.userUsername!.contains(value))
+        .where((element) =>
+            element.userUsername!.contains(value) ||
+            element.userName!.contains(value))
         .toList();
     update();
   }

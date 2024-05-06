@@ -35,4 +35,10 @@ class FollowUnfollowData {
 
     return response.fold((l) => l, (r) => r);
   }
+
+  getAllStores() async {
+    var response = await crud.getData(ApiLinks.getAllStores);
+
+    return response.fold((l) => l, (r) => r);
+  }
 }

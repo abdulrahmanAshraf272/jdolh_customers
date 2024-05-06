@@ -290,12 +290,12 @@ class HomeController extends GetxController {
 
   Future<void> getAllData() async {
     try {
-      getFriendsActivities();
-      getTopCheckin();
-      getTopRate();
-      getTopRes();
-      getMyOccasion();
-      getAds();
+      getFriendsActivities(); //php done
+      getTopCheckin(); //php done
+      getTopRate(); //php done
+      getTopRes(); //php done
+      getMyOccasion(); //php done
+      getAds(); //php done
     } catch (error) {
       throw error;
     }

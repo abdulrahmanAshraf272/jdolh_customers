@@ -21,6 +21,25 @@ abstract class NotificationSender {
         data: {"routeName": AppRouteName.personProfile, "arg": myId});
   }
 
+  static sendToMyFollower(
+      {required String myId,
+      required int userid,
+      required String title,
+      required String body,
+      required String image,
+      Map<String, dynamic>? data,
+      String? route,
+      int? objectid}) {
+    sendNotification(
+        topic: '$followUserSubscribe-$myId',
+        title: title,
+        body: body,
+        receiverApp: ReceiverApp.customer,
+        data: data);
+    saveNotificationInDB(userid, title, body,
+        '${ApiLinks.customerImage}/$image', route ?? '', objectid ?? 0);
+  }
+
   static sendToCustomer(
       {required int userid,
       required String title,

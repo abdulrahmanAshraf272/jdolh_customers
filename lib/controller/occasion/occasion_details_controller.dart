@@ -107,7 +107,7 @@ class OccasionDetailsController extends GetxController {
         onConfirm: () async {
           Get.back();
           await respondToInvitation(
-              occasionSelected, 'reject', excuse.text, 'تم مغادرة المناسبة');
+              occasionSelected, '2', excuse.text, 'تم مغادرة المناسبة');
 
           //Send notification to creator
           OccasionNotification.rejectOccasion(
@@ -124,7 +124,7 @@ class OccasionDetailsController extends GetxController {
   }
 
   onTapAcceptInvitation() async {
-    await respondToInvitation(occasionSelected, 'accept');
+    await respondToInvitation(occasionSelected, '1');
 
     OccasionNotification.acceptOccasion(
         occasionSelected.occasionUserid!,
@@ -150,7 +150,7 @@ class OccasionDetailsController extends GetxController {
         ),
         onConfirm: () async {
           Get.back();
-          await respondToInvitation(occasionSelected, 'reject', excuse.text);
+          await respondToInvitation(occasionSelected, '2', excuse.text);
           //Send notification to creator
           OccasionNotification.rejectOccasion(
               occasionSelected.occasionUserid!,
@@ -169,21 +169,11 @@ class OccasionDetailsController extends GetxController {
       [String excuse = '', String message = '']) async {
     CustomDialogs.loading();
 
-    await Future.delayed(const Duration(seconds: lateDuration));
-    var response;
-    if (respond == 'accept') {
-      response = await occasionData.responedToInvitation(
-          userId: myServices.sharedPreferences.getString("id")!,
-          occasionId: occasion.occasionId.toString(),
-          respond: '1',
-          excuse: '');
-    } else {
-      response = await occasionData.responedToInvitation(
-          userId: myServices.sharedPreferences.getString("id")!,
-          occasionId: occasion.occasionId.toString(),
-          respond: '2',
-          excuse: excuse);
-    }
+    var response = await occasionData.responedToInvitation(
+        userId: myServices.sharedPreferences.getString("id")!,
+        occasionId: occasion.occasionId.toString(),
+        respond: respond,
+        excuse: excuse);
     EasyLoading.dismiss();
     statusRequest = handlingData(response);
     print('status ==== $statusRequest');

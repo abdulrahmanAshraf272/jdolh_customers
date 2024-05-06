@@ -5,6 +5,16 @@ class ActivityData {
   Crud crud;
   ActivityData(this.crud);
 
+  getHomeScreenData({
+    required String userid,
+  }) async {
+    var response = await crud.postData(ApiLinks.getHomeScreenData, {
+      "userid": userid,
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
+
   getFriendsActivities({
     required String userid,
   }) async {

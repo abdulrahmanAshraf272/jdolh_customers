@@ -224,10 +224,8 @@ class _PersonProfileState extends State<PersonProfile> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    receiveData();
     super.initState();
-    print('init state ================');
-    //final controller = Get.put(PersonProfileController());
   }
 
   @override

@@ -15,17 +15,24 @@ class ActivityNotification {
   String checkinString = 'تسجيل وصول';
   String to = 'الى';
 
-  sendCheckinActivityToFollowers(String placeName) {
-    List<Friend> myFollowers = valuesController.myfollowers;
+  sendCheckinActivityToFollowers(int userid, String placeName) {
+    String myId = myServices.getUserid();
     String myName = myServices.getName();
     String myImage = myServices.getImage();
-    for (int i = 0; i < myFollowers.length; i++) {
-      NotificationSender.sendToCustomer(
-          userid: myFollowers[i].userId!,
-          title: checkinString,
-          body: '$doString $myName $checkinString $to $placeName',
-          image: myImage);
-    }
+    NotificationSender.sendToMyFollower(
+        myId: myId,
+        userid: userid,
+        title: checkinString,
+        body: '$doString $myName $checkinString $to $placeName',
+        image: myImage);
+
+    // for (int i = 0; i < myFollowers.length; i++) {
+    //   NotificationSender.sendToCustomer(
+    //       userid: myFollowers[i].userId!,
+    //       title: checkinString,
+    //       body: '$doString $myName $checkinString $to $placeName',
+    //       image: myImage);
+    // }
   }
 
   sendRateActivityToFollowers(String placeName, String bchName, double rate) {

@@ -46,8 +46,7 @@ class ApiLinks {
   static const String editPersonalDataWithImage =
       '$server/jdolh_customers/auth/edit_personal_data_with_image.php';
 
-  static const String getUser =
-      '$server/jdolh_customers/auth/get_user_data.php';
+  static const String getUser = '$server/jdolh_customers/auth/get_user.php';
 
   // ================= Groups ====================//
   static const String createGroup =
@@ -172,12 +171,16 @@ class ApiLinks {
   static const String getBrandBch =
       '$server/jdolh_customers/get_brand/get_brand_bch.php';
 
+  static const String getHomeScreenData =
+      '$server/jdolh_customers/home/home_screen_data.php';
+
   // == follow bch ==//
   static const String followBch = '$server/jdolh_customers/follow_bch.php';
 
   static const String getAllUsers = '$server/jdolh_customers/get_all_users.php';
 
-  static const getUserData = '$server/jdolh_customers/profile/get_user.php';
+  static const getUserData =
+      '$server/jdolh_customers/profile/get_user_data.php';
 
   // === home ===//
   static const String getTopCheckin =
@@ -197,4 +200,7 @@ class ApiLinks {
       '$server/jdolh_customers/notification/create_notification.php';
   static const String getNotifications =
       '$server/jdolh_customers/notification/get_notifications.php';
+
+  static const String getAllStores =
+      '$server/jdolh_customers/get_all_stores.php';
 }
