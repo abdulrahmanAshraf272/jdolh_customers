@@ -1,14 +1,11 @@
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
-import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/is_date_passed.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/activity.dart';
 import 'package:jdolh_customers/data/data_source/remote/ad.dart';
-import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
-import 'package:jdolh_customers/data/data_source/remote/trend.dart';
 import 'package:jdolh_customers/data/models/activity.dart';
 import 'package:jdolh_customers/data/models/ad.dart';
 import 'package:jdolh_customers/data/models/bch.dart';
@@ -18,19 +15,12 @@ import 'package:jdolh_customers/data/models/occasion.dart';
 import 'package:jdolh_customers/data/models/top_checkin.dart';
 
 class HomeController extends GetxController {
-  StatusRequest statusAds = StatusRequest.none;
   StatusRequest statusRequest = StatusRequest.none;
-  StatusRequest statusFriendsActivity = StatusRequest.none;
-  StatusRequest statusTopRate = StatusRequest.none;
-  StatusRequest statusTopCheckin = StatusRequest.none;
-  StatusRequest statusTopRes = StatusRequest.none;
-  StatusRequest statusOccasion = StatusRequest.none;
 
   MyServices myServices = Get.find();
   ActivityData activityData = ActivityData(Get.find());
-  TrendData trendData = TrendData(Get.find());
   AdData adData = AdData(Get.find());
-  List<Ad> adsBeforeFilter = [];
+
   List<Ad> ads = [];
   List<Activity> friendsActivities = [];
   List<Friend> topRate = [];
@@ -38,41 +28,80 @@ class HomeController extends GetxController {
 
   List<Brand> brands = [];
   List<Bch> bchs = [];
-  OccasionsData occasionData = OccasionsData(Get.find());
-  List<Occasion> occasionsToDisplay = [];
-  List<Occasion> myOccasions = [];
 
-  gotoFriendsActivities() {
-    Get.toNamed(AppRouteName.friendsActivities,
-            arguments: {'activities': friendsActivities})!
-        .then((value) => getFriendsActivities());
+  List<Occasion> occasionsToDisplay = [];
+
+  Future getHomseScreenData() async {
+    statusRequest = StatusRequest.loading;
+    update();
+    var response =
+        await activityData.getHomeScreenData(userid: myServices.getUserid());
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        parseFriendsActivities(response);
+        parseAds(response);
+        parseTopCheckin(response);
+        parseTopRate(response);
+        parseTopRes(response);
+        parseOccasion(response);
+        //List reservationData = response['reservation'];
+      } else {
+        print('failure');
+      }
+    }
+    update();
   }
 
-  Future getMyOccasion() async {
-    statusOccasion = StatusRequest.loading;
-    update();
-    var response = await occasionData
-        .viewOccasions(myServices.sharedPreferences.getString("id")!);
-    await Future.delayed(const Duration(seconds: lateDuration));
-    statusOccasion = handlingData(response);
-    update();
-    print('status ==== $statusOccasion');
-    if (statusOccasion == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        parsingOccasion(response);
-        print('occasions: ${myOccasions.length}');
-        print('occasions: ${occasionsToDisplay.length}');
+  parseFriendsActivities(response) {
+    friendsActivities.clear();
+    List friendsActivitiesData = response['friendsActivities'];
+    friendsActivities =
+        friendsActivitiesData.map((e) => Activity.fromJson(e)).toList();
+  }
+
+  parseAds(response) {
+    ads.clear();
+    List adsData = response['ads'];
+    List<Ad> adsBeforeFilter = adsData.map((e) => Ad.fromJson(e)).toList();
+
+    for (int i = 0; i < adsBeforeFilter.length; i++) {
+      if (adsBeforeFilter[i].endData != null) {
+        if (!isDatePassed(adsBeforeFilter[i].endData!)) {
+          ads.add(adsBeforeFilter[i]);
+        }
       } else {
-        //statusRequest = StatusRequest.failure;
+        //if endDate is null it means it is unlimited ad
+        ads.add(adsBeforeFilter[i]);
       }
     }
   }
 
-  parsingOccasion(response) {
-    myOccasions.clear();
+  parseTopCheckin(response) {
+    topCheckin.clear();
+    List topCheckinData = response['topCheckin'];
+    topCheckin = topCheckinData.map((e) => TopCheckin.fromJson(e)).toList();
+  }
+
+  parseTopRate(response) {
+    topRate.clear();
+    List topRateData = response['topRate'];
+    topRate = topRateData.map((e) => Friend.fromJson(e)).toList();
+  }
+
+  parseTopRes(response) {
+    brands.clear();
+    bchs.clear();
+    List topResData = response['topRes'];
+    brands = topResData.map((e) => Brand.fromJson(e)).toList();
+    bchs = topResData.map((e) => Bch.fromJson(e)).toList();
+  }
+
+  parseOccasion(response) {
     occasionsToDisplay.clear();
-    List responseOccasoins = response['data'];
-    myOccasions = responseOccasoins.map((e) => Occasion.fromJson(e)).toList();
+    List occasionsData = response['occasions'];
+    List<Occasion> myOccasions =
+        occasionsData.map((e) => Occasion.fromJson(e)).toList();
     List<Occasion> occasionInFuture =
         filterAndOrderOccasionInFuture(myOccasions);
     for (var element in occasionInFuture) {
@@ -118,130 +147,14 @@ class HomeController extends GetxController {
   //   }
   // }
 
-  goToOccasionsScreen() {
-    Get.toNamed(AppRouteName.occasions);
-  }
-
-  Future getTopRate() async {
-    statusTopRate = StatusRequest.loading;
-    update();
-    var response = await trendData.getTopRate(myServices.getUserid());
-    await Future.delayed(const Duration(seconds: lateDuration));
-    statusTopRate = handlingData(response);
-    if (statusTopRate == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        topRate.clear();
-        List data = response['data'];
-        topRate = data.map((e) => Friend.fromJson(e)).toList();
-      } else {
-        print('failure');
-      }
-    }
-    update();
-  }
-
-  Future getTopCheckin() async {
-    statusTopCheckin = StatusRequest.loading;
-    update();
-    var response = await trendData.getTopCheckin();
-    await Future.delayed(const Duration(seconds: lateDuration));
-    statusTopCheckin = handlingData(response);
-    if (statusTopCheckin == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        topCheckin.clear();
-        List data = response['data'];
-        topCheckin = data.map((e) => TopCheckin.fromJson(e)).toList();
-      } else {
-        print('failure');
-      }
-    }
-    update();
-  }
-
-  Future getTopRes() async {
-    statusTopRes = StatusRequest.loading;
-    update();
-    var response = await trendData.getTopRes();
-    await Future.delayed(const Duration(seconds: lateDuration));
-    statusTopRes = handlingData(response);
-    if (statusTopRes == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        brands.clear();
-        bchs.clear();
-        List data = response['data'];
-        brands = data.map((e) => Brand.fromJson(e)).toList();
-        bchs = data.map((e) => Bch.fromJson(e)).toList();
-      } else {
-        print('failure');
-      }
-    }
-    update();
-  }
-
-  Future getFriendsActivities() async {
-    statusFriendsActivity = StatusRequest.loading;
-    update();
-    var response =
-        await activityData.getFriendsActivities(userid: myServices.getUserid());
-    await Future.delayed(const Duration(seconds: lateDuration));
-    statusFriendsActivity = handlingData(response);
-    if (statusFriendsActivity == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        parsingDataFromJsonToDartList(response);
-      } else {
-        print('failure');
-      }
-    }
-    update();
-  }
-
-  getAds() async {
-    statusAds = StatusRequest.loading;
-    update();
-    var response = await adData.getAllAds();
-    statusAds = handlingData(response);
-    print('ads status: $statusAds');
-    if (statusAds == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        parseAds(response);
-      } else {
-        statusAds = StatusRequest.failure;
-      }
-    }
-    update();
-  }
-
-  parseAds(response) {
-    adsBeforeFilter.clear();
-    ads.clear();
-    List data = response['data'];
-    adsBeforeFilter = data.map((e) => Ad.fromJson(e)).toList();
-
-    for (int i = 0; i < adsBeforeFilter.length; i++) {
-      if (adsBeforeFilter[i].active == 1) {
-        if (adsBeforeFilter[i].endData != null) {
-          if (!isDatePassed(adsBeforeFilter[i].endData!)) {
-            ads.add(adsBeforeFilter[i]);
-          }
-        } else {
-          //if endDate is null it means it is unlimited ad
-          ads.add(adsBeforeFilter[i]);
-        }
-      }
-    }
-    print('ads before filter: ${adsBeforeFilter.length}');
-    print('ads after filter: ${ads.length}');
-  }
-
-  parsingDataFromJsonToDartList(response) {
-    friendsActivities.clear();
-    List data = response['data'];
-    friendsActivities = data.map((e) => Activity.fromJson(e)).toList();
-  }
-
   gotoExploreBrand() {
     Get.toNamed(AppRouteName.exploreBrand,
         arguments: {"brands": brands, "bchs": bchs});
+  }
+
+  gotoFriendsActivities() {
+    Get.toNamed(AppRouteName.friendsActivities,
+        arguments: {'activities': friendsActivities});
   }
 
   gotoBrand(int index) {
@@ -274,6 +187,10 @@ class HomeController extends GetxController {
     }
   }
 
+  goToOccasionsScreen() {
+    Get.toNamed(AppRouteName.occasions);
+  }
+
   increaseClickCount(int index) async {
     var response =
         await adData.increaseClickNumber(adId: ads[index].adsId.toString());
@@ -288,22 +205,9 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> getAllData() async {
-    try {
-      getFriendsActivities(); //php done
-      getTopCheckin(); //php done
-      getTopRate(); //php done
-      getTopRes(); //php done
-      getMyOccasion(); //php done
-      getAds(); //php done
-    } catch (error) {
-      throw error;
-    }
-  }
-
   @override
   void onInit() {
-    getAllData();
+    getHomseScreenData();
     super.onInit();
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/home_controller.dart';
-import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/data/models/ad.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -15,27 +14,25 @@ class CustomAds extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
-        builder: (controller) => HandlingDataRequest(
-            statusRequest: controller.statusAds,
-            widget: controller.ads.isEmpty
-                ? const SizedBox()
-                : SizedBox(
-                    height: Get.width * 0.55,
-                    child: CarouselSlider.builder(
-                      itemCount: controller.ads.length,
-                      options: CarouselOptions(
-                        autoPlay: true,
-                        aspectRatio: 2.1,
-                        enlargeCenterPage: true,
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        autoPlayAnimationDuration: const Duration(seconds: 1),
-                      ),
-                      itemBuilder: (context, index, realIndex) => AdListItem(
-                        ad: controller.ads[index],
-                        onTap: () => controller.onTapAd(index),
-                      ),
-                    ),
-                  )));
+        builder: (controller) => controller.ads.isEmpty
+            ? const SizedBox()
+            : SizedBox(
+                height: Get.width * 0.57,
+                child: CarouselSlider.builder(
+                  itemCount: controller.ads.length,
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    aspectRatio: 1.9,
+                    enlargeCenterPage: true,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    autoPlayAnimationDuration: const Duration(seconds: 1),
+                  ),
+                  itemBuilder: (context, index, realIndex) => AdListItem(
+                    ad: controller.ads[index],
+                    onTap: () => controller.onTapAd(index),
+                  ),
+                ),
+              ));
   }
 }
 

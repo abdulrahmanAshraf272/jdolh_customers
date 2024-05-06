@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/auth/verifycode_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 
 class VerifycodeScreen extends StatelessWidget {
   const VerifycodeScreen({super.key});
@@ -32,7 +29,7 @@ class VerifycodeScreen extends StatelessWidget {
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 25),
                         child: Text(
-                            'من فضلك ادخل الرمز المكون من 6 خانات الذي تم ارسلة عبر whatsapp ',
+                            'من فضلك ادخل الرمز المكون من 6 خانات الذي تم ارسلة عبر بريدك الالكتروني ',
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.bodyLarge),
                       ),
