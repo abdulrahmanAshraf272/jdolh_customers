@@ -1,46 +1,108 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
 import 'package:jdolh_customers/controller/brand_profile/reservation/res_parent_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'dart:async';
 
 import 'package:jdolh_customers/core/constants/strings.dart';
-import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
-import 'package:jdolh_customers/data/models/reservation_invitors.dart';
+import 'package:jdolh_customers/data/models/res_invitors.dart';
 
 class ResProductController extends ResParentController {
+  List<Resinvitors> resInvitors = [];
+  BrandProfileController brandProfileController =
+      Get.put(BrandProfileController());
   //Checker variables
 
   // Create a list of invitations
 
-  sendInvitations() async {
-    List<Resinvitors> invitations = [
-      Resinvitors(
-          resid: 27, userid: 5, type: 1, status: 0, cost: 20.4, creatorid: 18),
-      Resinvitors(
-          resid: 27, userid: 5, type: 1, status: 0, cost: 20.4, creatorid: 18),
-      Resinvitors(
-          resid: 27, userid: 5, type: 1, status: 0, cost: 20.4, creatorid: 18),
-      // Add more invitations as needed
-    ];
+  List<Friend> members = [];
+  TextEditingController extraSeats = TextEditingController();
 
-    var response = await resData.sendInvitations(invitations);
-    statusRequest = handlingData(response);
-    print('add res location $statusRequest');
-    if (statusRequest == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        print('success');
-        return true;
-      } else {
-        statusRequest = StatusRequest.failure;
-      }
+  onTapAddMembers() async {
+    final result = await Get.toNamed(AppRouteName.addMembers,
+        arguments: {'members': members});
+    if (result is Friend) {
+      members.add(result);
+      Resinvitors invitor = Resinvitors(
+          userid: result.userId,
+          userName: result.userName,
+          userImage: result.userImage,
+          type: 0,
+          cost: 0);
+      resInvitors.add(invitor);
+      update();
     }
   }
 
-  List<Friend> members = [];
-  TextEditingController extraSeats = TextEditingController();
+  gotoInvitorsBills() {
+    num totalCost = brandProfileController.totalPrice +
+        resCost +
+        brandProfileController.taxCost;
+    int totalPeopleNo = resInvitors.length + 1; // 1 is me.
+    if (extraSeats.text != '') {
+      totalPeopleNo += int.parse(extraSeats.text);
+    }
+    num personCost = totalCost / totalPeopleNo;
+    int numberOfNoCostPeople = 0;
+    int numberOfDividePeople = 0;
+    int numberOfNormalPeople = 0;
+    for (int i = 0; i < resInvitors.length; i++) {
+      switch (resInvitors[i].type) {
+        case 0:
+          numberOfNormalPeople++;
+          break;
+        case 1:
+          numberOfDividePeople++;
+          break;
+        case 2:
+          numberOfNoCostPeople++;
+          break;
+      }
+    }
+    numberOfDividePeople += 1; //1 is me.
+    if (extraSeats.text != '') {
+      numberOfNoCostPeople += int.parse(extraSeats.text);
+    }
+
+    num billOfNoCostPeople = personCost * numberOfNoCostPeople;
+    //======
+    num costOfNormalPeople = personCost;
+    num costOfnoCostPeople = 0;
+    num costOfDividePeople =
+        personCost + (billOfNoCostPeople / numberOfDividePeople);
+
+    print('total cost: $totalCost');
+    print('total people: $totalPeopleNo');
+    print('person cost: $personCost');
+    print('==========');
+    print('number of noCostPeople: $numberOfNoCostPeople');
+    print('number of dividePeople: $numberOfDividePeople');
+    print('number of normalPeople: $numberOfNormalPeople');
+    print('======');
+    print('bill of noCostPeople: $billOfNoCostPeople');
+    print('===');
+    print('cost of normal person (type = 0): $costOfNormalPeople');
+    print('cost of dividedCostPeople (type = 1): $costOfDividePeople');
+    print('cost of noCostPeople(type = 2): $costOfnoCostPeople');
+  }
+
+  onTapPayForHimself(int index) {
+    resInvitors[index].type = 0;
+    update();
+  }
+
+  onTapDivideBill(int index) {
+    resInvitors[index].type = 1;
+    update();
+  }
+
+  onTapWithoutPayBill(int index) {
+    resInvitors[index].type = 2;
+    update();
+  }
 
   // === Add Invitors===//
   switchWithInvitors(bool value) {
@@ -49,12 +111,8 @@ class ResProductController extends ResParentController {
   }
 
   removeMember(index) {
-    members.remove(members[index]);
+    resInvitors.removeAt(index);
     update();
-  }
-
-  onTapAddMembers() {
-    Get.toNamed(AppRouteName.addResInvitors)!.then((value) => update());
   }
 
   onTapConfirmRes() async {

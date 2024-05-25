@@ -68,18 +68,25 @@ Future<void> sendNotification({
   }
 }
 
-Future saveNotificationInDB(int userid, String title, String body, String image,
-    String route, int objectid) async {
-  NotificationData notificationData = NotificationData(Get.find());
+Future saveNotification(String userid, String title, String body, String image,
+    String route, String objectid, String datetime) async {
+  NotificationData notificationData = NotificationData();
   StatusRequest statusRequest = StatusRequest.none;
 
+  print('from saveNotification =======');
+  print(route);
+  print(objectid);
+  print(image);
+  print(datetime);
+
   var response = await notificationData.createNotification(
-      userid: userid.toString(),
+      userid: userid,
       title: title,
       body: body,
       image: image,
       route: route,
-      objectid: objectid.toString());
+      objectid: objectid,
+      datetime: datetime);
   statusRequest = handlingData(response);
   print('save notification status $statusRequest');
   if (statusRequest == StatusRequest.success) {

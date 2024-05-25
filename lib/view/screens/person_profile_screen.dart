@@ -5,14 +5,11 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
-import 'package:jdolh_customers/controller/person_profile_controller.dart';
 import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
-import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
-import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/notification/notification_sender/notification_sender.dart';
 import 'package:jdolh_customers/core/notification/notification_subscribtion.dart';
@@ -21,9 +18,6 @@ import 'package:jdolh_customers/data/models/activity.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/view/screens/followers_and_following_screen.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/activity.dart';
-import 'package:jdolh_customers/view/widgets/common/ListItems/comment.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 import 'package:jdolh_customers/view/widgets/more_screen/rect_button.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/services/services.dart';
@@ -51,7 +45,7 @@ class _PersonProfileState extends State<PersonProfile> {
   ValuesController valuesController = Get.put(ValuesController());
   List<Friend> followers = [];
   List<Friend> following = [];
-  late Friend friend;
+  Friend? friend;
 
   String image = '';
 
@@ -60,10 +54,10 @@ class _PersonProfileState extends State<PersonProfile> {
     setState(() {});
     followers.clear();
     following.clear();
-    var response = await personProfileData.postData(friend.userId.toString(),
+    var response = await personProfileData.postData(friend!.userId.toString(),
         myServices.sharedPreferences.getString("id")!);
     statusRequest = handlingData(response);
-    print('status ==== $statusRequest');
+    print('getFollowersAndFollowing ==== $statusRequest');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         parseData(response);
@@ -90,9 +84,10 @@ class _PersonProfileState extends State<PersonProfile> {
       statusFriendsActivity = StatusRequest.loading;
     });
     var response = await activityData.getUserActivities(
-        userid: friend.userId.toString(), myId: myServices.getUserid());
-    await Future.delayed(const Duration(seconds: lateDuration));
+        userid: friend!.userId.toString(), myId: myServices.getUserid());
+
     statusFriendsActivity = handlingData(response);
+    print('statusFriendsActivity $statusFriendsActivity');
     if (statusFriendsActivity == StatusRequest.success) {
       if (response['status'] == 'success') {
         parsingDataFromJsonToDartList(response);
@@ -132,11 +127,20 @@ class _PersonProfileState extends State<PersonProfile> {
       likeUnlikeActivity(
           friendsActivities[index].type!, friendsActivities[index].id!, 0);
       friendsActivities[index].isLiked = 0;
+      friendsActivities[index].likesNo = friendsActivities[index].likesNo! - 1;
     } else {
       likeUnlikeActivity(
           friendsActivities[index].type!, friendsActivities[index].id!, 1);
       friendsActivities[index].isLiked = 1;
+      friendsActivities[index].likesNo = friendsActivities[index].likesNo! + 1;
+      NotificationSender.sendFollowingPersonLikeActivity(
+          friend!.userId!,
+          int.parse(myServices.getUserid()),
+          myServices.getName(),
+          myServices.getImage(),
+          friendsActivities[index].type!);
     }
+    setState(() {});
   }
 
   likeUnlikeActivity(String activityType, int activityId, int like) async {
@@ -162,16 +166,17 @@ class _PersonProfileState extends State<PersonProfile> {
   }
 
   followUnfollow() {
-    followUnfollowRequest(friend.userId.toString());
-    valuesController.addAndRemoveFollowing(friend);
-    if (friend.following!) {
-      friend.following = false;
-      NotificationSubscribtion.unfollowUserSubcribeToTopic(friend.userId);
+    followUnfollowRequest(friend!.userId.toString());
+    valuesController.addAndRemoveFollowing(friend!);
+    if (friend!.following!) {
+      friend!.following = false;
+      NotificationSubscribtion.unfollowUserSubcribeToTopic(friend!.userId);
     } else {
-      friend.following = true;
-      NotificationSubscribtion.followUserSubcribeToTopic(friend.userId);
+      friend!.following = true;
+      NotificationSubscribtion.followUserSubcribeToTopic(friend!.userId);
+
       NotificationSender.sendFollowingPerson(
-          friend.userId,
+          friend!.userId,
           int.parse(myServices.getUserid()),
           myServices.getName(),
           myServices.getImage());
@@ -192,16 +197,20 @@ class _PersonProfileState extends State<PersonProfile> {
     }
   }
 
-  getUser(int userid) async {
+  getUser(userid) async {
     statusGetUser = StatusRequest.loading;
     setState(() {});
+    print(userid.runtimeType);
+    print(userid);
+    print('===============');
     var response = await personProfileData.getUserData(
         myId: myServices.getUserid(), userid: userid.toString());
     statusGetUser = handlingData(response);
-    print('get user data status: $statusGetUser');
+    print('statusGetUser $statusGetUser');
     if (statusGetUser == StatusRequest.success) {
-      if (response['status' == 'success']) {
+      if (response['status'] == 'success') {
         friend = Friend.fromJson(response['data']);
+        print('====================su');
       } else {
         statusGetUser = StatusRequest.failure;
       }
@@ -211,13 +220,17 @@ class _PersonProfileState extends State<PersonProfile> {
 
   receiveData() async {
     dynamic argument = Get.arguments;
+
     if (argument is Friend) {
+      print('====================1');
       friend = Get.arguments;
-    } else if (argument is int) {
+      setState(() {});
+    } else {
+      print('====================2');
       await getUser(argument);
     }
 
-    image = friend.userImage ?? '';
+    image = friend!.userImage ?? '';
     getFollowersAndFollowing();
     getUserActivities();
   }
@@ -230,15 +243,14 @@ class _PersonProfileState extends State<PersonProfile> {
 
   @override
   Widget build(BuildContext context) {
-    print('calling function');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
       ),
       body: SafeArea(
-          child: HandlingDataView(
-              statusRequest: statusGetUser,
-              widget: Column(
+        child: statusGetUser != StatusRequest.success && friend == null
+            ? HandlingDataView2(statusRequest: statusGetUser)
+            : Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -272,7 +284,7 @@ class _PersonProfileState extends State<PersonProfile> {
                                 children: [
                                   const SizedBox(height: 3),
                                   AutoSizeText(
-                                    friend.userName ?? '',
+                                    friend!.userName ?? '',
                                     maxLines: 1,
                                     style: TextStyle(
                                         fontSize: 16.sp,
@@ -280,7 +292,7 @@ class _PersonProfileState extends State<PersonProfile> {
                                   ),
                                   const SizedBox(height: 3),
                                   Text(
-                                    friend.userUsername!,
+                                    friend!.userUsername!,
                                     style: TextStyle(
                                         fontSize: 12.sp,
                                         fontWeight: FontWeight.w500,
@@ -295,7 +307,7 @@ class _PersonProfileState extends State<PersonProfile> {
                       ),
                       FollowButton(
                           onTap: () => followUnfollow(),
-                          following: friend.following!),
+                          following: friend!.following!),
                       const SizedBox(width: 20)
                     ],
                   ),
@@ -335,7 +347,7 @@ class _PersonProfileState extends State<PersonProfile> {
                       const SizedBox(width: 15),
                       Expanded(
                         child: RectButton(
-                            text: 'متابعين',
+                            text: 'متابعين'.tr,
                             number: followers.length,
                             onTap: () {
                               goToFollwersAndFollowingScreen(true);
@@ -345,7 +357,7 @@ class _PersonProfileState extends State<PersonProfile> {
                       ),
                       Expanded(
                         child: RectButton(
-                            text: 'متابعون',
+                            text: 'متابعون'.tr,
                             number: following.length,
                             onTap: () {
                               goToFollwersAndFollowingScreen(false);
@@ -355,7 +367,7 @@ class _PersonProfileState extends State<PersonProfile> {
                       ),
                       Expanded(
                         child: RectButton(
-                            text: 'التقييم',
+                            text: 'التقييم'.tr,
                             number: onlyRatesActivities.length,
                             onTap: () {
                               gotoFriendsActivities();
@@ -370,7 +382,7 @@ class _PersonProfileState extends State<PersonProfile> {
                     statusRequest: statusFriendsActivity,
                     widget: Expanded(
                       child: friendsActivities.isEmpty
-                          ? const Center(child: Text('لا يوجد نشاطات'))
+                          ? Center(child: Text('لا يوجد نشاطات'.tr))
                           : ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
@@ -379,19 +391,15 @@ class _PersonProfileState extends State<PersonProfile> {
                                     cardStatus: 1,
                                     activity: friendsActivities[index],
                                     onTapLike: () {
-                                      if (friendsActivities[index].isLiked ==
-                                          1) {
-                                        friendsActivities[index].isLiked = 0;
-                                      } else {
-                                        friendsActivities[index].isLiked = 1;
-                                      }
+                                      onTapLike(index);
                                     },
                                   )),
                     ),
                   ),
                   const SizedBox(height: 20)
                 ],
-              ))),
+              ),
+      ),
     );
   }
 }
@@ -436,7 +444,7 @@ class FollowButton extends StatelessWidget {
               child: AutoSizeText(
                 maxLines: 1,
                 minFontSize: 6,
-                following ? 'الغاء المتابعة' : 'متابعة',
+                following ? 'الغاء المتابعة'.tr : 'متابعة'.tr,
                 style: TextStyle(
                     fontSize: 11.sp,
                     color: Colors.white,

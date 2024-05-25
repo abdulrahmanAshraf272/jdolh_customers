@@ -16,11 +16,11 @@ class NotificationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(NotificationsController());
     return Scaffold(
-      appBar: customAppBar(title: 'الإشعارات'),
+      appBar: customAppBar(title: 'الإشعارات'.tr),
       body: GetBuilder<NotificationsController>(
         builder: (controller) => HandlingDataView(
             statusRequest: controller.statusRequest,
-            emptyText: 'لا توجد اشعارات',
+            emptyText: 'لا توجد اشعارات'.tr,
             widget: ListView.builder(
               itemCount: controller.notifications.length,
               itemBuilder: (context, index) => NotificationListItem(
@@ -56,17 +56,19 @@ class NotificationListItem extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10), color: AppColors.gray),
         child: Row(
+          // mainAxisAlignment: MainAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: image != ''
                   ? FadeInImage.assetNetwork(
-                      height: 34.w,
-                      width: 34.w,
+                      height: 42.w,
+                      width: 42.w,
                       placeholder: 'assets/images/loading2.gif',
                       image: image,
                       fit: BoxFit.cover,
@@ -74,13 +76,14 @@ class NotificationListItem extends StatelessWidget {
                   : Image.asset(
                       'assets/images/logo.png',
                       fit: BoxFit.cover,
-                      height: 34.w,
-                      width: 34.w,
+                      height: 40.w,
+                      width: 40.w,
                     ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AutoSizeText(title,
                       maxLines: 1,
@@ -92,7 +95,7 @@ class NotificationListItem extends StatelessWidget {
                       minFontSize: 10,
                       overflow: TextOverflow.ellipsis,
                       style: titleSmall2),
-                  AutoSizeText(date, style: titleSmall3Gray),
+                  AutoSizeText(date, style: titleSmall2),
                 ],
               ),
             ),

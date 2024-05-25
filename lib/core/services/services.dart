@@ -13,13 +13,13 @@ class MyServices extends GetxService {
   Future<MyServices> init() async {
     //Firebase
     await Firebase.initializeApp(); // Initialize Firebase
+    sharedPreferences = await SharedPreferences.getInstance();
     requestNotificationPermission();
     onClickNotificationOnTerminated();
     onClickNotificatoinOnBackground();
     handlingNotificationOnForground();
     handlingNotificationOnBackgroundAndTerminated();
 
-    sharedPreferences = await SharedPreferences.getInstance();
     //locationPermissionRequest();
     return this;
   }

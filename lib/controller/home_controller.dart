@@ -3,6 +3,7 @@ import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/is_date_passed.dart';
+import 'package:jdolh_customers/core/notification/notification_sender/notification_sender.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/activity.dart';
 import 'package:jdolh_customers/data/data_source/remote/ad.dart';
@@ -12,6 +13,7 @@ import 'package:jdolh_customers/data/models/bch.dart';
 import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
+import 'package:jdolh_customers/data/models/reservation.dart';
 import 'package:jdolh_customers/data/models/top_checkin.dart';
 
 class HomeController extends GetxController {
@@ -29,7 +31,46 @@ class HomeController extends GetxController {
   List<Brand> brands = [];
   List<Bch> bchs = [];
 
+  List<Reservation> reservation = [];
+
   List<Occasion> occasionsToDisplay = [];
+
+  onTapLike(int index) {
+    if (friendsActivities[index].isLiked == 1) {
+      likeUnlikeActivity(
+          friendsActivities[index].type!, friendsActivities[index].id!, 0);
+      friendsActivities[index].isLiked = 0;
+      friendsActivities[index].likesNo = friendsActivities[index].likesNo! - 1;
+    } else {
+      likeUnlikeActivity(
+          friendsActivities[index].type!, friendsActivities[index].id!, 1);
+      friendsActivities[index].isLiked = 1;
+      friendsActivities[index].likesNo = friendsActivities[index].likesNo! + 1;
+      NotificationSender.sendFollowingPersonLikeActivity(
+          friendsActivities[index].userid,
+          int.parse(myServices.getUserid()),
+          myServices.getName(),
+          myServices.getImage(),
+          friendsActivities[index].type!);
+    }
+    update();
+  }
+
+  likeUnlikeActivity(String activityType, int activityId, int like) async {
+    var response = await activityData.likeUnlikeActivity(
+        userid: myServices.getUserid(),
+        activityType: activityType,
+        activityId: activityId.toString(),
+        like: like.toString());
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('like/unlike success');
+      } else {
+        print('like/unlike failure');
+      }
+    }
+  }
 
   Future getHomseScreenData() async {
     statusRequest = StatusRequest.loading;
@@ -45,12 +86,26 @@ class HomeController extends GetxController {
         parseTopRate(response);
         parseTopRes(response);
         parseOccasion(response);
-        //List reservationData = response['reservation'];
+        parseReservations(response);
       } else {
         print('failure');
       }
     }
     update();
+  }
+
+  parseReservations(response) {
+    List reservationData = response['reservation'];
+    List<Reservation> res =
+        reservationData.map((e) => Reservation.fromJson(e)).toList();
+    for (int i = 0; i < res.length; i++) {
+      if (res[i].resStatus == 3) {
+        String datetime = '${res[i].resDate} ${res[i].resTime}';
+        if (!isDateTimePassed(datetime)) {
+          reservation.add(res[i]);
+        }
+      }
+    }
   }
 
   parseFriendsActivities(response) {
@@ -150,6 +205,10 @@ class HomeController extends GetxController {
   gotoExploreBrand() {
     Get.toNamed(AppRouteName.exploreBrand,
         arguments: {"brands": brands, "bchs": bchs});
+  }
+
+  gotoReservations() {
+    Get.toNamed(AppRouteName.schedule);
   }
 
   gotoFriendsActivities() {

@@ -18,22 +18,26 @@ class ReservationNotification {
   String cancelReservationString = 'لديك حجز ملغي';
   String canelString = 'الغى';
 
-  sendReserveRequistNotification(int bchid, String date) {
+  sendReserveRequistNotification(int bchid, String date, int resid) {
     String myUsername = myServices.getUsername();
     NotificationSender.sendToBch(
         bchid: bchid,
         title: reserveOrderString,
         body:
-            '$wantString $myUsername $reserveString $inString $yourStoreString $dateString $date');
+            '$wantString $myUsername $reserveString $inString $yourStoreString $dateString $date',
+        routeName: '/reservationDetails',
+        objectId: resid);
   }
 
-  sendReserveNotification(int bchid, String date) {
+  sendReserveNotification(int bchid, String date, int resid) {
     String myUsername = myServices.getUsername();
     NotificationSender.sendToBch(
         bchid: bchid,
         title: newReservationString,
         body:
-            '$didString $didReserveString $myUsername $inString $yourStoreString $dateString $date');
+            '$didString $didReserveString $myUsername $inString $yourStoreString $dateString $date',
+        routeName: '/reservationDetails',
+        objectId: resid);
   }
 
   cancelReservation(int bchid, String date) {
@@ -42,6 +46,7 @@ class ReservationNotification {
         bchid: bchid,
         title: cancelReservationString,
         body:
-            '$didString $canelString $myUsername $reserveString $inString $yourStoreString $dateString $date');
+            '$didString $canelString $myUsername $reserveString $inString $yourStoreString $dateString $date',
+        routeName: '/reservations');
   }
 }

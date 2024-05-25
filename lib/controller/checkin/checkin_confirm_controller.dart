@@ -1,11 +1,9 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
-import 'package:jdolh_customers/core/functions/dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/notification/notification_sender/activity_notification.dart';
 import 'package:jdolh_customers/core/services/services.dart';
@@ -64,8 +62,8 @@ class CheckinConfirmController extends GetxController {
         Get.offAllNamed(AppRouteName.mainScreen);
 
         ActivityNotification activityNotification = ActivityNotification();
-        // activityNotification
-        //     .sendCheckinActivityToFollowers(placeSelected.name ?? '');
+        activityNotification
+            .sendCheckinActivityToFollowers(placeSelected.name ?? '');
         // AwesomeDialog(
         //   context: context,
         //   dialogType: DialogType.success,

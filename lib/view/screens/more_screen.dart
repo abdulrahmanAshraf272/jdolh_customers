@@ -38,8 +38,8 @@ class _MoreScreenState extends State<MoreScreen> {
 
   logout() {
     Get.defaultDialog(
-        title: 'تسجيل خروج',
-        middleText: 'هل تريد تسجيل الخروج؟',
+        title: 'تسجيل الخروج'.tr,
+        middleText: 'هل تريد تسجيل الخروج؟'.tr,
         actions: [
           ElevatedButton(
             onPressed: () {
@@ -51,25 +51,25 @@ class _MoreScreenState extends State<MoreScreen> {
               );
               myServices.sharedPreferences.setString("step", "1");
             },
-            child: const Text('نعم'),
+            child: Text('نعم'.tr),
           ),
           ElevatedButton(
               onPressed: () {
                 Get.back();
               },
-              child: const Text('الغاء'))
+              child: Text('الغاء'.tr))
         ]);
   }
 
   gotoFollowers() {
-    Get.to(() =>
-            FollowersAndFollowingScreen(title: 'متابعين', data: myfollowers))!
+    Get.to(() => FollowersAndFollowingScreen(
+            title: 'متابعين'.tr, data: myfollowers))!
         .then((value) => getFollowersFollowingFromValuesController());
   }
 
   gotoFollowing() {
-    Get.to(() =>
-            FollowersAndFollowingScreen(title: 'متابعون', data: myfollowing))!
+    Get.to(() => FollowersAndFollowingScreen(
+            title: 'متابعون'.tr, data: myfollowing))!
         .then((value) => getFollowersFollowingFromValuesController());
   }
 
@@ -149,7 +149,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 const SizedBox(width: 15),
                 Expanded(
                   child: RectButton(
-                      text: 'متابعين',
+                      text: 'متابعين'.tr,
                       number: myfollowers.length,
                       onTap: () {
                         gotoFollowers();
@@ -159,7 +159,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 ),
                 Expanded(
                   child: RectButton(
-                      text: 'متابعون',
+                      text: 'متابعون'.tr,
                       number: myfollowing.length,
                       onTap: () {
                         gotoFollowing();
@@ -169,7 +169,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 ),
                 Expanded(
                   child: RectButton(
-                      text: 'الأنشطة',
+                      text: 'الأنشطة'.tr,
                       number: myActivities.length,
                       onTap: () {
                         gotoFriendsActivities();
@@ -182,7 +182,7 @@ class _MoreScreenState extends State<MoreScreen> {
             ),
             const SizedBox(height: 20),
             SettingsButton(
-                text: 'تعديل البيانات الشخصية',
+                text: 'البيانات الشخصية'.tr,
                 onTap: () {
                   Get.toNamed(AppRouteName.editPersonalData);
                 },
@@ -192,47 +192,51 @@ class _MoreScreenState extends State<MoreScreen> {
             //     onTap: () {},
             //     iconData: Icons.people_alt_rounded),
             SettingsButton(
-                text: 'المجموعات',
+                text: 'المجموعات'.tr,
                 onTap: () {
                   Get.toNamed(AppRouteName.gourps);
                 },
                 iconData: Icons.group),
             SettingsButton(
-                text: 'جهات الإتصال',
+                text: 'جهات الإتصال'.tr,
                 onTap: () {
                   Get.toNamed(AppRouteName.myContacts);
                 },
                 iconData: Icons.send),
-            // SettingsButton(
-            //     text: 'اللغة', onTap: () {}, iconData: Icons.language),
             SettingsButton(
-                text: 'المحفظة',
+                text: 'اللغة'.tr,
+                onTap: () {
+                  Get.toNamed(AppRouteName.language);
+                },
+                iconData: Icons.language),
+            SettingsButton(
+                text: 'المحفظة'.tr,
                 onTap: () {
                   Get.toNamed(AppRouteName.walletDetails);
                 },
                 iconData: Icons.wallet),
             SettingsButton(
-                text: 'الحجوزات السابقة',
+                text: 'الحجوزات السابقة'.tr,
                 onTap: () {
                   Get.toNamed(AppRouteName.resArchive);
                 },
                 iconData: Icons.task),
             SettingsButton(
-                text: 'المناسبات السابقة',
+                text: 'المناسبات السابقة'.tr,
                 onTap: () {
                   Get.toNamed(AppRouteName.finishedOccasions);
                 },
                 iconData: Icons.event),
             SettingsButton(
-                text: 'الفواتير',
+                text: 'الفواتير'.tr,
                 onTap: () {
                   Get.toNamed(AppRouteName.bills);
                 },
                 iconData: Icons.receipt),
             SettingsButton(
-                text: 'تواصل معنا', onTap: () {}, iconData: Icons.receipt),
+                text: 'تواصل معنا'.tr, onTap: () {}, iconData: Icons.receipt),
             SettingsButton(
-              text: 'تسجيل الخروج',
+              text: 'تسجيل الخروج'.tr,
               onTap: () {
                 logout();
               },

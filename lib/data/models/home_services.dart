@@ -1,7 +1,7 @@
 class HomeServices {
   int? id;
   int? bchid;
-  int? cost;
+  double? cost;
   int? maxDistance;
   String? info;
   int? reviewRes;
@@ -19,7 +19,10 @@ class HomeServices {
   HomeServices.fromJson(Map<String, dynamic> json) {
     id = json['homeservices_id'];
     bchid = json['homeservices_bchid'];
-    cost = json['homeservices_cost'];
+    if (json['homeservices_cost'] != null) {
+      cost = json['homeservices_cost'].toDouble();
+    }
+
     maxDistance = json['homeservices_maxDistance'];
     info = json['homeservices_info'];
     reviewRes = json['homeservices_reviewRes'];

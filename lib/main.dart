@@ -9,6 +9,7 @@ import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/routes.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +18,7 @@ void main() async {
   await initialServices();
 
   initializeDateFormatting('ar');
+  await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
 

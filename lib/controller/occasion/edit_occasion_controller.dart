@@ -70,7 +70,8 @@ class EditOccasionController extends GetxController {
             myServices.getName(),
             myServices.getImage(),
             occasionTitle.text,
-            occasionSelected.occasionId!);
+            occasionSelected.occasionId!,
+            "$selectedDateFormatted $selectedTimeFormatted");
         Get.back();
       } else {
         Get.back();

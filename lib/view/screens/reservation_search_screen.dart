@@ -1,25 +1,16 @@
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/reservation_search_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
-import 'package:jdolh_customers/core/class/status_request.dart';
-import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
-import 'package:jdolh_customers/core/constants/text_syles.dart';
 
 import 'package:jdolh_customers/view/widgets/common/ListItems/brand_detailed.dart';
 import 'package:jdolh_customers/view/widgets/common/apptDetails/address_title.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_dropdown.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';
 
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_dropdown_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/reservation_search/dropdown_brand_subtype.dart';
 import 'package:jdolh_customers/view/widgets/reservation_search/dropdown_brand_type.dart';
@@ -33,43 +24,43 @@ class ReservationSearchScreen extends StatelessWidget {
     Get.put(ReservationSearchController());
     return GetBuilder<ReservationSearchController>(
         builder: (controller) => Scaffold(
-              appBar: customAppBar(title: 'الحجز', withBack: false),
+              appBar: customAppBar(title: 'الحجز'.tr, withBack: false),
               body: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     LargeToggleButtons(
-                        optionOne: 'حجز تقليدي',
-                        optionTwo: 'خدمات منزلية',
+                        optionOne: 'حجز تقليدي'.tr,
+                        optionTwo: 'خدمات منزلية'.tr,
                         onTapOne: () => controller.setIsHomeService(false),
                         onTapTwo: () => controller.setIsHomeService(true)),
                     const SizedBox(height: 20),
-                    const CustomSmallTitle(title: 'نوع المتجر'),
+                    CustomSmallTitle(title: 'نوع المتجر'.tr),
                     const DropdownBrandTypes(),
                     Row(
                       children: [
                         const SizedBox(width: 20),
-                        const Expanded(
+                        Expanded(
                             child: Column(
                           children: [
                             CustomSmallTitle(
-                                title: 'النوع الفرعي', rightPdding: 0),
-                            DropdownBrandSubtypes(),
+                                title: 'النوع الفرعي'.tr, rightPdding: 0),
+                            const DropdownBrandSubtypes(),
                           ],
                         )),
                         const SizedBox(width: 10),
                         Expanded(
                             child: Column(
                           children: [
-                            const CustomSmallTitle(
-                                title: 'المدينة', rightPdding: 0),
+                            CustomSmallTitle(
+                                title: 'المدينة'.tr, rightPdding: 0),
                             CustomDropdown(
                               items: cities,
                               horizontalMargin: 0,
                               verticalMargin: 10,
                               withInitValue: true,
                               //width: Get.width / 2.2,
-                              title: 'اختر المدينة',
+                              title: 'اختر المدينة'.tr,
                               onChanged: (String? value) {
                                 // Handle selected value
                                 controller.city = value!;
@@ -83,12 +74,13 @@ class ReservationSearchScreen extends StatelessWidget {
                     ),
                     SearchButton(onTap: () => controller.searchBrand()),
                     AddressTitle(
-                        addressTitle: 'النتائج-${controller.brands.length}',
+                        addressTitle:
+                            '${'النتائج-'.tr} ${controller.brands.length}',
                         onTap: () {}),
                     HandlingDataView(
                       statusRequest: controller.statusRequest,
                       widget: ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: controller.brands.length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) =>

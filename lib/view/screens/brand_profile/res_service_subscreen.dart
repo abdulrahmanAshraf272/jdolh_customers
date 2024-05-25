@@ -3,6 +3,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/reservation/res_parent_controller.dart';
 import 'package:jdolh_customers/controller/brand_profile/reservation/res_service_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
@@ -104,7 +105,7 @@ class BillDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final resServiceController = Get.put(ResServiceConltroller());
+    final resParentController = Get.put(ResParentController());
     return GetBuilder<BrandProfileController>(builder: (controller) {
       return Column(
         children: [
@@ -114,11 +115,11 @@ class BillDetails extends StatelessWidget {
           ),
           BillRow(
             title: 'رسوم الحجز',
-            price: resServiceController.resCost,
+            price: resParentController.resCost,
           ),
           BillRow(
             title: 'الإجمالي غير شامل الضريبة',
-            price: controller.totalPrice + resServiceController.resCost,
+            price: controller.totalPrice + resParentController.resCost,
           ),
           BillRow(
             title: 'ضريبة القيمة المضافة',
@@ -128,7 +129,7 @@ class BillDetails extends StatelessWidget {
             lastRow: true,
             title: 'الإجمالي شامل الضريبة',
             price: controller.totalPrice +
-                resServiceController.resCost +
+                resParentController.resCost +
                 controller.taxCost,
           ),
         ],

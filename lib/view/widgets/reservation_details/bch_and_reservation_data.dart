@@ -6,7 +6,6 @@ import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/schedule/reservation_details_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
-import 'package:jdolh_customers/core/functions/open_url_link.dart';
 
 class BchDataHeader extends StatelessWidget {
   const BchDataHeader({
@@ -49,7 +48,7 @@ class BchDataHeader extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             AutoSizeText(
-                                'حجز ${controller.reservation.brandName ?? ''}',
+                                '${'حجز'.tr} ${controller.reservation.brandName ?? ''}',
                                 maxLines: 1,
                                 minFontSize: 15,
                                 overflow: TextOverflow.ellipsis,
@@ -113,7 +112,8 @@ class BchLocation extends StatelessWidget {
                                     size: 18,
                                   ),
                                   const SizedBox(width: 3),
-                                  Text('عرض على الخريطة', style: titleSmall2),
+                                  Text('عرض على الخريطة'.tr,
+                                      style: titleSmall2),
                                 ],
                               ),
                             ),
@@ -157,7 +157,7 @@ class ReservationData extends StatelessWidget {
         children: [
           Align(
               alignment: Alignment.center,
-              child: Text('بيانات الحجز',
+              child: Text('بيانات الحجز'.tr,
                   style: TextStyle(
                     //fontWeight: FontWeight.w700,
                     fontSize: 16.sp,
@@ -166,14 +166,14 @@ class ReservationData extends StatelessWidget {
           const Divider(),
           const SizedBox(height: 15),
           DataTextRow(
-            title: 'التاريخ',
+            title: 'التاريخ'.tr,
             value: date,
           ),
           Row(
             children: [
-              const Text(
-                'الوقت: ',
-                style: TextStyle(fontSize: 16),
+              Text(
+                'الوقت: '.tr,
+                style: const TextStyle(fontSize: 16),
               ),
               AutoSizeText(
                 maxLines: 1,
@@ -186,14 +186,14 @@ class ReservationData extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           DataTextRow(
-            title: 'التفضيل',
+            title: 'التفضيل'.tr,
             value: resOption,
           ),
           const SizedBox(height: 5),
           DataTextRow(
-            title: 'مدة الحجز',
+            title: 'مدة الحجز'.tr,
             value: duration,
-            endText: 'دقيقة',
+            endText: 'دقيقة'.tr,
           ),
         ],
       ),
@@ -253,9 +253,9 @@ class ContactNumber extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 children: [
-                  const Text(
-                    'رقم التواصل: ',
-                    style: TextStyle(fontSize: 16),
+                  Text(
+                    'رقم التواصل: '.tr,
+                    style: const TextStyle(fontSize: 16),
                   ),
                   Expanded(
                     child: AutoSizeText(

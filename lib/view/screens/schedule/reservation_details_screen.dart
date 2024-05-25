@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/schedule/reservation_details_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/view/widgets/auth/custom_textform_auth.dart';
 
-import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/confirm_refuse_buttons.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/reservation_details/bill_datails.dart';
@@ -25,7 +20,9 @@ class ReservationDetailsScreen extends StatelessWidget {
     return GetBuilder<ReservationDetailsController>(
         builder: (controller) => Scaffold(
               appBar: customAppBar(
-                  title: 'تفاصيل الحجز رقم: #${controller.reservation.resId}'),
+                title:
+                    '${'تفاصيل الحجز رقم:'.tr} #${controller.reservation.resId}',
+              ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
               body: SingleChildScrollView(

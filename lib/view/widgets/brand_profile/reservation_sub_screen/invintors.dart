@@ -47,16 +47,23 @@ class Invitors extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 15),
-                      controller.members.isNotEmpty
+                      controller.resInvitors.isNotEmpty
                           ? ListView.builder(
                               physics: const BouncingScrollPhysics(),
                               padding: const EdgeInsets.only(bottom: 70),
                               shrinkWrap: true,
-                              itemCount: controller.members.length,
+                              itemCount: controller.resInvitors.length,
                               itemBuilder: (context, index) =>
                                   PersonWithToggleListItem(
-                                name: controller.members[index].userName!,
-                                image: controller.members[index].userImage!,
+                                name: controller.resInvitors[index].userName!,
+                                image: controller.resInvitors[index].userImage!,
+                                onTapPayFromHimself: () =>
+                                    controller.onTapPayForHimself(index),
+                                onTapDivide: () =>
+                                    controller.onTapDivideBill(index),
+                                onTapWithoutPay: () =>
+                                    controller.onTapWithoutPayBill(index),
+                                type: controller.resInvitors[index].type ?? 0,
                                 onTapRemove: () =>
                                     controller.removeMember(index),
                               ),
@@ -82,6 +89,10 @@ class Invitors extends StatelessWidget {
                                         fontFamily: 'Cairo'))
                               ])),
                             ),
+                      const SizedBox(height: 15),
+                      CustomButton(
+                          onTap: () => controller.gotoInvitorsBills(),
+                          text: 'عرض تفاصيل تقسيم الرسوم'),
                       Divider(
                         color: Colors.grey.shade300,
                         thickness: 2,

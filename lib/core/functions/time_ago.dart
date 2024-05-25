@@ -39,19 +39,19 @@ String timeAgo(String timestamp, [String lang = 'ar']) {
 
   if (difference.inDays > 365) {
     final years = (difference.inDays / 365).floor();
-    return '$years ${years == 1 ? yearString : yearStringP} $agoString';
+    return '$agoString $years ${years == 1 ? yearString : yearStringP}';
   } else if (difference.inDays >= 30) {
     final months = (difference.inDays / 30).floor();
-    return '$months ${months == 1 ? monthString : monthStringP} $agoString';
+    return '$agoString $months ${months == 1 ? monthString : monthStringP}';
   } else if (difference.inDays >= 7) {
     final weeks = (difference.inDays / 7).floor();
-    return '$weeks ${weeks == 1 ? weekString : weekStringP} $agoString';
+    return '$agoString $weeks ${weeks == 1 ? weekString : weekStringP}';
   } else if (difference.inDays > 0) {
-    return '${difference.inDays} ${difference.inDays == 1 ? dayString : dayStringP} $agoString';
+    return '$agoString ${difference.inDays} ${difference.inDays == 1 ? dayString : dayStringP} ';
   } else if (difference.inHours > 0) {
-    return '${difference.inHours} ${difference.inHours == 1 ? hourString : hourStringP} $agoString';
+    return ' $agoString ${difference.inHours} ${difference.inHours == 1 ? hourString : hourStringP}';
   } else if (difference.inMinutes > 0) {
-    return '${difference.inMinutes} ${difference.inMinutes == 1 ? minString : minStringP} $agoString';
+    return '$agoString ${difference.inMinutes} ${difference.inMinutes == 1 ? minString : minStringP}';
   } else {
     return nowString;
   }

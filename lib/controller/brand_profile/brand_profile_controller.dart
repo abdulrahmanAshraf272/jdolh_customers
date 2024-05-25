@@ -18,8 +18,8 @@ import 'package:jdolh_customers/data/models/resOption.dart';
 class BrandProfileController extends GetxController {
   //Res Product ======================
   int totalServiceDuration = 0;
-  num totalPrice = 0;
-  num taxCost = 0;
+  double totalPrice = 0;
+  double taxCost = 0;
 
   double averageRate = 0;
   int ratesNo = 0;
@@ -29,12 +29,12 @@ class BrandProfileController extends GetxController {
   onTapIncrease(int index) {
     //Get quantity and price (off one quantity of cart)
     int quantityNo = carts[index].cartQuantity ?? 1;
-    num priceNo = carts[index].cartPrice ?? 0;
+    double priceNo = carts[index].cartPrice ?? 0;
     //increase quantity
     quantityNo++;
     //calc new total price
     int newQuantity = quantityNo;
-    num newTotalPrice = quantityNo * priceNo;
+    double newTotalPrice = quantityNo * priceNo;
     //set new quantity and totalPrice
     carts[index].cartQuantity = newQuantity;
     carts[index].cartTotalPrice = newTotalPrice;
@@ -48,7 +48,7 @@ class BrandProfileController extends GetxController {
   onTapDecrease(int index) {
     //Get quantity and price (off one quantity of cart)
     int quantityNo = carts[index].cartQuantity ?? 1;
-    num priceNo = carts[index].cartPrice ?? 0;
+    double priceNo = carts[index].cartPrice ?? 0;
     if (quantityNo == 1) {
       return;
     }
@@ -56,7 +56,7 @@ class BrandProfileController extends GetxController {
     quantityNo--;
     //calc new total price
     int newQuantity = quantityNo;
-    num newTotalPrice = quantityNo * priceNo;
+    double newTotalPrice = quantityNo * priceNo;
     //set new quantity and totalPrice
     carts[index].cartQuantity = newQuantity;
     carts[index].cartTotalPrice = newTotalPrice;
@@ -82,12 +82,16 @@ class BrandProfileController extends GetxController {
     }
   }
 
-  deleteCart(int index) async {
+  onTapDeleteCart(int index) async {
     String cartid = carts[index].cartId.toString();
     carts.remove(carts[index]);
     calcResTotalDuration();
     calculateTotalPrice();
     update();
+    deleteCart(cartid);
+  }
+
+  deleteCart(String cartid) async {
     var response = await cartData.deleteCart(cartid: cartid);
     statusRequestCart = handlingData(response);
     print('delete: $statusRequestCart');
@@ -209,17 +213,12 @@ class BrandProfileController extends GetxController {
     update();
     var response = await cartData.getCart(
         userid: myServices.getUserid(), bchid: bch.bchId.toString());
-    //await Future.delayed(Duration(seconds: 2));
-
     statusRequestCart = handlingData(response);
-    print('getCart: $statusRequestCart');
     if (statusRequestCart == StatusRequest.success) {
       if (response['status'] == 'success') {
-        print('cart success');
         parseCart(response);
       } else {
         statusRequestCart = StatusRequest.failure;
-        print('cart failed');
       }
     }
     update();
@@ -242,7 +241,7 @@ class BrandProfileController extends GetxController {
     for (int i = 0; i < carts.length; i++) {
       totalPrice += carts[i].cartTotalPrice!;
     }
-    taxCost = totalPrice * 0.15;
+    taxCost = totalPrice * 0.14;
   }
 
   gotoDisplayWorktime() {
@@ -254,12 +253,10 @@ class BrandProfileController extends GetxController {
         bchid: bch.bchId.toString(), userid: myServices.getUserid());
     statusRequest = handlingData(response);
     update();
-    print('get Bch status ${statusRequest}');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         parseData(response);
       } else {
-        print('get bch failed');
         statusRequest = StatusRequest.failure;
       }
     }
@@ -269,7 +266,10 @@ class BrandProfileController extends GetxController {
   parseData(response) {
     followingNo = response['followingNo'];
     ratesNo = response['ratesNo'];
-    averageRate = response['averageRate'].toDouble();
+    if (response['averageRate'] != null) {
+      averageRate = response['averageRate'].toDouble();
+    }
+
     resNo = response["resNo"];
 
     isFollowing = response['isFollowing'];
@@ -319,6 +319,9 @@ class BrandProfileController extends GetxController {
     if (Get.arguments != null) {
       if (Get.arguments['fromActivity'] != null) {
         int bchid = Get.arguments['bchid'];
+        await getBrandBch(bchid);
+      } else if (Get.arguments is int) {
+        int bchid = Get.arguments;
         await getBrandBch(bchid);
       } else {
         try {

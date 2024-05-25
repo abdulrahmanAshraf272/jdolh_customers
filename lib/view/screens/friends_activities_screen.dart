@@ -11,28 +11,21 @@ class FriendsActivitiesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(FriendsActivitiesController());
     return Scaffold(
-      appBar: customAppBar(
-        title: controller.appBarTitle(),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-              child: ListView.builder(
-                  itemCount: controller.friendsActivities.length,
-                  itemBuilder: (context, index) => ActivityListItem(
-                        cardStatus: controller.pageStatus,
-                        activity: controller.friendsActivities[index],
-                        onTapLike: () {
-                          if (controller.friendsActivities[index].isLiked ==
-                              1) {
-                            controller.friendsActivities[index].isLiked = 0;
-                          } else {
-                            controller.friendsActivities[index].isLiked = 1;
-                          }
-                        },
-                      ))),
-        ],
-      ),
-    );
+        appBar: customAppBar(
+          title: controller.appBarTitle(),
+        ),
+        body: GetBuilder<FriendsActivitiesController>(
+            builder: (controller) => Column(
+                  children: [
+                    Expanded(
+                        child: ListView.builder(
+                            itemCount: controller.friendsActivities.length,
+                            itemBuilder: (context, index) => ActivityListItem(
+                                  cardStatus: controller.pageStatus,
+                                  activity: controller.friendsActivities[index],
+                                  onTapLike: () => controller.onTapLike(index),
+                                ))),
+                  ],
+                )));
   }
 }

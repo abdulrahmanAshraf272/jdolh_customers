@@ -16,7 +16,7 @@ class ScheduleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(ScheduleController());
     return Scaffold(
-        appBar: customAppBar(title: 'الحجوزات'),
+        appBar: customAppBar(title: 'الحجوزات'.tr),
         body: GetBuilder<ScheduleController>(
           builder: (controller) => RefreshIndicator(
             onRefresh: () async {
@@ -26,9 +26,9 @@ class ScheduleScreen extends StatelessWidget {
             child: Column(
               children: [
                 LargeToggleButtons(
-                  optionOne: 'حجوزات قادمة',
+                  optionOne: 'حجوزات قادمة'.tr,
                   onTapOne: () => controller.setDisplayCommingRes(1),
-                  optionTwo: 'بحاجة لموافقتك',
+                  optionTwo: 'بحاجة لموافقتك'.tr,
                   onTapTwo: () => controller.setDisplayCommingRes(0),
                   twoColors: true,
                 ),
@@ -42,7 +42,7 @@ class ScheduleScreen extends StatelessWidget {
                   ),
                 const SizedBox(height: 10),
                 if (controller.resToDisplay.isEmpty)
-                  const Center(child: Text('لا توجد حجوزات')),
+                  Center(child: Text('لا توجد حجوزات'.tr)),
                 if (controller.resToDisplay.isNotEmpty)
                   HandlingDataView(
                       statusRequest: controller.statusRequest,

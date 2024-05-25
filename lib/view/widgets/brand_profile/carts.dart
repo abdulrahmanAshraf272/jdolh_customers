@@ -33,7 +33,7 @@ class CartProduct extends StatelessWidget {
                       controller.onTapDecrease(index);
                     },
                     onTapDelete: () {
-                      controller.deleteCart(index);
+                      controller.onTapDeleteCart(index);
                     }),
               ),
       ),
@@ -63,7 +63,7 @@ class CartService extends StatelessWidget {
                       price: controller.carts[index].cartTotalPrice.toString(),
                       duration: controller.carts[index].itemsDuration ?? 0,
                       onTapDelete: () {
-                        controller.deleteCart(index);
+                        controller.onTapDeleteCart(index);
                       }),
                 )),
     );

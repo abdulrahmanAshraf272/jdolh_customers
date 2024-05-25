@@ -18,15 +18,16 @@ class MyContactsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(MyContactsController());
     return Scaffold(
-      appBar: customAppBar(title: 'جهات الاتصال'),
+      appBar: customAppBar(title: 'جهات الاتصال'.tr),
       body: GetBuilder<MyContactsController>(
         builder: (controller) => HandlingDataView(
             statusRequest: controller.statusRequest,
             widget: controller.readContact == false
-                ? const Center(
+                ? Center(
                     child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Text('غير مسموح بالوصول الى جهات الاتصال لديك')),
+                        padding: const EdgeInsets.all(20),
+                        child:
+                            Text('غير مسموح بالوصول الى جهات الاتصال لديك'.tr)),
                   )
                 : SingleChildScrollView(
                     child: Column(
@@ -52,7 +53,7 @@ class MyContactsScreen extends StatelessWidget {
                           ),
                           // Add separatorBuilder
                         ),
-                        const CustomSmallBoldTitle(title: 'دعوة الأصدقاء'),
+                        CustomSmallBoldTitle(title: 'دعوة الأصدقاء'.tr),
                         ListView.builder(
                             physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
@@ -131,7 +132,7 @@ class MyContactsListItem extends StatelessWidget {
             TextButton(
                 onPressed: onTap,
                 child: Text(
-                  'دعوة',
+                  'دعوة'.tr,
                   style: titleSmall2.copyWith(color: AppColors.secondaryColor),
                 ))
           ],

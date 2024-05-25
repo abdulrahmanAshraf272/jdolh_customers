@@ -46,15 +46,13 @@ class ItemsDetailsController extends GetxController {
     update();
   }
 
-  Future<bool> onTapAddToCart() async {
+  onTapAddToCart() async {
     if (checkBasicOptionSelected()) {
       desc = extractDesc();
       shortDesc = extractShortDesc();
 
-      bool isAddDone = await addCart();
-      return isAddDone;
+      addCart();
     }
-    return false;
   }
 
   addCart() async {

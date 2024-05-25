@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 
 AppBar customHomeAppBar(
@@ -25,7 +26,7 @@ AppBar customHomeAppBar(
                   const Icon(Icons.search, color: Colors.grey),
                   const SizedBox(width: 5),
                   Expanded(
-                    child: AutoSizeText('البحث باسم المستخدم او اسم التاجر',
+                    child: AutoSizeText('البحث باسم المستخدم او اسم التاجر'.tr,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 10.sp,

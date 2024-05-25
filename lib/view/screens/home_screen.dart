@@ -8,6 +8,7 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/occasion_display_location.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/activity.dart';
+import 'package:jdolh_customers/view/widgets/common/ListItems/appointment.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/brand_explore.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/occasion.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/person_explore.dart';
@@ -39,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     const CustomAds(),
                     CustomTitle(
-                      title: 'مناسبات قريبة',
+                      title: 'مناسبات قريبة'.tr,
                       onTap: () {
                         controller.goToOccasionsScreen();
                       },
@@ -47,7 +48,7 @@ class HomeScreen extends StatelessWidget {
                       topPadding: 10,
                     ),
                     controller.occasionsToDisplay.isEmpty
-                        ? const Center(child: Text('لا توجد مناسبات قريبة'))
+                        ? Center(child: Text('لا توجد مناسبات قريبة'.tr))
                         : ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
@@ -74,7 +75,37 @@ class HomeScreen extends StatelessWidget {
                                     onTapCard: () =>
                                         controller.goToOccasionsScreen())),
                     CustomTitle(
-                      title: 'نشاطات الأصدقاء',
+                      title: 'حجوزات قريبة'.tr,
+                      onTap: () {
+                        controller.gotoReservations();
+                      },
+                      bottomPadding: 5,
+                      topPadding: 10,
+                    ),
+                    controller.reservation.isEmpty
+                        ? Center(child: Text('لا توجد حجوزات قريبة'.tr))
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: controller.reservation.length > 3
+                                ? 3
+                                : controller.reservation.length,
+                            itemBuilder: (context, index) =>
+                                AppointmentListItem(
+                                    brandName: controller
+                                            .reservation[index].brandName ??
+                                        '',
+                                    brandLogo:
+                                        '${ApiLinks.logoImage}/${controller.reservation[index].brandLogo}',
+                                    bchCity:
+                                        controller.reservation[index].bchCity ??
+                                            '',
+                                    dateTime:
+                                        '${controller.reservation[index].resDate} ${controller.reservation[index].resTime}',
+                                    onTap: () {
+                                      controller.gotoReservations();
+                                    })),
+                    CustomTitle(
+                      title: 'نشاطات الأصدقاء'.tr,
                       onTap: () {
                         controller.gotoFriendsActivities();
                       },
@@ -82,7 +113,7 @@ class HomeScreen extends StatelessWidget {
                       topPadding: 20,
                     ),
                     controller.friendsActivities.isEmpty
-                        ? const Center(child: Text('لا توجد نشاطات'))
+                        ? Center(child: Text('لا توجد نشاطات'.tr))
                         : ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
@@ -91,25 +122,15 @@ class HomeScreen extends StatelessWidget {
                                 : controller.friendsActivities.length,
                             itemBuilder: (context, index) => ActivityListItem(
                                   activity: controller.friendsActivities[index],
-                                  onTapLike: () {
-                                    if (controller
-                                            .friendsActivities[index].isLiked ==
-                                        1) {
-                                      controller
-                                          .friendsActivities[index].isLiked = 0;
-                                    } else {
-                                      controller
-                                          .friendsActivities[index].isLiked = 1;
-                                    }
-                                  },
+                                  onTapLike: () => controller.onTapLike(index),
                                 )),
-                    const CustomTitle(
-                      title: 'أكتشف',
+                    CustomTitle(
+                      title: 'أكتشف'.tr,
                       bottomPadding: 5,
                       topPadding: 20,
                     ),
                     CustomTitle(
-                      title: 'الأكثر زيارة خلال اسبوع',
+                      title: 'الأكثر زيارة خلال اسبوع'.tr,
                       bottomPadding: 5,
                       onTap: () {
                         controller.gotoExploreBrand();
@@ -119,7 +140,7 @@ class HomeScreen extends StatelessWidget {
                     SizedBox(
                         height: 120.h,
                         child: controller.brands.isEmpty
-                            ? const Center(child: Text('لا توجد نتائج'))
+                            ? Center(child: Text('لا توجد نتائج'.tr))
                             : ListView.builder(
                                 shrinkWrap: true,
                                 scrollDirection: Axis.horizontal,
@@ -139,7 +160,7 @@ class HomeScreen extends StatelessWidget {
                                             controller.gotoBrand(index)),
                               )),
                     CustomTitle(
-                      title: 'الأكثر تسجيل وصول خلال ساعتين',
+                      title: 'الأكثر تسجيل وصول خلال ساعتين'.tr,
                       bottomPadding: 5,
                       onTap: () => controller.gotoExploreCheckin(),
                       customTextStyle: titleMedium,
@@ -147,7 +168,7 @@ class HomeScreen extends StatelessWidget {
                     SizedBox(
                       height: 120.h,
                       child: controller.topCheckin.isEmpty
-                          ? const Center(child: Text('لا توجد نتائج'))
+                          ? Center(child: Text('لا توجد نتائج'.tr))
                           : ListView.builder(
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
@@ -162,7 +183,7 @@ class HomeScreen extends StatelessWidget {
                                           '')),
                     ),
                     CustomTitle(
-                      title: 'الأكثر تقييم خلال اسبوع',
+                      title: 'الأكثر تقييم خلال اسبوع'.tr,
                       bottomPadding: 5,
                       onTap: () => controller.gotoShowAllTopRate(),
                       customTextStyle: titleMedium,
@@ -170,7 +191,7 @@ class HomeScreen extends StatelessWidget {
                     SizedBox(
                       height: 125.h,
                       child: controller.topRate.isEmpty
-                          ? const Center(child: Text('لا توجد نتائج'))
+                          ? Center(child: Text('لا توجد نتائج'.tr))
                           : ListView.builder(
                               shrinkWrap: true,
                               padding:

@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/core/class/crud.dart';
-import 'package:jdolh_customers/data/models/reservation_invitors.dart';
 
 class ResData {
   Crud crud;
@@ -118,13 +115,6 @@ class ResData {
 
   getResCart({required String resid}) async {
     var response = await crud.postData(ApiLinks.getResCart, {"resid": resid});
-
-    return response.fold((l) => l, (r) => r);
-  }
-
-  sendInvitations(List<Resinvitors> invitations) async {
-    var response =
-        await crud.sendInvitations(ApiLinks.sendInvitations, invitations);
 
     return response.fold((l) => l, (r) => r);
   }

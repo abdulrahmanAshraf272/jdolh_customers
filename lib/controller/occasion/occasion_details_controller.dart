@@ -22,7 +22,7 @@ class OccasionDetailsController extends GetxController {
   StatusRequest statusOccasion = StatusRequest.none;
   StatusRequest statusRequestMembers = StatusRequest.none;
   TextEditingController excuse = TextEditingController();
-  late Occasion occasionSelected;
+  Occasion? occasionSelected;
   late int occasionId;
   OccasionsData occasionData = OccasionsData(Get.find());
   MyServices myServices = Get.find();
@@ -107,14 +107,14 @@ class OccasionDetailsController extends GetxController {
         onConfirm: () async {
           Get.back();
           await respondToInvitation(
-              occasionSelected, '2', excuse.text, 'تم مغادرة المناسبة');
+              occasionSelected!, '2', excuse.text, 'تم مغادرة المناسبة');
 
           //Send notification to creator
           OccasionNotification.rejectOccasion(
-              occasionSelected.occasionUserid!,
+              occasionSelected!.occasionUserid!,
               myServices.getName(),
               myServices.getImage(),
-              occasionSelected.occasionTitle ?? '',
+              occasionSelected!.occasionTitle ?? '',
               excuse.text);
           Get.back();
         },
@@ -124,13 +124,13 @@ class OccasionDetailsController extends GetxController {
   }
 
   onTapAcceptInvitation() async {
-    await respondToInvitation(occasionSelected, '1');
+    await respondToInvitation(occasionSelected!, '1');
 
     OccasionNotification.acceptOccasion(
-        occasionSelected.occasionUserid!,
+        occasionSelected!.occasionUserid!,
         myServices.getName(),
         myServices.getImage(),
-        occasionSelected.occasionTitle!);
+        occasionSelected!.occasionTitle!);
     Get.back();
   }
 
@@ -140,7 +140,7 @@ class OccasionDetailsController extends GetxController {
         content: Column(
           children: [
             Text(
-              "هل تريد رفض دعوة ${occasionSelected.occasionUsername}؟ ",
+              "هل تريد رفض دعوة ${occasionSelected!.occasionUsername}؟ ",
               style: titleMedium,
             ),
             const SizedBox(height: 15),
@@ -150,13 +150,13 @@ class OccasionDetailsController extends GetxController {
         ),
         onConfirm: () async {
           Get.back();
-          await respondToInvitation(occasionSelected, '2', excuse.text);
+          await respondToInvitation(occasionSelected!, '2', excuse.text);
           //Send notification to creator
           OccasionNotification.rejectOccasion(
-              occasionSelected.occasionUserid!,
+              occasionSelected!.occasionUserid!,
               myServices.getName(),
               myServices.getImage(),
-              occasionSelected.occasionTitle ?? '',
+              occasionSelected!.occasionTitle ?? '',
               excuse.text);
           Get.back();
         },
@@ -182,7 +182,7 @@ class OccasionDetailsController extends GetxController {
         if (message != '') {
           CustomDialogs.success(message);
         } else {
-          if (respond == 'accept') {
+          if (respond == '1') {
             CustomDialogs.success('تم قبول الدعوة');
           } else {
             CustomDialogs.success('تم رفض الدعوة');
@@ -218,12 +218,13 @@ class OccasionDetailsController extends GetxController {
     return dateTime.isBefore(currentDateTime);
   }
 
-  getOccasion(int occasionId) async {
+  getOccasion(dynamic occasionId) async {
     statusOccasion = StatusRequest.loading;
     update();
     var response = await occasionData.getOccasion(
         occasionId: occasionId.toString(), userid: myServices.getUserid());
     statusOccasion = handlingData(response);
+
     if (statusOccasion == StatusRequest.success) {
       if (response['status'] == 'success') {
         occasionSelected = Occasion.fromJson(response['data']);
@@ -235,29 +236,31 @@ class OccasionDetailsController extends GetxController {
   }
 
   receiveData() async {
-    var argument = Get.arguments;
+    dynamic argument = Get.arguments;
+    print('= -=========== Argument');
+    print(argument.runtimeType);
+    print(argument);
     if (argument is Occasion) {
       occasionSelected = argument;
-    } else if (argument is int) {
-      await getOccasion(argument);
     } else {
-      statusOccasion = StatusRequest.failure;
-      update();
-      return;
+      await getOccasion(argument);
     }
 
-    occasionLocation = occasionSelected.occasionLocation ?? 'لم يتم تحديد موقع';
-    occasionLocationLink = occasionSelected.locationLink ?? 'لم يتم تحديد رابط';
-    selectedTimeFormatted = occasionSelected.occasionTime ?? '';
-    getOccasionMembers(occasionSelected.occasionId.toString());
+    occasionLocation =
+        occasionSelected!.occasionLocation ?? 'لم يتم تحديد موقع';
+    occasionLocationLink =
+        occasionSelected!.locationLink ?? 'لم يتم تحديد رابط';
+    selectedTimeFormatted = occasionSelected!.occasionTime ?? '';
+    getOccasionMembers(occasionSelected!.occasionId.toString());
 
     inPast = checkInPast(
-        occasionSelected.occasionDate!, occasionSelected.occasionTime!);
+        occasionSelected!.occasionDate!, occasionSelected!.occasionTime!);
   }
 
   @override
   void onInit() {
     receiveData();
+    print('statusOccasio = $statusOccasion');
     super.onInit();
   }
 }

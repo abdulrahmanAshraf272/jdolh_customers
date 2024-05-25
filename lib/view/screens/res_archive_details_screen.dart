@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
-import 'package:jdolh_customers/controller/res_archive_details_controller.dart';
 import 'package:jdolh_customers/controller/schedule/reservation_details_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
-import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/notification/notification_sender/activity_notification.dart';
 import 'package:jdolh_customers/data/data_source/remote/rate.dart';
 import 'package:jdolh_customers/data/models/rate.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
@@ -57,7 +52,11 @@ class _ResArchiveDetailsScreenState extends State<ResArchiveDetailsScreen> {
 
         ActivityNotification activityNotification = ActivityNotification();
         activityNotification.sendRateActivityToFollowers(
-            reservation.brandName!, reservation.bchCity!, rateValue);
+            reservation.bchid!,
+            reservation.brandName!,
+            reservation.bchCity!,
+            reservation.brandLogo!,
+            rateValue);
         activityNotification.sendRateToBch(
             reservation.resBchid!, reservation.bchCity!, rateValue);
 
@@ -116,26 +115,26 @@ class _ResArchiveDetailsScreenState extends State<ResArchiveDetailsScreen> {
       builder: (context) => RatingDialog(
         initialRating: 5.0,
         // your app's name?
-        title: const Text(
-          'تقييم الحجز',
+        title: Text(
+          'تقييم الحجز'.tr,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.bold,
           ),
         ),
         // encourage your user to leave a high rating?
-        message: const Text(
-          'يمكنك تقييم الحجز واضافة تعليق عن تجربك',
+        message: Text(
+          'يمكنك تقييم الحجز واضافة تعليق عن تجربك'.tr,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 15),
+          style: const TextStyle(fontSize: 15),
         ),
         // your app's logo?
         image: BrandLogo(
           brandLogo: logo,
         ),
-        submitButtonText: 'تقييم',
-        commentHint: 'اضف رايك في المكان',
+        submitButtonText: 'تقييم'.tr,
+        commentHint: 'اضف رايك في المكان'.tr,
         onSubmitted: onSubmitted,
       ),
     );
@@ -169,7 +168,8 @@ class _ResArchiveDetailsScreenState extends State<ResArchiveDetailsScreen> {
     return GetBuilder<ReservationDetailsController>(
         builder: (controller) => Scaffold(
               appBar: customAppBar(
-                  title: 'تفاصيل الحجز رقم: #${controller.reservation.resId}'),
+                  title:
+                      '${'تفاصيل الحجز رقم:'.tr} #${controller.reservation.resId}'),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
               body: SingleChildScrollView(
@@ -260,9 +260,9 @@ class RatingCommentWidget extends StatelessWidget {
           ),
           TextButton(
               onPressed: onTapDelete,
-              child: const Text(
-                'حذف',
-                style: TextStyle(color: Colors.red),
+              child: Text(
+                'حذف'.tr,
+                style: const TextStyle(color: Colors.red),
               ))
         ],
       ),
@@ -277,18 +277,18 @@ class ResCartData extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(ReservationDetailsController());
     return controller.isService
-        ? const Column(
+        ? Column(
             children: [
-              CustomTitle(title: 'الخدمات'),
-              CartService(),
+              CustomTitle(title: 'الخدمات'.tr),
+              const CartService(),
             ],
           )
-        : const Column(
+        : Column(
             children: [
-              CustomTitle(title: 'تفاصيل الطلب'),
-              SizedBox(height: 15),
-              OrderContentTitle(),
-              CartProduct(),
+              CustomTitle(title: 'تفاصيل الطلب'.tr),
+              const SizedBox(height: 15),
+              const OrderContentTitle(),
+              const CartProduct(),
             ],
           );
   }

@@ -15,25 +15,25 @@ class BillDetails extends StatelessWidget {
       return Column(
         children: [
           BillRow(
-            title: 'المجموع',
+            title: 'المجموع'.tr,
             price: controller.reservation.resPrice ?? 0,
           ),
           BillRow(
-            title: 'رسوم الحجز',
+            title: 'رسوم الحجز'.tr,
             price: controller.reservation.resResCost ?? 0,
           ),
           BillRow(
-            title: 'الإجمالي غير شامل الضريبة',
+            title: 'الإجمالي غير شامل الضريبة'.tr,
             price: controller.reservation.resPrice! +
                 controller.reservation.resResCost!,
           ),
           BillRow(
-            title: 'ضريبة القيمة المضافة',
+            title: 'ضريبة القيمة المضافة'.tr,
             price: controller.reservation.resTaxCost ?? 0,
           ),
           BillRow(
             lastRow: true,
-            title: 'الإجمالي شامل الضريبة',
+            title: 'الإجمالي شامل الضريبة'.tr,
             price: controller.reservation.resTotalPrice ?? 0,
           ),
         ],

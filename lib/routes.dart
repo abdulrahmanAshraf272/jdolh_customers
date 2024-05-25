@@ -300,10 +300,10 @@ List<GetPage> routes = [
     name: AppRouteName.itemsDetails,
     page: () => const ItemsDetailsScreen(),
   ),
-  GetPage(
-    name: AppRouteName.addResInvitors,
-    page: () => const AddResInvitorsScreen(),
-  ),
+  // GetPage(
+  //   name: AppRouteName.addResInvitors,
+  //   page: () => const AddResInvitorsScreen(),
+  // ),
   GetPage(
       name: AppRouteName.setResTime,
       page: () => const SetResTimeScreen(),

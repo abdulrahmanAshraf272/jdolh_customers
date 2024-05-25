@@ -23,6 +23,9 @@ class SearchScreen extends StatelessWidget {
               textEditingController: controller.name,
               onChaneged: (value) => controller.seachOnTap(value),
               autoFocus: true,
+              hintText: controller.isPersonSearch
+                  ? 'اكتب اسم الشخص'
+                  : 'اكتب اسم المتجر',
             ),
             LargeToggleButtons(
                 optionOne: 'اشخاص',

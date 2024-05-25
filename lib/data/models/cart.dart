@@ -3,9 +3,9 @@ class Cart {
   int? cartUserid;
   int? cartBchid;
   int? cartItemid;
-  num? cartPrice;
+  double? cartPrice;
   int? cartQuantity;
-  num? cartTotalPrice;
+  double? cartTotalPrice;
   int? cartDiscount;
   String? cartDesc;
   String? cartShortDesc;
@@ -14,7 +14,7 @@ class Cart {
   int? itemsCategoriesid;
   int? itemsBchid;
   String? itemsTitle;
-  num? itemsPrice;
+  double? itemsPrice;
   int? itemsDiscount;
   int? itemsDiscountPercentage;
   String? itemsImage;
@@ -69,9 +69,9 @@ class Cart {
     cartUserid = json['cart_userid'];
     cartBchid = json['cart_bchid'];
     cartItemid = json['cart_itemid'];
-    cartPrice = json['cart_price'];
+    cartPrice = json['cart_price']?.toDouble();
     cartQuantity = json['cart_quantity'];
-    cartTotalPrice = json['cart_totalPrice'];
+    cartTotalPrice = json['cart_totalPrice']?.toDouble();
     cartDiscount = json['cart_discount'];
     cartDesc = json['cart_desc'];
     cartShortDesc = json['cart_shortDesc'];
@@ -80,7 +80,7 @@ class Cart {
     itemsCategoriesid = json['items_categoriesid'];
     itemsBchid = json['items_bchid'];
     itemsTitle = json['items_title'];
-    itemsPrice = json['items_price'];
+    itemsPrice = json['items_price']?.toDouble();
     itemsDiscount = json['items_discount'];
     itemsDiscountPercentage = json['items_discountPercentage'];
     itemsImage = json['items_image'];

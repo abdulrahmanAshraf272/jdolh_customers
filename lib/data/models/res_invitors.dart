@@ -1,6 +1,8 @@
 class Resinvitors {
   int? resid;
   int? userid;
+  String? userName;
+  String? userImage;
   int? type;
   int? status;
   num? cost;
@@ -9,6 +11,8 @@ class Resinvitors {
   Resinvitors({
     this.resid,
     this.userid,
+    this.userName,
+    this.userImage,
     this.type,
     this.status,
     this.cost,
@@ -22,16 +26,5 @@ class Resinvitors {
     status = json['resinvitors_status'];
     cost = json['resinvitors_cost'];
     creatorid = json['resinvitors_creatorid'];
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'resid': resid,
-      'userid': userid,
-      'type': type,
-      'status': status,
-      'cost': cost,
-      'creatorid': creatorid,
-    };
   }
 }

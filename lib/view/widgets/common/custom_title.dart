@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 
@@ -49,7 +50,7 @@ class CustomTitle extends StatelessWidget {
               ? TextButton(
                   onPressed: onTap,
                   child: Text(
-                    'عرض الكل',
+                    'عرض الكل'.tr,
                     style: titleSmall.copyWith(color: AppColors.secondaryColor),
                   ))
               : SizedBox()

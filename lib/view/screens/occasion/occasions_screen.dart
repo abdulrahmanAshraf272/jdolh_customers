@@ -19,8 +19,8 @@ class OccasionsScreen extends StatelessWidget {
               appBar: appBarWithButtonCreate(
                   onTapCreate: () => controller.onTapCreate(),
                   onTapBack: () => Get.back(),
-                  title: 'المناسبات',
-                  buttonText: 'انشاء مناسبة'),
+                  title: 'المناسبات'.tr,
+                  buttonText: 'انشاء مناسبة'.tr),
               body: RefreshIndicator(
                 onRefresh: () async {
                   await controller.inactiveNeedAprrove();
@@ -28,10 +28,10 @@ class OccasionsScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     LargeToggleButtons(
-                      optionOne: 'مناسبات قريبة',
+                      optionOne: 'مناسبات قريبة'.tr,
                       onTapOne: () => controller.inactiveNeedAprrove(),
                       optionTwo:
-                          'بحاجة لموافقتك (${controller.needApproveOccasionsNo})',
+                          '${'بحاجة لموافقتك'.tr}(${controller.needApproveOccasionsNo})',
                       onTapTwo: () => controller.activeNeedApprove(),
                       twoColors: true,
                     ),
@@ -39,12 +39,12 @@ class OccasionsScreen extends StatelessWidget {
                       statusRequest: controller.statusRequest,
                       widget: Expanded(
                         child: controller.occasionsToDisplay.isEmpty
-                            ? const Padding(
-                                padding: EdgeInsets.all(20),
-                                child: Text('لا توجد مناسبات'),
+                            ? Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Text('لا توجد مناسبات'.tr),
                               )
                             : ListView.builder(
-                                physics: BouncingScrollPhysics(),
+                                physics: const BouncingScrollPhysics(),
                                 itemCount: controller.occasionsToDisplay.length,
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),

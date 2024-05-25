@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/core/class/crud.dart';
-import 'package:jdolh_customers/data/models/reservation_invitors.dart';
 
 class RateData {
   Crud crud;

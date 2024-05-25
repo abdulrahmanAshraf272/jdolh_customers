@@ -33,12 +33,12 @@ class ActivityListItem extends StatefulWidget {
 }
 
 class _ActivityListItemState extends State<ActivityListItem> {
-  late int isLiked;
-  @override
-  void initState() {
-    isLiked = widget.activity.isLiked ?? 0;
-    super.initState();
-  }
+  // late int isLiked;
+  // @override
+  // void initState() {
+  //   isLiked = widget.activity.isLiked ?? 0;
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -138,28 +138,14 @@ class _ActivityListItemState extends State<ActivityListItem> {
                   const SizedBox(height: 3),
                   GestureDetector(
                     onTap: () {
-                      ActivityLike activityLike = ActivityLike();
                       widget.onTapLike();
-                      if (isLiked == 1) {
-                        activityLike.likeUnlikeActivity(
-                            widget.activity.type!, widget.activity.id!, 0);
-                        isLiked = 0;
-                        widget.activity.likesNo = widget.activity.likesNo! - 1;
-                      } else {
-                        activityLike.likeUnlikeActivity(
-                            widget.activity.type!, widget.activity.id!, 1);
-                        //Sounds.like();
-                        isLiked = 1;
-                        widget.activity.likesNo = widget.activity.likesNo! + 1;
-                      }
-                      setState(() {});
                     },
                     child: Row(
                       children: [
                         Icon(
                           Icons.thumb_up,
                           size: 18,
-                          color: isLiked == 1
+                          color: widget.activity.isLiked == 1
                               ? AppColors.secondaryColor
                               : Colors.grey,
                         ),

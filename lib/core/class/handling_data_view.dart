@@ -45,13 +45,14 @@ class HandlingDataView extends StatelessWidget {
     return statusRequest == StatusRequest.loading
         ? const Center(child: CircularProgressIndicator())
         : statusRequest == StatusRequest.offlineFailure
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Lottie.asset('assets/icons/noInternetIcon.json'),
-                  const Text('لا يوجد اتصال بلإنترنت')
-                ],
-              )
+            ? const Center(child: Text('لا يوجد اتصال بلإنترنت'))
+            // Column(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Lottie.asset('assets/icons/noInternetIcon.json'),
+            //       const Text('لا يوجد اتصال بلإنترنت')
+            //     ],
+            //   )
             : statusRequest == StatusRequest.serverFailure
                 ? const Center(child: Text('server failure'))
                 : statusRequest == StatusRequest.failure

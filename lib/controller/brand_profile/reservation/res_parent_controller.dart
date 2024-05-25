@@ -9,7 +9,6 @@ import 'package:jdolh_customers/data/data_source/remote/cart.dart';
 import 'package:jdolh_customers/data/data_source/remote/home_services.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
 import 'package:jdolh_customers/data/data_source/remote/resDetails.dart';
-import 'package:jdolh_customers/data/models/cart.dart';
 import 'package:jdolh_customers/data/models/home_services.dart';
 import 'package:jdolh_customers/data/models/resOption.dart';
 import 'package:jdolh_customers/data/models/res_details.dart';
@@ -44,7 +43,7 @@ class ResParentController extends GetxController {
         .firstWhere((element) => element.resoptionsTitle == resOptionTitle);
   }
 
-  num resCost = 0;
+  double resCost = 0;
 
   late int resPolicy;
   late int billPolicy;
@@ -91,23 +90,10 @@ class ResParentController extends GetxController {
     }
   }
 
-  int getNextMultipleOf30(int number) {
-    if (number < 30) {
-      return 30;
-    } else {
-      //if its 30 or 60 or 90 save the values as it is
-      if (number % 30 == 0) {
-        return number;
-      } else {
-        return ((number ~/ 30) + 1) * 30;
-      }
-    }
-  }
-
   createRes() async {
-    num totalPrice = brandProfileController.totalPrice;
-    num taxCost = brandProfileController.taxCost;
-    num totalPriceWithTax = totalPrice + taxCost + resCost;
+    double totalPrice = brandProfileController.totalPrice;
+    double taxCost = brandProfileController.taxCost;
+    double totalPriceWithTax = totalPrice + taxCost + resCost;
     //
     int duration = 0;
     if (brandProfileController.brand.brandIsService == 0) {
@@ -117,9 +103,6 @@ class ResParentController extends GetxController {
       //if service => get the total duration from all items in cart
       duration = brandProfileController.totalServiceDuration;
     }
-
-    //duration = getNextMultipleOf30(duration);
-
     var response = await resData.createRes(
         userid: myServices.getUserid(),
         bchid: bchid.toString(),
@@ -147,10 +130,11 @@ class ResParentController extends GetxController {
         ReservationNotification reservationNotification =
             ReservationNotification();
         if (reviewRes == 0) {
-          reservationNotification.sendReserveNotification(bchid, selectedDate);
+          reservationNotification.sendReserveNotification(
+              bchid, selectedDate, reservation.resId!);
         } else {
           reservationNotification.sendReserveRequistNotification(
-              bchid, selectedDate);
+              bchid, selectedDate, reservation.resId!);
         }
 
         return reservation;
@@ -209,7 +193,9 @@ class ResParentController extends GetxController {
     update();
     var response = await resDetailsData.getResDetails(bchid: bchid.toString());
     statusRequest = handlingData(response);
+    print('hello people');
     print('statusRequest =====$statusRequest');
+
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         resDetails = ResDetails.fromJson(response['data']);
@@ -224,7 +210,7 @@ class ResParentController extends GetxController {
   }
 
   getData() {
-    if (brandProfileController.isHomeServices) {
+    if (brandProfileController.isHomeServices == true) {
       getHomeServices();
     } else {
       getResDetails();

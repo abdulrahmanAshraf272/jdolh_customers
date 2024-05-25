@@ -1,13 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
-import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 
 class ResOccasionScreen extends StatelessWidget {
@@ -16,18 +13,18 @@ class ResOccasionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(title: 'جدولة', withBack: false),
+      appBar: customAppBar(title: 'جدولة'.tr, withBack: false),
       body: SingleChildScrollView(
         child: Column(
           children: [
             BigCard(
-                title: 'الحجوزات',
+                title: 'الحجوزات'.tr,
                 image: 'assets/images/reservation.png',
                 onTap: () {
                   Get.toNamed(AppRouteName.schedule);
                 }),
             BigCard(
-                title: 'المناسبات',
+                title: 'المناسبات'.tr,
                 image: 'assets/images/party2.png',
                 onTap: () {
                   Get.toNamed(AppRouteName.occasions);

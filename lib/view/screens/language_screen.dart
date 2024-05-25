@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/core/constants/app_routes_name.dart';
-import 'package:jdolh_customers/core/constants/text_syles.dart';
+import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/localization/change_locale.dart';
-import 'package:jdolh_customers/core/localization/words/language.dart';
-import 'package:jdolh_customers/view/widgets/language/custom_button_lang.dart';
+import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 
 class LanguageScreen extends GetView<LocaleController> {
   const LanguageScreen({super.key});
@@ -12,26 +10,63 @@ class LanguageScreen extends GetView<LocaleController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(WordsLanguage.wordKey1.tr, style: headline4),
-            const SizedBox(height: 20),
-            CustomButtonLang(
-                textButton: WordsLanguage.wordKey2.tr,
-                onPressed: () {
-                  controller.changeLanguage('ar');
-                  Get.toNamed(AppRouteName.home);
-                }),
-            CustomButtonLang(
-                textButton: WordsLanguage.wordKey3.tr,
-                onPressed: () {
-                  controller.changeLanguage('en');
-                  Get.toNamed(AppRouteName.home);
-                })
-          ],
+      appBar: customAppBar(title: 'اللغة'.tr),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          LanguageButton(
+              title: 'العربية'.tr,
+              onTap: () => controller.onTapChangeLanguage('ar'),
+              selected: controller.lang == 'ar' ? true : false),
+          LanguageButton(
+              title: 'الإنجليزية'.tr,
+              onTap: () => controller.onTapChangeLanguage('en'),
+              selected: controller.lang == 'en' ? true : false),
+        ],
+      ),
+    );
+  }
+}
+
+class LanguageButton extends StatelessWidget {
+  final void Function() onTap;
+  final String title;
+  final bool selected;
+  const LanguageButton({
+    super.key,
+    required this.onTap,
+    required this.title,
+    required this.selected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+      decoration: BoxDecoration(
+        color: AppColors.gray,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: selected ? null : onTap,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              child: Row(
+                children: [
+                  Expanded(child: Text(title)),
+                  if (selected)
+                    const Icon(
+                      Icons.check,
+                      color: Colors.blue,
+                    )
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );

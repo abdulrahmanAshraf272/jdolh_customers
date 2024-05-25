@@ -17,7 +17,7 @@ class ResArchiveScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(ResArchiveController());
     return Scaffold(
-        appBar: customAppBar(title: 'الحجوزات السابقة'),
+        appBar: customAppBar(title: 'الحجوزات السابقة'.tr),
         body: GetBuilder<ResArchiveController>(
           builder: (controller) => RefreshIndicator(
             onRefresh: () async {
@@ -27,16 +27,16 @@ class ResArchiveScreen extends StatelessWidget {
             child: Column(
               children: [
                 LargeToggleButtons(
-                  optionOne: 'حجوزات منتهية',
+                  optionOne: 'حجوزات منتهية'.tr,
                   onTapOne: () => controller.setDisplayFinishedRes(1),
-                  optionTwo: 'حجوزات ملغية',
+                  optionTwo: 'حجوزات ملغية'.tr,
                   onTapTwo: () => controller.setDisplayFinishedRes(0),
                   twoColors: true,
                 ),
                 HandlingDataView(
                     statusRequest: controller.statusRequest,
                     widget: controller.resToDisplay.isEmpty
-                        ? const Text('لا توجد حجوزات')
+                        ? Text('لا توجد حجوزات'.tr)
                         : Expanded(
                             child: ListView.builder(
                                 itemCount: controller.resToDisplay.length,

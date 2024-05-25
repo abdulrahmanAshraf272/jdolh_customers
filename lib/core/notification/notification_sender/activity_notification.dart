@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/values_controller.dart';
+import 'package:jdolh_customers/api_links.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/notification/notification_sender/notification_sender.dart';
 import 'package:jdolh_customers/core/services/services.dart';
-import 'package:jdolh_customers/data/models/friend.dart';
 
 class ActivityNotification {
-  ValuesController valuesController = Get.put(ValuesController());
   MyServices myServices = Get.find();
 
   String doString = "قام";
@@ -15,38 +14,30 @@ class ActivityNotification {
   String checkinString = 'تسجيل وصول';
   String to = 'الى';
 
-  sendCheckinActivityToFollowers(int userid, String placeName) {
+  sendCheckinActivityToFollowers(String placeName) {
     String myId = myServices.getUserid();
     String myName = myServices.getName();
     String myImage = myServices.getImage();
     NotificationSender.sendToMyFollower(
         myId: myId,
-        userid: userid,
         title: checkinString,
         body: '$doString $myName $checkinString $to $placeName',
-        image: myImage);
-
-    // for (int i = 0; i < myFollowers.length; i++) {
-    //   NotificationSender.sendToCustomer(
-    //       userid: myFollowers[i].userId!,
-    //       title: checkinString,
-    //       body: '$doString $myName $checkinString $to $placeName',
-    //       image: myImage);
-    // }
+        image: "${ApiLinks.customerImage}/$myImage");
   }
 
-  sendRateActivityToFollowers(String placeName, String bchName, double rate) {
-    List<Friend> myFollowers = valuesController.myfollowers;
+  sendRateActivityToFollowers(int bchid, String placeName, String bchName,
+      String brandImage, double rate) {
+    String myId = myServices.getUserid();
     String myName = myServices.getName();
-    String myImage = myServices.getImage();
-    for (int i = 0; i < myFollowers.length; i++) {
-      NotificationSender.sendToCustomer(
-          userid: myFollowers[i].userId!,
-          title: '$doString $myName $rateString $placeName',
-          body:
-              '$doString $myName $rateString $placeName $bchString $bchName $rate $starsString',
-          image: myImage);
-    }
+
+    NotificationSender.sendToMyFollower(
+        myId: myId,
+        title: '$doString $myName $rateString $placeName',
+        body:
+            '$doString $myName $rateString $placeName $bchString $bchName $rate $starsString',
+        image: "${ApiLinks.logoImage}/$brandImage",
+        routeName: AppRouteName.brandProfile,
+        objectId: bchid);
   }
 
   sendRateToBch(int bchid, String bchName, double rate) {

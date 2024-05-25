@@ -34,6 +34,8 @@ class OccasionsController extends GetxController {
               arguments: occasionsToDisplay[index])!
           .then((value) => getMyOccasion());
     } else {
+      // Get.toNamed(AppRouteName.occasionDetails,
+      //     arguments: occasionsToDisplay[index].occasionId);
       Get.toNamed(AppRouteName.occasionDetails,
               arguments: occasionsToDisplay[index])!
           .then((value) {
