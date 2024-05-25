@@ -2,8 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
-import 'package:jdolh_customers/controller/brand_profile/reservation/res_parent_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/cart_controller.dart';
 import 'package:jdolh_customers/controller/brand_profile/reservation/res_service_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
@@ -76,7 +75,7 @@ class ResServiceSubscreen extends StatelessWidget {
                 ),
                 const CartService(),
                 const SizedBox(height: 20),
-                const BillDetails(),
+                BillDetails(resCost: controller.resCost),
                 const SizedBox(height: 20),
                 GoHomeButton(
                   onTap: () {
@@ -99,14 +98,15 @@ class ResServiceSubscreen extends StatelessWidget {
 }
 
 class BillDetails extends StatelessWidget {
+  final double resCost;
   const BillDetails({
     super.key,
+    required this.resCost,
   });
 
   @override
   Widget build(BuildContext context) {
-    final resParentController = Get.put(ResParentController());
-    return GetBuilder<BrandProfileController>(builder: (controller) {
+    return GetBuilder<CartController>(builder: (controller) {
       return Column(
         children: [
           BillRow(
@@ -115,11 +115,11 @@ class BillDetails extends StatelessWidget {
           ),
           BillRow(
             title: 'رسوم الحجز',
-            price: resParentController.resCost,
+            price: resCost,
           ),
           BillRow(
             title: 'الإجمالي غير شامل الضريبة',
-            price: controller.totalPrice + resParentController.resCost,
+            price: controller.totalPrice + resCost,
           ),
           BillRow(
             title: 'ضريبة القيمة المضافة',
@@ -128,9 +128,7 @@ class BillDetails extends StatelessWidget {
           BillRow(
             lastRow: true,
             title: 'الإجمالي شامل الضريبة',
-            price: controller.totalPrice +
-                resParentController.resCost +
-                controller.taxCost,
+            price: controller.totalPrice + resCost + controller.taxCost,
           ),
         ],
       );

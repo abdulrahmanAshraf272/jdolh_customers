@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/cart_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/functions/decode_encode_time.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
@@ -19,6 +20,7 @@ class SetResTimeController extends GetxController with TimeHelper {
   late ResOption resOption;
   late int timeout;
   List<ReservedTime> reservedTimes = [];
+  CartController cartController = Get.find();
 
   StatusRequest statusRequest = StatusRequest.loading;
   ResData resData = ResData(Get.find());
@@ -62,7 +64,7 @@ class SetResTimeController extends GetxController with TimeHelper {
     availaleWorktime.clear();
 
     ResOption selectedResOption = brandProfileController.selectedResOption;
-    List<Cart> carts = brandProfileController.carts;
+    List<Cart> carts = cartController.carts;
     List<String> worktimeForAll = [];
     //Add Bch worktime
     worktimeForAll.add(bchWorktimeForSpecificDay(selectedDay));

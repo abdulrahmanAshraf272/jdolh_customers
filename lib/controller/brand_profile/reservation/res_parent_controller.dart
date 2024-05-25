@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/cart_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
@@ -9,6 +10,7 @@ import 'package:jdolh_customers/data/data_source/remote/cart.dart';
 import 'package:jdolh_customers/data/data_source/remote/home_services.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
 import 'package:jdolh_customers/data/data_source/remote/resDetails.dart';
+import 'package:jdolh_customers/data/models/cart.dart';
 import 'package:jdolh_customers/data/models/home_services.dart';
 import 'package:jdolh_customers/data/models/resOption.dart';
 import 'package:jdolh_customers/data/models/res_details.dart';
@@ -32,6 +34,7 @@ class ResParentController extends GetxController {
   late int brandid;
   HomeServices homeServices = HomeServices();
   ResDetails resDetails = ResDetails();
+  CartController cartController = Get.find();
 
   int reviewRes = 0;
 
@@ -60,7 +63,7 @@ class ResParentController extends GetxController {
 
   void gotoSetResTime() async {
     print('shit');
-    if (brandProfileController.carts.isEmpty) {
+    if (cartController.carts.isEmpty) {
       String message = brandProfileController.brand.brandIsService == 1
           ? 'من فضلك قم بإضافة الخدمات ثم قم بتحديد وقت الحجز'
           : 'من فضلك قم بإضافة المنتجات ثم قم بتحديد وقت الحجز';
@@ -91,8 +94,8 @@ class ResParentController extends GetxController {
   }
 
   createRes() async {
-    double totalPrice = brandProfileController.totalPrice;
-    double taxCost = brandProfileController.taxCost;
+    double totalPrice = cartController.totalPrice;
+    double taxCost = cartController.taxCost;
     double totalPriceWithTax = totalPrice + taxCost + resCost;
     //
     int duration = 0;
@@ -101,7 +104,7 @@ class ResParentController extends GetxController {
       duration = brandProfileController.selectedResOption.resoptionsDuration!;
     } else {
       //if service => get the total duration from all items in cart
-      duration = brandProfileController.totalServiceDuration;
+      duration = cartController.totalServiceDuration;
     }
     var response = await resData.createRes(
         userid: myServices.getUserid(),
@@ -146,10 +149,11 @@ class ResParentController extends GetxController {
 
   checkAllItemsAvailableWithinResOptionSelected() {
     List<dynamic> resItemsId = selectedResOption.itemsRelated!;
-    for (int i = 0; i < brandProfileController.carts.length; i++) {
-      if (!resItemsId.contains(brandProfileController.carts[i].itemsId)) {
+    List<Cart> carts = cartController.carts;
+    for (int i = 0; i < carts.length; i++) {
+      if (!resItemsId.contains(carts[i].itemsId)) {
         String warningMessage =
-            '${brandProfileController.carts[i].itemsTitle} غير متوفر ضمن تفضيل ${selectedResOption.resoptionsTitle}\n قم بإزالة ${brandProfileController.carts[i].itemsTitle} او قم بتغيير التفضيل';
+            '${carts[i].itemsTitle} ${'غير متوفر ضمن تفضيل'.tr} ${selectedResOption.resoptionsTitle}\n ${'قم بإزالة'.tr} ${carts[i].itemsTitle} ${'او قم بتغيير التفضيل'.tr}';
         print(warningMessage);
         return warningMessage;
       }

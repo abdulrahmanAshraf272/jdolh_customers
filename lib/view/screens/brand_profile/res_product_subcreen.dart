@@ -81,7 +81,7 @@ class ResProductSubscreen extends StatelessWidget {
                   ),
                   const CartProduct(),
                   const SizedBox(height: 20),
-                  const BillDetails(),
+                  BillDetails(resCost: controller.resCost),
                   const SizedBox(height: 20),
                   GoHomeButton(
                     onTap: () {

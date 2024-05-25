@@ -13,7 +13,7 @@ final String basicAuth =
 
 Map<String, String> myheader = {'authorization': basicAuth};
 
-bool emulator = false;
+bool emulator = true;
 Future<bool> checkInternet() async {
   if (emulator) {
     return true;

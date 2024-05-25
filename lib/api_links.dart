@@ -4,8 +4,8 @@ class ApiLinks {
   //Localhost on Real device mean
   //yousef devie: fe80::cf:baff:fe0a:fc4c
   //192.168.1.3
-  //static const String server = "http://10.0.2.2/jdolh1";
-  static const String server = "https://www.jdolh.com/jdolh1";
+  static const String server = "http://10.0.2.2/jdolh1";
+  //static const String server = "https://www.jdolh.com/jdolh1";
   static const String test = "$server/test.php";
 
   //=================== Images ================//
@@ -111,8 +111,6 @@ class ApiLinks {
   static const getBch = '$server/jdolh_customers/get_brand/get_bch.php';
   static const getItemOptions =
       '$server/jdolh_customers/get_brand/get_itemsoptions.php';
-  static const getBchInfo =
-      '$server/jdolh_customers/get_brand/get_bch_info.php';
 
   static const getAllBchs =
       '$server/jdolh_customers/get_brand/get_all_bchs.php';

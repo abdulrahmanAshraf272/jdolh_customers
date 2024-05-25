@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
+
 import 'package:jdolh_customers/controller/brand_profile/reservation/res_parent_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
@@ -12,8 +12,7 @@ import 'package:jdolh_customers/data/models/res_invitors.dart';
 
 class ResProductController extends ResParentController {
   List<Resinvitors> resInvitors = [];
-  BrandProfileController brandProfileController =
-      Get.put(BrandProfileController());
+  //BrandProfileController brandProfileController =Get.put(BrandProfileController());
   //Checker variables
 
   // Create a list of invitations
@@ -38,9 +37,8 @@ class ResProductController extends ResParentController {
   }
 
   gotoInvitorsBills() {
-    num totalCost = brandProfileController.totalPrice +
-        resCost +
-        brandProfileController.taxCost;
+    num totalCost =
+        cartController.totalPrice + resCost + cartController.taxCost;
     int totalPeopleNo = resInvitors.length + 1; // 1 is me.
     if (extraSeats.text != '') {
       totalPeopleNo += int.parse(extraSeats.text);
@@ -134,7 +132,7 @@ class ResProductController extends ResParentController {
   }
 
   bool checkAllFeilds() {
-    if (brandProfileController.carts.isEmpty) {
+    if (cartController.carts.isEmpty) {
       Get.rawSnackbar(message: 'السلة فارغة!');
       return false;
     }

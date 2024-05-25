@@ -45,7 +45,7 @@ class _LargeToggleButtonsState extends State<LargeToggleButtons> {
             },
             child: Container(
               height: 44.h,
-              color: selectedOption == 1 ? firstColor : null,
+              color: selectedOption == 1 ? firstColor : AppColors.gray,
               alignment: Alignment.center,
               child: Text(
                 widget.displayNumber != null
@@ -69,7 +69,7 @@ class _LargeToggleButtonsState extends State<LargeToggleButtons> {
             },
             child: Container(
               height: 44.h,
-              color: selectedOption == 2 ? secondColor : null,
+              color: selectedOption == 2 ? secondColor : AppColors.gray,
               alignment: Alignment.center,
               child: Text(
                 widget.optionTwo,

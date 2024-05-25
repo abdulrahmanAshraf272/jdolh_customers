@@ -5,7 +5,7 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 
 class ResServiceConltroller extends ResParentController {
   onTapConfirmRes() async {
-    if (brandProfileController.carts.isEmpty) {
+    if (cartController.carts.isEmpty) {
       Get.rawSnackbar(message: 'السلة فارغة!');
       return;
     }

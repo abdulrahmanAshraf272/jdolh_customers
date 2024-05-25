@@ -22,14 +22,6 @@ class BrandSearchData {
     return response.fold((l) => l, (r) => r);
   }
 
-  getBchInfo({required String bchid}) async {
-    var response = await crud.postData(ApiLinks.getBchInfo, {
-      "bchid": bchid,
-    });
-
-    return response.fold((l) => l, (r) => r);
-  }
-
   getTypesAndSubtypes() async {
     var response = await crud.getData(ApiLinks.brandTypesAndsubtypes);
 

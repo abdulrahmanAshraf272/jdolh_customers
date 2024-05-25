@@ -1,13 +1,9 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
 import 'package:jdolh_customers/controller/brand_profile/reservation/res_home_services_controller.dart';
-import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/res_service_subscreen.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/carts.dart';
-import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_product/oreder_content_list_item.dart';
-import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_service/cart_list_item.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_service/service_duration.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_dropdown.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
@@ -106,7 +102,9 @@ class ResHomeServicesSubscreen extends StatelessWidget {
             ),
             const CartService(),
             const SizedBox(height: 20),
-            const BillDetails(),
+            BillDetails(
+              resCost: controller.resCost,
+            ),
             const SizedBox(height: 20),
             GoHomeButton(
               onTap: () {
