@@ -66,35 +66,35 @@ class ResHomeServicesController extends ResParentController {
 
   bool checkAllFeilds() {
     if (cartController.carts.isEmpty) {
-      Get.rawSnackbar(message: 'السلة فارغة!');
+      Get.rawSnackbar(message: 'السلة فارغة!'.tr);
       return false;
     }
     if (selectedDate == '') {
-      Get.rawSnackbar(message: 'من فضلك اختر وقت الحجز');
+      Get.rawSnackbar(message: 'من فضلك اختر وقت الحجز'.tr);
       return false;
     }
     if (myLatLng == null || myLocation == '') {
-      Get.rawSnackbar(message: 'من فضلك قم بتحديد عنوان المنزل');
+      Get.rawSnackbar(message: 'من فضلك قم بتحديد عنوان المنزل'.tr);
       return false;
     }
     if (hood.text == '') {
-      Get.rawSnackbar(message: 'من فضلك قم بكتابة اسم الحي');
+      Get.rawSnackbar(message: 'من فضلك قم بكتابة اسم الحي'.tr);
       return false;
     }
     if (street.text == '') {
-      Get.rawSnackbar(message: 'من فضلك قم بكتابة اسم الشارع');
+      Get.rawSnackbar(message: 'من فضلك قم بكتابة اسم الشارع'.tr);
       return false;
     }
     if (building.text == '') {
-      Get.rawSnackbar(message: 'من فضلك قم بكتابة اسم او رقم البرج');
+      Get.rawSnackbar(message: 'من فضلك قم بكتابة اسم او رقم البرج'.tr);
       return false;
     }
     if (floor.text == '') {
-      Get.rawSnackbar(message: 'من فضلك قم بكتابة رقم الدور');
+      Get.rawSnackbar(message: 'من فضلك قم بكتابة رقم الدور'.tr);
       return false;
     }
     if (apartment.text == '') {
-      Get.rawSnackbar(message: 'من فضلك قم بكتابة رقم الشقة');
+      Get.rawSnackbar(message: 'من فضلك قم بكتابة رقم الشقة'.tr);
       return false;
     }
     return true;
@@ -113,8 +113,8 @@ class ResHomeServicesController extends ResParentController {
         "withBorder": true,
         "borderLatlng": bchLatlng,
         "maxDistance": homeServices.maxDistance,
-        "warningTitle": 'عذراً',
-        "warningBody": 'الخدمة غير متوفرة في هذه المنطقة'
+        "warningTitle": 'عذراً'.tr,
+        "warningBody": 'الخدمة غير متوفرة في هذه المنطقة'.tr
       });
     }
 

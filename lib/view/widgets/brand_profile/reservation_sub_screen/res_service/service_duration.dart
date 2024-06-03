@@ -18,7 +18,7 @@ class ServiceDuration extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'مدة الخدمة',
+                'مدة الخدمة'.tr,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 13.sp,
@@ -33,7 +33,7 @@ class ServiceDuration extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: AppColors.gray,
                     borderRadius: BorderRadius.circular(10)),
-                child: Text('${controller.totalServiceDuration} دقيقة'),
+                child: Text('${controller.totalServiceDuration} ${'دقيقة'.tr}'),
               )
             ],
           ),

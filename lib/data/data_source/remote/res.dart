@@ -5,6 +5,23 @@ class ResData {
   Crud crud;
   ResData(this.crud);
 
+  sendInvitation(
+      {required String resid,
+      required String userid,
+      required String creatorid,
+      required String type,
+      required String cost}) async {
+    var response = await crud.postData(ApiLinks.sendInvitations, {
+      "resid": resid,
+      "userid": userid,
+      "creatorid": creatorid,
+      "type": type,
+      "cost": cost
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
+
   createRes(
       {required String userid,
       required String bchid,

@@ -21,7 +21,7 @@ class ResHomeServicesSubscreen extends StatelessWidget {
         context: context,
         dialogType: DialogType.warning,
         animType: AnimType.rightSlide,
-        title: 'تنبيه',
+        title: 'تنبيه'.tr,
         desc: message,
       ).show();
     }
@@ -37,7 +37,7 @@ class ResHomeServicesSubscreen extends StatelessWidget {
                 Expanded(
                   child: Column(
                     children: [
-                      const CustomSmallBoldTitle(title: 'تفضيلات الحجز'),
+                      CustomSmallBoldTitle(title: 'تفضيلات الحجز'.tr),
                       const SizedBox(height: 10),
                       CustomDropdown(
                         items: controller.resOptionsTitles,
@@ -54,52 +54,51 @@ class ResHomeServicesSubscreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            const CustomSmallBoldTitle(title: 'وقت الحجز'),
+            CustomSmallBoldTitle(title: 'وقت الحجز'.tr),
             const SizedBox(height: 10),
             DateOrLocationDisplayContainer(
               verticalMargin: 0,
               hintText: controller.selectedResDateTime != ''
                   ? controller.selectedResDateTime
-                  : 'اختر وقت و تاريخ الحجز',
+                  : 'اختر وقت و تاريخ الحجز'.tr,
               iconData: Icons.date_range,
               onTap: () => controller.gotoSetResTime(),
             ),
             const SizedBox(height: 20),
-            const CustomSmallBoldTitle(title: 'الموقع'),
+            CustomSmallBoldTitle(title: 'الموقع'.tr),
             DateOrLocationDisplayContainer(
                 hintText: controller.myLocation != ''
                     ? controller.myLocation
-                    : 'حدد موقع المنزل',
+                    : 'حدد موقع المنزل'.tr,
                 iconData: Icons.place,
                 onTap: () {
                   controller.goToAddLocation();
                 }),
-            const CustomSmallBoldTitle(title: 'العنوان'),
+            CustomSmallBoldTitle(title: 'العنوان'.tr),
             const SizedBox(height: 10),
             CustomTextField(
-                textEditingController: controller.hood, labelText: 'اسم الحي'),
+                textEditingController: controller.hood,
+                labelText: 'اسم الحي'.tr),
             const SizedBox(height: 15),
             CustomTextField(
                 textEditingController: controller.street,
-                labelText: 'اسم الشارع'),
+                labelText: 'اسم الشارع'.tr),
             const SizedBox(height: 15),
             CustomTextField(
                 textEditingController: controller.building,
-                labelText: 'اسم البرج'),
+                labelText: 'اسم البرج'.tr),
             const SizedBox(height: 15),
             CustomTextField(
                 textEditingController: controller.floor,
                 textInputType: TextInputType.number,
-                labelText: 'رقم الدور'),
+                labelText: 'رقم الدور'.tr),
             const SizedBox(height: 15),
             CustomTextField(
                 textEditingController: controller.apartment,
                 textInputType: TextInputType.number,
-                labelText: 'رقم الشقة'),
+                labelText: 'رقم الشقة'.tr),
             const SizedBox(height: 20),
-            const CustomSmallBoldTitle(
-              title: 'تفاصيل الحجز',
-            ),
+            CustomSmallBoldTitle(title: 'تفاصيل الحجز'.tr),
             const CartService(),
             const SizedBox(height: 20),
             BillDetails(
@@ -116,7 +115,7 @@ class ResHomeServicesSubscreen extends StatelessWidget {
                 }
                 controller.onTapConfirmRes();
               },
-              text: 'تأكيد الحجز',
+              text: 'تأكيد الحجز'.tr,
             ),
             const SizedBox(height: 20),
           ],

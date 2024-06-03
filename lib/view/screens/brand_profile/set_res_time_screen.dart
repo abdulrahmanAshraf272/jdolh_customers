@@ -13,14 +13,9 @@ import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/common/data_or_location_display_container.dart';
 import 'package:jdolh_customers/view/widgets/common/small_time_displayer.dart';
 
-class SetResTimeScreen extends StatefulWidget {
+class SetResTimeScreen extends StatelessWidget {
   const SetResTimeScreen({super.key});
 
-  @override
-  State<SetResTimeScreen> createState() => _SetResTimeScreenState();
-}
-
-class _SetResTimeScreenState extends State<SetResTimeScreen> {
   @override
   Widget build(BuildContext context) {
     Get.put(SetResTimeController());

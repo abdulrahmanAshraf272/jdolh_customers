@@ -5,7 +5,7 @@ class Resinvitors {
   String? userImage;
   int? type;
   int? status;
-  num? cost;
+  double? cost;
   int? creatorid;
 
   Resinvitors({
@@ -24,7 +24,9 @@ class Resinvitors {
     userid = json['resinvitors_userid'];
     type = json['resinvitors_type'];
     status = json['resinvitors_status'];
-    cost = json['resinvitors_cost'];
+    if (json['resinvitors_cost'] != null) {
+      cost = json['resinvitors_cost'].toDouble();
+    }
     creatorid = json['resinvitors_creatorid'];
   }
 }

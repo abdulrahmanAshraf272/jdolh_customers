@@ -21,7 +21,7 @@ class ResProductSubscreen extends StatelessWidget {
         context: context,
         dialogType: DialogType.warning,
         animType: AnimType.rightSlide,
-        title: 'تنبيه',
+        title: 'تنبيه'.tr,
         desc: message,
       ).show();
     }
@@ -39,7 +39,7 @@ class ResProductSubscreen extends StatelessWidget {
                         flex: 5,
                         child: Column(
                           children: [
-                            const CustomSmallBoldTitle(title: 'تفضيلات الحجز'),
+                            CustomSmallBoldTitle(title: 'تفضيلات الحجز'.tr),
                             const SizedBox(height: 10),
                             CustomDropdown(
                               horizontalMargin: 0,
@@ -63,38 +63,49 @@ class ResProductSubscreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const CustomSmallBoldTitle(title: 'وقت الحجز'),
+                  CustomSmallBoldTitle(title: 'وقت الحجز'.tr),
                   const SizedBox(height: 10),
                   DateOrLocationDisplayContainer(
                     verticalMargin: 0,
                     hintText: controller.selectedResDateTime != ''
                         ? controller.selectedResDateTime
-                        : 'اختر وقت و تاريخ الحجز',
+                        : 'اختر وقت و تاريخ الحجز'.tr,
                     iconData: Icons.date_range,
                     onTap: () => controller.gotoSetResTime(),
                   ),
                   const SizedBox(height: 20),
                   const Invitors(),
                   const SizedBox(height: 15),
-                  const CustomSmallBoldTitle(
-                    title: 'تفاصيل الطلب',
-                  ),
+                  CustomSmallBoldTitle(title: 'تفاصيل الطلب'.tr),
                   const CartProduct(),
                   const SizedBox(height: 20),
                   BillDetails(resCost: controller.resCost),
                   const SizedBox(height: 20),
-                  GoHomeButton(
-                    onTap: () {
-                      print('${controller.selectedResOption.resoptionsTitle}');
-                      var checkResOption = controller
-                          .checkAllItemsAvailableWithinResOptionSelected();
-                      if (checkResOption != true) {
-                        warningDialog(checkResOption);
-                        return;
-                      }
-                    },
-                    text: 'تأكيد الحجز',
-                  ),
+                  controller.withInvitation
+                      ? GoHomeButton(
+                          onTap: () {
+                            var checkResOption = controller
+                                .checkAllItemsAvailableWithinResOptionSelected();
+                            if (checkResOption != true) {
+                              warningDialog(checkResOption);
+                              return;
+                            }
+                            controller.onTapCreateReservationWithInvitors();
+                          },
+                          text: 'ارسال الدعوات'.tr,
+                        )
+                      : GoHomeButton(
+                          onTap: () {
+                            var checkResOption = controller
+                                .checkAllItemsAvailableWithinResOptionSelected();
+                            if (checkResOption != true) {
+                              warningDialog(checkResOption);
+                              return;
+                            }
+                            controller.onTapConfirmRes();
+                          },
+                          text: 'تأكيد الحجز'.tr,
+                        ),
                   const SizedBox(height: 20),
                 ],
               ),

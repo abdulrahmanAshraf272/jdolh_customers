@@ -3,6 +3,7 @@ import 'package:jdolh_customers/controller/brand_profile/brand_profile_controlle
 import 'package:jdolh_customers/controller/brand_profile/cart_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/notification/notification_sender/reservation_notification.dart';
 import 'package:jdolh_customers/core/services/services.dart';
@@ -17,6 +18,7 @@ import 'package:jdolh_customers/data/models/res_details.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
 
 class ResParentController extends GetxController {
+  ReservationNotification reservationNotification = ReservationNotification();
   Reservation reservation = Reservation();
   ResData resData = ResData(Get.find());
   bool viewRefresh = false;
@@ -29,7 +31,7 @@ class ResParentController extends GetxController {
   String selectedResDateTime = '';
   String selectedDate = '';
   String selectedTime = '';
-  bool withInvitation = false;
+
   late int bchid;
   late int brandid;
   HomeServices homeServices = HomeServices();
@@ -65,8 +67,8 @@ class ResParentController extends GetxController {
     print('shit');
     if (cartController.carts.isEmpty) {
       String message = brandProfileController.brand.brandIsService == 1
-          ? 'من فضلك قم بإضافة الخدمات ثم قم بتحديد وقت الحجز'
-          : 'من فضلك قم بإضافة المنتجات ثم قم بتحديد وقت الحجز';
+          ? 'من فضلك قم بإضافة الخدمات ثم قم بتحديد وقت الحجز'.tr
+          : 'من فضلك قم بإضافة المنتجات ثم قم بتحديد وقت الحجز'.tr;
       Get.rawSnackbar(message: message);
       return;
     }
@@ -120,7 +122,7 @@ class ResParentController extends GetxController {
         billPolicy: billPolicy.toString(),
         resPolicy: resPolicy.toString(),
         isHomeService: brandProfileController.isHomeServices ? '1' : '0',
-        withInvitores: withInvitation ? '1' : '0',
+        withInvitores: '0',
         resOption: selectedResOption.resoptionsTitle!,
         status: reviewRes == 0 ? '1' : '0');
     statusRequest = handlingData(response);
@@ -130,8 +132,6 @@ class ResParentController extends GetxController {
         print('create reservation succeed');
         reservation = Reservation.fromJson(response['data']);
         //send Notification
-        ReservationNotification reservationNotification =
-            ReservationNotification();
         if (reviewRes == 0) {
           reservationNotification.sendReserveNotification(
               bchid, selectedDate, reservation.resId!);
@@ -143,6 +143,27 @@ class ResParentController extends GetxController {
         return reservation;
       } else {
         statusRequest = StatusRequest.failure;
+      }
+    }
+  }
+
+  onTapConfirmRes() async {
+    if (cartController.carts.isEmpty) {
+      Get.rawSnackbar(message: 'السلة فارغة!'.tr);
+      return;
+    }
+    if (selectedDate == '') {
+      Get.rawSnackbar(message: 'من فضلك اختر وقت الحجز'.tr);
+      return;
+    }
+    CustomDialogs.loading();
+    var result = await createRes();
+    CustomDialogs.dissmissLoading();
+    if (result != null) {
+      if (resDetails.reviewRes == 0) {
+        Get.offNamed(AppRouteName.payment, arguments: result);
+      } else {
+        Get.offNamed(AppRouteName.waitForApprove, arguments: result);
       }
     }
   }

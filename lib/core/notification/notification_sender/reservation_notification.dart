@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/notification/notification_sender/notification_sender.dart';
 import 'package:jdolh_customers/core/services/services.dart';
+import 'package:jdolh_customers/data/models/res_invitors.dart';
+import 'package:jdolh_customers/data/models/reservation.dart';
 
 class ReservationNotification {
   MyServices myServices = Get.find();
@@ -48,5 +50,17 @@ class ReservationNotification {
         body:
             '$didString $canelString $myUsername $reserveString $inString $yourStoreString $dateString $date',
         routeName: '/reservations');
+  }
+
+  sendInvitations(List<Resinvitors> resInvitors, Reservation reservation) {
+    String myName = myServices.getName();
+    String date = reservation.resDate!;
+    for (int i = 0; i < resInvitors.length; i++) {
+      NotificationSender.sendToCustomer(
+        userid: resInvitors[i].userid!,
+        title: 'دعوة من $myName ',
+        body: 'لديك دعوة حجز بتاريخ $date',
+      );
+    }
   }
 }

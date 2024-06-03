@@ -23,7 +23,7 @@ class ResServiceSubscreen extends StatelessWidget {
         context: context,
         dialogType: DialogType.warning,
         animType: AnimType.rightSlide,
-        title: 'تنبيه',
+        title: 'تنبيه'.tr,
         desc: message,
       ).show();
     }
@@ -41,7 +41,7 @@ class ResServiceSubscreen extends StatelessWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          const CustomSmallBoldTitle(title: 'تفضيلات الحجز'),
+                          CustomSmallBoldTitle(title: 'تفضيلات الحجز'.tr),
                           const SizedBox(height: 10),
                           CustomDropdown(
                             items: controller.resOptionsTitles,
@@ -59,20 +59,18 @@ class ResServiceSubscreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                const CustomSmallBoldTitle(title: 'وقت الحجز'),
+                CustomSmallBoldTitle(title: 'وقت الحجز'.tr),
                 const SizedBox(height: 10),
                 DateOrLocationDisplayContainer(
                   verticalMargin: 0,
                   hintText: controller.selectedResDateTime != ''
                       ? controller.selectedResDateTime
-                      : 'اختر وقت و تاريخ الحجز',
+                      : 'اختر وقت و تاريخ الحجز'.tr,
                   iconData: Icons.date_range,
                   onTap: () => controller.gotoSetResTime(),
                 ),
                 const SizedBox(height: 20),
-                const CustomSmallBoldTitle(
-                  title: 'تفاصيل الحجز',
-                ),
+                CustomSmallBoldTitle(title: 'تفاصيل الحجز'.tr),
                 const CartService(),
                 const SizedBox(height: 20),
                 BillDetails(resCost: controller.resCost),
@@ -87,7 +85,7 @@ class ResServiceSubscreen extends StatelessWidget {
                     }
                     controller.onTapConfirmRes();
                   },
-                  text: 'تأكيد الحجز',
+                  text: 'تأكيد الحجز'.tr,
                 ),
                 const SizedBox(height: 20),
               ],
@@ -110,24 +108,24 @@ class BillDetails extends StatelessWidget {
       return Column(
         children: [
           BillRow(
-            title: 'المجموع',
+            title: 'المجموع'.tr,
             price: controller.totalPrice,
           ),
           BillRow(
-            title: 'رسوم الحجز',
+            title: 'رسوم الحجز'.tr,
             price: resCost,
           ),
           BillRow(
-            title: 'الإجمالي غير شامل الضريبة',
+            title: 'الإجمالي غير شامل الضريبة'.tr,
             price: controller.totalPrice + resCost,
           ),
           BillRow(
-            title: 'ضريبة القيمة المضافة',
+            title: 'ضريبة القيمة المضافة'.tr,
             price: controller.taxCost,
           ),
           BillRow(
             lastRow: true,
-            title: 'الإجمالي شامل الضريبة',
+            title: 'الإجمالي شامل الضريبة'.tr,
             price: controller.totalPrice + resCost + controller.taxCost,
           ),
         ],

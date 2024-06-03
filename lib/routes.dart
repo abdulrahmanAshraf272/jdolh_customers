@@ -56,6 +56,7 @@ import 'package:jdolh_customers/view/screens/res_archive_screen.dart';
 import 'package:jdolh_customers/view/screens/res_occasion_screen.dart';
 import 'package:jdolh_customers/view/screens/reservation_done_screen.dart';
 import 'package:jdolh_customers/view/screens/reservation_search_screen.dart';
+import 'package:jdolh_customers/view/screens/schedule/reservation_confirm_wait_screen.dart';
 import 'package:jdolh_customers/view/screens/schedule/reservation_details_screen.dart';
 import 'package:jdolh_customers/view/screens/schedule/schedule_screen.dart';
 import 'package:jdolh_customers/view/screens/search_screen.dart';
@@ -174,6 +175,10 @@ List<GetPage> routes = [
   GetPage(
     name: AppRouteName.finishedOccasions,
     page: () => const FinishedOccasionsScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.reservationConfirmWait,
+    page: () => const ReservationConfirmWaitScreen(),
   ),
   GetPage(
     name: AppRouteName.successOperation,

@@ -40,9 +40,9 @@ class BrandProfileScreen extends StatelessWidget {
                       ),
                       LargeToggleButtons(
                           optionOne: controller.brand.brandIsService == 1
-                              ? 'الخدمات'
-                              : 'القائمة',
-                          optionTwo: 'تفاصيل الحجز',
+                              ? 'الخدمات'.tr
+                              : 'القائمة'.tr,
+                          optionTwo: 'تفاصيل الحجز'.tr,
                           onTapOne: () => controller.diplayItemsSubscreen(),
                           onTapTwo: () => controller.displayResSubscreen()),
                       controller.subscreen == 0

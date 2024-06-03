@@ -89,10 +89,6 @@ class Invitors extends StatelessWidget {
                                         fontFamily: 'Cairo'))
                               ])),
                             ),
-                      const SizedBox(height: 15),
-                      CustomButton(
-                          onTap: () => controller.gotoInvitorsBills(),
-                          text: 'عرض تفاصيل تقسيم الرسوم'),
                       Divider(
                         color: Colors.grey.shade300,
                         thickness: 2,
