@@ -17,6 +17,8 @@ class ItemsToDisplay extends StatelessWidget {
         builder: (controller) => ListView.builder(
             itemCount: controller.itemsToDisplay.length,
             physics: const BouncingScrollPhysics(),
+            shrinkWrap: true,
+            padding: const EdgeInsets.only(bottom: 20),
             itemBuilder: (context, index) => ServiceListItem(
                   image: controller.itemsToDisplay[index].itemsImage,
                   name: controller.itemsToDisplay[index].itemsTitle ?? '',

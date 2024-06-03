@@ -95,6 +95,7 @@ class HomeController extends GetxController {
   }
 
   parseReservations(response) {
+    reservation.clear();
     List reservationData = response['reservation'];
     List<Reservation> res =
         reservationData.map((e) => Reservation.fromJson(e)).toList();

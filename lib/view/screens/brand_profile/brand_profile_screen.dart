@@ -24,43 +24,39 @@ class BrandProfileScreen extends StatelessWidget {
         builder: (controller) =>
             controller.statusRequest != StatusRequest.success
                 ? HandlingDataView2(statusRequest: controller.statusRequest)
-                : Column(
-                    children: [
-                      BrandProfileHeader(
-                          isFollowing: controller.isFollowing,
-                          followingNo: controller.followingNo,
-                          ratesNo: controller.ratesNo,
-                          averageRate: controller.averageRate,
-                          resNo: controller.resNo,
-                          onTapFollow: () => controller.followUnfollow()),
-                      DescAndBranshedButtonAndWorkTime(
-                        desc: controller.bch.bchDesc ?? '',
-                        onTapWorktime: () => controller.gotoDisplayWorktime(),
-                        onTapBchs: () => controller.goDisplayAllBchs(),
-                      ),
-                      LargeToggleButtons(
-                          optionOne: controller.brand.brandIsService == 1
-                              ? 'الخدمات'.tr
-                              : 'القائمة'.tr,
-                          optionTwo: 'تفاصيل الحجز'.tr,
-                          onTapOne: () => controller.diplayItemsSubscreen(),
-                          onTapTwo: () => controller.displayResSubscreen()),
-                      controller.subscreen == 0
-                          ? const Expanded(
-                              child: Column(
-                                children: [
-                                  Categories(),
-                                  Expanded(child: ItemsToDisplay())
-                                ],
-                              ),
-                            )
-                          : controller.subscreen == 1
-                              ? const Expanded(child: ResProductSubscreen())
-                              : controller.subscreen == 2
-                                  ? const Expanded(child: ResServiceSubscreen())
-                                  : const Expanded(
-                                      child: ResHomeServicesSubscreen())
-                    ],
+                : SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        BrandProfileHeader(
+                            isFollowing: controller.isFollowing,
+                            followingNo: controller.followingNo,
+                            ratesNo: controller.ratesNo,
+                            averageRate: controller.averageRate,
+                            resNo: controller.resNo,
+                            onTapFollow: () => controller.followUnfollow()),
+                        DescAndBranshedButtonAndWorkTime(
+                          desc: controller.bch.bchDesc ?? '',
+                          onTapWorktime: () => controller.gotoDisplayWorktime(),
+                          onTapBchs: () => controller.goDisplayAllBchs(),
+                        ),
+                        LargeToggleButtons(
+                            optionOne: controller.brand.brandIsService == 1
+                                ? 'الخدمات'.tr
+                                : 'القائمة'.tr,
+                            optionTwo: 'تفاصيل الحجز'.tr,
+                            onTapOne: () => controller.diplayItemsSubscreen(),
+                            onTapTwo: () => controller.displayResSubscreen()),
+                        controller.subscreen == 0
+                            ? const Column(
+                                children: [Categories(), ItemsToDisplay()],
+                              )
+                            : controller.subscreen == 1
+                                ? const ResProductSubscreen()
+                                : controller.subscreen == 2
+                                    ? const ResServiceSubscreen()
+                                    : const ResHomeServicesSubscreen()
+                      ],
+                    ),
                   ),
       ),
     );

@@ -1,9 +1,5 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:jdolh_customers/controller/brand_profile/set_res_time_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
@@ -20,14 +16,14 @@ class SetResTimeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(SetResTimeController());
     return Scaffold(
-        appBar: customAppBar(title: 'وقت الحجز'),
+        appBar: customAppBar(title: 'وقت الحجز'.tr),
         body: GetBuilder<SetResTimeController>(
             builder: (controller) => HandlingDataView(
                   statusRequest: controller.statusRequest,
                   widget: Column(
                     children: <Widget>[
                       const SizedBox(height: 20),
-                      const CustomSmallBoldTitle(title: 'اختر تاريخ الحجز'),
+                      CustomSmallBoldTitle(title: 'اختر تاريخ الحجز'.tr),
                       const SizedBox(height: 10),
                       DateOrLocationDisplayContainer(
                         verticalMargin: 0,
@@ -37,11 +33,12 @@ class SetResTimeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       if (controller.availaleWorktime.isNotEmpty)
-                        const CustomSmallBoldTitle(title: 'اختر وقت الحجز'),
+                        CustomSmallBoldTitle(title: 'اختر وقت الحجز'.tr),
                       const SizedBox(height: 20),
                       Expanded(
                           child: controller.availaleWorktime.isEmpty
-                              ? Text('عفواً لا توجد اوقات متاحة في هذا اليوم')
+                              ? Text(
+                                  'عفواً لا توجد اوقات متاحة في هذا اليوم'.tr)
                               : GridView.builder(
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
@@ -71,7 +68,7 @@ class SetResTimeScreen extends StatelessWidget {
                         buttonColor: controller.selectedTime == ''
                             ? Colors.grey.shade300
                             : AppColors.secondaryColor,
-                        text: 'حفظ',
+                        text: 'حفظ'.tr,
                       ),
                       const SizedBox(height: 20)
                     ],

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/functions/rounding.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/cart.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
@@ -131,6 +132,6 @@ class CartController extends GetxController {
     for (int i = 0; i < carts.length; i++) {
       totalPrice += carts[i].cartTotalPrice!;
     }
-    taxCost = totalPrice * 0.14;
+    taxCost = roundTwoDecimal(totalPrice * 0.14);
   }
 }

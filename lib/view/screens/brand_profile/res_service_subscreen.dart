@@ -32,64 +32,61 @@ class ResServiceSubscreen extends StatelessWidget {
     return GetBuilder<ResServiceConltroller>(builder: (controller) {
       return HandlingDataView(
           statusRequest: controller.statusRequest,
-          widget: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 15),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          CustomSmallBoldTitle(title: 'تفضيلات الحجز'.tr),
-                          const SizedBox(height: 10),
-                          CustomDropdown(
-                            items: controller.resOptionsTitles,
-                            title:
-                                controller.selectedResOption.resoptionsTitle!,
-                            displacement: 0,
-                            onChanged: (String? value) {
-                              controller.selectResOption(value!);
-                            },
-                          ),
-                        ],
-                      ),
+          widget: Column(
+            children: [
+              const SizedBox(height: 15),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        CustomSmallBoldTitle(title: 'تفضيلات الحجز'.tr),
+                        const SizedBox(height: 10),
+                        CustomDropdown(
+                          items: controller.resOptionsTitles,
+                          title: controller.selectedResOption.resoptionsTitle!,
+                          displacement: 0,
+                          onChanged: (String? value) {
+                            controller.selectResOption(value!);
+                          },
+                        ),
+                      ],
                     ),
-                    const ServiceDuration()
-                  ],
-                ),
-                const SizedBox(height: 20),
-                CustomSmallBoldTitle(title: 'وقت الحجز'.tr),
-                const SizedBox(height: 10),
-                DateOrLocationDisplayContainer(
-                  verticalMargin: 0,
-                  hintText: controller.selectedResDateTime != ''
-                      ? controller.selectedResDateTime
-                      : 'اختر وقت و تاريخ الحجز'.tr,
-                  iconData: Icons.date_range,
-                  onTap: () => controller.gotoSetResTime(),
-                ),
-                const SizedBox(height: 20),
-                CustomSmallBoldTitle(title: 'تفاصيل الحجز'.tr),
-                const CartService(),
-                const SizedBox(height: 20),
-                BillDetails(resCost: controller.resCost),
-                const SizedBox(height: 20),
-                GoHomeButton(
-                  onTap: () {
-                    var checkResOption = controller
-                        .checkAllItemsAvailableWithinResOptionSelected();
-                    if (checkResOption != true) {
-                      warningDialog(checkResOption);
-                      return;
-                    }
-                    controller.onTapConfirmRes();
-                  },
-                  text: 'تأكيد الحجز'.tr,
-                ),
-                const SizedBox(height: 20),
-              ],
-            ),
+                  ),
+                  const ServiceDuration()
+                ],
+              ),
+              const SizedBox(height: 20),
+              CustomSmallBoldTitle(title: 'وقت الحجز'.tr),
+              const SizedBox(height: 10),
+              DateOrLocationDisplayContainer(
+                verticalMargin: 0,
+                hintText: controller.selectedResDateTime != ''
+                    ? controller.selectedResDateTime
+                    : 'اختر وقت و تاريخ الحجز'.tr,
+                iconData: Icons.date_range,
+                onTap: () => controller.gotoSetResTime(),
+              ),
+              const SizedBox(height: 20),
+              CustomSmallBoldTitle(title: 'تفاصيل الحجز'.tr),
+              const CartService(),
+              const SizedBox(height: 20),
+              BillDetails(resCost: controller.resCost),
+              const SizedBox(height: 20),
+              GoHomeButton(
+                onTap: () {
+                  var checkResOption = controller
+                      .checkAllItemsAvailableWithinResOptionSelected();
+                  if (checkResOption != true) {
+                    warningDialog(checkResOption);
+                    return;
+                  }
+                  controller.onTapConfirmRes();
+                },
+                text: 'تأكيد الحجز'.tr,
+              ),
+              const SizedBox(height: 20),
+            ],
           ));
     });
   }
