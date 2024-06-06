@@ -5,6 +5,32 @@ class ResData {
   Crud crud;
   ResData(this.crud);
 
+  deleteReservation({required String resid}) async {
+    var response = await crud.postData(ApiLinks.deleteRes, {
+      "resid": resid,
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
+
+  respondInvitations(
+      {required String resid,
+      required String userid,
+      required String status}) async {
+    var response = await crud.postData(ApiLinks.respondInvitation,
+        {"resid": resid, "userid": userid, "status": status});
+
+    return response.fold((l) => l, (r) => r);
+  }
+
+  getInvitors({required String resid}) async {
+    var response = await crud.postData(ApiLinks.getInvitors, {
+      "resid": resid,
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
+
   sendInvitation(
       {required String resid,
       required String userid,

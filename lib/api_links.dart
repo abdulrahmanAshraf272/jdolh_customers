@@ -151,8 +151,12 @@ class ApiLinks {
 
   static const String sendInvitations =
       '$server/jdolh_customers/res/send_invitations.php';
-  static const String getInvitations =
-      '$server/jdolh_customers/res/get_invitations.php';
+
+  static const String getInvitors =
+      '$server/jdolh_customers/res/get_invitors.php';
+  static const String respondInvitation =
+      '$server/jdolh_customers/res/respond_invitation.php';
+  static const String deleteRes = '$server/jdolh_customers/res/delete_res.php';
 
   // ===== Rate ======//
   static const String addRate = '$server/jdolh_customers/rate/add_rate.php';

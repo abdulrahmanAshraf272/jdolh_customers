@@ -9,7 +9,7 @@ import 'package:path/path.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 
 final String basicAuth =
-    'Basic ' + base64Encode(utf8.encode('jdlhcm:#lm0UsM#Az{8'));
+    'Basic ' + base64Encode(utf8.encode('jdolhapp:jdolh%240606'));
 
 Map<String, String> myheader = {'authorization': basicAuth};
 

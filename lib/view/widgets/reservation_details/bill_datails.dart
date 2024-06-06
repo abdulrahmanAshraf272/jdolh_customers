@@ -1,44 +1,43 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/schedule/reservation_details_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
+import 'package:jdolh_customers/data/models/reservation.dart';
 
 class BillDetails extends StatelessWidget {
+  final Reservation reservation;
   const BillDetails({
     super.key,
+    required this.reservation,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ReservationDetailsController>(builder: (controller) {
-      return Column(
-        children: [
-          BillRow(
-            title: 'المجموع'.tr,
-            price: controller.reservation.resPrice ?? 0,
-          ),
-          BillRow(
-            title: 'رسوم الحجز'.tr,
-            price: controller.reservation.resResCost ?? 0,
-          ),
-          BillRow(
-            title: 'الإجمالي غير شامل الضريبة'.tr,
-            price: controller.reservation.resPrice! +
-                controller.reservation.resResCost!,
-          ),
-          BillRow(
-            title: 'ضريبة القيمة المضافة'.tr,
-            price: controller.reservation.resTaxCost ?? 0,
-          ),
-          BillRow(
-            lastRow: true,
-            title: 'الإجمالي شامل الضريبة'.tr,
-            price: controller.reservation.resTotalPrice ?? 0,
-          ),
-        ],
-      );
-    });
+    return Column(
+      children: [
+        BillRow(
+          title: 'المجموع'.tr,
+          price: reservation.resPrice ?? 0,
+        ),
+        BillRow(
+          title: 'رسوم الحجز'.tr,
+          price: reservation.resResCost ?? 0,
+        ),
+        BillRow(
+          title: 'الإجمالي غير شامل الضريبة'.tr,
+          price: reservation.resPrice! + reservation.resResCost!,
+        ),
+        BillRow(
+          title: 'ضريبة القيمة المضافة'.tr,
+          price: reservation.resTaxCost ?? 0,
+        ),
+        BillRow(
+          lastRow: true,
+          title: 'الإجمالي شامل الضريبة'.tr,
+          price: reservation.resTotalPrice ?? 0,
+        ),
+      ],
+    );
   }
 }
 

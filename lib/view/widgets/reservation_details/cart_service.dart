@@ -1,34 +1,35 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
-import 'package:jdolh_customers/controller/schedule/reservation_details_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
+import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
+import 'package:jdolh_customers/data/models/cart.dart';
 
 class CartService extends StatelessWidget {
-  const CartService({super.key});
+  final StatusRequest statusRequest;
+  final List<Cart> carts;
+  const CartService(
+      {super.key, required this.statusRequest, required this.carts});
 
   @override
   Widget build(BuildContext context) {
     //BrandProfileController controller = Get.find();
-    return GetBuilder<ReservationDetailsController>(
-      builder: (controller) => HandlingDataRequest(
-          statusRequest: controller.statusRequest,
-          widget: ListView.builder(
-              itemCount: controller.carts.length,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) => CartListItem(
-                    image: controller.carts[index].itemsImage,
-                    name: controller.carts[index].itemsTitle ?? '',
-                    desc: controller.carts[index].cartShortDesc ?? '',
-                    price: controller.carts[index].cartTotalPrice.toString(),
-                    duration: controller.carts[index].itemsDuration ?? 0,
-                  ))),
-    );
+    return HandlingDataRequest(
+        statusRequest: statusRequest,
+        widget: ListView.builder(
+            itemCount: carts.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) => CartListItem(
+                  image: carts[index].itemsImage,
+                  name: carts[index].itemsTitle ?? '',
+                  desc: carts[index].cartShortDesc ?? '',
+                  price: carts[index].cartTotalPrice.toString(),
+                  duration: carts[index].itemsDuration ?? 0,
+                )));
   }
 }
 

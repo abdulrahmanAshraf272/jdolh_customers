@@ -10,13 +10,10 @@ import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/open_url_link.dart';
 import 'package:jdolh_customers/core/notification/notification_sender/reservation_notification.dart';
 import 'package:jdolh_customers/core/services/services.dart';
-import 'package:jdolh_customers/data/data_source/remote/rate.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
-import 'package:jdolh_customers/data/models/rate.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
-import 'package:jdolh_customers/view/widgets/reservation_details/bch_and_reservation_data.dart';
 
 class ReservationDetailsController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;

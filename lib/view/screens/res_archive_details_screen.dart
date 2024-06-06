@@ -9,13 +9,10 @@ import 'package:jdolh_customers/core/notification/notification_sender/activity_n
 import 'package:jdolh_customers/data/data_source/remote/rate.dart';
 import 'package:jdolh_customers/data/models/rate.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
-
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/reservation_details/bill_datails.dart';
-import 'package:jdolh_customers/view/widgets/reservation_details/cart_product.dart';
-import 'package:jdolh_customers/view/widgets/reservation_details/cart_service.dart';
 import 'package:jdolh_customers/view/widgets/reservation_details/bch_and_reservation_data.dart';
+import 'package:jdolh_customers/view/widgets/reservation_details/res_cart_data.dart';
 import 'package:jdolh_customers/view/widgets/reservation_details/reservation_date.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 
@@ -175,7 +172,9 @@ class _ResArchiveDetailsScreenState extends State<ResArchiveDetailsScreen> {
               body: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const BchDataHeader(),
+                    BchDataHeader(
+                      reservation: controller.reservation,
+                    ),
                     if (rate != null)
                       RatingCommentWidget(
                         rate: rate!,
@@ -183,8 +182,14 @@ class _ResArchiveDetailsScreenState extends State<ResArchiveDetailsScreen> {
                           deleteRate();
                         },
                       ),
-                    const BchLocation(),
-                    const ContactNumber(),
+                    BchLocation(
+                      reservation: controller.reservation,
+                      onTapDisplayLocation: () =>
+                          controller.onTapDisplayLocation(),
+                    ),
+                    ContactNumber(
+                        reservation: controller.reservation,
+                        onTapCallBch: () => controller.callBch()),
                     const SizedBox(height: 5),
                     ReservationDate(
                         date: controller.reservation.resDate ?? '',
@@ -199,7 +204,7 @@ class _ResArchiveDetailsScreenState extends State<ResArchiveDetailsScreen> {
                     const SizedBox(height: 20),
                     const ResCartData(),
                     const SizedBox(height: 20),
-                    const BillDetails(),
+                    BillDetails(reservation: controller.reservation),
                     const SizedBox(height: 20),
                   ],
                 ),
@@ -267,30 +272,6 @@ class RatingCommentWidget extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class ResCartData extends StatelessWidget {
-  const ResCartData({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final controller = Get.put(ReservationDetailsController());
-    return controller.isService
-        ? Column(
-            children: [
-              CustomTitle(title: 'الخدمات'.tr),
-              const CartService(),
-            ],
-          )
-        : Column(
-            children: [
-              CustomTitle(title: 'تفاصيل الطلب'.tr),
-              const SizedBox(height: 15),
-              const OrderContentTitle(),
-              const CartProduct(),
-            ],
-          );
   }
 }
 

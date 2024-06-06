@@ -3,32 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
-import 'package:jdolh_customers/controller/schedule/reservation_details_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
+import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
+import 'package:jdolh_customers/data/models/cart.dart';
 
 class CartProduct extends StatelessWidget {
-  const CartProduct({super.key});
+  final StatusRequest statusRequest;
+  final List<Cart> carts;
+  const CartProduct(
+      {super.key, required this.statusRequest, required this.carts});
 
   @override
   Widget build(BuildContext context) {
     //BrandProfileController controller = Get.find();
-    return GetBuilder<ReservationDetailsController>(
-      builder: (controller) => HandlingDataRequest(
-          statusRequest: controller.statusRequest,
-          widget: ListView.builder(
-              itemCount: controller.carts.length,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) => OrderContentListItem(
-                    image: controller.carts[index].itemsImage,
-                    name: controller.carts[index].itemsTitle ?? '',
-                    desc: controller.carts[index].cartShortDesc ?? '',
-                    price: controller.carts[index].cartTotalPrice.toString(),
-                    quantity: controller.carts[index].cartQuantity ?? 0,
-                  ))),
-    );
+    return HandlingDataRequest(
+        statusRequest: statusRequest,
+        widget: ListView.builder(
+            itemCount: carts.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) => OrderContentListItem(
+                  image: carts[index].itemsImage,
+                  name: carts[index].itemsTitle ?? '',
+                  desc: carts[index].cartShortDesc ?? '',
+                  price: carts[index].cartTotalPrice.toString(),
+                  quantity: carts[index].cartQuantity ?? 0,
+                )));
   }
 }
 
@@ -152,7 +154,7 @@ class OrderContentTitle extends StatelessWidget {
             color: AppColors.gray450,
             padding: const EdgeInsets.all(10),
             alignment: Alignment.center,
-            child: Text('الصنف', style: titleSmall),
+            child: Text('الصنف'.tr, style: titleSmall),
           ),
         ),
         Expanded(
@@ -163,7 +165,7 @@ class OrderContentTitle extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             alignment: Alignment.center,
             child: Text(
-              'العدد',
+              'العدد'.tr,
               style: titleSmall,
             ),
           ),
@@ -176,7 +178,7 @@ class OrderContentTitle extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             alignment: Alignment.center,
             child: Text(
-              'المبلغ',
+              'المبلغ'.tr,
               style: titleSmall,
             ),
           ),

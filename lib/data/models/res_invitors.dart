@@ -28,5 +28,8 @@ class Resinvitors {
       cost = json['resinvitors_cost'].toDouble();
     }
     creatorid = json['resinvitors_creatorid'];
+
+    userName = json['user_name'];
+    userImage = json['user_image'];
   }
 }

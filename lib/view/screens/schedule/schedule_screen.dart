@@ -41,30 +41,27 @@ class ScheduleScreen extends StatelessWidget {
                     },
                   ),
                 const SizedBox(height: 10),
-                if (controller.resToDisplay.isEmpty)
-                  Center(child: Text('لا توجد حجوزات'.tr)),
-                if (controller.resToDisplay.isNotEmpty)
-                  HandlingDataView(
-                      statusRequest: controller.statusRequest,
-                      widget: Expanded(
-                          child: ListView.builder(
-                              itemCount: controller.resToDisplay.length,
-                              itemBuilder: (context, index) =>
-                                  AppointmentListItem(
-                                      brandName: controller
-                                              .resToDisplay[index].brandName ??
-                                          '',
-                                      brandLogo:
-                                          '${ApiLinks.logoImage}/${controller.resToDisplay[index].brandLogo}',
-                                      bchCity: controller
-                                              .resToDisplay[index].bchCity ??
-                                          '',
-                                      dateTime:
-                                          '${controller.resToDisplay[index].resDate} ${controller.resToDisplay[index].resTime}',
-                                      onTap: () {
-                                        controller
-                                            .gotoReservationDetails(index);
-                                      }))))
+                HandlingDataView(
+                    emptyText: 'لا توجد حجوزات'.tr,
+                    statusRequest: controller.statusRequest,
+                    widget: Expanded(
+                        child: ListView.builder(
+                            itemCount: controller.resToDisplay.length,
+                            itemBuilder: (context, index) =>
+                                AppointmentListItem(
+                                    brandName: controller
+                                            .resToDisplay[index].brandName ??
+                                        '',
+                                    brandLogo:
+                                        '${ApiLinks.logoImage}/${controller.resToDisplay[index].brandLogo}',
+                                    bchCity: controller
+                                            .resToDisplay[index].bchCity ??
+                                        '',
+                                    dateTime:
+                                        '${controller.resToDisplay[index].resDate} ${controller.resToDisplay[index].resTime}',
+                                    onTap: () {
+                                      controller.gotoReservationDetails(index);
+                                    }))))
               ],
             ),
           ),

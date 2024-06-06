@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:jdolh_customers/controller/brand_profile/reservation/res_parent_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'dart:async';
-
-import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/functions/calc_invitors_bills.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
-import 'package:jdolh_customers/core/notification/notification_sender/reservation_notification.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/res_invitors.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
@@ -18,10 +14,6 @@ import 'package:jdolh_customers/data/models/reservation.dart';
 class ResProductController extends ResParentController {
   List<Resinvitors> resInvitors = [];
   bool withInvitation = false;
-  //BrandProfileController brandProfileController =Get.put(BrandProfileController());
-  //Checker variables
-
-  // Create a list of invitations
 
   List<Friend> members = [];
   TextEditingController extraSeats = TextEditingController();
@@ -142,6 +134,10 @@ class ResProductController extends ResParentController {
       if (response['status'] == 'success') {
         print('create reservation succeed');
         reservation = Reservation.fromJson(response['data']);
+        reservation.brandLogo = brandProfileController.brand.brandLogo;
+        reservation.bchContactNumber =
+            brandProfileController.bch.bchContactNumber;
+        reservation.brandName = brandProfileController.brand.brandStoreName;
         return reservation;
       }
     }
@@ -184,8 +180,12 @@ class ResProductController extends ResParentController {
   }
 
   gotoReservationConfirmWait() {
-    Get.toNamed(AppRouteName.reservationConfirmWait,
-        arguments: {'reservation': reservation, 'resInvitors': resInvitors});
+    cartController.clearCart();
+    Get.toNamed(AppRouteName.reservationConfirmWait, arguments: {
+      'reservation': reservation,
+      'resInvitors': resInvitors,
+      "holdTime": resDetails.suspensionTimeLimit
+    });
   }
 
   bool checkAllFeilds() {

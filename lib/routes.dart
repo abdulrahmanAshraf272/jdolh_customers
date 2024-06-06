@@ -3,6 +3,7 @@ import 'package:jdolh_customers/controller/auth/forget_password_controller.dart'
 import 'package:jdolh_customers/controller/brand_profile/add_res_invitors_controller.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/middleware/my_middleware.dart';
+import 'package:jdolh_customers/test_payment.dart';
 import 'package:jdolh_customers/test_screen.dart';
 import 'package:jdolh_customers/test_screen2.dart';
 import 'package:jdolh_customers/view/screens/add_members_screen.dart';
@@ -73,6 +74,10 @@ List<GetPage> routes = [
     page: () => const LoginScreen(),
     middlewares: [MyMiddleware()],
   ),
+  // GetPage(
+  //   name: '/',
+  //   page: () => const TestPayment(),
+  // ),
   //For testing
 
   // GetPage(

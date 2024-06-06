@@ -5,22 +5,20 @@ class PaymentData {
   Crud crud;
   PaymentData(this.crud);
 
-  initiatePayment(
-    String action,
-    String orderId,
-    String orderAmount,
-    String orderCurrency,
-    String orderDescription,
-    String payerFirstName,
-    String payerLastName,
-    String payerAddress,
-    String payerCountry,
-    String payerCity,
-    String payerZip,
-    String payerEmail,
-    String payerPhone,
-    String payerIp,
-  ) async {
+  initiatePayment({
+    String action = 'SALE',
+    required String orderId,
+    required String orderAmount,
+    String orderCurrency = 'SAR',
+    required String orderDescription,
+    required String payerFirstName,
+    required String payerLastName,
+    String payerAddress = 'Saudi arabia',
+    String payerCountry = 'SA',
+    required String payerCity,
+    required String payerEmail,
+    required String payerPhone,
+  }) async {
     var response = await crud.postData(ApiLinks.initiatePayment, {
       "action": action,
       "order_id": orderId,
@@ -32,10 +30,12 @@ class PaymentData {
       "payer_address": payerAddress,
       "payer_country": payerCountry,
       "payer_city": payerCity,
-      "payer_zip": payerZip,
       "payer_email": payerEmail,
       "payer_phone": payerPhone,
-      "payer_ip": payerIp,
+      "recurring_init": "N",
+      "term_url_3ds":
+          "https://www.jdolh.com/jdolh1/jdolh_customers/payment/term_url_3ds.php",
+      "req_token": "N"
     });
 
     return response.fold((l) => l, (r) => r);

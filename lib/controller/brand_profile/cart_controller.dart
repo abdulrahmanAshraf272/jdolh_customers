@@ -83,6 +83,11 @@ class CartController extends GetxController {
     deleteCart(cartid);
   }
 
+  clearCart() {
+    carts.clear();
+    update();
+  }
+
   deleteCart(String cartid) async {
     var response = await cartData.deleteCart(cartid: cartid);
     StatusRequest statusDelete = handlingData(response);
