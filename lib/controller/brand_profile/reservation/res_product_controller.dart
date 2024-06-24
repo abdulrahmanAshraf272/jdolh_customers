@@ -14,6 +14,7 @@ import 'package:jdolh_customers/data/models/reservation.dart';
 class ResProductController extends ResParentController {
   List<Resinvitors> resInvitors = [];
   bool withInvitation = false;
+  double creatorCost = 0;
 
   List<Friend> members = [];
   TextEditingController extraSeats = TextEditingController();
@@ -111,6 +112,12 @@ class ResProductController extends ResParentController {
       //if service => get the total duration from all items in cart
       duration = cartController.totalServiceDuration;
     }
+
+    creatorCost =
+        calcDividePersonCost(totalPriceWithTax, resInvitors, extraSeats);
+
+    print('creator cost = ${creatorCost}');
+    print('extra seats: ${extraSeats.text}');
     var response = await resData.createRes(
         userid: myServices.getUserid(),
         bchid: bchid.toString(),
@@ -118,7 +125,7 @@ class ResProductController extends ResParentController {
         date: selectedDate,
         time: selectedTime,
         duration: duration.toString(),
-        price: totalPrice.toString(),
+        billCost: totalPrice.toString(),
         resCost: resCost.toString(),
         taxCost: taxCost.toString(),
         totalPrice: totalPriceWithTax.toString(),
@@ -127,7 +134,9 @@ class ResProductController extends ResParentController {
         isHomeService: brandProfileController.isHomeServices ? '1' : '0',
         withInvitores: '1',
         resOption: selectedResOption.resoptionsTitle!,
-        status: '-1'); //-1 refer to holding status.
+        status: '-1',
+        extraSeats: extraSeats.text.toString(),
+        creatorCost: creatorCost.toString()); //-1 refer to holding status.
     statusRequest = handlingData(response);
     print('create reservation $statusRequest');
     if (statusRequest == StatusRequest.success) {
@@ -138,6 +147,7 @@ class ResProductController extends ResParentController {
         reservation.bchContactNumber =
             brandProfileController.bch.bchContactNumber;
         reservation.brandName = brandProfileController.brand.brandStoreName;
+        reservation.bchLocation = brandProfileController.bch.bchLocation;
         return reservation;
       }
     }
@@ -181,10 +191,24 @@ class ResProductController extends ResParentController {
 
   gotoReservationConfirmWait() {
     cartController.clearCart();
+    for (Resinvitors invitror in resInvitors) {
+      invitror.status = 0;
+    }
+
+    //Add Myself
+    int myId = int.parse(myServices.getUserid());
+    resInvitors.add(Resinvitors(
+        userid: myId,
+        creatorid: myId,
+        userName: myServices.getName(),
+        userImage: myServices.getImage(),
+        cost: creatorCost));
+
     Get.toNamed(AppRouteName.reservationConfirmWait, arguments: {
       'reservation': reservation,
       'resInvitors': resInvitors,
-      "holdTime": resDetails.suspensionTimeLimit
+      "holdTime": resDetails.suspensionTimeLimit,
+      "reviewRes": reviewRes
     });
   }
 

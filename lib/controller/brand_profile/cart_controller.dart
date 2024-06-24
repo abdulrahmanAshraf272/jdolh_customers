@@ -85,6 +85,9 @@ class CartController extends GetxController {
 
   clearCart() {
     carts.clear();
+    totalServiceDuration = 0;
+    totalPrice = 0;
+    taxCost = 0;
     update();
   }
 

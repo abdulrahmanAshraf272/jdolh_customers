@@ -79,4 +79,5 @@ class AppRouteName {
   static const reservationConfirmWait = '/reservationConfirmWait';
 
   static const notifications = '/notifications';
+  static const reservationWithInvitors = '/reservationWithInvitors';
 }

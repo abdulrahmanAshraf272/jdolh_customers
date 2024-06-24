@@ -7,7 +7,7 @@ class Reservation {
   String? resTime;
   int? resDuration;
 
-  num? resPrice;
+  num? resBillCost;
   num? resResCost;
   num? resTaxCost;
   num? resTotalPrice;
@@ -21,6 +21,9 @@ class Reservation {
   int? resStatus;
   String? resDatecreated;
 
+  int? extraSeats;
+  double? creatorCost;
+
   String? brandName;
   String? brandLogo;
   int? bchid;
@@ -31,6 +34,9 @@ class Reservation {
   String? bchLocationLink;
   String? bchContactNumber;
 
+  int? resResPayed;
+  int? resBillPayed;
+
   Reservation(
       {this.resId,
       this.resUserid,
@@ -39,7 +45,7 @@ class Reservation {
       this.resDate,
       this.resTime,
       this.resDuration,
-      this.resPrice,
+      this.resBillCost,
       this.resResCost,
       this.resTaxCost,
       this.resTotalPrice,
@@ -59,7 +65,11 @@ class Reservation {
       this.bchLng,
       this.bchLocation,
       this.bchLocationLink,
-      this.bchContactNumber});
+      this.bchContactNumber,
+      this.extraSeats,
+      this.creatorCost,
+      this.resResPayed,
+      this.resBillPayed});
 
   Reservation.fromJson(Map<String, dynamic> json) {
     resId = json['res_id'];
@@ -69,7 +79,7 @@ class Reservation {
     resDate = json['res_date'];
     resTime = json['res_time'];
     resDuration = json['res_duration'];
-    resPrice = json['res_price'];
+    resBillCost = json['res_billCost'];
     resResCost = json['res_resCost'];
     resTaxCost = json['res_taxCost'];
     resTotalPrice = json['res_totalPrice'];
@@ -82,6 +92,11 @@ class Reservation {
     resStatus = json['res_status'];
     resDatecreated = json['res_datecreated'];
 
+    extraSeats = json['res_extraSeats'];
+    if (json['res_creatorCost'] != null) {
+      creatorCost = json['res_creatorCost'].toDouble();
+    }
+
     brandName = json['brand_storeName'];
     brandLogo = json['brand_logo'];
     bchid = json['bch_id'];
@@ -91,5 +106,8 @@ class Reservation {
     bchLocation = json['bch_location'];
     bchLocationLink = json['bch_locationLink'];
     bchContactNumber = json['bch_contactNumber'];
+
+    resResPayed = json['res_resPayed'];
+    resBillPayed = json['res_billPayed'];
   }
 }

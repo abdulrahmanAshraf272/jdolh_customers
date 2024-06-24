@@ -17,7 +17,7 @@ class BillDetails extends StatelessWidget {
       children: [
         BillRow(
           title: 'المجموع'.tr,
-          price: reservation.resPrice ?? 0,
+          price: reservation.resBillCost ?? 0,
         ),
         BillRow(
           title: 'رسوم الحجز'.tr,
@@ -25,7 +25,7 @@ class BillDetails extends StatelessWidget {
         ),
         BillRow(
           title: 'الإجمالي غير شامل الضريبة'.tr,
-          price: reservation.resPrice! + reservation.resResCost!,
+          price: reservation.resBillCost! + reservation.resResCost!,
         ),
         BillRow(
           title: 'ضريبة القيمة المضافة'.tr,

@@ -13,7 +13,6 @@ import 'package:jdolh_customers/view/widgets/auth/custom_textform_auth.dart';
 import 'package:jdolh_customers/view/widgets/auth/have_account_question.dart';
 import 'package:jdolh_customers/view/widgets/common/avatar_image_holder.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_dropdown.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_dropdown_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/custom_button_one.dart';
 
@@ -56,10 +55,16 @@ class SignupScreen extends StatelessWidget {
                                   selectedImage: controller.selectedImage,
                                 ),
                                 CustomTextFormAuthTwo(
-                                  labelText: 'اسمك',
-                                  valid: (val) => validInput(val!, 2, 100),
+                                  labelText: 'الاسم الاول',
+                                  valid: (val) => firstNameValidInput(val!),
                                   iconData: Icons.person,
-                                  textEditingController: controller.name,
+                                  textEditingController: controller.firstName,
+                                ),
+                                CustomTextFormAuthTwo(
+                                  labelText: 'اسم العائلة',
+                                  valid: (val) => firstNameValidInput(val!),
+                                  iconData: Icons.person,
+                                  textEditingController: controller.lastName,
                                 ),
                                 CustomTextFormAuthTwo(
                                   labelText: 'اسم المستخدم',

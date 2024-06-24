@@ -38,7 +38,9 @@ class _TestPaymentState extends State<TestPayment> {
 
   Future initiatePayment() async {
     var response = await paymentData.initiatePayment(
-        orderId: '300',
+        userid: '21',
+        orderType: 'RESERVATION', // ENUM(RESERVATION, WALLET)
+        orderId: '304',
         orderAmount: '120.00',
         orderDescription: 'orderDescription',
         payerFirstName: 'ahmed',

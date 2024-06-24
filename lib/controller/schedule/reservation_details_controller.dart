@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/open_url_link.dart';
 import 'package:jdolh_customers/core/notification/notification_sender/reservation_notification.dart';
@@ -26,7 +27,6 @@ class ReservationDetailsController extends GetxController {
   String customerName = '';
   String customerEmail = '';
   String customerPhone = '';
-  bool suspended = false;
 
   bool phoneNumberValid = false;
 
@@ -60,18 +60,17 @@ class ReservationDetailsController extends GetxController {
   }
 
   changeResStatus(String status) async {
-    statusRequest = StatusRequest.loading;
-    update();
+    CustomDialogs.loading();
     var response = await resData.changeResStatus(
         resid: reservation.resId.toString(),
         status: status,
         rejectionReason: '');
+    CustomDialogs.dissmissLoading();
     statusRequest = handlingData(response);
-
     print('statusRequest ==== $statusRequest');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
-        print('success');
+        CustomDialogs.success();
       } else {
         print('failure');
       }
@@ -175,9 +174,6 @@ class ReservationDetailsController extends GetxController {
   void onInit() {
     if (Get.arguments != null) {
       reservation = Get.arguments['res'];
-      if (Get.arguments['suspended'] != null) {
-        suspended = Get.arguments['suspended'];
-      }
 
       resTime = displayResTime(reservation.resTime!);
     }

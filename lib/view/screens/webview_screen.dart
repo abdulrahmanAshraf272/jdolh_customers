@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jdolh_customers/test_payment_result.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:io';
@@ -39,11 +40,23 @@ class _WebviewScreenState extends State<WebviewScreen> {
             print('Page started loading: $url');
           },
           onPageFinished: (String url) {
-            // Set loading state to false when the page finishes loading
-            setState(() {
-              isLoading = false;
-            });
-            print('Page finished loading: $url');
+            isLoading = false;
+            setState(() {});
+            if (url.contains('term_url_3ds.php')) {
+              print('url: $url');
+              print(' ===== the payment process is finished ======');
+
+              //TODO: navigate to the page that display the payment result.
+              //TODO: onInit result page make request to check the payment result and display the result.
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TestPaymentResult(
+                    orderId: 304,
+                  ),
+                ),
+              );
+            }
           },
           onHttpError: (HttpResponseError error) {
             print('HTTP error: ${error.response}');

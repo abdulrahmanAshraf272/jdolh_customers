@@ -14,7 +14,6 @@ import 'package:jdolh_customers/core/functions/pick_image.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/auth/signup.dart';
 import 'package:jdolh_customers/data/models/user.dart';
-import 'package:path/path.dart' as path;
 
 class EditPersonalDataController extends GetxController {
   File? image;
@@ -25,7 +24,8 @@ class EditPersonalDataController extends GetxController {
 
   GlobalKey<FormState> _formstate = GlobalKey<FormState>();
   get formstate => _formstate;
-  TextEditingController name = TextEditingController();
+  TextEditingController firstName = TextEditingController();
+  TextEditingController lastName = TextEditingController();
   TextEditingController username = TextEditingController();
   TextEditingController email = TextEditingController();
   //TextEditingController phoneNumber = TextEditingController();
@@ -59,7 +59,7 @@ class EditPersonalDataController extends GetxController {
       CustomDialogs.loading();
       var response = await signupData.editPersonalData(
           userid: myServices.getUserid(),
-          name: name.text,
+          name: '${firstName.text} ${lastName.text}',
           username: username.text,
           email: email.text,
           phone: '$countryKey ${phoneNumber.text}',
@@ -122,7 +122,12 @@ class EditPersonalDataController extends GetxController {
   }
 
   setAllData(User user) {
-    name.text = user.userName ?? '';
+    //Get fullName from sharedPrefs and get from it first and last name;
+    String fullName = user.userName ?? '';
+    List<String> nameParts = fullName.split(' ');
+    firstName.text = nameParts[0];
+    lastName.text = nameParts[1];
+
     username.text = user.userUsername ?? '';
     email.text = user.userEmail ?? '';
     String phoneWithKey = user.userPhone ?? '';
@@ -142,7 +147,8 @@ class EditPersonalDataController extends GetxController {
 
   @override
   void dispose() {
-    name.dispose();
+    firstName.dispose();
+    lastName.dispose();
     username.dispose();
     email.dispose();
     phoneNumber.dispose();

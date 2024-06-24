@@ -59,6 +59,7 @@ import 'package:jdolh_customers/view/screens/reservation_done_screen.dart';
 import 'package:jdolh_customers/view/screens/reservation_search_screen.dart';
 import 'package:jdolh_customers/view/screens/schedule/reservation_confirm_wait_screen.dart';
 import 'package:jdolh_customers/view/screens/schedule/reservation_details_screen.dart';
+import 'package:jdolh_customers/view/screens/schedule/reservation_with_invitors_details_screen.dart';
 import 'package:jdolh_customers/view/screens/schedule/schedule_screen.dart';
 import 'package:jdolh_customers/view/screens/search_screen.dart';
 import 'package:jdolh_customers/view/screens/select_address_screen.dart';
@@ -84,6 +85,10 @@ List<GetPage> routes = [
   //   name: '/',
   //   page: () => const ReservationSearchScreen(),
   // ),
+  GetPage(
+    name: AppRouteName.reservationWithInvitors,
+    page: () => const ReservationWithInvitorsDetailsScreen(),
+  ),
   GetPage(
     name: AppRouteName.notifications,
     page: () => const NotificationsScreen(),

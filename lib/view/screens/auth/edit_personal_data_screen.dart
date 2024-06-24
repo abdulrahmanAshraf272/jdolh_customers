@@ -61,10 +61,16 @@ class EdtiPersonalDataScreen extends StatelessWidget {
                                       : '${ApiLinks.customerImage}/${controller.networkImage}',
                                 ),
                                 CustomTextFormAuthTwo(
-                                  labelText: 'اسمك',
-                                  valid: (val) => validInput(val!, 2, 100),
+                                  labelText: 'الاسم الاول',
+                                  valid: (val) => firstNameValidInput(val!),
                                   iconData: Icons.person,
-                                  textEditingController: controller.name,
+                                  textEditingController: controller.firstName,
+                                ),
+                                CustomTextFormAuthTwo(
+                                  labelText: 'اسم العائلة',
+                                  valid: (val) => firstNameValidInput(val!),
+                                  iconData: Icons.person,
+                                  textEditingController: controller.lastName,
                                 ),
                                 CustomTextFormAuthTwo(
                                   labelText: 'اسم المستخدم',

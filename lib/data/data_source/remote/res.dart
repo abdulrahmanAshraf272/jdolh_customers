@@ -5,6 +5,13 @@ class ResData {
   Crud crud;
   ResData(this.crud);
 
+  changeHoldStatus({required String resid, required String status}) async {
+    var response = await crud.postData(
+        ApiLinks.changeHoldStatus, {"resid": resid, "status": status});
+
+    return response.fold((l) => l, (r) => r);
+  }
+
   deleteReservation({required String resid}) async {
     var response = await crud.postData(ApiLinks.deleteRes, {
       "resid": resid,
@@ -55,7 +62,7 @@ class ResData {
       required String date,
       required String time,
       required String duration,
-      required String price,
+      required String billCost,
       required String resCost,
       required String taxCost,
       required String totalPrice,
@@ -64,7 +71,9 @@ class ResData {
       required String isHomeService,
       required String withInvitores,
       required String resOption,
-      required String status}) async {
+      required String status,
+      String extraSeats = '0',
+      String creatorCost = '0'}) async {
     var response = await crud.postData(ApiLinks.createRes, {
       "userid": userid,
       "bchid": bchid,
@@ -72,7 +81,7 @@ class ResData {
       "date": date,
       "time": time,
       "duration": duration,
-      "price": price,
+      "billCost": billCost,
       "resCost": resCost,
       "taxCost": taxCost,
       "totalPrice": totalPrice,
@@ -81,7 +90,9 @@ class ResData {
       "isHomeService": isHomeService,
       "withInvitores": withInvitores,
       "resOption": resOption,
-      "status": status
+      "status": status,
+      "extraSeats": extraSeats,
+      "creatorCost": creatorCost
     });
 
     return response.fold((l) => l, (r) => r);

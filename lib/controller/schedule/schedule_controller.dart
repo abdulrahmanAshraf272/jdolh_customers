@@ -23,15 +23,19 @@ class ScheduleController extends GetxController {
   int diplayCommingRes = 1;
 
   gotoReservationDetails(int index) async {
-    bool suspended = diplayCommingRes == 1 ? false : true;
+    final result;
 
-    final result = await Get.toNamed(AppRouteName.reservationDetails,
-        arguments: {"res": resToDisplay[index], "suspended": suspended});
+    if (resToDisplay[index].resWithInvitors == 0) {
+      result = await Get.toNamed(AppRouteName.reservationDetails,
+          arguments: {"res": resToDisplay[index]});
+    } else {
+      result = await Get.toNamed(AppRouteName.reservationWithInvitors,
+          arguments: {"res": resToDisplay[index]});
+    }
 
     if (result != null) {
-      resToDisplay.remove(result);
-      allRes.remove(result);
-      update();
+      await getAllRes();
+      setResToDisplay(diplayCommingRes);
     }
   }
 
@@ -41,7 +45,7 @@ class ScheduleController extends GetxController {
 
     //Get all res from db and display filtered res
     await getAllRes();
-    setResToDisplay(diplayCommingRes = value);
+    setResToDisplay(diplayCommingRes);
   }
 
   Future<void> selectDate(BuildContext context) async {

@@ -2,12 +2,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
-import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
@@ -26,7 +24,9 @@ class SignUpController extends GetxController {
 
   GlobalKey<FormState> _formstate = GlobalKey<FormState>();
   get formstate => _formstate;
-  TextEditingController name = TextEditingController();
+  TextEditingController firstName = TextEditingController();
+  TextEditingController lastName = TextEditingController();
+
   TextEditingController username = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -63,11 +63,9 @@ class SignUpController extends GetxController {
     }
     var formdata = formstate.currentState;
     if (formdata!.validate()) {
-      print('sign up');
-      print('$countryKey${phoneNumber2.text}');
       CustomDialogs.loading();
       var response = await signupData.postData(
-          name.text,
+          '${firstName.text} ${lastName.text}',
           username.text,
           password.text,
           email.text,
@@ -75,7 +73,6 @@ class SignUpController extends GetxController {
           gender.toString(),
           city,
           image);
-      await Future.delayed(Duration(seconds: lateDuration));
       CustomDialogs.dissmissLoading();
       statusRequest = handlingData(response);
       update();
@@ -143,7 +140,8 @@ class SignUpController extends GetxController {
 
   @override
   void dispose() {
-    name.dispose();
+    firstName.dispose();
+    lastName.dispose();
     username.dispose();
     email.dispose();
     password.dispose();

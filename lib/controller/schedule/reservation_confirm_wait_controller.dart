@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/open_url_link.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
@@ -18,11 +19,14 @@ class ReservationConfirmWaitController extends GetxController {
   StatusRequest statusGetInvitors = StatusRequest.none;
   late Reservation reservation;
   late List<Resinvitors> resInvitors;
+  late int reviewRes;
   List<Cart> carts = [];
   String resTime = '';
   ResData resData = ResData(Get.find());
 
   bool displayResInvitorsPart = true;
+
+  bool isConfirm = false;
 
   changeSubscreen(bool displayResInvitor) {
     displayResInvitorsPart = displayResInvitor;
@@ -32,12 +36,48 @@ class ReservationConfirmWaitController extends GetxController {
     }
   }
 
-  onTapConfirmReservation() async {
-    inactiveTimer();
+  onTapConfirmReservation() {
+    confirmReservation();
   }
 
-  //TODO:
-  confirmReservation() {}
+  //TODO: Change status, Navigate to pay or to wait.
+  confirmReservation() async {
+    if (reviewRes == 0) {
+      bool changeStatusDone = await changeHoldStatus(1);
+      if (changeStatusDone) {
+        reservation.resStatus = 1;
+        isConfirm = true;
+        Get.offNamed(AppRouteName.payment, arguments: reservation);
+      }
+    } else {
+      bool changeStatusDone = await changeHoldStatus(0);
+      if (changeStatusDone) {
+        reservation.resStatus = 0;
+        isConfirm = true;
+        Get.offNamed(AppRouteName.waitForApprove, arguments: reservation);
+      }
+    }
+  }
+
+  Future<bool> changeHoldStatus(int status) async {
+    CustomDialogs.loading();
+    var response = await resData.changeHoldStatus(
+        resid: reservation.resId.toString(), status: status.toString());
+    CustomDialogs.dissmissLoading();
+
+    StatusRequest statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        return true;
+      } else {
+        CustomDialogs.failure();
+        return false;
+      }
+    } else {
+      CustomDialogs.failure();
+      return false;
+    }
+  }
 
   onTapDisplayLocation() {
     double lat = double.parse(reservation.bchLat!);
@@ -141,7 +181,7 @@ class ReservationConfirmWaitController extends GetxController {
     resInvitors = data.map((e) => Resinvitors.fromJson(e)).toList();
   }
 
-  // #################{{ TIMER }}##################//
+  //#################{{ TIMER }}##################//
   bool timerIsActive = false;
   late Timer timer;
   RxInt remainingTime = 70.obs;
@@ -182,12 +222,7 @@ class ReservationConfirmWaitController extends GetxController {
       remainingTime.value =
           Get.arguments['holdTime'] * 60; //to convert time to seconds
       resInvitors = Get.arguments['resInvitors'];
-
-      print('brand logo: ${reservation.brandLogo}');
-      ;
-      print('contract number: ${reservation.bchContactNumber}');
-
-      print('hold time : $remainingTime');
+      reviewRes = Get.arguments['reviewRes'];
     }
     _startTimer();
     resTime = displayResTime(reservation.resTime!);
@@ -196,8 +231,10 @@ class ReservationConfirmWaitController extends GetxController {
 
   @override
   void onClose() {
-    cancelReservation();
     timer.cancel();
+    if (isConfirm == false) {
+      cancelReservation();
+    }
     super.onClose();
   }
 }

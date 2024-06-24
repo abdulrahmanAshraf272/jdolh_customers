@@ -158,6 +158,9 @@ class ApiLinks {
       '$server/jdolh_customers/res/respond_invitation.php';
   static const String deleteRes = '$server/jdolh_customers/res/delete_res.php';
 
+  static const String changeHoldStatus =
+      '$server/jdolh_customers/res/change_res_status.php';
+
   // ===== Rate ======//
   static const String addRate = '$server/jdolh_customers/rate/add_rate.php';
   static const String getRate = '$server/jdolh_customers/rate/get_rate.php';
@@ -211,4 +214,6 @@ class ApiLinks {
   //========= Payment =========//
   static const String initiatePayment =
       '$server/jdolh_customers/payment/initiate_payment.php';
+  static const String paymentResult =
+      '$server/jdolh_customers/payment/payment_result.php';
 }

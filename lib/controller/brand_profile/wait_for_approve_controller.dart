@@ -3,6 +3,8 @@ import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
+import 'package:jdolh_customers/data/models/cart.dart';
+import 'package:jdolh_customers/data/models/policy.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
 
 class WaitForApproveController extends GetxController {
@@ -12,6 +14,10 @@ class WaitForApproveController extends GetxController {
   String rejectionReason = '';
   StatusRequest statusRequest = StatusRequest.none;
   ResData resData = ResData(Get.find());
+
+  List<Cart> carts = [];
+  late Policy resPolicy;
+  late Policy billPolicy;
 
   getRes() async {
     // statusRequest = StatusRequest.loading;
@@ -37,13 +43,21 @@ class WaitForApproveController extends GetxController {
   }
 
   gotoPayment() {
-    Get.offNamed(AppRouteName.payment, arguments: reservation);
+    Get.offNamed(AppRouteName.payment, arguments: {
+      "res": reservation,
+      "carts": carts,
+      "resPolicy": resPolicy,
+      "billPolicy": billPolicy
+    });
   }
 
   @override
   void onInit() {
     if (Get.arguments != null) {
-      reservation = Get.arguments;
+      reservation = Get.arguments['res'];
+      carts = Get.arguments['carts'];
+      resPolicy = Get.arguments['resPolicy'];
+      billPolicy = Get.arguments['billPolicy'];
     } else {
       print('reserved nothing from previus screen');
     }

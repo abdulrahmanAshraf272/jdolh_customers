@@ -115,7 +115,7 @@ class ResParentController extends GetxController {
         date: selectedDate,
         time: selectedTime,
         duration: duration.toString(),
-        price: totalPrice.toString(),
+        billCost: totalPrice.toString(),
         resCost: resCost.toString(),
         taxCost: taxCost.toString(),
         totalPrice: totalPriceWithTax.toString(),
@@ -157,13 +157,23 @@ class ResParentController extends GetxController {
       return;
     }
     CustomDialogs.loading();
-    var result = await createRes();
+    var reservation = await createRes();
     CustomDialogs.dissmissLoading();
-    if (result != null) {
-      if (resDetails.reviewRes == 0) {
-        Get.offNamed(AppRouteName.payment, arguments: result);
+    if (reservation != null) {
+      if (reviewRes == 0) {
+        Get.offNamed(AppRouteName.payment, arguments: {
+          "res": reservation,
+          "carts": cartController.carts,
+          "resPolicy": brandProfileController.resPolicy,
+          "billPolicy": brandProfileController.billPolicy
+        });
       } else {
-        Get.offNamed(AppRouteName.waitForApprove, arguments: result);
+        Get.offNamed(AppRouteName.waitForApprove, arguments: {
+          "res": reservation,
+          "carts": cartController.carts,
+          "resPolicy": brandProfileController.resPolicy,
+          "billPolicy": brandProfileController.billPolicy
+        });
       }
     }
   }

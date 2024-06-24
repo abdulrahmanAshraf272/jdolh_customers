@@ -50,15 +50,14 @@ class ReservationDetailsScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     BillDetails(reservation: controller.reservation),
                     const SizedBox(height: 20),
-                    if (controller.suspended == false)
-                      TextButton(
-                          onPressed: () {
-                            controller.onTapCancelReservation();
-                          },
-                          child: Text(
-                            'الغاء الحجز'.tr,
-                            style: const TextStyle(color: AppColors.redButton),
-                          )),
+                    TextButton(
+                        onPressed: () {
+                          controller.onTapCancelReservation();
+                        },
+                        child: Text(
+                          'الغاء الحجز'.tr,
+                          style: const TextStyle(color: AppColors.redButton),
+                        )),
                     const SizedBox(height: 80)
                   ],
                 ),

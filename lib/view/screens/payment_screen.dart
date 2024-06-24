@@ -61,7 +61,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       svgPath: 'assets/icons/date_time.svg',
                       color: const Color(0xffFFA640),
                       title: 'رسوم الحجز',
-                      subtitle: controller.resPolicy,
+                      subtitle: controller.resPolicyText,
                       price: '${controller.resCost.toStringAsFixed(2)} ريال',
                     ),
                     const SizedBox(height: 20),
@@ -69,7 +69,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       svgPath: 'assets/icons/bill.svg',
                       color: const Color(0xff00BF63),
                       title: 'قيمة الفاتورة',
-                      subtitle: controller.billPolicy,
+                      subtitle: controller.billPolicyText,
                       price: '${controller.billCost.toStringAsFixed(2)} ريال',
                     ),
                     ListView.builder(
@@ -93,24 +93,24 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       thickness: 2,
                       color: Colors.grey.shade300,
                     ),
-                    ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: paymentMethodsOptions.length,
-                        itemBuilder: (context, index) => GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedPaymentMethod = index;
-                              });
-                            },
-                            child: ToggleButtonItem(
-                              index: index,
-                              selectedIndex: selectedIndex,
-                              text: paymentMethodsOptions[index],
-                              fontSize: 13,
-                              svgIconPath: paymentMethodsOptionsIcons[index],
-                            ))),
+                    // ListView.builder(
+                    //     physics: const NeverScrollableScrollPhysics(),
+                    //     shrinkWrap: true,
+                    //     scrollDirection: Axis.vertical,
+                    //     itemCount: paymentMethodsOptions.length,
+                    //     itemBuilder: (context, index) => GestureDetector(
+                    //         onTap: () {
+                    //           setState(() {
+                    //             selectedPaymentMethod = index;
+                    //           });
+                    //         },
+                    //         child: ToggleButtonItem(
+                    //           index: index,
+                    //           selectedIndex: selectedIndex,
+                    //           text: paymentMethodsOptions[index],
+                    //           fontSize: 13,
+                    //           svgIconPath: paymentMethodsOptionsIcons[index],
+                    //         ))),
                   ],
                 ),
               ),

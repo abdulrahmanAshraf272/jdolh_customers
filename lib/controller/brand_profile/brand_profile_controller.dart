@@ -13,6 +13,7 @@ import 'package:jdolh_customers/data/models/bch_worktime.dart';
 import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/categories.dart';
 import 'package:jdolh_customers/data/models/item.dart';
+import 'package:jdolh_customers/data/models/policy.dart';
 import 'package:jdolh_customers/data/models/resOption.dart';
 
 class BrandProfileController extends GetxController {
@@ -47,6 +48,9 @@ class BrandProfileController extends GetxController {
   int ratesNo = 0;
   int followingNo = 0;
   int resNo = 0;
+
+  late Policy resPolicy;
+  late Policy billPolicy;
 
   late BchWorktime bchWorktime;
   bool isFollowing = false;
@@ -103,7 +107,7 @@ class BrandProfileController extends GetxController {
     Get.toNamed(AppRouteName.displayWorktime, arguments: bchWorktime);
   }
 
-  getBchData() async {
+  getBch() async {
     var response = await brandSearchData.getBch(
         bchid: bch.bchId.toString(), userid: myServices.getUserid());
     statusRequest = handlingData(response);
@@ -119,12 +123,17 @@ class BrandProfileController extends GetxController {
   }
 
   parseData(response) {
+    //=== Policies ===//
+    resPolicy = Policy.fromJsonRes(response['policies']);
+    billPolicy = Policy.fromJsonBill(response['policies']);
+
     //=== ResOption ===//
     List resOptionsJson = response['resOptions'];
     resOptions = resOptionsJson.map((e) => ResOption.fromJson(e)).toList();
     resOptionsTitles = resOptions.map((e) => e.resoptionsTitle!).toList();
     selectedResOption = resOptions[0];
     initalResOptionTitle = resOptionsTitles.first;
+
     //====== following, rate ======//
     followingNo = response['followingNo'];
     ratesNo = response['ratesNo'];
@@ -226,6 +235,6 @@ class BrandProfileController extends GetxController {
     super.onInit();
     statusRequest = StatusRequest.loading;
     await receiveArgument();
-    getBchData();
+    getBch();
   }
 }
