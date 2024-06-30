@@ -69,9 +69,9 @@ class Cart {
     cartUserid = json['cart_userid'];
     cartBchid = json['cart_bchid'];
     cartItemid = json['cart_itemid'];
-    cartPrice = json['cart_price']?.toDouble();
+    cartPrice = double.parse(json['cart_price']);
     cartQuantity = json['cart_quantity'];
-    cartTotalPrice = json['cart_totalPrice']?.toDouble();
+    cartTotalPrice = double.parse(json['cart_totalPrice']);
     cartDiscount = json['cart_discount'];
     cartDesc = json['cart_desc'];
     cartShortDesc = json['cart_shortDesc'];
@@ -80,7 +80,7 @@ class Cart {
     itemsCategoriesid = json['items_categoriesid'];
     itemsBchid = json['items_bchid'];
     itemsTitle = json['items_title'];
-    itemsPrice = json['items_price']?.toDouble();
+    itemsPrice = double.parse(json['items_price']);
     itemsDiscount = json['items_discount'];
     itemsDiscountPercentage = json['items_discountPercentage'];
     itemsImage = json['items_image'];

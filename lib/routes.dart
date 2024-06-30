@@ -50,6 +50,7 @@ import 'package:jdolh_customers/view/screens/occasion/edit_occasion_screen.dart'
 import 'package:jdolh_customers/view/screens/occasion/finished_occasions_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/occasion_details_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/occasions_screen.dart';
+import 'package:jdolh_customers/view/screens/payment_result_screen.dart';
 import 'package:jdolh_customers/view/screens/payment_screen.dart';
 import 'package:jdolh_customers/view/screens/person_profile_screen.dart';
 import 'package:jdolh_customers/view/screens/res_archive_details_screen.dart';
@@ -85,6 +86,10 @@ List<GetPage> routes = [
   //   name: '/',
   //   page: () => const ReservationSearchScreen(),
   // ),
+  GetPage(
+    name: AppRouteName.paymentResult,
+    page: () => const PaymentResultScreen(),
+  ),
   GetPage(
     name: AppRouteName.reservationWithInvitors,
     page: () => const ReservationWithInvitorsDetailsScreen(),

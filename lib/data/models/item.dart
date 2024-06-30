@@ -48,9 +48,7 @@ class Item {
     itemsCategoriesid = json['items_categoriesid'];
     itemsBchid = json['items_bchid'];
     itemsTitle = json['items_title'];
-    if (json['items_price'] != null) {
-      itemsPrice = json['items_price'].toDouble();
-    }
+    itemsPrice = double.parse(json['items_price']);
 
     itemsDiscount = json['items_discount'];
     itemsDiscountPercentage = json['items_discountPercentage'];

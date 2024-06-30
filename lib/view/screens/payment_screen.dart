@@ -3,40 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/payment_controller.dart';
-import 'package:jdolh_customers/core/class/handling_data_view.dart';
+import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
+import 'package:jdolh_customers/view/screens/brand_profile/res_service_subscreen.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/custom_toggle_button_one_option.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
-import 'package:jdolh_customers/view/widgets/common/flexable_toggle_button.dart';
 
-class PaymentScreen extends StatefulWidget {
+class PaymentScreen extends StatelessWidget {
   const PaymentScreen({super.key});
 
-  @override
-  State<PaymentScreen> createState() => _PaymentScreenState();
-}
-
-class _PaymentScreenState extends State<PaymentScreen> {
-  int selectedIndex = 0;
-  List<String> list = [
-    'سداد القيمة كاملة 161 ريال و خصم الحجز 131 ريال',
-    'سداد رسوم الحجز فقط 30 ريال'
-  ];
-  int selectedPaymentMethod = 0;
-  List<String> paymentMethodsOptions = [
-    'الدفع كاش',
-    'الدفع بالبطاقة',
-    'تابي',
-    'قسطها على تمارا',
-    'ds'
-  ];
-  List<String> paymentMethodsOptionsIcons = [
-    'assets/icons/bill.svg',
-    'assets/icons/bill.svg',
-    'assets/icons/bill.svg',
-    'assets/icons/bill.svg',
-    'assets/icons/bill.svg'
-  ];
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(PaymentController());
@@ -44,7 +20,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       appBar: customAppBar(title: 'الدفع'),
       floatingActionButton: BottomButton(
           onTap: () {
-            controller.onTapConfirm();
+            controller.onTapPay();
           },
           text: 'تأكيد'),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -52,70 +28,105 @@ class _PaymentScreenState extends State<PaymentScreen> {
           width: Get.width,
           padding: const EdgeInsets.only(right: 20, left: 20, bottom: 60),
           child: GetBuilder<PaymentController>(
-            builder: (controller) => HandlingDataView(
-              statusRequest: controller.statusRequest,
-              widget: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    IconWithTitleAndSubtitle(
-                      svgPath: 'assets/icons/date_time.svg',
-                      color: const Color(0xffFFA640),
-                      title: 'رسوم الحجز',
-                      subtitle: controller.resPolicyText,
-                      price: '${controller.resCost.toStringAsFixed(2)} ريال',
-                    ),
-                    const SizedBox(height: 20),
-                    IconWithTitleAndSubtitle(
-                      svgPath: 'assets/icons/bill.svg',
-                      color: const Color(0xff00BF63),
-                      title: 'قيمة الفاتورة',
-                      subtitle: controller.billPolicyText,
-                      price: '${controller.billCost.toStringAsFixed(2)} ريال',
-                    ),
-                    ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: list.length,
-                        itemBuilder: (context, index) => GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedIndex = index;
-                              });
-                            },
-                            child: ToggleButtonItem(
-                              index: index,
-                              selectedIndex: selectedIndex,
-                              text: list[index],
-                              fontSize: 13,
-                            ))),
-                    Divider(
-                      thickness: 2,
-                      color: Colors.grey.shade300,
-                    ),
-                    // ListView.builder(
-                    //     physics: const NeverScrollableScrollPhysics(),
-                    //     shrinkWrap: true,
-                    //     scrollDirection: Axis.vertical,
-                    //     itemCount: paymentMethodsOptions.length,
-                    //     itemBuilder: (context, index) => GestureDetector(
-                    //         onTap: () {
-                    //           setState(() {
-                    //             selectedPaymentMethod = index;
-                    //           });
-                    //         },
-                    //         child: ToggleButtonItem(
-                    //           index: index,
-                    //           selectedIndex: selectedIndex,
-                    //           text: paymentMethodsOptions[index],
-                    //           fontSize: 13,
-                    //           svgIconPath: paymentMethodsOptionsIcons[index],
-                    //         ))),
-                  ],
-                ),
+            builder: (controller) => SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  IconWithTitleAndSubtitle(
+                    svgPath: 'assets/icons/date_time.svg',
+                    color: const Color(0xffFFA640),
+                    title: 'رسوم الحجز'.tr,
+                    subtitle: controller.resPolicyText,
+                    price:
+                        '${controller.reservation.resResCost!.toStringAsFixed(2)} ريال',
+                  ),
+                  const SizedBox(height: 20),
+                  IconWithTitleAndSubtitle(
+                    svgPath: 'assets/icons/bill.svg',
+                    color: const Color(0xff00BF63),
+                    title: 'قيمة الفاتورة'.tr,
+                    subtitle: controller.billPolicyText,
+                    price:
+                        '${controller.reservation.resBillCost!.toStringAsFixed(2)} ريال',
+                  ),
+                  SelectPaymentMethod(),
+                  Divider(
+                    thickness: 2,
+                    color: Colors.grey.shade300,
+                  ),
+                  const PaymentDetails(),
+                ],
               ),
             ),
           )),
+    );
+  }
+}
+
+class SelectPaymentMethod extends StatelessWidget {
+  const SelectPaymentMethod({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<PaymentController>(
+      builder: (controller) => Container(
+        padding: const EdgeInsets.all(15),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        decoration: BoxDecoration(
+            color: AppColors.gray, borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          children: [
+            Text('طريقة الدفع', style: titleMedium),
+            CustomToggleButtonsOneOption(
+                horizontalDirection: false,
+                firstOption: 'دفع بالبطاقة',
+                secondOption: 'دفع بالمحفظة',
+                onTapOne: () {
+                  controller.paymentMethod = 'credit';
+                },
+                onTapTwo: () {
+                  controller.paymentMethod = 'wallet';
+                }),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PaymentDetails extends StatelessWidget {
+  const PaymentDetails({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final PaymentController controller = Get.find();
+
+    return Column(
+      children: [
+        BillRow(
+          title: 'رسوم الحجز'.tr,
+          price: controller.reservation.resResCost ?? 0,
+        ),
+        if (controller.reservation.resPaymentType == 'RB')
+          BillRow(
+            title: 'قيمة الفاتورة'.tr,
+            price: controller.reservation.resBillCost!,
+          ),
+        BillRow(
+          title: 'ضريبة القيمة المضافة'.tr,
+          price: controller.tax,
+        ),
+        // if (controller.reservation.resPaymentType == 'RB')
+        //   BillRow(
+        //     title: 'الإجمالي'.tr,
+        //     price: controller.price,
+        //   ),
+        BillRow(
+          lastRow: true,
+          title: 'الإجمالي شامل الضريبة'.tr,
+          price: controller.price + controller.tax,
+        ),
+      ],
     );
   }
 }

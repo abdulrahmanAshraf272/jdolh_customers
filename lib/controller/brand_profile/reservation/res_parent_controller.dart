@@ -49,6 +49,7 @@ class ResParentController extends GetxController {
   }
 
   double resCost = 0;
+  double resTax = 0;
 
   late int resPolicy;
   late int billPolicy;
@@ -61,6 +62,7 @@ class ResParentController extends GetxController {
     } else {
       resCost = resDetails.cost!;
     }
+    resTax = resCost * brandProfileController.tax;
   }
 
   void gotoSetResTime() async {
@@ -96,9 +98,8 @@ class ResParentController extends GetxController {
   }
 
   createRes() async {
-    double totalPrice = cartController.totalPrice;
-    double taxCost = cartController.taxCost;
-    double totalPriceWithTax = totalPrice + taxCost + resCost;
+    double totalPriceWithTax =
+        cartController.totalPrice + cartController.billTax + resCost + resTax;
     //
     int duration = 0;
     if (brandProfileController.brand.brandIsService == 0) {
@@ -108,17 +109,20 @@ class ResParentController extends GetxController {
       //if service => get the total duration from all items in cart
       duration = cartController.totalServiceDuration;
     }
+
     var response = await resData.createRes(
+        paymentType: brandProfileController.paymentType,
         userid: myServices.getUserid(),
         bchid: bchid.toString(),
         brandid: brandid.toString(),
         date: selectedDate,
         time: selectedTime,
         duration: duration.toString(),
-        billCost: totalPrice.toString(),
-        resCost: resCost.toString(),
-        taxCost: taxCost.toString(),
-        totalPrice: totalPriceWithTax.toString(),
+        billCost: cartController.totalPrice.toStringAsFixed(2),
+        billTax: cartController.billTax.toStringAsFixed(2),
+        resCost: resCost.toStringAsFixed(2),
+        resTax: resTax.toStringAsFixed(2),
+        totalPrice: totalPriceWithTax.toStringAsFixed(2),
         billPolicy: billPolicy.toString(),
         resPolicy: resPolicy.toString(),
         isHomeService: brandProfileController.isHomeServices ? '1' : '0',
@@ -131,6 +135,11 @@ class ResParentController extends GetxController {
       if (response['status'] == 'success') {
         print('create reservation succeed');
         reservation = Reservation.fromJson(response['data']);
+
+        reservation.bchLocation = brandProfileController.bch.bchLocation;
+        reservation.bchLat = brandProfileController.bch.bchLat;
+        reservation.bchLng = brandProfileController.bch.bchLng;
+
         //send Notification
         if (reviewRes == 0) {
           reservationNotification.sendReserveNotification(
@@ -163,16 +172,16 @@ class ResParentController extends GetxController {
       if (reviewRes == 0) {
         Get.offNamed(AppRouteName.payment, arguments: {
           "res": reservation,
-          "carts": cartController.carts,
           "resPolicy": brandProfileController.resPolicy,
-          "billPolicy": brandProfileController.billPolicy
+          "billPolicy": brandProfileController.billPolicy,
+          "brand": brandProfileController.brand
         });
       } else {
         Get.offNamed(AppRouteName.waitForApprove, arguments: {
           "res": reservation,
-          "carts": cartController.carts,
           "resPolicy": brandProfileController.resPolicy,
-          "billPolicy": brandProfileController.billPolicy
+          "billPolicy": brandProfileController.billPolicy,
+          "brand": brandProfileController.brand
         });
       }
     }
@@ -244,12 +253,14 @@ class ResParentController extends GetxController {
     update();
   }
 
-  getData() {
+  getData() async {
     if (brandProfileController.isHomeServices == true) {
-      getHomeServices();
+      await getHomeServices();
     } else {
-      getResDetails();
+      await getResDetails();
     }
+    getResCost();
+    print('resCost: $resCost');
   }
 
   @override

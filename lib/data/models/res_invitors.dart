@@ -24,11 +24,8 @@ class Resinvitors {
     userid = json['resinvitors_userid'];
     type = json['resinvitors_type'];
     status = json['resinvitors_status'];
-    if (json['resinvitors_cost'] != null) {
-      cost = json['resinvitors_cost'].toDouble();
-    }
+    cost = double.parse(json['resinvitors_cost']);
     creatorid = json['resinvitors_creatorid'];
-
     userName = json['user_name'];
     userImage = json['user_image'];
   }

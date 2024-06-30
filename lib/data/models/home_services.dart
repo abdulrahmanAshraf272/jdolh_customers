@@ -19,9 +19,7 @@ class HomeServices {
   HomeServices.fromJson(Map<String, dynamic> json) {
     id = json['homeservices_id'];
     bchid = json['homeservices_bchid'];
-    if (json['homeservices_cost'] != null) {
-      cost = json['homeservices_cost'].toDouble();
-    }
+    cost = double.parse(json['homeservices_cost']);
 
     maxDistance = json['homeservices_maxDistance'];
     info = json['homeservices_info'];

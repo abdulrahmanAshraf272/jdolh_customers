@@ -166,6 +166,7 @@ class SetResTimeController extends GetxController with TimeHelper {
       print('date: $selectedDate , day: $selectedDateFormatted');
       getCommonAvailableTime();
       removeReservedTimes(selectedDateFormatted);
+      removePastTimes();
       update();
     }
   }
@@ -224,6 +225,28 @@ class SetResTimeController extends GetxController with TimeHelper {
     }
   }
 
+  removePastTimes() {
+    if (checkIfToday(selectedDateFormatted)) {
+      TimeOfDay now = TimeOfDay.now();
+      availaleWorktime =
+          availaleWorktime.where((time) => isAfterOrEqual(time, now)).toList();
+    }
+  }
+
+  bool isAfterOrEqual(TimeOfDay time1, TimeOfDay time2) {
+    if (time1.hour > time2.hour) {
+      return true;
+    } else if (time1.hour == time2.hour) {
+      return time1.minute >= time2.minute;
+    }
+    return false;
+  }
+
+  bool checkIfToday(String selectedDateFormatted) {
+    String todayFormatted = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    return selectedDateFormatted == todayFormatted;
+  }
+
   @override
   void onInit() async {
     if (Get.arguments != null) {
@@ -234,6 +257,8 @@ class SetResTimeController extends GetxController with TimeHelper {
     await getReservedTime();
     getCommonAvailableTime();
     removeReservedTimes(selectedDateFormatted);
+    removePastTimes();
+    update();
     super.onInit();
   }
 }

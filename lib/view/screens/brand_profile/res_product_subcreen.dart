@@ -38,7 +38,8 @@ class ResProductSubscreen extends StatelessWidget {
                       flex: 5,
                       child: Column(
                         children: [
-                          CustomSmallBoldTitle(title: 'تفضيلات الحجز'.tr),
+                          CustomSmallBoldTitle(
+                              title: 'تفضيلات الحجز'.tr, rightPdding: 0),
                           const SizedBox(height: 10),
                           CustomDropdown(
                             horizontalMargin: 0,
@@ -77,8 +78,12 @@ class ResProductSubscreen extends StatelessWidget {
                 const SizedBox(height: 15),
                 CustomSmallBoldTitle(title: 'تفاصيل الطلب'.tr),
                 const CartProduct(),
-                const SizedBox(height: 20),
-                BillDetails(resCost: controller.resCost),
+                //const SizedBox(height: 20),
+                const PaymentTypeSelect(),
+                BillDetails(
+                  resCost: controller.resCost,
+                  resTax: controller.resTax,
+                ),
                 const SizedBox(height: 20),
                 controller.withInvitation
                     ? GoHomeButton(

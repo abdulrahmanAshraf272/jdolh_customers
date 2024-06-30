@@ -5,6 +5,50 @@ class PaymentData {
   Crud crud;
   PaymentData(this.crud);
 
+  payByCredit(
+      {required String orderId,
+      required String resid,
+      required String brandBouquetId,
+      required String brandid,
+      required String paymentType,
+      required String userid,
+      required String amount,
+      required String taxAmount}) async {
+    var response = await crud.postData(ApiLinks.payByCredit, {
+      "orderId": orderId,
+      "resid": resid,
+      "brandBouquetId": brandBouquetId,
+      "brandid": brandid,
+      "paymentType": paymentType,
+      "userid": userid,
+      "amount": amount,
+      "taxAmount": taxAmount
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
+
+  payByWallet(
+      {required String resid,
+      required String brandBouquetId,
+      required String brandid,
+      required String paymentType,
+      required String userid,
+      required String amount,
+      required String taxAmount}) async {
+    var response = await crud.postData(ApiLinks.payByWallet, {
+      "resid": resid,
+      "brandBouquetId": brandBouquetId,
+      "brandid": brandid,
+      "paymentType": paymentType,
+      "userid": userid,
+      "amount": amount,
+      "taxAmount": taxAmount
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
+
   initiatePayment(
       {required String userid,
       required String orderType,

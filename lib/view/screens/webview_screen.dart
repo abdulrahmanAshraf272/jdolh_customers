@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/data/models/brand.dart';
+import 'package:jdolh_customers/data/models/reservation.dart';
 import 'package:jdolh_customers/test_payment_result.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -7,7 +11,14 @@ import 'dart:io';
 class WebviewScreen extends StatefulWidget {
   final String title;
   final String url;
-  const WebviewScreen({super.key, required this.title, required this.url});
+  final Brand brand;
+  final Reservation reservation;
+  const WebviewScreen(
+      {super.key,
+      required this.title,
+      required this.url,
+      required this.brand,
+      required this.reservation});
 
   @override
   State<WebviewScreen> createState() => _WebviewScreenState();
@@ -46,16 +57,11 @@ class _WebviewScreenState extends State<WebviewScreen> {
               print('url: $url');
               print(' ===== the payment process is finished ======');
 
-              //TODO: navigate to the page that display the payment result.
-              //TODO: onInit result page make request to check the payment result and display the result.
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TestPaymentResult(
-                    orderId: 304,
-                  ),
-                ),
-              );
+              Get.offAllNamed(AppRouteName.paymentResult, arguments: {
+                "res": widget.reservation,
+                "brand": widget.brand,
+                "paymentMethod": 'credit'
+              });
             }
           },
           onHttpError: (HttpResponseError error) {

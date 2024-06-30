@@ -25,12 +25,12 @@ class _TestPaymentState extends State<TestPayment> {
     setState(() {});
     if (redirectURL != null) {
       print('==== { redirectURL: $redirectURL} ===');
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => WebviewScreen(title: 'الدفع', url: redirectURL),
-        ),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => WebviewScreen(title: 'الدفع', url: redirectURL),
+      //   ),
+      // );
     } else {
       print('there is no redirectURL');
     }

@@ -14,6 +14,7 @@ class Brand {
   String? brandTwitter;
   int? brandIsVerified;
   int? brandIsApproved;
+  int? brandBouquet;
   String? brandDatecreated;
 
   Brand(
@@ -32,6 +33,7 @@ class Brand {
       this.brandTwitter,
       this.brandIsVerified,
       this.brandIsApproved,
+      this.brandBouquet,
       this.brandDatecreated});
 
   Brand.fromJson(Map<String, dynamic> json) {
@@ -51,5 +53,6 @@ class Brand {
     brandIsVerified = json['brand_isVerified'];
     brandIsApproved = json['brand_isApproved'];
     brandDatecreated = json['brand_datecreated'];
+    brandBouquet = json['brand_bouquet'];
   }
 }

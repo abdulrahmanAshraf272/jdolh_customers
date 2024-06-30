@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_name_image.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_toggle_buttons.dart';
 
@@ -12,7 +11,7 @@ class PersonWithToggleListItem extends StatelessWidget {
   final void Function() onTapDivide;
   final void Function() onTapWithoutPay;
   final void Function() onTapRemove;
-  final void Function() onTapPayFromHimself;
+  //final void Function() onTapPayFromHimself;
 
   const PersonWithToggleListItem({
     super.key,
@@ -22,7 +21,7 @@ class PersonWithToggleListItem extends StatelessWidget {
     required this.type,
     required this.onTapDivide,
     required this.onTapWithoutPay,
-    required this.onTapPayFromHimself,
+    //required this.onTapPayFromHimself,
   });
 
   @override
@@ -48,16 +47,12 @@ class PersonWithToggleListItem extends StatelessWidget {
                         image: image,
                       ),
                     ),
-                    // Text(
-                    //   'منشئ الدعوة',
-                    //   style: titleSmall2.copyWith(color: AppColors.secondaryColor),
-                    // )
                   ],
                 ),
                 const SizedBox(height: 5),
                 CustomResInvitorsToggleButtons(
                     type: type,
-                    onTapPayFromHimself: onTapPayFromHimself,
+                    //onTapPayFromHimself: onTapPayFromHimself,
                     onTapDivide: onTapDivide,
                     onTapWithoutPay: onTapWithoutPay)
               ],
@@ -66,8 +61,8 @@ class PersonWithToggleListItem extends StatelessWidget {
           TextButton(
               onPressed: onTapRemove,
               child: Text(
-                'ازالة',
-                style: TextStyle(color: Colors.red, fontSize: 12),
+                'ازالة'.tr,
+                style: const TextStyle(color: Colors.red, fontSize: 12),
               ))
         ],
       ),

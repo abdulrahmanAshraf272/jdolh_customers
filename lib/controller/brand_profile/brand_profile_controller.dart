@@ -17,6 +17,9 @@ import 'package:jdolh_customers/data/models/policy.dart';
 import 'package:jdolh_customers/data/models/resOption.dart';
 
 class BrandProfileController extends GetxController {
+  String paymentType = '';
+  //TODO: Get tax from DB;
+  double tax = 0.14;
 //0 => items, 1 => resProduct, 2 => resService, 3=> HomeService
   int subscreen = 0;
   late Brand brand;
@@ -126,6 +129,13 @@ class BrandProfileController extends GetxController {
     //=== Policies ===//
     resPolicy = Policy.fromJsonRes(response['policies']);
     billPolicy = Policy.fromJsonBill(response['policies']);
+    print('resPolicy: ${resPolicy.title}');
+    print('billPolicy: ${billPolicy.title}');
+    if (billPolicy.id == 4) {
+      paymentType = 'R';
+    } else {
+      paymentType = 'RB';
+    }
 
     //=== ResOption ===//
     List resOptionsJson = response['resOptions'];

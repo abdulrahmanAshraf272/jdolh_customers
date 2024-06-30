@@ -216,4 +216,8 @@ class ApiLinks {
       '$server/jdolh_customers/payment/initiate_payment.php';
   static const String paymentResult =
       '$server/jdolh_customers/payment/payment_result.php';
+  static const String payByWallet =
+      '$server/jdolh_customers/payment/pay_by_wallet.php';
+  static const String payByCredit =
+      '$server/jdolh_customers/payment/pay_by_credit.php';
 }

@@ -66,6 +66,7 @@ class ReservationConfirmWaitScreen extends StatelessWidget {
                     resOption: controller.reservation.resResOption ?? '',
                     duration: controller.reservation.resDuration.toString(),
                   ),
+                  PriceWillPayedExplain(),
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: Row(
@@ -102,6 +103,30 @@ class ReservationConfirmWaitScreen extends StatelessWidget {
                   const SizedBox(height: 70)
                 ],
               ))),
+    );
+  }
+}
+
+class PriceWillPayedExplain extends StatelessWidget {
+  const PriceWillPayedExplain({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    ReservationConfirmWaitController controller = Get.find();
+    String txt = '';
+    if (controller.reservation.resPaymentType == 'R') {
+      txt =
+          'المبلغ الذي تم تقسيمه والمراد دفعه هو\n رسوم الحجز: ${controller.reservation.resResCost! + controller.reservation.resResTax!} ريال\n وقيمة الفاتورة تدفع عند الوصول';
+    } else {
+      txt =
+          'المبلغ الذي تم تقسيمه والمراد دفعه هو\n رسوم الحجز الفاتورة: ${controller.reservation.resTotalPrice} ريال';
+    }
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: BoxDecoration(
+          color: AppColors.gray, borderRadius: BorderRadius.circular(10)),
+      child: Text(txt),
     );
   }
 }
@@ -179,7 +204,7 @@ class InvitorStatusListItem extends StatelessWidget {
       case 0:
         return '( يدفع رسومه فقط )';
       case 1:
-        return '( يقسم عليه رسوم المعزومين )';
+        return '( تقسيم رسوم الحجز )';
       case 2:
         return '( معزوم )';
       default:

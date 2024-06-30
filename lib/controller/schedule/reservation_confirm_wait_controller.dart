@@ -10,7 +10,9 @@ import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/open_url_link.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
+import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
+import 'package:jdolh_customers/data/models/policy.dart';
 import 'package:jdolh_customers/data/models/res_invitors.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
 
@@ -27,6 +29,9 @@ class ReservationConfirmWaitController extends GetxController {
   bool displayResInvitorsPart = true;
 
   bool isConfirm = false;
+  late Policy resPolicy;
+  late Policy billPolicy;
+  late Brand brand;
 
   changeSubscreen(bool displayResInvitor) {
     displayResInvitorsPart = displayResInvitor;
@@ -40,21 +45,31 @@ class ReservationConfirmWaitController extends GetxController {
     confirmReservation();
   }
 
-  //TODO: Change status, Navigate to pay or to wait.
+  // TODO: Change status, Navigate to pay or to wait.
   confirmReservation() async {
     if (reviewRes == 0) {
       bool changeStatusDone = await changeHoldStatus(1);
       if (changeStatusDone) {
         reservation.resStatus = 1;
         isConfirm = true;
-        Get.offNamed(AppRouteName.payment, arguments: reservation);
+        Get.offNamed(AppRouteName.payment, arguments: {
+          "res": reservation,
+          "resPolicy": resPolicy,
+          "billPolicy": billPolicy,
+          "brand": brand
+        });
       }
     } else {
       bool changeStatusDone = await changeHoldStatus(0);
       if (changeStatusDone) {
         reservation.resStatus = 0;
         isConfirm = true;
-        Get.offNamed(AppRouteName.waitForApprove, arguments: reservation);
+        Get.offNamed(AppRouteName.waitForApprove, arguments: {
+          "res": reservation,
+          "resPolicy": resPolicy,
+          "billPolicy": billPolicy,
+          "brand": brand
+        });
       }
     }
   }
@@ -218,11 +233,15 @@ class ReservationConfirmWaitController extends GetxController {
   @override
   void onInit() {
     if (Get.arguments != null) {
-      reservation = Get.arguments['reservation'];
+      reservation = Get.arguments['res'];
       remainingTime.value =
           Get.arguments['holdTime'] * 60; //to convert time to seconds
       resInvitors = Get.arguments['resInvitors'];
       reviewRes = Get.arguments['reviewRes'];
+
+      resPolicy = Get.arguments['resPolicy'];
+      billPolicy = Get.arguments['billPolicy'];
+      brand = Get.arguments['brand'];
     }
     _startTimer();
     resTime = displayResTime(reservation.resTime!);

@@ -28,17 +28,17 @@ class ResProductController extends ResParentController {
           userid: result.userId,
           userName: result.userName,
           userImage: result.userImage,
-          type: 0,
+          type: 1,
           cost: 0);
       resInvitors.add(invitor);
       update();
     }
   }
 
-  onTapPayForHimself(int index) {
-    resInvitors[index].type = 0;
-    update();
-  }
+  // onTapPayForHimself(int index) {
+  //   resInvitors[index].type = 0;
+  //   update();
+  // }
 
   onTapDivideBill(int index) {
     resInvitors[index].type = 1;
@@ -94,15 +94,26 @@ class ResProductController extends ResParentController {
   }
 
   calculateInvitorsShare() {
-    double totalCost =
-        cartController.totalPrice + resCost + cartController.taxCost;
-    resInvitors = List.of(calInvitorsBills(totalCost, resInvitors, extraSeats));
+    double totalPrice;
+    if (brandProfileController.paymentType == 'RB') {
+      totalPrice =
+          cartController.totalPrice + cartController.billTax + resCost + resTax;
+    } else {
+      totalPrice = resCost + resTax;
+    }
+
+    print('amount: ${totalPrice}');
+
+    resInvitors = List.of(calInvitorsBills(totalPrice, resInvitors));
+
+    for (int i = 0; i < resInvitors.length; i++) {
+      print('${resInvitors[i].userName}: ${resInvitors[i].cost}');
+    }
   }
 
   createHoldRes() async {
-    double totalPrice = cartController.totalPrice;
-    double taxCost = cartController.taxCost;
-    double totalPriceWithTax = totalPrice + taxCost + resCost;
+    double totalPriceWithTax =
+        cartController.totalPrice + cartController.billTax + resCost + resTax;
     //
     int duration = 0;
     if (brandProfileController.brand.brandIsService == 0) {
@@ -113,22 +124,30 @@ class ResProductController extends ResParentController {
       duration = cartController.totalServiceDuration;
     }
 
-    creatorCost =
-        calcDividePersonCost(totalPriceWithTax, resInvitors, extraSeats);
+    //To Calculate creator price
+    double totalPrice;
+    if (brandProfileController.paymentType == 'RB') {
+      totalPrice = totalPriceWithTax;
+    } else {
+      totalPrice = resCost + resTax;
+    }
+    creatorCost = calcCreatorCost(totalPrice, resInvitors);
 
     print('creator cost = ${creatorCost}');
     print('extra seats: ${extraSeats.text}');
     var response = await resData.createRes(
+        paymentType: brandProfileController.paymentType,
         userid: myServices.getUserid(),
         bchid: bchid.toString(),
         brandid: brandid.toString(),
         date: selectedDate,
         time: selectedTime,
         duration: duration.toString(),
-        billCost: totalPrice.toString(),
-        resCost: resCost.toString(),
-        taxCost: taxCost.toString(),
-        totalPrice: totalPriceWithTax.toString(),
+        billCost: cartController.totalPrice.toStringAsFixed(2),
+        billTax: cartController.billTax.toStringAsFixed(2),
+        resCost: resCost.toStringAsFixed(2),
+        resTax: resTax.toStringAsFixed(2),
+        totalPrice: totalPriceWithTax.toStringAsFixed(2),
         billPolicy: billPolicy.toString(),
         resPolicy: resPolicy.toString(),
         isHomeService: brandProfileController.isHomeServices ? '1' : '0',
@@ -148,6 +167,8 @@ class ResProductController extends ResParentController {
             brandProfileController.bch.bchContactNumber;
         reservation.brandName = brandProfileController.brand.brandStoreName;
         reservation.bchLocation = brandProfileController.bch.bchLocation;
+        reservation.bchLat = brandProfileController.bch.bchLat;
+        reservation.bchLng = brandProfileController.bch.bchLng;
         return reservation;
       }
     }
@@ -205,10 +226,13 @@ class ResProductController extends ResParentController {
         cost: creatorCost));
 
     Get.toNamed(AppRouteName.reservationConfirmWait, arguments: {
-      'reservation': reservation,
+      'res': reservation,
       'resInvitors': resInvitors,
       "holdTime": resDetails.suspensionTimeLimit,
-      "reviewRes": reviewRes
+      "reviewRes": reviewRes,
+      "resPolicy": brandProfileController.resPolicy,
+      "billPolicy": brandProfileController.billPolicy,
+      "brand": brandProfileController.brand
     });
   }
 

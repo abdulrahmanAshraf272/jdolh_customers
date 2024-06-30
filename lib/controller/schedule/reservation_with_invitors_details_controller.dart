@@ -174,7 +174,8 @@ class ReservationWithInvitorsDetailsController extends GetxController {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
+    await receiveArgument();
     resTime = displayResTime(reservation.resTime!);
     super.onInit();
   }

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/rounding.dart';
@@ -11,9 +12,10 @@ class CartController extends GetxController {
   CartController(this.bchid);
 
   StatusRequest statusRequest = StatusRequest.none;
+  BrandProfileController brandProfileController = Get.find();
   int totalServiceDuration = 0;
   double totalPrice = 0;
-  double taxCost = 0;
+  double billTax = 0;
   List<Cart> carts = [];
   MyServices myServices = Get.find();
   CartData cartData = CartData(Get.find());
@@ -87,7 +89,7 @@ class CartController extends GetxController {
     carts.clear();
     totalServiceDuration = 0;
     totalPrice = 0;
-    taxCost = 0;
+    billTax = 0;
     update();
   }
 
@@ -140,6 +142,6 @@ class CartController extends GetxController {
     for (int i = 0; i < carts.length; i++) {
       totalPrice += carts[i].cartTotalPrice!;
     }
-    taxCost = roundTwoDecimal(totalPrice * 0.14);
+    billTax = roundTwoDecimal(totalPrice * brandProfileController.tax);
   }
 }

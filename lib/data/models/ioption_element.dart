@@ -2,7 +2,7 @@ class IOptionElement {
   int? id;
   int? itemOptionId;
   String? name;
-  int? price;
+  double? price;
 
   IOptionElement({this.id, this.name, this.price, this.itemOptionId});
 
@@ -10,6 +10,6 @@ class IOptionElement {
     id = json['ioptionelement_id'];
     itemOptionId = json['ioptionelement_itemsoptionid'];
     name = json['ioptionelement_name'];
-    price = json['ioptionelement_price'];
+    price = double.parse(json['ioptionelement_price']);
   }
 }

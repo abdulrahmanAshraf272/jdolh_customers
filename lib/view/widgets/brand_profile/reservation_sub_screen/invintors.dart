@@ -57,13 +57,13 @@ class Invitors extends StatelessWidget {
                                   PersonWithToggleListItem(
                                 name: controller.resInvitors[index].userName!,
                                 image: controller.resInvitors[index].userImage!,
-                                onTapPayFromHimself: () =>
-                                    controller.onTapPayForHimself(index),
+                                // onTapPayFromHimself: () =>
+                                //     controller.onTapPayForHimself(index),
                                 onTapDivide: () =>
                                     controller.onTapDivideBill(index),
                                 onTapWithoutPay: () =>
                                     controller.onTapWithoutPayBill(index),
-                                type: controller.resInvitors[index].type ?? 0,
+                                type: controller.resInvitors[index].type ?? 1,
                                 onTapRemove: () =>
                                     controller.removeMember(index),
                               ),

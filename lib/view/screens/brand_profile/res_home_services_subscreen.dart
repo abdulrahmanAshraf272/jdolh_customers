@@ -98,10 +98,9 @@ class ResHomeServicesSubscreen extends StatelessWidget {
           const SizedBox(height: 20),
           CustomSmallBoldTitle(title: 'تفاصيل الحجز'.tr),
           const CartService(),
-          const SizedBox(height: 20),
-          BillDetails(
-            resCost: controller.resCost,
-          ),
+          // const SizedBox(height: 20),
+          const PaymentTypeSelect(),
+          BillDetails(resCost: controller.resCost, resTax: controller.resTax),
           const SizedBox(height: 20),
           GoHomeButton(
             onTap: () {

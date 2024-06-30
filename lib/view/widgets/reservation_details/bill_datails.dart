@@ -29,7 +29,7 @@ class BillDetails extends StatelessWidget {
         ),
         BillRow(
           title: 'ضريبة القيمة المضافة'.tr,
-          price: reservation.resTaxCost ?? 0,
+          price: reservation.resBillTax! + reservation.resResTax!,
         ),
         BillRow(
           lastRow: true,

@@ -3,6 +3,7 @@ import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
+import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
 import 'package:jdolh_customers/data/models/policy.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
@@ -18,6 +19,7 @@ class WaitForApproveController extends GetxController {
   List<Cart> carts = [];
   late Policy resPolicy;
   late Policy billPolicy;
+  late Brand brand;
 
   getRes() async {
     // statusRequest = StatusRequest.loading;
@@ -45,9 +47,9 @@ class WaitForApproveController extends GetxController {
   gotoPayment() {
     Get.offNamed(AppRouteName.payment, arguments: {
       "res": reservation,
-      "carts": carts,
       "resPolicy": resPolicy,
-      "billPolicy": billPolicy
+      "billPolicy": billPolicy,
+      "brand": brand
     });
   }
 
@@ -55,9 +57,9 @@ class WaitForApproveController extends GetxController {
   void onInit() {
     if (Get.arguments != null) {
       reservation = Get.arguments['res'];
-      carts = Get.arguments['carts'];
       resPolicy = Get.arguments['resPolicy'];
       billPolicy = Get.arguments['billPolicy'];
+      brand = Get.arguments['brand'];
     } else {
       print('reserved nothing from previus screen');
     }

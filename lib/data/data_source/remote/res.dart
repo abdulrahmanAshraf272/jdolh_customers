@@ -63,8 +63,9 @@ class ResData {
       required String time,
       required String duration,
       required String billCost,
+      required String billTax,
       required String resCost,
-      required String taxCost,
+      required String resTax,
       required String totalPrice,
       required String billPolicy,
       required String resPolicy,
@@ -72,6 +73,7 @@ class ResData {
       required String withInvitores,
       required String resOption,
       required String status,
+      required String paymentType,
       String extraSeats = '0',
       String creatorCost = '0'}) async {
     var response = await crud.postData(ApiLinks.createRes, {
@@ -82,8 +84,9 @@ class ResData {
       "time": time,
       "duration": duration,
       "billCost": billCost,
+      "billTax": billTax,
       "resCost": resCost,
-      "taxCost": taxCost,
+      "resTax": resTax,
       "totalPrice": totalPrice,
       "billPolicy": billPolicy,
       "resPolicy": resPolicy,
@@ -91,6 +94,7 @@ class ResData {
       "withInvitores": withInvitores,
       "resOption": resOption,
       "status": status,
+      "paymentType": paymentType,
       "extraSeats": extraSeats,
       "creatorCost": creatorCost
     });

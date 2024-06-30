@@ -23,9 +23,8 @@ class ResDetails {
   ResDetails.fromJson(Map<String, dynamic> json) {
     id = json['resdetails_id'];
     bchid = json['resdetails_bchid'];
-    if (json['resdetails_cost'] != null) {
-      cost = json['resdetails_cost'].toDouble();
-    }
+    cost = double.parse(json['resdetails_cost']);
+
     invitorMax = json['resdetails_invitorMax'];
     invitorMin = json['resdetails_invitorMin'];
     suspensionTimeLimit = json['resdetails_suspensionTimeLimit'];

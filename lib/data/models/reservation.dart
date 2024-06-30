@@ -1,5 +1,6 @@
 class Reservation {
   int? resId;
+  String? resPaymentType;
   int? resUserid;
   int? resBchid;
   int? resBrandid;
@@ -7,10 +8,11 @@ class Reservation {
   String? resTime;
   int? resDuration;
 
-  num? resBillCost;
-  num? resResCost;
-  num? resTaxCost;
-  num? resTotalPrice;
+  double? resBillCost;
+  double? resBillTax;
+  double? resResCost;
+  double? resResTax;
+  double? resTotalPrice;
 
   int? resBillPolicy;
   int? resResPolicy;
@@ -39,6 +41,7 @@ class Reservation {
 
   Reservation(
       {this.resId,
+      this.resPaymentType,
       this.resUserid,
       this.resBchid,
       this.resBrandid,
@@ -46,8 +49,9 @@ class Reservation {
       this.resTime,
       this.resDuration,
       this.resBillCost,
+      this.resBillTax,
       this.resResCost,
-      this.resTaxCost,
+      this.resResTax,
       this.resTotalPrice,
       this.resBillPolicy,
       this.resResPolicy,
@@ -73,16 +77,20 @@ class Reservation {
 
   Reservation.fromJson(Map<String, dynamic> json) {
     resId = json['res_id'];
+    resPaymentType = json['res_paymentType'];
     resUserid = json['res_userid'];
     resBchid = json['res_bchid'];
     resBrandid = json['res_brandid'];
     resDate = json['res_date'];
     resTime = json['res_time'];
     resDuration = json['res_duration'];
-    resBillCost = json['res_billCost'];
-    resResCost = json['res_resCost'];
-    resTaxCost = json['res_taxCost'];
-    resTotalPrice = json['res_totalPrice'];
+
+    resBillCost = double.parse(json['res_billCost']);
+    resBillTax = double.parse(json['res_billTax']);
+    resResCost = double.parse(json['res_resCost']);
+    resResTax = double.parse(json['res_resTax']);
+    resTotalPrice = double.parse(json['res_totalPrice']);
+
     resBillPolicy = json['res_billPolicy'];
     resResPolicy = json['res_resPolicy'];
     resIsHomeService = json['res_isHomeService'];
@@ -93,9 +101,7 @@ class Reservation {
     resDatecreated = json['res_datecreated'];
 
     extraSeats = json['res_extraSeats'];
-    if (json['res_creatorCost'] != null) {
-      creatorCost = json['res_creatorCost'].toDouble();
-    }
+    creatorCost = double.parse(json['res_creatorCost']);
 
     brandName = json['brand_storeName'];
     brandLogo = json['brand_logo'];
