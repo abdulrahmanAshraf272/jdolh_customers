@@ -60,8 +60,14 @@ class _WalletChargingScreenState extends State<WalletChargingScreen> {
                     },
                   ),
                   const SizedBox(height: 10),
-                  Text('ريال'),
-                  const SizedBox(height: 40),
+                  const Text('ريال'),
+                  const SizedBox(height: 20),
+                  Text(
+                    'هذا المبلغ لا يمكن اعادة سحبه يستخدم داخل التطبيق فقط'.tr,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                  const SizedBox(height: 20),
                   // CustomTitle(
                   //   title: 'طريقة الدفع',
                   //   bottomPadding: 10,

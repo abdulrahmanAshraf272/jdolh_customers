@@ -8,6 +8,7 @@ import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/open_url_link.dart';
 import 'package:jdolh_customers/core/functions/sweet_bottom_sheet.dart';
+import 'package:jdolh_customers/core/notification/notification_sender/notification_sender.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
@@ -107,6 +108,15 @@ class ReservationWithInvitorsDetailsController extends GetxController {
     StatusRequest statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
+        double price = reservation.invitorAmount ?? 0;
+        String ss =
+            price != 0 ? 'وقام بتحويل رسومه الى محفظتك لتقوم بتأكيد الحجز' : '';
+        NotificationSender.sendToCustomer(
+            userid: reservation.resUserid!,
+            title: 'تأكيد حضور',
+            body: 'قام ${myServices.getUsername()} بقبول دعوة الحجز $ss',
+            routeName: AppRouteName.reservationConfirmWait);
+
         CustomDialogs.success();
         Get.back(result: true);
       } else if (response['message'] == 'not enough money') {
@@ -126,6 +136,12 @@ class ReservationWithInvitorsDetailsController extends GetxController {
     StatusRequest statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
+        NotificationSender.sendToCustomer(
+            userid: reservation.resUserid!,
+            title: 'اعتذار عن الحضور',
+            body: 'قام ${myServices.getUsername()} برفض دعوة الحجز',
+            routeName: AppRouteName.reservationConfirmWait);
+
         CustomDialogs.success();
         Get.back(result: true);
       } else {

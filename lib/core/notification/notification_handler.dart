@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/brand_profile/wait_for_approve_controller.dart';
+import 'package:jdolh_customers/controller/schedule/reservation_confirm_wait_controller.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/notification/notification_data.dart';
 import 'package:jdolh_customers/core/services/services.dart';
@@ -51,6 +52,15 @@ Future<void> handlingReceivedNotificationOnForground(
           WaitForApproveController controller = Get.find();
           //to Refresh res status
           controller.getRes();
+        }
+      }
+
+      if (remoteMessage.data['routeName'] ==
+          AppRouteName.reservationConfirmWait) {
+        if (Get.currentRoute == AppRouteName.reservationConfirmWait) {
+          ReservationConfirmWaitController controller = Get.find();
+          //to Refresh res status
+          controller.getInvitors();
         }
       }
     }

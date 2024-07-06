@@ -29,6 +29,8 @@ class WalletDatailsScreen extends StatelessWidget {
                         moneyAmount: controller.walletBalance,
                         onTapChargeButton: () =>
                             controller.onTapGoToChargeWallet(),
+                        onTapTransferMoney: () =>
+                            controller.onTapGoToTransferMoneyToFriend(),
                       ),
                       CustomTitle(title: 'اخر العمليات'.tr),
                       Expanded(
@@ -52,10 +54,12 @@ class WalletDatailsScreen extends StatelessWidget {
 class HeaderContainer extends StatelessWidget {
   final String moneyAmount;
   final void Function() onTapChargeButton;
+  final void Function() onTapTransferMoney;
   const HeaderContainer({
     super.key,
     required this.moneyAmount,
     required this.onTapChargeButton,
+    required this.onTapTransferMoney,
   });
 
   @override
@@ -67,7 +71,7 @@ class HeaderContainer extends StatelessWidget {
         ? parts[1]
         : '00'; // Default to '00' if there's no fractional part
     return Container(
-      height: Get.height * 0.3,
+      // height: Get.height * 0.3,
       width: Get.width,
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(15),
@@ -127,9 +131,12 @@ class HeaderContainer extends StatelessWidget {
           GoHomeButton(
             onTap: onTapChargeButton,
             height: 40,
-            width: 100,
+            width: 100.w,
             text: 'شحن المحفظة'.tr,
-          )
+          ),
+          const SizedBox(height: 5),
+          TextButton(
+              onPressed: onTapTransferMoney, child: Text('تحويل رصيد'.tr))
         ],
       ),
     );
