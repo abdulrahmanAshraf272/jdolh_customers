@@ -52,7 +52,7 @@ class ReservationDetailsScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     TextButton(
                         onPressed: () {
-                          controller.onTapCancelReservation();
+                          controller.onTapCancelReservation(context);
                         },
                         child: Text(
                           'الغاء الحجز'.tr,

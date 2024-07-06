@@ -38,7 +38,7 @@ class PaymentFailed extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Icon(
+        const Icon(
           Icons.error,
           color: Colors.red,
           size: 100,

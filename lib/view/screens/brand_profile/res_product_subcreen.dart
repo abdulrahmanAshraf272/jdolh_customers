@@ -77,7 +77,7 @@ class ResProductSubscreen extends StatelessWidget {
                 const Invitors(),
                 const SizedBox(height: 15),
                 CustomSmallBoldTitle(title: 'تفاصيل الطلب'.tr),
-                const CartProduct(),
+                const CartProductBrandProfile(),
                 //const SizedBox(height: 20),
                 const PaymentTypeSelect(),
                 BillDetails(

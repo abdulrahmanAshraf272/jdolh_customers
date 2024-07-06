@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 
 abstract class CustomDialogs {
@@ -45,29 +46,29 @@ abstract class CustomDialogs {
     EasyLoading.dismiss();
   }
 
-  static displayLoading3([String title = 'برجاء الانتظار...']) {
-    EasyLoading.instance
-      ..backgroundColor = AppColors.black // Or your desired background color
-      ..indicatorColor = AppColors.white
-      ..indicatorType = EasyLoadingIndicatorType.threeBounce
-      ..maskType = EasyLoadingMaskType.black
-      ..textColor =
-          AppColors.white // Black for text (default or your preference)
-      ..loadingStyle = EasyLoadingStyle.custom;
+  // static displayLoading3([String title = 'برجاء الانتظار...']) {
+  //   EasyLoading.instance
+  //     ..backgroundColor = AppColors.black // Or your desired background color
+  //     ..indicatorColor = AppColors.white
+  //     ..indicatorType = EasyLoadingIndicatorType.threeBounce
+  //     ..maskType = EasyLoadingMaskType.black
+  //     ..textColor =
+  //         AppColors.white // Black for text (default or your preference)
+  //     ..loadingStyle = EasyLoadingStyle.custom;
 
-    EasyLoading.show(status: title);
-  }
+  //   EasyLoading.show(status: title);
+  // }
 
-  static displayLoading2([String title = 'برجاء الانتظار...']) {
-    EasyLoading.instance
-      ..backgroundColor = AppColors.white // Or your desired background color
-      ..indicatorColor = AppColors.secondaryColor
-      ..indicatorType = EasyLoadingIndicatorType.threeBounce
-      ..maskType = EasyLoadingMaskType.black
-      ..textColor = AppColors
-          .secondaryColor // Black for text (default or your preference)
-      ..loadingStyle = EasyLoadingStyle.custom;
+  // static displayLoading2([String title = 'برجاء الانتظار...']) {
+  //   EasyLoading.instance
+  //     ..backgroundColor = AppColors.white // Or your desired background color
+  //     ..indicatorColor = AppColors.secondaryColor
+  //     ..indicatorType = EasyLoadingIndicatorType.threeBounce
+  //     ..maskType = EasyLoadingMaskType.black
+  //     ..textColor = AppColors
+  //         .secondaryColor // Black for text (default or your preference)
+  //     ..loadingStyle = EasyLoadingStyle.custom;
 
-    EasyLoading.show(status: title);
-  }
+  //   EasyLoading.show(status: title);
+  // }
 }

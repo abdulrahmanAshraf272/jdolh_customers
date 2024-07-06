@@ -7,11 +7,13 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/open_url_link.dart';
+import 'package:jdolh_customers/core/functions/sweet_bottom_sheet.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
 import 'package:jdolh_customers/data/models/res_invitors.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
+import 'package:sweetsheet/sweetsheet.dart';
 
 class ReservationWithInvitorsDetailsController extends GetxController {
   late Reservation reservation;
@@ -32,41 +34,93 @@ class ReservationWithInvitorsDetailsController extends GetxController {
     }
   }
 
-  onTapCancelReservation(String action) {
-    Get.defaultDialog(
-      title: "الغاء الحجز",
-      middleText: 'هل تريد الغاء الحجز؟',
-      textCancel: "الغاء",
-      textConfirm: "تأكيد",
-      confirmTextColor: Colors.white,
-      onCancel: () {
-        Get.back();
-      },
-      onConfirm: () {
-        cancelReservation();
-        Get.back(); // Close the dialog
-      },
-    );
+  onTapLeaveReservation(BuildContext context) {
+    sweetBottomSheet(
+        context: context,
+        title: "مغادرة الحجز".tr,
+        desc: 'اذا قمت بدفع رسوم,لا يوجد استرداد للرسوم في حالة المغادرة'.tr,
+        onTapConfirm: () {
+          Get.back();
+          rejectInvitation();
+        },
+        confirmButtonText: 'تأكيد'.tr,
+        color: SweetSheetColor.DANGER,
+        icon: Icons.cancel);
   }
 
-  leaveReservation() {
-    respondToInvitation(2);
+  onTapCancelReservation(BuildContext context) {
+    sweetBottomSheet(
+        context: context,
+        title: "الغاء الحجز".tr,
+        desc: 'رسوم الحجز غير مستردة عند الغاء الحجز'.tr,
+        confirmButtonText: 'تأكيد'.tr,
+        onTapConfirm: () {
+          Get.back();
+          cancelReservation();
+        },
+        color: SweetSheetColor.DANGER,
+        icon: Icons.cancel);
   }
 
-  rejectInvitation() {
-    respondToInvitation(2);
+  onTapAccept(BuildContext context) {
+    if (reservation.invitorAmount == 0) {
+      acceptInvitation();
+    } else {
+      sweetBottomSheet(
+          context: context,
+          title: '${'الرسوم'.tr}: ${reservation.invitorAmount} ${'ريال'.tr}',
+          desc:
+              'عند الضغط على قبول سيتم تحويل الرسوم من محفظتك وتحويلها لمحفظة صديقك الذي ارسل الدعوة ليقوم بتأكيد الحجز'
+                  .tr,
+          confirmButtonText: 'قبول'.tr,
+          onTapConfirm: () {
+            Get.back();
+            acceptInvitation();
+          },
+          color: SweetSheetColor.SUCCESS,
+          icon: Icons.done);
+    }
   }
 
-  acceptInvitation() {
-    respondToInvitation(1);
+  onTapReject(BuildContext context) {
+    sweetBottomSheet(
+        context: context,
+        title: 'رفض'.tr,
+        desc: '${'هل تريد رفض دعوة'.tr} ${reservation.username} ?',
+        confirmButtonText: 'تأكيد'.tr,
+        onTapConfirm: () {
+          Get.back();
+          rejectInvitation();
+        },
+        color: SweetSheetColor.DANGER,
+        icon: Icons.cancel);
   }
 
-  respondToInvitation(int status) async {
+  acceptInvitation() async {
     CustomDialogs.loading();
-    var response = await resData.respondInvitations(
+    var response = await resData.acceptInvitation(
         resid: reservation.resId.toString(),
         userid: myServices.getUserid(),
-        status: status.toString());
+        creatorId: reservation.resUserid.toString());
+    CustomDialogs.dissmissLoading();
+
+    StatusRequest statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        CustomDialogs.success();
+        Get.back(result: true);
+      } else if (response['message'] == 'not enough money') {
+        CustomDialogs.failure('لا يوجد لديك رصيد كاف'.tr);
+      } else {
+        CustomDialogs.failure();
+      }
+    }
+  }
+
+  rejectInvitation() async {
+    CustomDialogs.loading();
+    var response = await resData.rejectInvitation(
+        resid: reservation.resId.toString(), userid: myServices.getUserid());
     CustomDialogs.dissmissLoading();
 
     StatusRequest statusRequest = handlingData(response);
@@ -156,7 +210,7 @@ class ReservationWithInvitorsDetailsController extends GetxController {
   callBch() {
     String contactNumber = reservation.bchContactNumber ?? '';
     if (contactNumber == '') {
-      Get.rawSnackbar(message: 'الرقم غير صالح');
+      Get.rawSnackbar(message: 'الرقم غير صالح'.tr);
       return;
     }
     openContactApp(contactNumber);
@@ -176,7 +230,9 @@ class ReservationWithInvitorsDetailsController extends GetxController {
   @override
   void onInit() async {
     await receiveArgument();
+    getInvitors();
     resTime = displayResTime(reservation.resTime!);
+    print('reservation resStatus: ${reservation.invitorStatus}');
     super.onInit();
   }
 }

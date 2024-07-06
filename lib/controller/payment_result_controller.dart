@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
+import 'package:jdolh_customers/core/functions/convert_time_to_arabic.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/payment.dart';
@@ -61,26 +62,6 @@ class PaymentResultController extends GetxController {
       result = 'failure';
     }
     update();
-  }
-
-  String convertTimeToArabic(String time) {
-    // Split the time string into hours and minutes
-    List<String> parts = time.split(':');
-    int hour = int.parse(parts[0]);
-    String minutes = parts[1];
-
-    // Determine if it's AM or PM
-    String period = hour >= 12 ? 'م' : 'ص';
-
-    // Convert to 12-hour format
-    if (hour > 12) {
-      hour -= 12;
-    } else if (hour == 0) {
-      hour = 12;
-    }
-
-    // Return the formatted time string
-    return '$hour:$minutes $period';
   }
 
   @override

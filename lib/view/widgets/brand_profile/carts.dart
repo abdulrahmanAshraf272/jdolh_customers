@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
 import 'package:jdolh_customers/controller/brand_profile/cart_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_product/oreder_content_list_item.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/reservation_sub_screen/res_service/cart_list_item.dart';
 
-class CartProduct extends StatelessWidget {
-  const CartProduct({super.key});
+class CartProductBrandProfile extends StatelessWidget {
+  const CartProductBrandProfile({super.key});
 
   @override
   Widget build(BuildContext context) {

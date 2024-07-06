@@ -39,6 +39,12 @@ class Reservation {
   int? resResPayed;
   int? resBillPayed;
 
+  //for reservation i invited to.
+  String? username;
+  int? creator;
+  int? invitorStatus;
+  double? invitorAmount;
+
   Reservation(
       {this.resId,
       this.resPaymentType,
@@ -73,7 +79,11 @@ class Reservation {
       this.extraSeats,
       this.creatorCost,
       this.resResPayed,
-      this.resBillPayed});
+      this.resBillPayed,
+      this.username,
+      this.creator,
+      this.invitorStatus,
+      this.invitorAmount});
 
   Reservation.fromJson(Map<String, dynamic> json) {
     resId = json['res_id'];
@@ -115,5 +125,12 @@ class Reservation {
 
     resResPayed = json['res_resPayed'];
     resBillPayed = json['res_billPayed'];
+
+    username = json['user_name'];
+    creator = json['creator'];
+    invitorStatus = json['resinvitors_status'];
+    if (json['amount'] != null) {
+      invitorAmount = double.parse(json['amount']);
+    }
   }
 }

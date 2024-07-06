@@ -1,9 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/schedule/schedule_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
+import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/appointment.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';
@@ -20,66 +22,85 @@ class ScheduleScreen extends StatelessWidget {
         body: GetBuilder<ScheduleController>(
           builder: (controller) => RefreshIndicator(
             onRefresh: () async {
-              await controller.getAllRes();
-              controller.setResToDisplay(controller.diplayCommingRes);
+              controller.getAllRes();
             },
-            child: Column(
+            child: ListView(
               children: [
                 LargeToggleButtons(
                   optionOne: 'حجوزات قادمة'.tr,
                   onTapOne: () => controller.setDisplayCommingRes(1),
-                  optionTwo: 'بحاجة لموافقتك'.tr,
+                  optionTwo:
+                      '${'بحاجة لموافقتك'.tr} (${controller.reservationNeedApproval.length})',
                   onTapTwo: () => controller.setDisplayCommingRes(0),
                   twoColors: true,
                 ),
                 const SizedBox(height: 10),
                 if (controller.diplayCommingRes == 1)
-                  DisplayDate(
-                    selectedDate: controller.arabicDate,
-                    onTap: () {
-                      controller.selectDate(context);
-                    },
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: DisplayDate(
+                      selectedDate: controller.arabicDate,
+                      onTap: () {
+                        controller.selectDate(context);
+                      },
+                    ),
+                  ),
+                if (controller.diplayCommingRes == 1)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 15, bottom: 15, right: 15, left: 5),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: Text(
+                                'الحجوزات القادمة: ${controller.reservationComming.length}',
+                                style: titleSmall)),
+                        TextButton(
+                            onPressed: () =>
+                                controller.displayAllCommingReservations(),
+                            child: Text(
+                              'عرض الكل',
+                              style: TextStyle(
+                                  color: AppColors.secondaryColor,
+                                  fontSize: 11.sp),
+                            ))
+                      ],
+                    ),
                   ),
                 const SizedBox(height: 10),
                 HandlingDataView(
-                    emptyText: 'لا توجد حجوزات'.tr,
+                    emptyText: 'لا توجد حجوزات في هذا اليوم'.tr,
                     statusRequest: controller.statusRequest,
-                    widget: Expanded(
-                        child: ListView.builder(
-                            itemCount: controller.resToDisplay.length,
-                            itemBuilder: (context, index) =>
-                                AppointmentListItem(
-                                    brandName: controller
-                                            .resToDisplay[index].brandName ??
-                                        '',
-                                    brandLogo:
-                                        '${ApiLinks.logoImage}/${controller.resToDisplay[index].brandLogo}',
-                                    bchCity: controller
-                                            .resToDisplay[index].bchCity ??
-                                        '',
-                                    dateTime:
-                                        '${controller.resToDisplay[index].resDate} ${controller.resToDisplay[index].resTime}',
-                                    onTap: () {
-                                      controller.gotoReservationDetails(index);
-                                    }))))
+                    widget: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: controller.resToDisplay.length,
+                      itemBuilder: (context, index) => controller
+                                  .diplayCommingRes ==
+                              1
+                          ? AppointmentListItem(
+                              brandName:
+                                  controller.resToDisplay[index].brandName ??
+                                      '',
+                              brandLogo:
+                                  '${ApiLinks.logoImage}/${controller.resToDisplay[index].brandLogo}',
+                              bchCity:
+                                  controller.resToDisplay[index].bchCity ?? '',
+                              dateTime:
+                                  '${controller.resToDisplay[index].resDate} ${controller.resToDisplay[index].resTime}',
+                              onTap: () {
+                                controller.gotoReservationDetails(index);
+                              })
+                          : AppointmentListItemNotApproved(
+                              onTap: () =>
+                                  controller.gotoReservationDetails(index),
+                              reservation: controller.resToDisplay[index]),
+                    ))
               ],
             ),
           ),
         ));
   }
 }
-
-// ResListItem(
-//                                     onTapCard: () {
-//                                       controller.gotoReservationDetails(index);
-//                                     },
-//                                     resNumber:
-//                                         controller.resToDisplay[index].resId ??
-//                                             0,
-//                                     resTime: controller.displayResTime(index),
-//                                     resOption: controller
-//                                             .resToDisplay[index].resResOption ??
-//                                         '')
 
 class DisplayDate extends StatelessWidget {
   final void Function() onTap;

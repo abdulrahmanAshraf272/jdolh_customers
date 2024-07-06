@@ -66,8 +66,10 @@ import 'package:jdolh_customers/view/screens/search_screen.dart';
 import 'package:jdolh_customers/view/screens/select_address_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/items_details_screen.dart';
 import 'package:jdolh_customers/view/screens/set_date_screen.dart';
-import 'package:jdolh_customers/view/screens/wallet_charging_screen.dart';
-import 'package:jdolh_customers/view/screens/wallet_details_screen.dart';
+import 'package:jdolh_customers/view/screens/wallet/transfer_money_screen.dart';
+import 'package:jdolh_customers/view/screens/wallet/wallet_charging_result_screen.dart';
+import 'package:jdolh_customers/view/screens/wallet/wallet_charging_screen.dart';
+import 'package:jdolh_customers/view/screens/wallet/wallet_details_screen.dart';
 
 List<GetPage> routes = [
   //Replace Login with onBoarding
@@ -86,6 +88,14 @@ List<GetPage> routes = [
   //   name: '/',
   //   page: () => const ReservationSearchScreen(),
   // ),
+  GetPage(
+      name: AppRouteName.transferMoney,
+      page: () => const TranferMoneyScreen(),
+      popGesture: true),
+  GetPage(
+    name: AppRouteName.walletChargingResult,
+    page: () => const WalletChargingResultScreen(),
+  ),
   GetPage(
     name: AppRouteName.paymentResult,
     page: () => const PaymentResultScreen(),
@@ -333,9 +343,9 @@ List<GetPage> routes = [
     page: () => const SetDateScreen(),
   ),
   GetPage(
-    name: AppRouteName.walletCharging,
-    page: () => const WalletChargingScreen(),
-  ),
+      name: AppRouteName.walletCharging,
+      page: () => const WalletChargingScreen(),
+      popGesture: true),
   GetPage(
     name: AppRouteName.walletDetails,
     page: () => const WalletDatailsScreen(),

@@ -81,4 +81,6 @@ class AppRouteName {
   static const notifications = '/notifications';
   static const reservationWithInvitors = '/reservationWithInvitors';
   static const paymentResult = '/paymentResult';
+  static const walletChargingResult = '/walletChargingResult';
+  static const transferMoney = '/transferMoney';
 }

@@ -6,21 +6,21 @@ import 'package:get/get.dart';
 
 void alertExitAppNew() {
   Get.defaultDialog(
-      title: 'خروج',
-      middleText: 'هل تريد الخروج من التطبيق؟',
+      title: 'خروج'.tr,
+      middleText: 'هل تريد الخروج من التطبيق؟'.tr,
       actions: [
         ElevatedButton(
           onPressed: () {
             Get.back();
             SystemNavigator.pop();
           },
-          child: const Text('نعم'),
+          child: Text('نعم'.tr),
         ),
         ElevatedButton(
             onPressed: () {
               Get.back();
             },
-            child: const Text('الغاء'))
+            child: Text('الغاء'.tr))
       ]);
 }
 

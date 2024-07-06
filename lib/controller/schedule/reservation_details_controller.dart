@@ -9,12 +9,14 @@ import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/open_url_link.dart';
+import 'package:jdolh_customers/core/functions/sweet_bottom_sheet.dart';
 import 'package:jdolh_customers/core/notification/notification_sender/reservation_notification.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
+import 'package:sweetsheet/sweetsheet.dart';
 
 class ReservationDetailsController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
@@ -30,11 +32,13 @@ class ReservationDetailsController extends GetxController {
 
   bool phoneNumberValid = false;
 
-  onTapCancelReservation() {
-    Get.defaultDialog(
+  onTapCancelReservation(BuildContext context) {
+    sweetBottomSheet(
+        context: context,
         title: "الغاء الحجز",
-        middleText: 'هل تريد الغاء الحجز؟',
-        onConfirm: () {
+        desc: 'رسوم الحجز غير مستردة عند الغاء الحجز',
+        confirmButtonText: 'تأكيد',
+        onTapConfirm: () {
           Get.back();
           cancelReservation();
           ReservationNotification reservationNotification =
@@ -42,9 +46,8 @@ class ReservationDetailsController extends GetxController {
           reservationNotification.cancelReservation(
               reservation.bchid!, reservation.resDate!);
         },
-        buttonColor: const Color(0xffff6666),
-        textConfirm: 'نعم',
-        confirmTextColor: Colors.white);
+        color: SweetSheetColor.DANGER,
+        icon: Icons.cancel);
   }
 
   cancelReservation() async {

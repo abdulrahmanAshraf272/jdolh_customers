@@ -154,12 +154,16 @@ class ApiLinks {
 
   static const String getInvitors =
       '$server/jdolh_customers/res/get_invitors.php';
-  static const String respondInvitation =
-      '$server/jdolh_customers/res/respond_invitation.php';
+
   static const String deleteRes = '$server/jdolh_customers/res/delete_res.php';
 
   static const String changeHoldStatus =
       '$server/jdolh_customers/res/change_res_status.php';
+
+  static const String rejectInvitation =
+      '$server/jdolh_customers/res/reject_invitation.php';
+  static const String acceptInvitation =
+      '$server/jdolh_customers/res/accept_invitation.php';
 
   // ===== Rate ======//
   static const String addRate = '$server/jdolh_customers/rate/add_rate.php';
@@ -220,4 +224,14 @@ class ApiLinks {
       '$server/jdolh_customers/payment/pay_by_wallet.php';
   static const String payByCredit =
       '$server/jdolh_customers/payment/pay_by_credit.php';
+
+  //======= Wallet ======//
+  static const String customerWalletTransHistory =
+      '$server/jdolh_customers/wallet/customer_wallet_trans_history.php';
+  static const String customerWalletBalance =
+      '$server/jdolh_customers/wallet/customer_wallet_balance.php';
+  static const String customerTransferMoney =
+      '$server/jdolh_customers/wallet/customer_transfer_money.php';
+  static const String chargeCustomerWallet =
+      '$server/jdolh_customers/wallet/charge_customer_wallet.php';
 }

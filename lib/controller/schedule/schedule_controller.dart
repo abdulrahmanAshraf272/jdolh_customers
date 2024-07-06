@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/functions/is_date_passed.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
@@ -16,11 +17,20 @@ class ScheduleController extends GetxController {
   List<Reservation> allRes = [];
   List<Reservation> resToDisplay = [];
 
+  List<Reservation> reservationComming = [];
+  List<Reservation> reservationNeedApproval = [];
+
   String arabicDate = '';
   DateTime selectedDate = DateTime.now();
   String selectedDateFormatted =
       DateFormat('yyyy-MM-dd').format(DateTime.now());
   int diplayCommingRes = 1;
+
+  displayAllCommingReservations() {
+    resToDisplay.clear();
+    resToDisplay = List.of(reservationComming);
+    update();
+  }
 
   gotoReservationDetails(int index) async {
     final result;
@@ -34,18 +44,13 @@ class ScheduleController extends GetxController {
     }
 
     if (result != null) {
-      await getAllRes();
-      setResToDisplay(diplayCommingRes);
+      getAllRes();
     }
   }
 
-  setDisplayCommingRes(int value) async {
+  setDisplayCommingRes(int value) {
     diplayCommingRes = value;
-    update();
-
-    //Get all res from db and display filtered res
-    await getAllRes();
-    setResToDisplay(diplayCommingRes);
+    setResToDisplay();
   }
 
   Future<void> selectDate(BuildContext context) async {
@@ -60,6 +65,7 @@ class ScheduleController extends GetxController {
       selectedDateFormatted = DateFormat('yyyy-MM-dd').format(selectedDate);
 
       getArabicDate(selectedDate);
+
       setResToDisplay();
     }
   }
@@ -106,29 +112,50 @@ class ScheduleController extends GetxController {
   }
 
   parseValues(response) {
+    allRes.clear();
+    reservationComming.clear();
+    reservationNeedApproval.clear();
+
     List data = response['data'];
     allRes = data.map((e) => Reservation.fromJson(e)).toList();
-  }
 
-  setResToDisplay([int diplayCommingRes = 1]) {
-    resToDisplay.clear();
-    if (diplayCommingRes == 0) {
-      //Get reservation that i invitred to it.
+    // Remove past dates
+    //TODO: fix this. it remove the res in past and today.
 
-      //get all approved reservations
-      // for (int i = 0; i < allRes.length; i++) {
-      //   if (allRes[i].resStatus == 1) {
-      //     resToDisplay.add(allRes[i]);
-      //   }
-      // }
-    } else {
-      //get all reservation match the selected date.
-      for (int i = 0; i < allRes.length; i++) {
-        if (allRes[i].resDate == selectedDateFormatted &&
-            allRes[i].resStatus == 3) {
-          resToDisplay.add(allRes[i]);
+    // allRes.removeWhere((res) {
+    //   DateTime resDate = DateTime.parse(res.resDate!);
+    //   return resDate.isBefore(DateTime.now());
+    // });
+    for (int i = 0; i < allRes.length; i++) {
+      if (isDatePassed(allRes[i].resDate!)) {
+        allRes.removeAt(i);
+      }
+    }
+
+    for (int i = 0; i < allRes.length; i++) {
+      if (allRes[i].resStatus == 3) {
+        if (allRes[i].creator == 1 || allRes[i].invitorStatus == 1) {
+          reservationComming.add(allRes[i]);
+          print(reservationComming.length);
+        } else if (allRes[i].creator == 0 && allRes[i].invitorStatus == 0) {
+          reservationNeedApproval.add(allRes[i]);
         }
       }
+    }
+
+    setResToDisplay();
+  }
+
+  setResToDisplay() {
+    resToDisplay.clear();
+    if (diplayCommingRes == 1) {
+      for (int i = 0; i < reservationComming.length; i++) {
+        if (reservationComming[i].resDate == selectedDateFormatted) {
+          resToDisplay.add(reservationComming[i]);
+        }
+      }
+    } else {
+      resToDisplay = List.from(reservationNeedApproval);
     }
     update();
   }
@@ -136,8 +163,7 @@ class ScheduleController extends GetxController {
   @override
   void onInit() async {
     getArabicDate(selectedDate);
-    await getAllRes();
-    setResToDisplay();
+    getAllRes();
     super.onInit();
   }
 }

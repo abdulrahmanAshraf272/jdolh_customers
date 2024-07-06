@@ -1109,6 +1109,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  sweetsheet:
+    dependency: "direct main"
+    description:
+      name: sweetsheet
+      sha256: "6056091eecea4f76688149502fc2b1faf8d840cd6c0795148085df7e290278e4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0"
   synchronized:
     dependency: transitive
     description:

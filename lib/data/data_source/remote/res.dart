@@ -20,12 +20,22 @@ class ResData {
     return response.fold((l) => l, (r) => r);
   }
 
-  respondInvitations(
+  rejectInvitation({required String resid, required String userid}) async {
+    var response = await crud.postData(
+        ApiLinks.rejectInvitation, {"resid": resid, "userid": userid});
+
+    return response.fold((l) => l, (r) => r);
+  }
+
+  acceptInvitation(
       {required String resid,
       required String userid,
-      required String status}) async {
-    var response = await crud.postData(ApiLinks.respondInvitation,
-        {"resid": resid, "userid": userid, "status": status});
+      required String creatorId}) async {
+    var response = await crud.postData(ApiLinks.acceptInvitation, {
+      "resid": resid,
+      "userid": userid,
+      "creatorId": creatorId,
+    });
 
     return response.fold((l) => l, (r) => r);
   }

@@ -72,6 +72,7 @@ class PaymentController extends GetxController {
       Get.to(() => WebviewScreen(
           title: 'الدفع',
           url: redirectUrl,
+          payment: 'Reservation',
           reservation: reservation,
           brand: brand));
     }

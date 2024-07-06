@@ -3,22 +3,27 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
-import 'package:jdolh_customers/test_payment_result.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'dart:io';
 
 class WebviewScreen extends StatefulWidget {
   final String title;
   final String url;
-  final Brand brand;
-  final Reservation reservation;
+  final String payment;
+
+  final Brand? brand;
+  final Reservation? reservation;
+  final String? orderId;
+  final String? amount;
   const WebviewScreen(
       {super.key,
       required this.title,
       required this.url,
-      required this.brand,
-      required this.reservation});
+      required this.payment,
+      this.brand,
+      this.reservation,
+      this.orderId,
+      this.amount});
 
   @override
   State<WebviewScreen> createState() => _WebviewScreenState();
@@ -56,12 +61,18 @@ class _WebviewScreenState extends State<WebviewScreen> {
             if (url.contains('term_url_3ds.php')) {
               print('url: $url');
               print(' ===== the payment process is finished ======');
-
-              Get.offAllNamed(AppRouteName.paymentResult, arguments: {
-                "res": widget.reservation,
-                "brand": widget.brand,
-                "paymentMethod": 'credit'
-              });
+              if (widget.payment == 'Reservation') {
+                Get.offAllNamed(AppRouteName.paymentResult, arguments: {
+                  "res": widget.reservation,
+                  "brand": widget.brand,
+                  "paymentMethod": 'credit'
+                });
+              } else if (widget.payment == 'Wallet') {
+                Get.offAllNamed(AppRouteName.walletChargingResult, arguments: {
+                  "orderId": widget.orderId,
+                  "amount": widget.amount
+                });
+              }
             }
           },
           onHttpError: (HttpResponseError error) {

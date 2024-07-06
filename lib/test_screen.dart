@@ -61,14 +61,14 @@ class _TestScreenState extends State<TestScreen> {
             ),
             //OccasionListItem(),
             //GroupListItem(),
-            WalletOperationListItem(),
+            //WalletOperationListItem(),
             HairCutServiceListItem(),
             BillListItem(paid: false),
             FoodListItem(),
             //BrandDetailedListItem(),
             Brand(),
             CommentListItem(),
-            AppointmentListItemNotApproved(),
+            //AppointmentListItemNotApproved(),
             // AppointmentListItem(onTap: () {
             //   Get.toNamed(AppRouteName.apptDetails);
             // }),

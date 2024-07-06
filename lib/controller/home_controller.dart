@@ -101,8 +101,9 @@ class HomeController extends GetxController {
         reservationData.map((e) => Reservation.fromJson(e)).toList();
     for (int i = 0; i < res.length; i++) {
       if (res[i].resStatus == 3) {
-        String datetime = '${res[i].resDate} ${res[i].resTime}';
-        if (!isDateTimePassed(datetime)) {
+        //String datetime = '${res[i].resDate} ${res[i].resTime}';
+
+        if (!isDatePassed(res[i].resDate!)) {
           reservation.add(res[i]);
         }
       }

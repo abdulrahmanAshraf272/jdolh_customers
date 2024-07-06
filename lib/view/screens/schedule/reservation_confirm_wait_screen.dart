@@ -6,6 +6,7 @@ import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/data/models/res_invitors.dart';
+import 'package:jdolh_customers/data/models/reservation.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_name_image.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
@@ -66,7 +67,7 @@ class ReservationConfirmWaitScreen extends StatelessWidget {
                     resOption: controller.reservation.resResOption ?? '',
                     duration: controller.reservation.resDuration.toString(),
                   ),
-                  PriceWillPayedExplain(),
+                  PriceWillPayedExplain(reservation: controller.reservation),
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: Row(
@@ -108,18 +109,19 @@ class ReservationConfirmWaitScreen extends StatelessWidget {
 }
 
 class PriceWillPayedExplain extends StatelessWidget {
-  const PriceWillPayedExplain({super.key});
+  final Reservation reservation;
+  const PriceWillPayedExplain({super.key, required this.reservation});
 
   @override
   Widget build(BuildContext context) {
-    ReservationConfirmWaitController controller = Get.find();
+    //ReservationConfirmWaitController controller = Get.find();
     String txt = '';
-    if (controller.reservation.resPaymentType == 'R') {
+    if (reservation.resPaymentType == 'R') {
       txt =
-          'المبلغ الذي تم تقسيمه والمراد دفعه هو\n رسوم الحجز: ${controller.reservation.resResCost! + controller.reservation.resResTax!} ريال\n وقيمة الفاتورة تدفع عند الوصول';
+          'المبلغ الذي تم تقسيمه والمراد دفعه هو\n رسوم الحجز: ${reservation.resResCost! + reservation.resResTax!} ريال\n وقيمة الفاتورة تدفع عند الوصول';
     } else {
       txt =
-          'المبلغ الذي تم تقسيمه والمراد دفعه هو\n رسوم الحجز الفاتورة: ${controller.reservation.resTotalPrice} ريال';
+          'المبلغ الذي تم تقسيمه والمراد دفعه هو\n رسوم الحجز الفاتورة: ${reservation.resTotalPrice} ريال';
     }
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -272,9 +274,9 @@ class InvitorStatusListItem extends StatelessWidget {
                   style: TextStyle(fontSize: 13.sp)),
             ],
           ),
-          if (resinvitor.status == 1)
-            Text('تم تحويل المبلغ الى محفظتك',
-                style: TextStyle(fontSize: 11.sp, color: Colors.green)),
+          // if (resinvitor.status == 1)
+          //   Text('تم تحويل المبلغ الى محفظتك',
+          //       style: TextStyle(fontSize: 11.sp, color: Colors.green)),
           const SizedBox(height: 6),
           Text(displayResInvitorType(resinvitor.type),
               style: TextStyle(fontSize: 10.sp)),
