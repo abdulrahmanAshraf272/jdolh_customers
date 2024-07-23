@@ -6,6 +6,7 @@ import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/screens/schedule/reservation_confirm_wait_screen.dart';
+import 'package:jdolh_customers/view/screens/schedule/reservation_details_screen.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/confirm_refuse_buttons.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';
@@ -73,6 +74,7 @@ class ReservationWithInvitorsDetailsScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              PaymentTypeText(reservation: controller.reservation),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: ClipRRect(

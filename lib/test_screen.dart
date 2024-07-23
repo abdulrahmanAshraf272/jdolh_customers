@@ -63,7 +63,7 @@ class _TestScreenState extends State<TestScreen> {
             //GroupListItem(),
             //WalletOperationListItem(),
             HairCutServiceListItem(),
-            BillListItem(paid: false),
+            //BillListItem(paid: false),
             FoodListItem(),
             //BrandDetailedListItem(),
             Brand(),

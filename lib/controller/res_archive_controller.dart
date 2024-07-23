@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';

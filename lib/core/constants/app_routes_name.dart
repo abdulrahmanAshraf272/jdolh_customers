@@ -15,7 +15,7 @@ class AppRouteName {
   static const groupDetails = '/groupDetails';
   static const appt = '/appt';
   static const apptDetails = '/apptDetails';
-  static const bills = '/bills';
+
   static const addMembers = '/addMembers';
 
   static const createGroup = '/createGroup';
@@ -83,4 +83,8 @@ class AppRouteName {
   static const paymentResult = '/paymentResult';
   static const walletChargingResult = '/walletChargingResult';
   static const transferMoney = '/transferMoney';
+
+  //Bills
+  static const bills = '/bills';
+  static const billDetails = '/billDetails';
 }

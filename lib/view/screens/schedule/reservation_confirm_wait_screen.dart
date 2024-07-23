@@ -270,7 +270,7 @@ class InvitorStatusListItem extends StatelessWidget {
               Text('الرسوم: ',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp)),
-              Text('${resinvitor.cost} ريال',
+              Text('${resinvitor.cost!.toStringAsFixed(2)} ريال',
                   style: TextStyle(fontSize: 13.sp)),
             ],
           ),

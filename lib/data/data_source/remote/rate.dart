@@ -25,12 +25,9 @@ class RateData {
     return response.fold((l) => l, (r) => r);
   }
 
-  getRate({
-    required String resid,
-  }) async {
-    var response = await crud.postData(ApiLinks.getRate, {
-      "resid": resid,
-    });
+  getRate({required String resid, required String userid}) async {
+    var response = await crud
+        .postData(ApiLinks.getRate, {"resid": resid, "userid": userid});
 
     return response.fold((l) => l, (r) => r);
   }

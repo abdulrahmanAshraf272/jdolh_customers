@@ -8,6 +8,7 @@ import 'package:jdolh_customers/test_screen.dart';
 import 'package:jdolh_customers/test_screen2.dart';
 import 'package:jdolh_customers/view/screens/add_members_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/edit_personal_data_screen.dart';
+import 'package:jdolh_customers/view/screens/bills/bill_details_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/add_res_invitors_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/all_bchs_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/display_worktime_screen.dart';
@@ -27,7 +28,7 @@ import 'package:jdolh_customers/view/screens/auth/forget_password_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/signup_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/success_operation_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/verifycode_screen.dart';
-import 'package:jdolh_customers/view/screens/bills_screen.dart';
+import 'package:jdolh_customers/view/screens/bills/bills_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/brand_profile_screen.dart';
 import 'package:jdolh_customers/view/screens/explore_checkin_screen.dart';
 import 'package:jdolh_customers/view/screens/groups/create_group_screen.dart';
@@ -92,6 +93,10 @@ List<GetPage> routes = [
       name: AppRouteName.transferMoney,
       page: () => const TranferMoneyScreen(),
       popGesture: true),
+  GetPage(
+    name: AppRouteName.billDetails,
+    page: () => const BillDetailsScreen(),
+  ),
   GetPage(
     name: AppRouteName.walletChargingResult,
     page: () => const WalletChargingResultScreen(),

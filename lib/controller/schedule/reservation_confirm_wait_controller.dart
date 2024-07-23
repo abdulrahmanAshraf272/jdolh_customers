@@ -181,6 +181,7 @@ class ReservationConfirmWaitController extends GetxController {
     print('statusGetInvitors: ${statusGetInvitors}');
     if (statusGetInvitors == StatusRequest.success) {
       if (response['status'] == 'success') {
+        print(response);
         parseGetInvitors(response);
       } else {
         statusGetInvitors = StatusRequest.failure;

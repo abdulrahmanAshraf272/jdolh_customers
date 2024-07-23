@@ -952,6 +952,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+  pretty_qr_code:
+    dependency: transitive
+    description:
+      name: pretty_qr_code
+      sha256: ea7ccb3069e0f5b89b441449b9ec10f4148ddda7a4bef89a130d2ebdaa0be647
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.3"
+  qr:
+    dependency: transitive
+    description:
+      name: qr
+      sha256: "5a1d2586170e172b8a8c8470bbbffd5eb0cd38a66c0d77155ea138d3af3a4445"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.2"
   quiver:
     dependency: transitive
     description:
@@ -1341,6 +1357,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+  zatca_fatoora_flutter:
+    dependency: "direct main"
+    description:
+      name: zatca_fatoora_flutter
+      sha256: a68855bd078b7c5a7790bb9c2cbe8d14898d979ba64d9f1fd22df0f79c6eac63
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
 sdks:
   dart: ">=3.4.0 <4.0.0"
   flutter: ">=3.22.0"

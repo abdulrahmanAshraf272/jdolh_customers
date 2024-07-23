@@ -3,13 +3,18 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/schedule/reservation_details_controller.dart';
+import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/notification/notification_sender/activity_notification.dart';
+import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/rate.dart';
 import 'package:jdolh_customers/data/models/rate.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
+import 'package:jdolh_customers/view/screens/schedule/reservation_confirm_wait_screen.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
+import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/reservation_details/bill_datails.dart';
 import 'package:jdolh_customers/view/widgets/reservation_details/bch_and_reservation_data.dart';
 import 'package:jdolh_customers/view/widgets/reservation_details/res_cart_data.dart';
@@ -26,6 +31,7 @@ class ResArchiveDetailsScreen extends StatefulWidget {
 
 class _ResArchiveDetailsScreenState extends State<ResArchiveDetailsScreen> {
   StatusRequest statusRequest = StatusRequest.none;
+  MyServices myServices = Get.find();
   RateData rateData = RateData(Get.find());
   late ReservationDetailsController controller;
   late Reservation reservation;
@@ -34,7 +40,7 @@ class _ResArchiveDetailsScreenState extends State<ResArchiveDetailsScreen> {
 
   addRate(double rateValue, String comment) async {
     var response = await rateData.addRate(
-        userid: reservation.resUserid.toString(),
+        userid: myServices.getUserid(),
         brandid: reservation.resBrandid.toString(),
         bchid: reservation.resBchid.toString(),
         ratevalue: rateValue.toString(),
@@ -86,7 +92,9 @@ class _ResArchiveDetailsScreenState extends State<ResArchiveDetailsScreen> {
   }
 
   getRate() async {
-    var response = await rateData.getRate(resid: reservation.resId.toString());
+    MyServices myServices = Get.find();
+    var response = await rateData.getRate(
+        resid: reservation.resId.toString(), userid: myServices.getUserid());
     statusRequest = handlingData(response);
 
     print('statusRequest ==== $statusRequest');
@@ -202,6 +210,14 @@ class _ResArchiveDetailsScreenState extends State<ResArchiveDetailsScreen> {
                       duration: controller.reservation.resDuration.toString(),
                     ),
                     const SizedBox(height: 20),
+                    if (controller.reservation.resWithInvitors == 1)
+                      Column(
+                        children: [
+                          CustomTitle(title: 'المدعوين'.tr),
+                          const Invitations(),
+                        ],
+                      ),
+                    const SizedBox(height: 20),
                     const ResCartData(),
                     const SizedBox(height: 20),
                     BillDetails(reservation: controller.reservation),
@@ -296,5 +312,28 @@ class BrandLogo extends StatelessWidget {
               // fit: BoxFit.cover,
             ),
     );
+  }
+}
+
+class Invitations extends StatelessWidget {
+  const Invitations({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<ReservationDetailsController>(
+        builder: (controller) => HandlingDataView(
+            statusRequest: controller.statusGetInvitors,
+            widget: Column(
+              children: [
+                const SizedBox(height: 10),
+                ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    shrinkWrap: true,
+                    itemCount: controller.resInvitors.length,
+                    itemBuilder: (context, index) => InvitorStatusListItem(
+                        resinvitor: controller.resInvitors[index])),
+              ],
+            )));
   }
 }

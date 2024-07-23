@@ -234,4 +234,14 @@ class ApiLinks {
       '$server/jdolh_customers/wallet/customer_transfer_money.php';
   static const String chargeCustomerWallet =
       '$server/jdolh_customers/wallet/charge_customer_wallet.php';
+
+  //======= Bills ======//
+  static const String getCustomerBills =
+      '$server/jdolh_customers/bill/get_customer_bills.php';
+  static const String payBillCash =
+      '$server/jdolh_customers/bill/pay_bill_cash.php';
+  static const String payBillCredit =
+      '$server/jdolh_customers/bill/pay_bill_credit.php';
+  static const String payBillWallet =
+      '$server/jdolh_customers/bill/pay_bill_wallet.php';
 }

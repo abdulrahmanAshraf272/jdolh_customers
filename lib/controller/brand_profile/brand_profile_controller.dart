@@ -18,7 +18,7 @@ import 'package:jdolh_customers/data/models/resOption.dart';
 
 class BrandProfileController extends GetxController {
   String paymentType = '';
-  //TODO: Get tax from DB;
+  //TODO: Get tax from DB
   double tax = 0.14;
 //0 => items, 1 => resProduct, 2 => resService, 3=> HomeService
   int subscreen = 0;
@@ -156,6 +156,10 @@ class BrandProfileController extends GetxController {
     List categoriesJson = response['categories'];
     List itemsJson = response['items'];
     var worktimeJson = response['worktime'];
+
+    if (response['taxPercent'] != null) {
+      tax = (response['taxPercent'] / 100).toDouble();
+    }
 
     bchWorktime = BchWorktime.fromJson(worktimeJson);
 

@@ -66,6 +66,7 @@ class PaymentController extends GetxController {
   }
 
   payByCredit() async {
+    print('shit');
     var redirectUrl = await initiateEdfaPayment();
     if (redirectUrl != null) {
       print('shit');
@@ -114,12 +115,15 @@ class PaymentController extends GetxController {
   Future initiateEdfaPayment() async {
     //Get fullName from sharedPrefs and get from it first and last name;
     String fullName = myServices.getName();
+    print(fullName);
+
     List<String> nameParts = fullName.split(' ');
     String firstName = nameParts[0];
     String lastName = nameParts[1];
     //Set Order id
     int resId = reservation.resId!;
     String orderId;
+
     //Remove 'X' after test
     if (reservation.resPaymentType == 'R') {
       orderId = 'XR$resId';

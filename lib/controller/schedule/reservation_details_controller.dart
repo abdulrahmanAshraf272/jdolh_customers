@@ -14,11 +14,14 @@ import 'package:jdolh_customers/core/notification/notification_sender/reservatio
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
+import 'package:jdolh_customers/data/models/res_invitors.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 import 'package:sweetsheet/sweetsheet.dart';
 
 class ReservationDetailsController extends GetxController {
+  StatusRequest statusGetInvitors = StatusRequest.none;
+  List<Resinvitors> resInvitors = [];
   StatusRequest statusRequest = StatusRequest.none;
   ResData resData = ResData(Get.find());
   MyServices myServices = Get.find();
@@ -173,10 +176,38 @@ class ReservationDetailsController extends GetxController {
     Get.toNamed(AppRouteName.diplayLocation, arguments: LatLng(lat, lng));
   }
 
+  getInvitors() async {
+    statusGetInvitors = StatusRequest.loading;
+    update();
+    var response =
+        await resData.getInvitors(resid: reservation.resId.toString());
+    statusGetInvitors = handlingData(response);
+    print('statusGetInvitors: ${statusGetInvitors}');
+    if (statusGetInvitors == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        parseGetInvitors(response);
+      } else {
+        statusGetInvitors = StatusRequest.failure;
+      }
+    }
+    update();
+  }
+
+  parseGetInvitors(response) {
+    print('success get invitors');
+    List data = response['data'];
+    resInvitors.clear();
+    resInvitors = data.map((e) => Resinvitors.fromJson(e)).toList();
+  }
+
   @override
   void onInit() {
     if (Get.arguments != null) {
       reservation = Get.arguments['res'];
+
+      if (reservation.resWithInvitors == 1) {
+        getInvitors();
+      }
 
       resTime = displayResTime(reservation.resTime!);
     }
