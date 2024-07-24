@@ -38,8 +38,7 @@ class BillsData {
   }
 
   payBillWallet(
-      {required String orderId,
-      required String userId,
+      {required String userId,
       required String billId,
       required String amountWithoutTax,
       required String tax,
@@ -48,7 +47,6 @@ class BillsData {
       required String brandId}) async {
     var response = await crud.postData(ApiLinks.payBillWallet, {
       "userId": userId,
-      "orderId": orderId,
       "billId": billId,
       "amountWithoutTax": amountWithoutTax,
       "tax": tax,

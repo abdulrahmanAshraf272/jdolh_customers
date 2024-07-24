@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/bills/bill_details_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
+import 'package:jdolh_customers/core/constants/text_syles.dart';
+import 'package:jdolh_customers/view/widgets/common/appBarWithButtonCreate.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 import 'package:zatca_fatoora_flutter/zatca_fatoora_flutter.dart';
 
@@ -17,14 +19,27 @@ class BillDetailsScreen extends StatelessWidget {
     final textColor2 = Color(0xFF5c5c5d);
     final controller = Get.put(BillDetailsController());
     return Scaffold(
-      appBar:
-          customAppBar(title: '${'فاتورة رقم'.tr} ${controller.bill.billId}'),
+      appBar: controller.paymentMethod != ''
+          ? customAppBar(title: '${'فاتورة رقم'.tr} ${controller.bill.billId}')
+          : appBarWithButtonCreate(
+              onTapCreate: () => controller.onTapPay(),
+              onTapBack: () {
+                Get.back();
+              },
+              title: '${'فاتورة رقم'.tr} ${controller.bill.billId}',
+              buttonText: 'دفع'),
       body: GetBuilder<BillDetailsController>(
         builder: (controller) => SingleChildScrollView(
             child: HandlingDataView(
                 statusRequest: controller.statusRequest,
                 widget: Column(
                   children: [
+                    if (controller.paymentMethod != '')
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text('طريقة الدفع: ${controller.paymentMethod}',
+                            style: titleMedium, textAlign: TextAlign.center),
+                      ),
                     Container(
                       padding: const EdgeInsets.all(15),
                       margin: const EdgeInsets.all(15),
@@ -101,7 +116,7 @@ class BillDetailsScreen extends StatelessWidget {
                             ],
                           ),
                           customSpace(),
-                          BillContentTableHeader(),
+                          const BillContentTableHeader(),
                           ListView.builder(
                               shrinkWrap: true,
                               itemCount: controller.carts.length,

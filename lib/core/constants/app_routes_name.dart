@@ -87,4 +87,5 @@ class AppRouteName {
   //Bills
   static const bills = '/bills';
   static const billDetails = '/billDetails';
+  static const selectPaymentMethod = '/selectPaymentMethod';
 }

@@ -9,6 +9,7 @@ import 'package:jdolh_customers/test_screen2.dart';
 import 'package:jdolh_customers/view/screens/add_members_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/edit_personal_data_screen.dart';
 import 'package:jdolh_customers/view/screens/bills/bill_details_screen.dart';
+import 'package:jdolh_customers/view/screens/bills/select_payment_method_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/add_res_invitors_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/all_bchs_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/display_worktime_screen.dart';
@@ -93,6 +94,10 @@ List<GetPage> routes = [
       name: AppRouteName.transferMoney,
       page: () => const TranferMoneyScreen(),
       popGesture: true),
+  GetPage(
+    name: AppRouteName.selectPaymentMethod,
+    page: () => const SelectPaymentMethodScreen(),
+  ),
   GetPage(
     name: AppRouteName.billDetails,
     page: () => const BillDetailsScreen(),

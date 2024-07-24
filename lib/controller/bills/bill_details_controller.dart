@@ -1,17 +1,26 @@
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
+import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
 import 'package:jdolh_customers/data/models/bill.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
 
 class BillDetailsController extends GetxController {
+  String paymentMethod = '';
   StatusRequest statusRequest = StatusRequest.none;
   ResData resData = ResData(Get.find());
   late Bill bill;
   late double taxValue;
   late String taxPercent;
   List<Cart> carts = [];
+
+  onTapPay() {
+    String orderDesc = generateOrderDesc();
+    print(orderDesc);
+    Get.toNamed(AppRouteName.selectPaymentMethod,
+        arguments: {"bill": bill, "orderDesc": orderDesc});
+  }
 
   getResCart() async {
     statusRequest = StatusRequest.loading;
@@ -31,10 +40,43 @@ class BillDetailsController extends GetxController {
     update();
   }
 
+  generateOrderDesc() {
+    String desc = '';
+    for (int i = 0; i < carts.length; i++) {
+      desc = '$desc${carts[i].cartQuantity} ${carts[i].itemsTitle}, ';
+    }
+
+    desc =
+        '$desc\nالمجموع: ${bill.billAmountWithoutTax}\nضريبة القيمة المضافة: ${bill.billTaxAmount}\nالمجموع شامل الضريبة: ${bill.billAmount}';
+    return desc;
+  }
+
+  getPaymentMethod(String? method) {
+    if (method == null) return;
+
+    switch (method) {
+      case 'CASH':
+        paymentMethod = 'الدفع في الفرع';
+        break;
+      case 'CREDIT':
+        paymentMethod = 'الدفع بالبطاقة';
+        break;
+      case 'WALLET':
+        paymentMethod = 'الدفع بالمحفظة';
+        break;
+      case 'TAMARA':
+        paymentMethod = 'الدفع بتمارا';
+        break;
+      default:
+        '';
+    }
+  }
+
   @override
   void onInit() {
     if (Get.arguments != null) {
       bill = Get.arguments;
+      getPaymentMethod(bill.billPaymentMethod);
       double value = double.parse(bill.billTaxPercent!);
       taxValue = value / 100;
       taxPercent = value.truncateToDouble() == value
