@@ -81,7 +81,7 @@ Future<void> handlingClickedNotification(RemoteMessage remoteMessage) async {
   if (remoteMessage.data.isNotEmpty) {
     String? routeName = remoteMessage.data['routeName'];
     dynamic objectId = remoteMessage.data['objectId'];
-    if (routeName != null) {
+    if (routeName != null && routeName != '') {
       try {
         if (routeName == AppRouteName.waitForApprove) return;
 

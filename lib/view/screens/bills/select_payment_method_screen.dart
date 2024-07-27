@@ -16,7 +16,8 @@ class SelectPaymentMethodScreen extends StatelessWidget {
     return Scaffold(
       appBar:
           customAppBar(title: '${'فاتورة رقم'.tr} ${controller.bill.billId}'),
-      bottomNavigationBar: BottomButton(onTap: () {}, text: 'دفع'),
+      bottomNavigationBar:
+          BottomButton(onTap: () => controller.onTapPay(), text: 'دفع'),
       body: Column(
         children: [
           const SizedBox(height: 20),
@@ -52,7 +53,7 @@ class PaymentMethodsToggle extends StatefulWidget {
 }
 
 class _PaymentMethodsToggleState extends State<PaymentMethodsToggle> {
-  int selectedOption = 1;
+  int selectedOption = 0;
   @override
   Widget build(BuildContext context) {
     return Container(

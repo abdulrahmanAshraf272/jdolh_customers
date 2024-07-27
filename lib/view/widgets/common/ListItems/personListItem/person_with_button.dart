@@ -14,6 +14,7 @@ class PersonWithButtonListItem extends StatelessWidget {
   final Function()? onTapCard;
   final Color buttonColor;
   final String buttonText;
+  final double horizontalPadding;
 
   const PersonWithButtonListItem(
       {super.key,
@@ -23,6 +24,7 @@ class PersonWithButtonListItem extends StatelessWidget {
       this.buttonText = 'إضافة',
       required this.userName,
       required this.image,
+      this.horizontalPadding = 20,
       required this.onTapCard});
 
   @override
@@ -30,7 +32,7 @@ class PersonWithButtonListItem extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: AppColors.gray, borderRadius: BorderRadius.circular(10)),
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      margin: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 5),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Material(

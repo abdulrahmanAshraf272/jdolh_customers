@@ -5,6 +5,40 @@ class BillsData {
   Crud crud;
   BillsData(this.crud);
 
+  divideBill(
+      {required String resid,
+      required String brandId,
+      required String bchId,
+      required String userid,
+      required String taxPercent,
+      required String taxAmount,
+      required String amountWithoutTax,
+      required String amount,
+      required String file,
+      required String billId}) async {
+    var response = await crud.postData(ApiLinks.divideBill, {
+      "resid": resid,
+      "brandId": brandId,
+      "bchId": bchId,
+      "userid": userid,
+      "taxPercent": taxPercent,
+      "taxAmount": taxAmount,
+      "amountWithoutTax": amountWithoutTax,
+      "amount": amount,
+      "file": file,
+      "billId": billId
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
+
+  getOriginalBill(String resId) async {
+    var response =
+        await crud.postData(ApiLinks.getOriginalBill, {"resId": resId});
+
+    return response.fold((l) => l, (r) => r);
+  }
+
   getCustomerBills(String userid) async {
     var response =
         await crud.postData(ApiLinks.getCustomerBills, {"userid": userid});
@@ -21,7 +55,8 @@ class BillsData {
       required String resId,
       required String paymentMethod,
       required String brandId,
-      required String userId}) async {
+      required String userId,
+      required String isOriginal}) async {
     var response = await crud.postData(ApiLinks.payBillCredit, {
       "orderId": orderId,
       "billId": billId,
@@ -31,7 +66,8 @@ class BillsData {
       "resId": resId,
       "paymentMethod": paymentMethod,
       "brandId": brandId,
-      "userId": userId
+      "userId": userId,
+      "isOriginal": isOriginal
     });
 
     return response.fold((l) => l, (r) => r);
@@ -44,7 +80,8 @@ class BillsData {
       required String tax,
       required String totalAmount,
       required String resId,
-      required String brandId}) async {
+      required String brandId,
+      required String isOriginal}) async {
     var response = await crud.postData(ApiLinks.payBillWallet, {
       "userId": userId,
       "billId": billId,
@@ -52,7 +89,8 @@ class BillsData {
       "tax": tax,
       "totalAmount": totalAmount,
       "resId": resId,
-      "brandId": brandId
+      "brandId": brandId,
+      "isOriginal": isOriginal
     });
 
     return response.fold((l) => l, (r) => r);

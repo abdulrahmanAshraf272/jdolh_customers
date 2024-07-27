@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
+import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/notification/notification_sender/notification_sender.dart';
 import 'package:jdolh_customers/core/services/services.dart';
+import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/res_invitors.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
 
@@ -20,6 +22,18 @@ class ReservationNotification {
 
   String cancelReservationString = 'لديك حجز ملغي';
   String canelString = 'الغى';
+
+  divideBillNotifications(
+      List<Friend> friends, String myName, String myImage, int resId) {
+    for (int i = 0; i < friends.length; i++) {
+      NotificationSender.sendToCustomer(
+          userid: friends[i].userId!,
+          title: 'لديك فاتورة جديدة',
+          body: 'لقد قام $myName بتقسييم فاتورة حجز رقم $resId معك',
+          image: "${ApiLinks.customerImage}/$myImage",
+          routeName: AppRouteName.bills);
+    }
+  }
 
   sendReserveRequistNotification(int bchid, String date, int resid) {
     String myUsername = myServices.getUsername();

@@ -218,6 +218,8 @@ class ApiLinks {
   //========= Payment =========//
   static const String initiatePayment =
       '$server/jdolh_customers/payment/initiate_payment.php';
+  static const String initiatePaymentByTamara =
+      '$server/jdolh_customers/payment/initiate_payment_by_tamara.php';
   static const String paymentResult =
       '$server/jdolh_customers/payment/payment_result.php';
   static const String payByWallet =
@@ -244,4 +246,8 @@ class ApiLinks {
       '$server/jdolh_customers/bill/pay_bill_credit.php';
   static const String payBillWallet =
       '$server/jdolh_customers/bill/pay_bill_wallet.php';
+  static const String getOriginalBill =
+      '$server/jdolh_customers/bill/get_original_bill.php';
+  static const String divideBill =
+      '$server/jdolh_customers/bill/divide_bill.php';
 }

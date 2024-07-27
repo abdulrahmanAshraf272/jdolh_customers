@@ -88,4 +88,6 @@ class AppRouteName {
   static const bills = '/bills';
   static const billDetails = '/billDetails';
   static const selectPaymentMethod = '/selectPaymentMethod';
+  static const billPaymentResult = '/billPaymentResult';
+  static const divideBill = '/divideBill';
 }

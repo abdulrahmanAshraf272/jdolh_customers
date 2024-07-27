@@ -53,6 +53,7 @@ class MainController extends GetxController {
   }
 
   getMyProfileData() async {
+    print('get my profile data');
     startLoadingAndClearLists();
     var response = await myProfileData
         .postData(myServices.sharedPreferences.getString("id")!);

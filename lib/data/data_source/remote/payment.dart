@@ -97,4 +97,46 @@ class PaymentData {
 
     return response.fold((l) => l, (r) => r);
   }
+
+  initiatePaymentByTamara(
+      {required String userid,
+      required String orderId,
+      required String orderAmount,
+      required String taxAmount,
+      String action = 'SALE',
+      String orderCurrency = 'SAR',
+      required String orderDescription,
+      required String payerFirstName,
+      required String payerLastName,
+      String payerAddress = 'Saudi arabia',
+      String payerCountry = 'SA',
+      required String payerCity,
+      required String payerEmail,
+      required String payerPhone,
+      required String shippingAmount,
+      String auth = "N"}) async {
+    var response = await crud.postData(ApiLinks.initiatePaymentByTamara, {
+      "userid": userid,
+      "order_id": orderId,
+      "order_amount": orderAmount,
+      "payer_country": payerCountry,
+      "payer_address": payerAddress,
+      "action": action,
+      "order_currency": orderCurrency,
+      "payer_first_name": payerFirstName,
+      "payer_city": payerCity,
+      "auth": auth,
+      "payer_last_name": payerLastName,
+      "payer_phone": payerPhone,
+      "order_description": orderDescription,
+      "payer_email": payerEmail,
+      "term_url_3ds":
+          "https://www.jdolh.com/jdolh1/jdolh_customers/payment/term_url_3ds.php",
+      "tax_amount": taxAmount,
+      "shipping_amount": shippingAmount,
+      "expires_in_minutes": "60"
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
 }

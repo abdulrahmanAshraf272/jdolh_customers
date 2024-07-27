@@ -39,6 +39,8 @@ class BillsController extends GetxController {
       if (response['status'] == 'success') {
         List data = response['data'];
         bills = data.map((bill) => Bill.fromJson(bill)).toList();
+
+        bills.removeWhere((bill) => bill.isDivided == 1);
         setBillsToDisplay();
       } else {
         statusRequest = StatusRequest.failure;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/data/models/bill.dart';
 import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
@@ -15,6 +16,7 @@ class WebviewScreen extends StatefulWidget {
   final Reservation? reservation;
   final String? orderId;
   final String? amount;
+  final Bill? bill;
   const WebviewScreen(
       {super.key,
       required this.title,
@@ -23,6 +25,7 @@ class WebviewScreen extends StatefulWidget {
       this.brand,
       this.reservation,
       this.orderId,
+      this.bill,
       this.amount});
 
   @override
@@ -71,6 +74,11 @@ class _WebviewScreenState extends State<WebviewScreen> {
                 Get.offAllNamed(AppRouteName.walletChargingResult, arguments: {
                   "orderId": widget.orderId,
                   "amount": widget.amount
+                });
+              } else if (widget.payment == 'Bill') {
+                Get.offAllNamed(AppRouteName.billPaymentResult, arguments: {
+                  "orderId": widget.orderId,
+                  'bill': widget.bill
                 });
               }
             }

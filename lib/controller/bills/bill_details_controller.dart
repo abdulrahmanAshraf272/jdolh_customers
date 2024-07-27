@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/data/data_source/remote/bills.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
 import 'package:jdolh_customers/data/models/bill.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
@@ -13,7 +14,38 @@ class BillDetailsController extends GetxController {
   late Bill bill;
   late double taxValue;
   late String taxPercent;
+  BillsData billsData = BillsData(Get.find());
   List<Cart> carts = [];
+
+  Bill? originalBill;
+
+  double priceForEach = 0;
+
+  displayOriginalBill() async {
+    statusRequest = StatusRequest.loading;
+    update();
+
+    var response = await billsData.getOriginalBill(bill.billResid.toString());
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        originalBill = Bill.fromJson(response['data']);
+      }
+    } else {
+      statusRequest = StatusRequest.failure;
+    }
+    update();
+  }
+
+  onTapDivideBill() {
+    String orderDesc = generateOrderDesc();
+    print(orderDesc);
+    Get.toNamed(AppRouteName.divideBill, arguments: {
+      "bill": bill,
+      "orderDesc": orderDesc,
+      "taxPercent": taxPercent
+    });
+  }
 
   onTapPay() {
     String orderDesc = generateOrderDesc();
