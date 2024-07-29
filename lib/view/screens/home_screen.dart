@@ -104,111 +104,102 @@ class HomeScreen extends StatelessWidget {
                                     onTap: () {
                                       controller.gotoReservations();
                                     })),
-                    CustomTitle(
-                      title: 'نشاطات الأصدقاء'.tr,
-                      onTap: () {
-                        controller.gotoFriendsActivities();
-                      },
-                      bottomPadding: 5,
-                      topPadding: 20,
-                    ),
-                    controller.friendsActivities.isEmpty
-                        ? Center(child: Text('لا توجد نشاطات'.tr))
-                        : ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: controller.friendsActivities.length > 3
-                                ? 3
-                                : controller.friendsActivities.length,
-                            itemBuilder: (context, index) => ActivityListItem(
-                                  activity: controller.friendsActivities[index],
-                                  onTapLike: () => controller.onTapLike(index),
-                                )),
+                    if (controller.friendsActivities.isNotEmpty)
+                      CustomTitle(
+                        title: 'نشاطات الأصدقاء'.tr,
+                        onTap: () {
+                          controller.gotoFriendsActivities();
+                        },
+                        bottomPadding: 5,
+                        topPadding: 20,
+                      ),
+                    if (controller.friendsActivities.isNotEmpty)
+                      ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: controller.friendsActivities.length > 3
+                              ? 3
+                              : controller.friendsActivities.length,
+                          itemBuilder: (context, index) => ActivityListItem(
+                                activity: controller.friendsActivities[index],
+                                onTapLike: () => controller.onTapLike(index),
+                              )),
                     CustomTitle(
                       title: 'أكتشف'.tr,
                       bottomPadding: 5,
                       topPadding: 20,
                     ),
-                    CustomTitle(
-                      title: 'الأكثر زيارة خلال اسبوع'.tr,
-                      bottomPadding: 5,
-                      onTap: () {
-                        controller.gotoExploreBrand();
-                      },
-                      customTextStyle: titleMedium,
-                    ),
-                    SizedBox(
+                    if (controller.brands.isNotEmpty)
+                      CustomTitle(
+                        title: 'الأكثر زيارة خلال اسبوع'.tr,
+                        bottomPadding: 5,
+                        onTap: () {
+                          controller.gotoExploreBrand();
+                        },
+                        customTextStyle: titleMedium,
+                      ),
+                    if (controller.brands.isNotEmpty)
+                      SizedBox(
+                          height: 120.h,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            itemCount: controller.brands.length,
+                            itemBuilder: (context, index) => BrandExploreListItem(
+                                name: controller.brands[index].brandStoreName ??
+                                    '',
+                                image:
+                                    '${ApiLinks.logoImage}/${controller.brands[index].brandLogo}',
+                                onTap: () => controller.gotoBrand(index)),
+                          )),
+                    if (controller.topCheckin.isNotEmpty)
+                      CustomTitle(
+                        title: 'الأكثر تسجيل وصول خلال ساعتين'.tr,
+                        bottomPadding: 5,
+                        onTap: () => controller.gotoExploreCheckin(),
+                        customTextStyle: titleMedium,
+                      ),
+                    if (controller.topCheckin.isNotEmpty)
+                      SizedBox(
                         height: 120.h,
-                        child: controller.brands.isEmpty
-                            ? Center(child: Text('لا توجد نتائج'.tr))
-                            : ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                physics: const BouncingScrollPhysics(),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                itemCount: controller.brands.length,
-                                itemBuilder: (context, index) =>
-                                    BrandExploreListItem(
-                                        name:
-                                            controller.brands[index]
-                                                    .brandStoreName ??
-                                                '',
-                                        image:
-                                            '${ApiLinks.logoImage}/${controller.brands[index].brandLogo}',
-                                        onTap: () =>
-                                            controller.gotoBrand(index)),
-                              )),
-                    CustomTitle(
-                      title: 'الأكثر تسجيل وصول خلال ساعتين'.tr,
-                      bottomPadding: 5,
-                      onTap: () => controller.gotoExploreCheckin(),
-                      customTextStyle: titleMedium,
-                    ),
-                    SizedBox(
-                      height: 120.h,
-                      child: controller.topCheckin.isEmpty
-                          ? Center(child: Text('لا توجد نتائج'.tr))
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: controller.topCheckin.length,
-                              itemBuilder: (context, index) =>
-                                  ExploreCheckinListItem(
-                                      name: controller
-                                              .topCheckin[index].placeName ??
-                                          '')),
-                    ),
-                    CustomTitle(
-                      title: 'الأكثر تقييم خلال اسبوع'.tr,
-                      bottomPadding: 5,
-                      onTap: () => controller.gotoShowAllTopRate(),
-                      customTextStyle: titleMedium,
-                    ),
-                    SizedBox(
-                      height: 125.h,
-                      child: controller.topRate.isEmpty
-                          ? Center(child: Text('لا توجد نتائج'.tr))
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: controller.topRate.length,
-                              itemBuilder: (context, index) =>
-                                  PersonExploreListItem(
-                                      name: controller
-                                              .topRate[index].userName ??
-                                          '',
-                                      image:
-                                          controller.topRate[index].userImage,
-                                      onTap: () =>
-                                          controller.gotoPersonProfile(index))),
-                    ),
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: controller.topCheckin.length,
+                            itemBuilder: (context, index) =>
+                                ExploreCheckinListItem(
+                                    name: controller
+                                            .topCheckin[index].placeName ??
+                                        '')),
+                      ),
+                    if (controller.topRate.isNotEmpty)
+                      CustomTitle(
+                        title: 'الأكثر تقييم خلال اسبوع'.tr,
+                        bottomPadding: 5,
+                        onTap: () => controller.gotoShowAllTopRate(),
+                        customTextStyle: titleMedium,
+                      ),
+                    if (controller.topRate.isNotEmpty)
+                      SizedBox(
+                        height: 125.h,
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            scrollDirection: Axis.horizontal,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: controller.topRate.length,
+                            itemBuilder: (context, index) =>
+                                PersonExploreListItem(
+                                    name: controller.topRate[index].userName ??
+                                        '',
+                                    image: controller.topRate[index].userImage,
+                                    onTap: () =>
+                                        controller.gotoPersonProfile(index))),
+                      ),
                     const SizedBox(height: 50)
                   ],
                 ),

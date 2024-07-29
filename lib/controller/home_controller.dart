@@ -80,6 +80,7 @@ class HomeController extends GetxController {
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
+        print(response['topRate']);
         parseFriendsActivities(response);
         parseAds(response);
         parseTopCheckin(response);

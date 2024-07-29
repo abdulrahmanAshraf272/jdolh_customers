@@ -1,13 +1,9 @@
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/add_members_controller.dart';
+import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
-import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/view/widgets/add_group_list_item.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
@@ -26,10 +22,8 @@ class AddMembersScreen extends StatelessWidget {
             builder: (controller) => Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 20),
-                    if (controller.withGroups &&
-                        controller.statusRequest == StatusRequest.success)
-                      const AllGroups(),
+                    const SizedBox(height: 20),
+                    if (controller.withGroups) const AllGroups(),
                     CustomTextField(
                       textEditingController: controller.searchController,
                       hintText: 'البحث في قائمة الأصدقاء',
@@ -80,18 +74,23 @@ class AllGroups extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(AddMembersController());
-    return SizedBox(
-      height: 100.h,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: controller.groups.length,
-          itemBuilder: (context, index) => AddGroupListItem(
-                groupName: controller.groups[index].groupName ?? '',
-                groupColor: getRandomColor(index),
-                isAdd: true,
-                onTap: () => controller.onTapAddGroup(index),
-              )),
-    );
+    return GetBuilder<AddMembersController>(
+        builder: (controller) => HandlingDataView(
+            statusRequest: controller.statusRequestGroups,
+            widget: controller.groups.isNotEmpty
+                ? SizedBox(
+                    height: 100.h,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: controller.groups.length,
+                        itemBuilder: (context, index) => AddGroupListItem(
+                              groupName:
+                                  controller.groups[index].groupName ?? '',
+                              groupColor: getRandomColor(index),
+                              isAdd: true,
+                              onTap: () => controller.onTapAddGroup(index),
+                            )),
+                  )
+                : const SizedBox()));
   }
 }

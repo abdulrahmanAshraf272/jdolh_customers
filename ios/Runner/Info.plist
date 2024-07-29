@@ -7,7 +7,7 @@
 		<string>YES</string>
 
 		<key>NSContactsUsageDescription</key>
-		<string>We need access to your contacts to invite them.</string>
+		<string>نحن بحاجة إلى الوصول إلى جهات الاتصال الخاصة بك لدعوتهم.</string>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
 			<string>sms</string>
@@ -16,7 +16,7 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>Jdolh Customers</string>
+		<string>جدولة</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
@@ -62,5 +62,15 @@
 		<array>
 			<string>tel</string>
 		</array>
+		
+		<!-- Location usage descriptions -->
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>نحن بحاجة إلى موقعك لتقديم خدمات أفضل.</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>نحن بحاجة إلى موقعك لتقديم خدمات أفضل.</string>
+
+		<!--Access to photos -->
+		<key>NSPhotoLibraryUsageDescription</key>
+        <string>نحتاج إلى الوصول إلى مكتبة الصور الخاصة بك لتحميل الصور.</string>
 	</dict>
 </plist>

@@ -23,9 +23,9 @@ class OccasionsScreen extends StatelessWidget {
                   buttonText: 'انشاء مناسبة'.tr),
               body: RefreshIndicator(
                 onRefresh: () async {
-                  await controller.inactiveNeedAprrove();
+                  await controller.refreshGetOccasions();
                 },
-                child: Column(
+                child: ListView(
                   children: [
                     LargeToggleButtons(
                       optionOne: 'مناسبات قريبة'.tr,
@@ -36,68 +36,65 @@ class OccasionsScreen extends StatelessWidget {
                       twoColors: true,
                     ),
                     HandlingDataView(
+                      emptyText: 'لا توجد مناسبات'.tr,
                       statusRequest: controller.statusRequest,
-                      widget: Expanded(
-                        child: controller.occasionsToDisplay.isEmpty
-                            ? Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Text('لا توجد مناسبات'.tr),
-                              )
-                            : ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: controller.occasionsToDisplay.length,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                itemBuilder: (context, index) => controller
-                                        .needApprove
-                                    ? OccasionListItem(
-                                        from: controller
-                                            .occasionsToDisplay[index]
-                                            .occasionUsername!,
-                                        title: controller
-                                            .occasionsToDisplay[index]
-                                            .occasionTitle!,
-                                        date:
-                                            '${controller.occasionsToDisplay[index].occasionDate} ${controller.timeInAmPm(index)}',
-                                        location: controller
-                                            .occasionsToDisplay[index]
-                                            .occasionLocation!,
-                                        creator: controller
-                                            .occasionsToDisplay[index].creator!,
-                                        onTapAccept: () {
-                                          controller.onTapAcceptInvitation(
-                                              controller
-                                                  .occasionsToDisplay[index]);
-                                        },
-                                        onTapReject: () {
-                                          controller.onTapRejectInvitation(
-                                              controller
-                                                  .occasionsToDisplay[index]);
-                                        },
-                                        onTapCard: () =>
-                                            controller.onTapOccasionCard(index))
-                                    : OccasionAcceptedListItem(
-                                        from: controller
-                                            .occasionsToDisplay[index]
-                                            .occasionUsername!,
-                                        title: controller
-                                            .occasionsToDisplay[index]
-                                            .occasionTitle!,
-                                        date:
-                                            '${controller.occasionsToDisplay[index].occasionDate} ${controller.timeInAmPm(index)}',
-                                        location: controller
-                                            .occasionsToDisplay[index]
-                                            .occasionLocation!,
-                                        creator: controller
-                                            .occasionsToDisplay[index].creator!,
-                                        onTapOpenLocation: () {
-                                          onTapDisplayLocation(controller
-                                              .occasionsToDisplay[index]);
-                                        },
-                                        onTapCard: () =>
-                                            controller.onTapOccasionCard(index),
-                                      )),
-                      ),
+                      widget: controller.occasionsToDisplay.isEmpty
+                          ? Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Center(child: Text('لا توجد مناسبات'.tr)),
+                            )
+                          : ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: controller.occasionsToDisplay.length,
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              itemBuilder: (context, index) => controller
+                                      .needApprove
+                                  ? OccasionListItem(
+                                      from: controller.occasionsToDisplay[index]
+                                          .occasionUsername!,
+                                      title: controller
+                                          .occasionsToDisplay[index]
+                                          .occasionTitle!,
+                                      date:
+                                          '${controller.occasionsToDisplay[index].occasionDate} ${controller.timeInAmPm(index)}',
+                                      location: controller
+                                          .occasionsToDisplay[index]
+                                          .occasionLocation!,
+                                      creator: controller
+                                          .occasionsToDisplay[index].creator!,
+                                      onTapAccept: () {
+                                        controller.onTapAcceptInvitation(
+                                            controller
+                                                .occasionsToDisplay[index]);
+                                      },
+                                      onTapReject: () {
+                                        controller.onTapRejectInvitation(
+                                            controller
+                                                .occasionsToDisplay[index]);
+                                      },
+                                      onTapCard: () =>
+                                          controller.onTapOccasionCard(index))
+                                  : OccasionAcceptedListItem(
+                                      from: controller.occasionsToDisplay[index]
+                                          .occasionUsername!,
+                                      title: controller
+                                          .occasionsToDisplay[index]
+                                          .occasionTitle!,
+                                      date:
+                                          '${controller.occasionsToDisplay[index].occasionDate} ${controller.timeInAmPm(index)}',
+                                      location: controller
+                                          .occasionsToDisplay[index]
+                                          .occasionLocation!,
+                                      creator: controller
+                                          .occasionsToDisplay[index].creator!,
+                                      onTapOpenLocation: () {
+                                        onTapDisplayLocation(controller
+                                            .occasionsToDisplay[index]);
+                                      },
+                                      onTapCard: () =>
+                                          controller.onTapOccasionCard(index),
+                                    )),
                     )
                   ],
                 ),

@@ -142,7 +142,8 @@ class SignupScreen extends StatelessWidget {
                                 CustomButtonOne(
                                     textButton: 'إنشاء حساب',
                                     onPressed: () async {
-                                      await controller.signUp();
+                                      await controller
+                                          .theVerifycodeWillSendToEmailBottomSheet();
                                     }),
                                 HaveAccountQuestion(
                                     onPress: () => controller.goToLogin(),

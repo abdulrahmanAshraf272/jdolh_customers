@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
@@ -23,8 +22,7 @@ class ForgetPasswordController extends GetxController {
       } else {
         Get.rawSnackbar(
             message:
-                'حدث خطأ,ارجع وتأكد من كتابتك لاسم المستخدم او الايميل بشكل صحيح',
-            animationDuration: Duration(seconds: 2));
+                'حدث خطأ,ارجع وتأكد من كتابتك لاسم المستخدم او الايميل بشكل صحيح');
       }
     } //else => will be hendled by HandlingDataView.
   }

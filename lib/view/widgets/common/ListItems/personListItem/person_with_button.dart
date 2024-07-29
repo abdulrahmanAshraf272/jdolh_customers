@@ -15,6 +15,7 @@ class PersonWithButtonListItem extends StatelessWidget {
   final Color buttonColor;
   final String buttonText;
   final double horizontalPadding;
+  final bool isThisMe;
 
   const PersonWithButtonListItem(
       {super.key,
@@ -25,7 +26,8 @@ class PersonWithButtonListItem extends StatelessWidget {
       required this.userName,
       required this.image,
       this.horizontalPadding = 20,
-      required this.onTapCard});
+      required this.onTapCard,
+      this.isThisMe = false});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class PersonWithButtonListItem extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: onTapCard,
+            onTap: isThisMe ? null : onTapCard,
             child: Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -85,9 +87,9 @@ class PersonWithButtonListItem extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                      onPressed: onTap,
+                      onPressed: isThisMe ? null : onTap,
                       child: Text(
-                        buttonText,
+                        isThisMe ? '' : buttonText,
                         style: titleSmall2.copyWith(color: buttonColor),
                       ))
                 ],

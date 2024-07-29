@@ -44,17 +44,42 @@ class SignUpController extends GetxController {
     update();
   }
 
-  uploadImage() async {
-    XFile? xFile = await pickImageFromGallery();
+  Future<void> uploadImage() async {
+    try {
+      XFile? xFile = await pickImageFromGallery();
 
-    if (xFile != null) {
-      image = File(xFile.path);
-      selectedImage = await xFile.readAsBytes();
-      update();
-    } else {
-      print("User canceled image picking");
-      // Handle the case where the user canceled image picking
+      if (xFile != null) {
+        image = File(xFile.path);
+        selectedImage = await xFile.readAsBytes();
+        update();
+      } else {
+        print("User canceled image picking");
+        // Handle the case where the user canceled image picking
+      }
+    } catch (e) {
+      print("Error during image upload: $e");
+      Get.rawSnackbar(message: 'Error during image upload: $e');
     }
+  }
+
+  theVerifycodeWillSendToEmailBottomSheet() {
+    Get.bottomSheet(Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      height: Get.height * 0.4,
+      decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+          color: Colors.white,
+          boxShadow: [boxShadow1]),
+      child: Column(
+        children: [
+          Text('سوف يتم ارسال رمز التأكيد عبر البريد الالكتروني',
+              style: titleMedium),
+          const SizedBox(height: 20),
+          GoHomeButton(text: 'حسنا', onTap: () => signUp())
+        ],
+      ),
+    ));
   }
 
   signUp() async {
@@ -85,25 +110,8 @@ class SignUpController extends GetxController {
           NotificationSubscribtion.userSubscribeToTopic(
               user.userId, user.userCity, user.userGender);
 
+          goToVerifycode();
           // goToVerifycode();
-          Get.bottomSheet(Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            height: Get.height * 0.4,
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20)),
-                color: Colors.white,
-                boxShadow: [boxShadow1]),
-            child: Column(
-              children: [
-                Text('سوف يتم ارسال رمز التأكيد عبر البريد الالكتروني',
-                    style: titleMedium),
-                const SizedBox(height: 20),
-                GoHomeButton(text: 'حسنا', onTap: () => goToVerifycode())
-              ],
-            ),
-          ));
         } else if (response['message'] == 'username exist') {
           Get.defaultDialog(
             title: 'تنبيه',

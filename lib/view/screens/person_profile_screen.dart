@@ -1,7 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
@@ -9,7 +7,6 @@ import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
-import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/notification/notification_sender/notification_sender.dart';
 import 'package:jdolh_customers/core/notification/notification_subscribtion.dart';
@@ -49,9 +46,11 @@ class _PersonProfileState extends State<PersonProfile> {
 
   String image = '';
 
-  getFollowersAndFollowing() async {
-    statusRequest = StatusRequest.loading;
-    setState(() {});
+  Future getFollowersAndFollowing() async {
+    print('id: ${friend!.userId.toString()}');
+
+    // statusRequest = StatusRequest.loading;
+    // setState(() {});
     followers.clear();
     following.clear();
     var response = await personProfileData.postData(friend!.userId.toString(),
@@ -66,7 +65,7 @@ class _PersonProfileState extends State<PersonProfile> {
         print('getFollowersAndFollowing failed');
       }
     }
-    setState(() {});
+    //setState(() {});
   }
 
   parseData(response) {
@@ -79,10 +78,7 @@ class _PersonProfileState extends State<PersonProfile> {
     print('followingNo: ${following.length}');
   }
 
-  getUserActivities() async {
-    setState(() {
-      statusFriendsActivity = StatusRequest.loading;
-    });
+  Future getUserActivities() async {
     var response = await activityData.getUserActivities(
         userid: friend!.userId.toString(), myId: myServices.getUserid());
 
@@ -95,7 +91,7 @@ class _PersonProfileState extends State<PersonProfile> {
         print('failure');
       }
     }
-    setState(() {});
+    //setState(() {});
   }
 
   parsingDataFromJsonToDartList(response) {
@@ -112,13 +108,13 @@ class _PersonProfileState extends State<PersonProfile> {
       // Get.toNamed(AppRouteName.followersAndFollowing,
       //     arguments: {"title": textFollowers, 'data': followers});
       Get.to(() =>
-          FollowersAndFollowingScreen(title: textFollowers, data: followers));
+          FollowersAndFollowingScreen(title: 'المتابعين'.tr, data: followers));
     } else {
       //  String encodeList = jsonEncode(following);
       // Get.toNamed(AppRouteName.followersAndFollowing,
       //     arguments: {"title": textFollowing, 'data': following});
       Get.to(() =>
-          FollowersAndFollowingScreen(title: textFollowing, data: following));
+          FollowersAndFollowingScreen(title: 'المتابعون'.tr, data: following));
     }
   }
 
@@ -218,6 +214,18 @@ class _PersonProfileState extends State<PersonProfile> {
     setState(() {});
   }
 
+  void getUserFollowersAndActivities() async {
+    setState(() {
+      statusFriendsActivity = StatusRequest.loading;
+    });
+    await Future.wait([
+      getFollowersAndFollowing(),
+      getUserActivities(),
+    ]);
+    setState(() {});
+    print('shit');
+  }
+
   receiveData() async {
     dynamic argument = Get.arguments;
 
@@ -231,8 +239,7 @@ class _PersonProfileState extends State<PersonProfile> {
     }
 
     image = friend!.userImage ?? '';
-    getFollowersAndFollowing();
-    getUserActivities();
+    getUserFollowersAndActivities();
   }
 
   @override
@@ -342,61 +349,68 @@ class _PersonProfileState extends State<PersonProfile> {
                   //       color: Colors.black.withOpacity(0.6)),
                   // ),
                   const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: RectButton(
-                            text: 'متابعين'.tr,
-                            number: followers.length,
-                            onTap: () {
-                              goToFollwersAndFollowingScreen(true);
-                            },
-                            iconData: Icons.group,
-                            buttonColor: AppColors.green),
-                      ),
-                      Expanded(
-                        child: RectButton(
-                            text: 'متابعون'.tr,
-                            number: following.length,
-                            onTap: () {
-                              goToFollwersAndFollowingScreen(false);
-                            },
-                            iconData: Icons.groups,
-                            buttonColor: AppColors.yellow),
-                      ),
-                      Expanded(
-                        child: RectButton(
-                            text: 'التقييم'.tr,
-                            number: onlyRatesActivities.length,
-                            onTap: () {
-                              gotoFriendsActivities();
-                            },
-                            iconData: Icons.comment,
-                            buttonColor: AppColors.blue2),
-                      ),
-                      const SizedBox(width: 15),
-                    ],
-                  ),
                   HandlingDataView(
-                    statusRequest: statusFriendsActivity,
-                    widget: Expanded(
-                      child: friendsActivities.isEmpty
-                          ? Center(child: Text('لا يوجد نشاطات'.tr))
-                          : ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: friendsActivities.length,
-                              itemBuilder: (context, index) => ActivityListItem(
-                                    cardStatus: 1,
-                                    activity: friendsActivities[index],
-                                    onTapLike: () {
-                                      onTapLike(index);
-                                    },
-                                  )),
-                    ),
-                  ),
-                  const SizedBox(height: 20)
+                      statusRequest: statusFriendsActivity,
+                      widget: Expanded(
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                const SizedBox(width: 15),
+                                Expanded(
+                                  child: RectButton(
+                                      text: 'متابعين'.tr,
+                                      number: followers.length,
+                                      onTap: () {
+                                        goToFollwersAndFollowingScreen(true);
+                                      },
+                                      iconData: Icons.group,
+                                      buttonColor: AppColors.green),
+                                ),
+                                Expanded(
+                                  child: RectButton(
+                                      text: 'متابعون'.tr,
+                                      number: following.length,
+                                      onTap: () {
+                                        goToFollwersAndFollowingScreen(false);
+                                      },
+                                      iconData: Icons.groups,
+                                      buttonColor: AppColors.yellow),
+                                ),
+                                Expanded(
+                                  child: RectButton(
+                                      text: 'التقييم'.tr,
+                                      number: onlyRatesActivities.length,
+                                      onTap: () {
+                                        gotoFriendsActivities();
+                                      },
+                                      iconData: Icons.comment,
+                                      buttonColor: AppColors.blue2),
+                                ),
+                                const SizedBox(width: 15),
+                              ],
+                            ),
+                            Expanded(
+                              child: friendsActivities.isEmpty
+                                  ? Center(child: Text('لا يوجد نشاطات'.tr))
+                                  : ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: friendsActivities.length,
+                                      itemBuilder: (context, index) =>
+                                          ActivityListItem(
+                                            cardStatus: 1,
+                                            activity: friendsActivities[index],
+                                            onTapLike: () {
+                                              onTapLike(index);
+                                            },
+                                          )),
+                            ),
+                            const SizedBox(height: 20)
+                          ],
+                        ),
+                      ))
                 ],
               ),
       ),

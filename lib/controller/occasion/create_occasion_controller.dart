@@ -52,11 +52,68 @@ class CreateOccasionController extends GetxController {
         if (checkIfGroupIsAdded(result)) {
           return;
         }
-        groups.add(result);
+        //groups.add(result);
         addGroup(result);
       }
       update();
     }
+  }
+
+  addGroup(Group group) async {
+    print('group id: ${group.groupId.toString()}');
+    print('group name: ${group.groupName ?? ''}');
+    print('creatorid: ${myServices.getUserid()}');
+    CustomDialogs.loading();
+    var response = await occasionData.addGroupToOccasion(
+        occasionid: '-1',
+        groupid: group.groupId.toString(),
+        groupName: group.groupName ?? '',
+        creatorid: myServices.getUserid());
+    CustomDialogs.dissmissLoading();
+
+    statusRequest = handlingData(response);
+    print('add gourp statusRequest: $statusRequest');
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        CustomDialogs.success('تم اضافة اعضاء المجموعة');
+        List groupUsersJson = response['data'];
+        List<Friend> groupUsers =
+            groupUsersJson.map((friend) => Friend.fromJson(friend)).toList();
+
+        int myId = int.parse(myServices.getUserid());
+
+        //Remove myself if i am exist in the group
+        groupUsers.removeWhere((friend) => friend.userId == myId);
+
+        //Remove any user that already exist in members
+        groupUsers.removeWhere((groupUser) =>
+            members.any((member) => member.userId == groupUser.userId));
+
+        members.addAll(groupUsers);
+        update();
+      } else {
+        CustomDialogs.failure();
+        print('adding memeber failed');
+      }
+    }
+  }
+
+  deleteGroup(int index) async {
+    CustomDialogs.loading();
+    var response = await occasionData.deleteGroupFromOccasion(
+        occasionid: '',
+        groupName: groups[index].groupName ?? '',
+        creatorid: myServices.getUserid());
+    CustomDialogs.dissmissLoading();
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        groups.remove(groups[index]);
+      } else {
+        print('delete Group failed');
+      }
+    }
+    update();
   }
 
   createOccasion() async {
@@ -155,40 +212,6 @@ class CreateOccasionController extends GetxController {
       }
     }
     return false;
-  }
-
-  addGroup(Group group) async {
-    var response = await occasionData.addGroupToOccasion(
-        occasionid: '',
-        groupid: group.groupId.toString(),
-        groupName: group.groupName ?? '',
-        creatorid: myServices.getUserid());
-    statusRequest = handlingData(response);
-    if (statusRequest == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        print('adding ${group.groupName} is done');
-      } else {
-        print('adding memeber failed');
-      }
-    }
-  }
-
-  deleteGroup(int index) async {
-    CustomDialogs.loading();
-    var response = await occasionData.deleteGroupFromOccasion(
-        occasionid: '',
-        groupName: groups[index].groupName ?? '',
-        creatorid: myServices.getUserid());
-    CustomDialogs.dissmissLoading();
-    statusRequest = handlingData(response);
-    if (statusRequest == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        groups.remove(groups[index]);
-      } else {
-        print('adding memeber failed');
-      }
-    }
-    update();
   }
 
   addMember(Friend member) async {

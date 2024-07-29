@@ -4,7 +4,6 @@ import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/search_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/brand_detailed.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';
@@ -47,8 +46,8 @@ class SearchScreen extends StatelessWidget {
                               controller.usersSearched[index].userUsername!,
                           image: controller.usersSearched[index].userImage!,
                           buttonText: controller.usersSearched[index].following!
-                              ? textUnfollow
-                              : textFollow,
+                              ? 'الغاء المتابعة'.tr
+                              : 'متابعة'.tr,
                           buttonColor:
                               controller.usersSearched[index].following!
                                   ? AppColors.redButton

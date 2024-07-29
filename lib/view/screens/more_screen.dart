@@ -198,6 +198,18 @@ class _MoreScreenState extends State<MoreScreen> {
                 },
                 iconData: Icons.group),
             SettingsButton(
+                text: 'الفواتير'.tr,
+                onTap: () {
+                  Get.toNamed(AppRouteName.bills);
+                },
+                iconData: Icons.receipt),
+            SettingsButton(
+                text: 'المحفظة'.tr,
+                onTap: () {
+                  Get.toNamed(AppRouteName.walletDetails);
+                },
+                iconData: Icons.wallet),
+            SettingsButton(
                 text: 'جهات الإتصال'.tr,
                 onTap: () {
                   Get.toNamed(AppRouteName.myContacts);
@@ -209,12 +221,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   Get.toNamed(AppRouteName.language);
                 },
                 iconData: Icons.language),
-            SettingsButton(
-                text: 'المحفظة'.tr,
-                onTap: () {
-                  Get.toNamed(AppRouteName.walletDetails);
-                },
-                iconData: Icons.wallet),
+
             SettingsButton(
                 text: 'الحجوزات السابقة'.tr,
                 onTap: () {
@@ -227,12 +234,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   Get.toNamed(AppRouteName.finishedOccasions);
                 },
                 iconData: Icons.event),
-            SettingsButton(
-                text: 'الفواتير'.tr,
-                onTap: () {
-                  Get.toNamed(AppRouteName.bills);
-                },
-                iconData: Icons.receipt),
+
             SettingsButton(
                 text: 'تواصل معنا'.tr, onTap: () {}, iconData: Icons.receipt),
             SettingsButton(

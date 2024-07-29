@@ -1,17 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/checkin/checkin_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
-import 'package:jdolh_customers/core/functions/dialogs.dart';
 import 'package:jdolh_customers/core/functions/find_checkincard_icon.dart';
-import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
-import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_text.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 
@@ -28,31 +22,37 @@ class CheckinScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: HandlingDataView(
                   statusRequest: controller.statusRequest,
-                  widget: Column(
-                    children: [
-                      ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          padding: const EdgeInsets.only(bottom: 20, top: 20),
-                          shrinkWrap: true,
-                          itemCount: controller.allPlaces.length,
-                          itemBuilder: (context, index) => PlacesListItem(
-                              name: controller.allPlaces[index].name ?? '',
-                              location:
-                                  controller.allPlaces[index].location ?? '',
-                              type: controller.allPlaces[index].type ?? '',
-                              onTapCard: () {
-                                controller
-                                    .onTapCard(controller.allPlaces[index]);
-                              })
-                          // Add separatorBuilder
-                          ),
-                      GoHomeButton(
-                        onTap: () => controller.goToAddNewPlace(),
-                        text: 'اضافة مكان',
-                      ),
-                      SizedBox(height: 20),
-                    ],
-                  )),
+                  widget: controller.latLng != null
+                      ? Column(
+                          children: [
+                            ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                padding:
+                                    const EdgeInsets.only(bottom: 20, top: 20),
+                                shrinkWrap: true,
+                                itemCount: controller.allPlaces.length,
+                                itemBuilder: (context, index) => PlacesListItem(
+                                    name:
+                                        controller.allPlaces[index].name ?? '',
+                                    location:
+                                        controller.allPlaces[index].location ??
+                                            '',
+                                    type:
+                                        controller.allPlaces[index].type ?? '',
+                                    onTapCard: () {
+                                      controller.onTapCard(
+                                          controller.allPlaces[index]);
+                                    })
+                                // Add separatorBuilder
+                                ),
+                            GoHomeButton(
+                              onTap: () => controller.goToAddNewPlace(),
+                              text: 'اضافة مكان',
+                            ),
+                            const SizedBox(height: 20),
+                          ],
+                        )
+                      : const SizedBox()),
             ),
           ));
     });

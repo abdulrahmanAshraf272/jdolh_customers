@@ -14,7 +14,7 @@ class AddMembersController extends GetxController {
   List<Friend> followingBeforeFiltered = [];
   List<Friend> following = [];
   List<Friend> members = [];
-  StatusRequest statusRequest = StatusRequest.none;
+  StatusRequest statusRequestGroups = StatusRequest.none;
   GroupsData groupsData = GroupsData(Get.find());
   MyServices myServices = Get.find();
   List<Group> groups = [];
@@ -45,21 +45,21 @@ class AddMembersController extends GetxController {
   }
 
   getAllGroups() async {
-    statusRequest = StatusRequest.loading;
+    statusRequestGroups = StatusRequest.loading;
     update();
     groups.clear();
     var response = await groupsData.groupsView(
         userId: myServices.sharedPreferences.getString("id")!);
-    statusRequest = handlingData(response);
-    print('status ==== $statusRequest');
-    if (statusRequest == StatusRequest.success) {
+    statusRequestGroups = handlingData(response);
+    print('status ==== $statusRequestGroups');
+    if (statusRequestGroups == StatusRequest.success) {
       if (response['status'] == 'success') {
         List responseGroups = response['data'];
         //parsing jsonList to DartList.
         groups = responseGroups.map((e) => Group.fromJson(e)).toList();
         print(responseGroups);
       } else {
-        statusRequest = StatusRequest.failure;
+        statusRequestGroups = StatusRequest.failure;
       }
     }
     update();

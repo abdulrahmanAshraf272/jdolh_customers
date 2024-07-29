@@ -51,6 +51,15 @@ class OccasionsController extends GetxController {
   ////
 
   bool needApprove = false;
+
+  refreshGetOccasions() async {
+    if (needApprove) {
+      activeNeedApprove();
+    } else {
+      inactiveNeedAprrove();
+    }
+  }
+
   activeNeedApprove() async {
     await getMyOccasion();
     needApprove = true;
@@ -160,6 +169,7 @@ class OccasionsController extends GetxController {
         }
 
         occasionsToDisplay.remove(occasion);
+        needApproveOccasionsNo = occasionsToDisplay.length;
         update();
       } else {
         CustomDialogs.failure();

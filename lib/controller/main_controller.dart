@@ -169,17 +169,28 @@ class MainController extends GetxController {
   //   }
   // }
 
-  getCurrentLocation() async {
-    Position? position = await locationService.getCurrentLocation();
-    if (position != null) {
-      print('Latitude: ${position.latitude}, Longitude: ${position.longitude}');
-      valuesController.currentPosition =
-          LatLng(position.latitude, position.longitude);
-    } else {
-      //allowToUseLocationAlert();
-      print('Failed to get location');
-    }
-  }
+  // getCurrentLocation() async {
+  //   Position? position = await locationService.getCurrentLocation();
+  //   if (position != null) {
+  //     print('Latitude: ${position.latitude}, Longitude: ${position.longitude}');
+  //     valuesController.currentPosition =
+  //         LatLng(position.latitude, position.longitude);
+  //   } else {
+  //     //allowToUseLocationAlert();
+  //     print('Failed to get location');
+  //   }
+  // }
+  // void _getCurrentLocation() async {
+  //   try {
+  //     Position position = await locationService.determinePosition();
+  //     valuesController.currentPosition =
+  //         LatLng(position.latitude, position.longitude);
+  //     print('Current location: ${position.latitude}, ${position.longitude}');
+  //   } catch (e) {
+  //     print('failed to get location');
+  //     print('Error: $e');
+  //   }
+  // }
 
   @override
   void onInit() async {
@@ -188,7 +199,7 @@ class MainController extends GetxController {
       update();
     }
     getMyProfileData();
-    getCurrentLocation();
+    locationService.getLocation();
     super.onInit();
   }
 }

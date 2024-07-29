@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/my_contacts_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
@@ -43,8 +42,8 @@ class MyContactsScreen extends StatelessWidget {
                             userName: controller.users[index].userUsername!,
                             image: controller.users[index].userImage!,
                             buttonText: controller.users[index].following!
-                                ? textUnfollow
-                                : textFollow,
+                                ? 'الغاء المتابعة'.tr
+                                : 'متابعة'.tr,
                             buttonColor: controller.users[index].following!
                                 ? AppColors.redButton
                                 : AppColors.secondaryColor,
