@@ -88,16 +88,16 @@ class BillDetailsController extends GetxController {
 
     switch (method) {
       case 'CASH':
-        paymentMethod = 'الدفع في الفرع';
+        paymentMethod = 'الدفع في الفرع'.tr;
         break;
       case 'CREDIT':
-        paymentMethod = 'الدفع بالبطاقة';
+        paymentMethod = 'الدفع بالبطاقة'.tr;
         break;
       case 'WALLET':
-        paymentMethod = 'الدفع بالمحفظة';
+        paymentMethod = 'الدفع بالمحفظة'.tr;
         break;
       case 'TAMARA':
-        paymentMethod = 'الدفع بتمارا';
+        paymentMethod = 'الدفع بتمارا'.tr;
         break;
       default:
         '';

@@ -7,13 +7,16 @@ import 'dart:async';
 import 'package:jdolh_customers/core/functions/calc_invitors_bills.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/data/data_source/remote/groups.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
+import 'package:jdolh_customers/data/models/group.dart';
 import 'package:jdolh_customers/data/models/res_invitors.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
 
 class ResProductController extends ResParentController {
   List<Resinvitors> resInvitors = [];
   bool withInvitation = false;
+  GroupsData groupsData = GroupsData(Get.find());
   double creatorCost = 0;
 
   List<Friend> members = [];
@@ -21,7 +24,7 @@ class ResProductController extends ResParentController {
 
   onTapAddMembers() async {
     final result = await Get.toNamed(AppRouteName.addMembers,
-        arguments: {'members': members});
+        arguments: {'members': members, "withGroups": true});
     if (result is Friend) {
       members.add(result);
       Resinvitors invitor = Resinvitors(
@@ -31,6 +34,48 @@ class ResProductController extends ResParentController {
           type: 1,
           cost: 0);
       resInvitors.add(invitor);
+      update();
+    } else if (result is Group) {
+      addGroupToReservation(result);
+    }
+  }
+
+  addGroupToReservation(Group group) async {
+    CustomDialogs.loading();
+    var response = await groupsData.groupMembers(group.groupId.toString());
+    CustomDialogs.dissmissLoading();
+    StatusRequest statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        List groupMembersJson = response['data'];
+        List<Friend> groupMembers =
+            groupMembersJson.map((friend) => Friend.fromJson(friend)).toList();
+        int myId = int.parse(myServices.getUserid());
+
+        //Remove myself if i am exist in the group
+        groupMembers.removeWhere((friend) => friend.userId == myId);
+
+        //Remove any user that already exist in members
+        groupMembers.removeWhere((groupUser) =>
+            members.any((member) => member.userId == groupUser.userId));
+        members.addAll(groupMembers);
+        for (int i = 0; i < groupMembers.length; i++) {
+          Resinvitors invitor = Resinvitors(
+              userid: groupMembers[i].userId,
+              userName: groupMembers[i].userName,
+              userImage: groupMembers[i].userImage,
+              type: 1,
+              cost: 0);
+          resInvitors.add(invitor);
+        }
+        CustomDialogs.success('تم اضافة اعضاء المجموعة');
+        update();
+      } else {
+        CustomDialogs.failure();
+        print('adding memeber failed');
+      }
+    } else {
+      print('statusReques: $statusRequest');
       update();
     }
   }
@@ -58,6 +103,7 @@ class ResProductController extends ResParentController {
 
   removeMember(index) {
     resInvitors.removeAt(index);
+    members.removeAt(index);
     update();
   }
 

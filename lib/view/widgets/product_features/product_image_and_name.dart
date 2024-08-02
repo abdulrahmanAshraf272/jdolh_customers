@@ -71,10 +71,11 @@ class ProductImageAndName extends StatelessWidget {
                           maxLines: 2,
                         ),
                       ),
-                      Price(
-                        itemPrice: itemPrice,
-                        itemPriceAfterDiscount: itemPriceAfterDiscount,
-                      )
+                      if (double.parse(itemPrice) != 0)
+                        Price(
+                          itemPrice: itemPrice,
+                          itemPriceAfterDiscount: itemPriceAfterDiscount,
+                        )
                     ],
                   ),
                 )),

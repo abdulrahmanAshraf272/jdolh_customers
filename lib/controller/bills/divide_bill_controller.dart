@@ -64,7 +64,9 @@ class DivideBillController extends GetxController {
         amountWithoutTax: amountWithoutTaxForEach.toString(),
         amount: amountForEach.toString(),
         file: '',
-        billId: bill.billId.toString());
+        billId: bill.billId.toString(),
+        vatNo: bill.billVatNo.toString(),
+        crNo: bill.billCrNo.toString());
     CustomDialogs.dissmissLoading();
     StatusRequest statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {

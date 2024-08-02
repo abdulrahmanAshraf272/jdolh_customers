@@ -73,6 +73,8 @@ class TransferMoneyController extends GetxController {
       if (response['status'] == 'success') {
         CustomDialogs.success('تم تحويل المبلغ');
         Get.back(result: true);
+      } else if (response['message'] == 'not enough money') {
+        CustomDialogs.failure('لا يوجد رصيد كافي');
       } else {
         CustomDialogs.failure();
       }

@@ -31,45 +31,39 @@ class PaymentController extends GetxController {
 
   double resCost = 0;
   double billCost = 0;
+  String desc = '';
+  String orderId = '';
 
-  // onTapConfirm() {
-  //   changeResStatus('3');
-  //   Get.offAllNamed(AppRouteName.mainScreen);
-  // }
-
-  // changeResStatus(String status) async {
-  //   statusRequest = StatusRequest.loading;
-  //   update();
-  //   var response = await resData.changeResStatus(
-  //       resid: reservation.resId.toString(),
-  //       status: status,
-  //       rejectionReason: '');
-  //   statusRequest = handlingData(response);
-
-  //   print('statusRequest ==== $statusRequest');
-  //   if (statusRequest == StatusRequest.success) {
-  //     if (response['status'] == 'success') {
-  //       print('success');
-  //     } else {
-  //       print('failure');
-  //     }
-  //   }
-  //   update();
-  // }
+  double discount = 0;
 
   onTapPay() {
     if (paymentMethod == 'credit') {
       payByCredit();
-    } else {
+    } else if (paymentMethod == 'wallet') {
       payByWallet();
+    } else if (paymentMethod == 'tamara') {
+      payTamara();
     }
   }
 
   payByCredit() async {
-    print('shit');
+    reservation.paymentMethod = 'CREDIT';
     var redirectUrl = await initiateEdfaPayment();
     if (redirectUrl != null) {
       print('shit');
+      Get.to(() => WebviewScreen(
+          title: 'الدفع',
+          url: redirectUrl,
+          payment: 'Reservation',
+          reservation: reservation,
+          brand: brand));
+    }
+  }
+
+  payTamara() async {
+    reservation.paymentMethod = 'TAMARA';
+    var redirectUrl = await initiateEdfaPaymentByTamara();
+    if (redirectUrl != null) {
       Get.to(() => WebviewScreen(
           title: 'الدفع',
           url: redirectUrl,
@@ -87,8 +81,9 @@ class PaymentController extends GetxController {
         brandid: brand.brandId.toString(),
         paymentType: reservation.resPaymentType!,
         userid: myServices.getUserid(),
-        amount: (price + tax).toStringAsFixed(2),
-        taxAmount: tax.toStringAsFixed(2));
+        amount: (price + tax - discount).toStringAsFixed(2),
+        taxAmount: tax.toStringAsFixed(2),
+        discount: discount.toString());
     CustomDialogs.dissmissLoading();
 
     StatusRequest statusRequest = handlingData(response);
@@ -120,23 +115,7 @@ class PaymentController extends GetxController {
     List<String> nameParts = fullName.split(' ');
     String firstName = nameParts[0];
     String lastName = nameParts[1];
-    //Set Order id
-    int resId = reservation.resId!;
-    String orderId;
 
-    //Remove 'X' after test
-    if (reservation.resPaymentType == 'R') {
-      orderId = 'XR$resId';
-    } else {
-      orderId = 'XRB$resId';
-    }
-    //Order Description
-    String desc;
-    if (reservation.resPaymentType == 'R') {
-      desc = 'payment of the reservation price include tax';
-    } else {
-      desc = 'payment of the reservation and bill price include tax';
-    }
     //City
     String city = cityTranslations[myServices.getCity()] ?? 'Riyadh';
 
@@ -146,7 +125,47 @@ class PaymentController extends GetxController {
         userid: myServices.getUserid(),
         orderType: 'RESERVATION', // ENUM(RESERVATION, WALLET)
         orderId: orderId,
-        orderAmount: (price + tax).toStringAsFixed(2),
+        orderAmount: (price + tax - discount).toStringAsFixed(2),
+        orderDescription: desc,
+        payerFirstName: firstName,
+        payerLastName: lastName,
+        payerCity: city,
+        payerEmail: myServices.getEmail(),
+        payerPhone: myServices.getPhone());
+    CustomDialogs.dissmissLoading();
+
+    StatusRequest statusRequest = handlingData(response);
+    print('statusRequist: $statusRequest');
+    if (statusRequest == StatusRequest.success) {
+      print(response['status']);
+      if (response['status'] == 'success') {
+        String redirectUrl = response['redirect_url'];
+        print('redirectUrl: $redirectUrl');
+        return redirectUrl;
+      } else {
+        CustomDialogs.failure();
+      }
+    } else {
+      CustomDialogs.failure();
+    }
+  }
+
+  Future initiateEdfaPaymentByTamara() async {
+    //Get fullName from sharedPrefs and get from it first and last name;
+    String fullName = myServices.getName();
+    List<String> nameParts = fullName.split(' ');
+    String firstName = nameParts[0];
+    String lastName = nameParts[1];
+    //City
+    String city = cityTranslations[myServices.getCity()] ?? 'Riyadh';
+
+    CustomDialogs.loading();
+    var response = await paymentData.initiatePaymentByTamara(
+        userid: myServices.getUserid(),
+        shippingAmount: "0",
+        taxAmount: tax.toString(),
+        orderId: orderId,
+        orderAmount: (price + tax - discount).toStringAsFixed(2),
         orderDescription: desc,
         payerFirstName: firstName,
         payerLastName: lastName,
@@ -191,6 +210,26 @@ class PaymentController extends GetxController {
     } else {
       price = reservation.resResCost! + reservation.resBillCost!;
       tax = reservation.resResTax! + reservation.resBillTax!;
+    }
+
+    if (reservation.resPaymentType == 'R') {
+      desc = 'payment of the reservation price include tax';
+    } else {
+      desc = 'payment of the reservation and bill price include tax';
+    }
+
+    //Set Order id
+    int resId = reservation.resId!;
+
+    //TODO:Remove 'X' after test
+    if (reservation.resPaymentType == 'R') {
+      orderId = 'XR$resId';
+    } else {
+      orderId = 'XRB$resId';
+    }
+
+    if (reservation.resResPolicy == 1 && reservation.resPaymentType == 'RB') {
+      discount = reservation.resResCost! + reservation.resResTax!;
     }
 
     super.onInit();

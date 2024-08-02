@@ -30,7 +30,8 @@ class WaitForApproveController extends GetxController {
     if (statusRequest == StatusRequest.success) {
       print(response);
       if (response['status'] == 'success') {
-        reservation = Reservation.fromJson(response['data']);
+        Reservation result = Reservation.fromJson(response['data']);
+        reservation.resStatus = result.resStatus;
         print('status ${reservation.resStatus}');
         if (reservation.resStatus == 1) {
           approveStatus = ApproveStatus.approved;
@@ -45,6 +46,9 @@ class WaitForApproveController extends GetxController {
   }
 
   gotoPayment() {
+    print('location: ${reservation.bchLocation}');
+    print('lat: ${reservation.bchLat}');
+    print('lng: ${reservation.bchLng}');
     Get.offNamed(AppRouteName.payment, arguments: {
       "res": reservation,
       "resPolicy": resPolicy,

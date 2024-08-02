@@ -49,7 +49,9 @@ class PaymentFailed extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         GoHomeButton(onTap: () {
-          Get.offAllNamed(AppRouteName.mainScreen);
+          final controller = Get.put(PaymentResultController());
+          controller.payByCredit();
+          //Get.offAllNamed(AppRouteName.mainScreen);
         })
       ],
     );
@@ -144,13 +146,16 @@ class DisplayDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      // margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      decoration:
-          BoxDecoration(borderRadius: BorderRadius.circular(10), color: color),
-      child: AutoSizeText(maxLines: 1, title),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        // margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10), color: color),
+        child: AutoSizeText(maxLines: 1, title),
+      ),
     );
   }
 }

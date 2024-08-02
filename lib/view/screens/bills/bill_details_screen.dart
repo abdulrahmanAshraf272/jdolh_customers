@@ -49,7 +49,8 @@ class BillDetailsScreen extends StatelessWidget {
                           children: [
                             Text(
                               textAlign: TextAlign.center,
-                              'تم تقسيم الفاتورة الاصلية المبلغ الذي عليك دفعه هو:',
+                              'تم تقسيم الفاتورة الاصلية المبلغ الذي عليك دفعه هو:'
+                                  .tr,
                               style: titleMedium,
                             ),
                             const SizedBox(height: 10),
@@ -61,16 +62,16 @@ class BillDetailsScreen extends StatelessWidget {
                             const SizedBox(height: 10),
                             Text(
                                 textAlign: TextAlign.center,
-                                'شامل ضريبة القيمة المضافة',
+                                'شامل ضريبة القيمة المضافة'.tr,
                                 style: titleSmall),
                             const SizedBox(height: 25),
                             if (controller.originalBill == null)
                               TextButton(
                                   onPressed: () =>
                                       controller.displayOriginalBill(),
-                                  child: const Text(
-                                    'عرض الفاتورة؟',
-                                    style: TextStyle(
+                                  child: Text(
+                                    'عرض الفاتورة؟'.tr,
+                                    style: const TextStyle(
                                         color: AppColors.secondaryColor,
                                         fontSize: 12),
                                   ))
@@ -81,11 +82,16 @@ class BillDetailsScreen extends StatelessWidget {
                         controller.originalBill != null)
                       //if it is original bill display it
                       //if it is not original and the customer want to display the origina bill display it
-                      SimpleBill(
-                          bill: controller.originalBill ?? controller.bill,
-                          carts: controller.carts,
-                          taxValue: controller.taxValue,
-                          taxPercent: controller.taxPercent)
+                      controller.bill.billType == 'B'
+                          ? SimpleBill(
+                              bill: controller.originalBill ?? controller.bill,
+                              carts: controller.carts,
+                              taxValue: controller.taxValue,
+                              taxPercent: controller.taxPercent)
+                          : SimpleResBill(
+                              bill: controller.originalBill ?? controller.bill,
+                              taxValue: controller.taxValue,
+                              taxPercent: controller.taxPercent)
                   ],
                 ))),
       ),

@@ -13,7 +13,9 @@ class PaymentData {
       required String paymentType,
       required String userid,
       required String amount,
-      required String taxAmount}) async {
+      required String taxAmount,
+      required String paymentMethod,
+      required String discount}) async {
     var response = await crud.postData(ApiLinks.payByCredit, {
       "orderId": orderId,
       "resid": resid,
@@ -22,7 +24,9 @@ class PaymentData {
       "paymentType": paymentType,
       "userid": userid,
       "amount": amount,
-      "taxAmount": taxAmount
+      "taxAmount": taxAmount,
+      "paymentMethod": paymentMethod,
+      "discount": discount
     });
 
     return response.fold((l) => l, (r) => r);
@@ -35,7 +39,8 @@ class PaymentData {
       required String paymentType,
       required String userid,
       required String amount,
-      required String taxAmount}) async {
+      required String taxAmount,
+      required String discount}) async {
     var response = await crud.postData(ApiLinks.payByWallet, {
       "resid": resid,
       "brandBouquetId": brandBouquetId,
@@ -43,7 +48,8 @@ class PaymentData {
       "paymentType": paymentType,
       "userid": userid,
       "amount": amount,
-      "taxAmount": taxAmount
+      "taxAmount": taxAmount,
+      "discount": discount
     });
 
     return response.fold((l) => l, (r) => r);

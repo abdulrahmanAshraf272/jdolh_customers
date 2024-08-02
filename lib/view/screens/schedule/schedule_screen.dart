@@ -24,7 +24,7 @@ class ScheduleScreen extends StatelessWidget {
             onRefresh: () async {
               controller.getAllRes();
             },
-            child: ListView(
+            child: Column(
               children: [
                 LargeToggleButtons(
                   optionOne: 'حجوزات قادمة'.tr,
@@ -68,37 +68,63 @@ class ScheduleScreen extends StatelessWidget {
                     ),
                   ),
                 const SizedBox(height: 10),
-                HandlingDataView(
-                    emptyText: 'لا توجد حجوزات في هذا اليوم'.tr,
-                    statusRequest: controller.statusRequest,
-                    widget: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: controller.resToDisplay.length,
-                      itemBuilder: (context, index) => controller
-                                  .diplayCommingRes ==
-                              1
-                          ? AppointmentListItem(
-                              brandName:
-                                  controller.resToDisplay[index].brandName ??
-                                      '',
-                              brandLogo:
-                                  '${ApiLinks.logoImage}/${controller.resToDisplay[index].brandLogo}',
-                              bchCity:
-                                  controller.resToDisplay[index].bchCity ?? '',
-                              dateTime:
-                                  '${controller.resToDisplay[index].resDate} ${controller.resToDisplay[index].resTime}',
-                              onTap: () {
-                                controller.gotoReservationDetails(index);
-                              })
-                          : AppointmentListItemNotApproved(
-                              onTap: () =>
-                                  controller.gotoReservationDetails(index),
-                              reservation: controller.resToDisplay[index]),
-                    ))
+                Expanded(
+                  child: HandlingDataView(
+                      emptyText: '',
+                      statusRequest: controller.statusRequest,
+                      widget: controller.resToDisplay.isEmpty &&
+                              controller.diplayCommingRes == 1
+                          ? DisplayEmptyResult(
+                              allDaysCount:
+                                  controller.reservationComming.length,
+                              toDayCount: controller.resToDisplay.length)
+                          : ListView.builder(
+                              itemCount: controller.resToDisplay.length,
+                              itemBuilder: (context, index) => controller
+                                          .diplayCommingRes ==
+                                      1
+                                  ? AppointmentListItem(
+                                      brandName: controller
+                                              .resToDisplay[index].brandName ??
+                                          '',
+                                      brandLogo:
+                                          '${ApiLinks.logoImage}/${controller.resToDisplay[index].brandLogo}',
+                                      bchCity: controller
+                                              .resToDisplay[index].bchCity ??
+                                          '',
+                                      dateTime:
+                                          '${controller.resToDisplay[index].resDate} ${controller.resToDisplay[index].resTime}',
+                                      onTap: () {
+                                        controller
+                                            .gotoReservationDetails(index);
+                                      })
+                                  : AppointmentListItemNotApproved(
+                                      onTap: () => controller
+                                          .gotoReservationDetails(index),
+                                      reservation:
+                                          controller.resToDisplay[index]),
+                            )),
+                )
               ],
             ),
           ),
         ));
+  }
+}
+
+class DisplayEmptyResult extends StatelessWidget {
+  final int allDaysCount;
+  final int toDayCount;
+  const DisplayEmptyResult(
+      {super.key, required this.allDaysCount, required this.toDayCount});
+
+  @override
+  Widget build(BuildContext context) {
+    return toDayCount == 0 && allDaysCount == 0
+        ? Center(child: Text('لا توجد حجوزات قادمة'))
+        : toDayCount == 0 && allDaysCount != 0
+            ? Center(child: Text('لا توجد حجوزات في هذا اليوم'))
+            : SizedBox();
   }
 }
 

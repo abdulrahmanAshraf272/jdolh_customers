@@ -8,39 +8,76 @@ import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/notification/notification_sender/activity_notification.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/checkin.dart';
+import 'package:jdolh_customers/data/data_source/remote/groups.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
+import 'package:jdolh_customers/data/models/group.dart';
 import 'package:jdolh_customers/data/models/place.dart';
 
 class CheckinConfirmController extends GetxController {
+  GroupsData groupsData = GroupsData(Get.find());
   StatusRequest statusRequest = StatusRequest.none;
   CheckinData checkinData = CheckinData(Get.find());
   TextEditingController comment = TextEditingController();
   MyServices myServices = Get.find();
   late Place placeSelected;
   List<Friend> members = [];
-  List<int> membersId = [];
   ValuesController valuesController = Get.put(ValuesController());
 
   onTapAddMembers() async {
     //Get.toNamed(AppRouteName.addMembersCheckin)!.then((value) => update());
     final result = await Get.toNamed(AppRouteName.addMembers,
-        arguments: {'members': members});
+        arguments: {'members': members, "withGroups": true});
     if (result is Friend) {
       members.add(result);
-      membersId.add(result.userId!);
+      update();
+    } else if (result is Group) {
+      addGroupCheckin(result);
+    }
+  }
+
+  addGroupCheckin(Group group) async {
+    CustomDialogs.loading();
+    var response = await groupsData.groupMembers(group.groupId.toString());
+    CustomDialogs.dissmissLoading();
+    StatusRequest statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        List groupMembersJson = response['data'];
+        List<Friend> groupMembers =
+            groupMembersJson.map((friend) => Friend.fromJson(friend)).toList();
+        int myId = int.parse(myServices.getUserid());
+
+        //Remove myself if i am exist in the group
+        groupMembers.removeWhere((friend) => friend.userId == myId);
+
+        //Remove any user that already exist in members
+        groupMembers.removeWhere((groupUser) =>
+            members.any((member) => member.userId == groupUser.userId));
+        members.addAll(groupMembers);
+        CustomDialogs.success('تم اضافة اعضاء المجموعة');
+        update();
+      } else {
+        CustomDialogs.failure();
+        print('adding memeber failed');
+      }
+    } else {
+      print('statusReques: $statusRequest');
       update();
     }
   }
 
   removeMember(index) {
-    membersId.remove(members[index].userId!);
     members.remove(members[index]);
 
     update();
   }
 
   checkin(BuildContext context) async {
-    String membersIdString = membersId.join(",");
+    List<int> membersIds = [];
+    for (int i = 0; i < members.length; i++) {
+      membersIds.add(members[i].userId!);
+    }
+    String membersIdString = membersIds.join(",");
     CustomDialogs.loading();
     var response = await checkinData.checkin(
         myServices.sharedPreferences.getString("id")!,

@@ -62,7 +62,7 @@ class ResParentController extends GetxController {
     } else {
       resCost = resDetails.cost!;
     }
-    resTax = resCost * brandProfileController.tax;
+    resTax = resCost * brandProfileController.resTaxPercent;
   }
 
   void gotoSetResTime() async {

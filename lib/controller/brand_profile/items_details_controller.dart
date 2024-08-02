@@ -215,6 +215,7 @@ class ItemsDetailsController extends GetxController {
     } else {
       print("item didn't send to itemsDetails");
     }
+    print('item price: ${item.itemsPrice}');
   }
 
   getPriceAndApplyDiscount() {

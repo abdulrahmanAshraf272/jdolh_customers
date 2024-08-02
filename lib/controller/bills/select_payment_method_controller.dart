@@ -103,7 +103,7 @@ class SelectPaymentMethodController extends GetxController {
   payTamara() async {
     bill.billPaymentMethod = 'TAMARA';
     //TODO: remove x
-    String orderId = '${bill.billUserid}-XXB${bill.billResid}';
+    String orderId = '${bill.billUserid}-XXXB${bill.billResid}';
     var redirectUrl = await initiateEdfaPaymentByTamara(orderId);
     if (redirectUrl != null) {
       Get.to(() => WebviewScreen(
@@ -119,7 +119,7 @@ class SelectPaymentMethodController extends GetxController {
   payCredit() async {
     bill.billPaymentMethod = 'CREDIT';
     //TODO: remove x
-    String orderId = '${bill.billUserid}-XB${bill.billResid}';
+    String orderId = '${bill.billUserid}-XXB${bill.billResid}';
     var redirectUrl = await initiateEdfaPayment(orderId);
     if (redirectUrl != null) {
       print('shit');

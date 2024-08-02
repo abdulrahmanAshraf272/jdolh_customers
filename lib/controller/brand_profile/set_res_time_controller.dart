@@ -182,6 +182,7 @@ class SetResTimeController extends GetxController with TimeHelper {
       if (response['status'] == 'success') {
         List data = response['data'];
         reservedTimes = data.map((e) => ReservedTime.fromJson(e)).toList();
+        print(data);
       } else {
         print('failure get Reserved time');
       }

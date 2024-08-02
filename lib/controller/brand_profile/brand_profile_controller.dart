@@ -19,7 +19,8 @@ import 'package:jdolh_customers/data/models/resOption.dart';
 class BrandProfileController extends GetxController {
   String paymentType = '';
   //TODO: Get tax from DB
-  double tax = 0.14;
+  double tax = 0.15;
+  double resTaxPercent = 0;
 //0 => items, 1 => resProduct, 2 => resService, 3=> HomeService
   int subscreen = 0;
   late Brand brand;
@@ -112,13 +113,17 @@ class BrandProfileController extends GetxController {
 
   getBch() async {
     var response = await brandSearchData.getBch(
-        bchid: bch.bchId.toString(), userid: myServices.getUserid());
+        bchid: bch.bchId.toString(),
+        userid: myServices.getUserid(),
+        brandid: bch.bchBrandid.toString());
     statusRequest = handlingData(response);
+    print('status get bch: $statusRequest');
     update();
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         parseData(response);
       } else {
+        print('failure message: ${response['message']}');
         statusRequest = StatusRequest.failure;
       }
     }
@@ -158,8 +163,17 @@ class BrandProfileController extends GetxController {
     var worktimeJson = response['worktime'];
 
     if (response['taxPercent'] != null) {
-      tax = (response['taxPercent'] / 100).toDouble();
+      double t = double.parse(response['taxPercent']);
+      resTaxPercent = t / 100;
     }
+
+    if (response['billTax'] != null) {
+      double t = double.parse(response['billTax']);
+      tax = t / 100;
+    }
+
+    print('resTax: $resTaxPercent');
+    print('billTax: $tax');
 
     bchWorktime = BchWorktime.fromJson(worktimeJson);
 

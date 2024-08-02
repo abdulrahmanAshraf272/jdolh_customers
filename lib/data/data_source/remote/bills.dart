@@ -5,6 +5,39 @@ class BillsData {
   Crud crud;
   BillsData(this.crud);
 
+  createBill(
+      {required String resid,
+      required String userid,
+      required String brandId,
+      required String bchId,
+      required String taxPercent,
+      required String taxAmount,
+      required String amountWithoutTax,
+      required String amount,
+      required String paymentMethod,
+      required String vatNo,
+      required String crNo,
+      required String file,
+      required String type}) async {
+    var response = await crud.postData(ApiLinks.createBill, {
+      "resid": resid,
+      "userid": userid,
+      "brandId": brandId,
+      "bchId": bchId,
+      "taxPercent": taxPercent,
+      "taxAmount": taxAmount,
+      "amountWithoutTax": amountWithoutTax,
+      "amount": amount,
+      "paymentMethod": paymentMethod,
+      "vatNo": vatNo,
+      "crNo": crNo,
+      "file": file,
+      "type": type
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
+
   divideBill(
       {required String resid,
       required String brandId,
@@ -15,7 +48,9 @@ class BillsData {
       required String amountWithoutTax,
       required String amount,
       required String file,
-      required String billId}) async {
+      required String billId,
+      required String vatNo,
+      required String crNo}) async {
     var response = await crud.postData(ApiLinks.divideBill, {
       "resid": resid,
       "brandId": brandId,
@@ -26,7 +61,9 @@ class BillsData {
       "amountWithoutTax": amountWithoutTax,
       "amount": amount,
       "file": file,
-      "billId": billId
+      "billId": billId,
+      "vatNo": vatNo,
+      "crNo": crNo
     });
 
     return response.fold((l) => l, (r) => r);

@@ -32,30 +32,30 @@ class ResArchiveScreen extends StatelessWidget {
                   onTapTwo: () => controller.setDisplayFinishedRes(0),
                   twoColors: true,
                 ),
-                HandlingDataView(
-                    statusRequest: controller.statusRequest,
-                    widget: controller.resToDisplay.isEmpty
-                        ? Text('لا توجد حجوزات'.tr)
-                        : Expanded(
-                            child: ListView.builder(
-                                itemCount: controller.resToDisplay.length,
-                                itemBuilder: (context, index) =>
-                                    AppointmentListItem(
-                                        brandName: controller
-                                                .resToDisplay[index]
-                                                .brandName ??
-                                            '',
-                                        brandLogo:
-                                            '${ApiLinks.logoImage}/${controller.resToDisplay[index].brandLogo}',
-                                        bchCity: controller
-                                                .resToDisplay[index].bchCity ??
-                                            '',
-                                        dateTime:
-                                            '${controller.resToDisplay[index].resDate} ${controller.resToDisplay[index].resTime}',
-                                        onTap: () {
-                                          controller
-                                              .gotoReservationDetails(index);
-                                        }))))
+                Expanded(
+                  child: HandlingDataView(
+                      statusRequest: controller.statusRequest,
+                      widget: controller.resToDisplay.isEmpty
+                          ? Text('لا توجد حجوزات'.tr)
+                          : ListView.builder(
+                              itemCount: controller.resToDisplay.length,
+                              itemBuilder: (context, index) =>
+                                  AppointmentListItem(
+                                      brandName: controller
+                                              .resToDisplay[index].brandName ??
+                                          '',
+                                      brandLogo:
+                                          '${ApiLinks.logoImage}/${controller.resToDisplay[index].brandLogo}',
+                                      bchCity: controller
+                                              .resToDisplay[index].bchCity ??
+                                          '',
+                                      dateTime:
+                                          '${controller.resToDisplay[index].resDate} ${controller.resToDisplay[index].resTime}',
+                                      onTap: () {
+                                        controller
+                                            .gotoReservationDetails(index);
+                                      }))),
+                )
               ],
             ),
           ),

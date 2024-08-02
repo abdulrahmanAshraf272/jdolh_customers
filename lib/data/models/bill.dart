@@ -16,9 +16,12 @@ class Bill {
   int? billIsPayed;
   String? billPaymentMethod;
   String? billVatNo;
+  String? billCrNo;
   String? billCreatetime;
   int? isOriginal;
   int? isDivided;
+  String? billType;
+  String? billDiscount;
 
   Bill(
       {this.bchName,
@@ -38,9 +41,12 @@ class Bill {
       this.billIsPayed,
       this.billPaymentMethod,
       this.billVatNo,
+      this.billCrNo,
       this.billCreatetime,
       this.isDivided,
-      this.isOriginal});
+      this.isOriginal,
+      this.billType,
+      this.billDiscount});
 
   Bill.fromJson(Map<String, dynamic> json) {
     bchName = json['bch_branchName'];
@@ -63,5 +69,9 @@ class Bill {
     billCreatetime = json['bill_createtime'];
     isDivided = json['bill_isDivided'];
     isOriginal = json['bill_isOriginal'];
+    billCrNo = json['bill_crNo'];
+
+    billType = json['bill_type'];
+    billDiscount = json['bill_discount'];
   }
 }

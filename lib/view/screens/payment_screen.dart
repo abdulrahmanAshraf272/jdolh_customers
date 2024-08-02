@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/payment_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
+import 'package:jdolh_customers/view/screens/bills/select_payment_method_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/res_service_subscreen.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/custom_toggle_button_one_option.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 
 class PaymentScreen extends StatelessWidget {
@@ -71,22 +71,17 @@ class SelectPaymentMethod extends StatelessWidget {
     return GetBuilder<PaymentController>(
       builder: (controller) => Container(
         padding: const EdgeInsets.all(15),
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
         decoration: BoxDecoration(
             color: AppColors.gray, borderRadius: BorderRadius.circular(10)),
         child: Column(
           children: [
             Text('طريقة الدفع', style: titleMedium),
-            CustomToggleButtonsOneOption(
-                horizontalDirection: false,
-                firstOption: 'دفع بالبطاقة',
-                secondOption: 'دفع بالمحفظة',
-                onTapOne: () {
-                  controller.paymentMethod = 'credit';
-                },
-                onTapTwo: () {
-                  controller.paymentMethod = 'wallet';
-                }),
+            const SizedBox(height: 20),
+            PaymentMethodsToggle(
+                onTapCredit: () => controller.paymentMethod = 'credit',
+                onTapWallet: () => controller.paymentMethod = 'wallet',
+                onTapTamara: () => controller.paymentMethod = 'tamara')
           ],
         ),
       ),
@@ -121,11 +116,20 @@ class PaymentDetails extends StatelessWidget {
         //     title: 'الإجمالي'.tr,
         //     price: controller.price,
         //   ),
+
         BillRow(
           lastRow: true,
           title: 'الإجمالي شامل الضريبة'.tr,
           price: controller.price + controller.tax,
         ),
+        if (controller.reservation.resResPolicy == 1 &&
+            controller.reservation.resPaymentType == 'RB')
+          BillRow(
+            lastRow: true,
+            title: 'بعد خصم رسوم الحجز'.tr,
+            price: controller.reservation.resTotalPrice! -
+                controller.reservation.resResCost!,
+          ),
       ],
     );
   }

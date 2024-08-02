@@ -36,9 +36,9 @@ class _WalletOperationListItemState extends State<WalletOperationListItem> {
     } else if (widget.transaction.transType == 'B') {
       transType = 'فاتورة';
     } else if (widget.transaction.transType == 'transferTo') {
-      transType = 'تحويله الى صديق';
+      transType = 'تحويله الى ${widget.transaction.username}';
     } else if (widget.transaction.transType == 'transferFrom') {
-      transType = 'تحويله من صديق';
+      transType = 'تحويله من ${widget.transaction.username}';
     }
 
     if (widget.transaction.process == 'decrease') {

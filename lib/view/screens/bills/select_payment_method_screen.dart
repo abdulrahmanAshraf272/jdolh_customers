@@ -35,14 +35,14 @@ class SelectPaymentMethodScreen extends StatelessWidget {
 }
 
 class PaymentMethodsToggle extends StatefulWidget {
-  final void Function() onTapCash;
+  final void Function()? onTapCash;
   final void Function() onTapCredit;
   final void Function() onTapWallet;
   final void Function() onTapTamara;
 
   const PaymentMethodsToggle({
     super.key,
-    required this.onTapCash,
+    this.onTapCash,
     required this.onTapCredit,
     required this.onTapWallet,
     required this.onTapTamara,
@@ -60,9 +60,10 @@ class _PaymentMethodsToggleState extends State<PaymentMethodsToggle> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          option(
-              1, 'الدفع في الفرع', widget.onTapCash, 'assets/icons/cash.png'),
-          const SizedBox(height: 10),
+          if (widget.onTapCash != null)
+            option(1, 'الدفع في الفرع', widget.onTapCash!,
+                'assets/icons/cash.png'),
+          if (widget.onTapCash != null) const SizedBox(height: 10),
           option(2, 'الدفع بالبطاقة', widget.onTapCredit,
               'assets/icons/credit.png'),
           const SizedBox(height: 10),

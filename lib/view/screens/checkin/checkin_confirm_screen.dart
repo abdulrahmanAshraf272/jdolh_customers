@@ -42,7 +42,7 @@ class CheckinConfirmScreen extends StatelessWidget {
                         hintText: 'ما هو رأيك في المكان؟'),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 20),
+                          horizontal: 0, vertical: 20),
                       child: Row(
                         children: [
                           Expanded(
@@ -61,7 +61,7 @@ class CheckinConfirmScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    controller.membersId.isNotEmpty
+                    controller.members.isNotEmpty
                         ? ListView.builder(
                             physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.only(bottom: 70),

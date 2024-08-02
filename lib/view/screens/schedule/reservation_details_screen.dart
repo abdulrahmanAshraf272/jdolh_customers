@@ -107,7 +107,7 @@ class PaymentTypeText extends StatelessWidget {
                   TextSpan(
                       text:
                           'قيمة الفاتورة: ${reservation.resBillCost! + reservation.resBillTax!} ريال  '),
-                  reservation.resBillCost == 1
+                  reservation.resBillPayed == 1
                       ? const TextSpan(
                           text: 'مدفوع', style: TextStyle(color: Colors.green))
                       : const TextSpan(

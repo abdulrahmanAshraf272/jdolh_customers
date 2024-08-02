@@ -250,4 +250,6 @@ class ApiLinks {
       '$server/jdolh_customers/bill/get_original_bill.php';
   static const String divideBill =
       '$server/jdolh_customers/bill/divide_bill.php';
+  static const String createBill =
+      '$server/jdolh_customers/bill/create_bill.php';
 }

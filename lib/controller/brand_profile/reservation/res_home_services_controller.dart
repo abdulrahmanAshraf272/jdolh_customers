@@ -23,17 +23,34 @@ class ResHomeServicesController extends ResParentController {
       statusRequest = StatusRequest.loading;
       update();
       var result = await createRes();
-      if (result != null) {
-        Reservation res = result as Reservation;
+      if (result is Reservation) {
+        Reservation res = result;
         var addLocationResult = await addResLocation(res.resId!);
         update();
         if (addLocationResult == true) {
           //clear cart beacause it's not null any more , it take the resid = id of res just created.
           //brandProfileController.carts.clear();
+          print('location: ${brandProfileController.bch.bchLat}');
+          print('lat: ${brandProfileController.bch.bchLat}');
+          print('lng: ${brandProfileController.bch.bchLng}');
+          res.bchLocation = brandProfileController.bch.bchLocation;
+          res.bchLat = brandProfileController.bch.bchLat;
+          res.bchLng = brandProfileController.bch.bchLng;
+
           if (homeServices.reviewRes == 0) {
-            Get.offNamed(AppRouteName.payment, arguments: result);
+            Get.offNamed(AppRouteName.payment, arguments: {
+              "res": res,
+              "resPolicy": brandProfileController.resPolicy,
+              "billPolicy": brandProfileController.billPolicy,
+              "brand": brandProfileController.brand
+            });
           } else {
-            Get.offNamed(AppRouteName.waitForApprove, arguments: result);
+            Get.offNamed(AppRouteName.waitForApprove, arguments: {
+              "res": res,
+              "resPolicy": brandProfileController.resPolicy,
+              "billPolicy": brandProfileController.billPolicy,
+              "brand": brandProfileController.brand
+            });
           }
         }
       }

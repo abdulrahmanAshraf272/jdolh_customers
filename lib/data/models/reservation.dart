@@ -45,6 +45,8 @@ class Reservation {
   int? invitorStatus;
   double? invitorAmount;
 
+  String? paymentMethod;
+
   Reservation(
       {this.resId,
       this.resPaymentType,
@@ -83,7 +85,8 @@ class Reservation {
       this.username,
       this.creator,
       this.invitorStatus,
-      this.invitorAmount});
+      this.invitorAmount,
+      this.paymentMethod});
 
   Reservation.fromJson(Map<String, dynamic> json) {
     resId = json['res_id'];

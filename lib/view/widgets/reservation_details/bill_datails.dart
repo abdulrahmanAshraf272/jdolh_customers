@@ -36,6 +36,12 @@ class BillDetails extends StatelessWidget {
           title: 'الإجمالي شامل الضريبة'.tr,
           price: reservation.resTotalPrice ?? 0,
         ),
+        if (reservation.resResPolicy == 1 && reservation.resBillPayed == 1)
+          BillRow(
+            lastRow: true,
+            title: 'بعد خصم رسوم الحجز'.tr,
+            price: reservation.resTotalPrice! - reservation.resResCost!,
+          ),
       ],
     );
   }

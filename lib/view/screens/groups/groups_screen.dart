@@ -20,29 +20,34 @@ class GroupsScreen extends StatelessWidget {
               onTapBack: () => Get.back(),
               title: 'المجموعات',
               buttonText: 'انشاء مجموعة'),
-          body: HandlingDataRequest(
-              statusRequest: controller.statusRequest,
-              widget: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: controller.groups.isEmpty
-                        ? const Center(child: Text('لا توجد مجموعات'))
-                        : ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.only(bottom: 30, top: 20),
-                            itemCount: controller.groups.length,
-                            itemBuilder: (context, index) => GroupListItem(
-                                groupName: controller.groups[index].groupName!,
-                                dateCreate:
-                                    controller.groups[index].groupDatecreated!,
-                                isCreator: controller.groups[index].creator!,
-                                onTap: () => controller.onTapGroupCard(index)),
-                            // Add separatorBuilder
-                          ),
-                  ),
-                ],
-              )));
+          body: RefreshIndicator(
+            onRefresh: () async {
+              await controller.getAllGroups();
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                    child: HandlingDataView(
+                  statusRequest: controller.statusRequest,
+                  widget: controller.groups.isEmpty
+                      ? const Center(child: Text('لا توجد مجموعات'))
+                      : ListView.builder(
+                          //physics: const BouncingScrollPhysics(),
+                          padding: const EdgeInsets.only(bottom: 30, top: 20),
+                          itemCount: controller.groups.length,
+                          itemBuilder: (context, index) => GroupListItem(
+                              groupName: controller.groups[index].groupName!,
+                              dateCreate:
+                                  controller.groups[index].groupDatecreated!,
+                              isCreator: controller.groups[index].creator!,
+                              onTap: () => controller.onTapGroupCard(index)),
+                          // Add separatorBuilder
+                        ),
+                )),
+              ],
+            ),
+          ));
     });
   }
 }

@@ -19,7 +19,7 @@ class BillsScreen extends StatelessWidget {
                   onRefresh: () async {
                     controller.getCustomerBills();
                   },
-                  child: ListView(
+                  child: Column(
                     children: [
                       LargeToggleButtons(
                         optionOne: 'غير مدفوعة'.tr,
@@ -28,15 +28,29 @@ class BillsScreen extends StatelessWidget {
                         onTapTwo: () => controller.onTapToggleButton(1),
                         twoColors: false,
                       ),
-                      HandlingDataView(
-                        emptyText: 'لا توجد فواتير',
-                        statusRequest: controller.statusRequest,
-                        widget: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: controller.billsToDisplay.length,
-                            itemBuilder: (context, index) => BillListItem(
-                                bill: controller.billsToDisplay[index],
-                                onTap: () => controller.onTapBill(index))),
+                      Expanded(
+                        child: HandlingDataView(
+                          emptyText: '',
+                          statusRequest: controller.statusRequest,
+                          widget: controller.billsToDisplay.isEmpty &&
+                                  controller.displayPayedBills == 0
+                              ? Center(
+                                  child: Text('لا توجد فواتير غبر مدفوعة'.tr))
+                              : controller.billsToDisplay.isEmpty &&
+                                      controller.displayPayedBills == 1
+                                  ? Center(
+                                      child: Text('لا توجد فواتير مدفوعة'.tr))
+                                  : ListView.builder(
+                                      // shrinkWrap: true,
+                                      itemCount: controller
+                                          .billsToDisplay.length,
+                                      itemBuilder: (context, index) =>
+                                          BillListItem(
+                                              bill: controller
+                                                  .billsToDisplay[index],
+                                              onTap: () =>
+                                                  controller.onTapBill(index))),
+                        ),
                       )
                     ],
                   ),

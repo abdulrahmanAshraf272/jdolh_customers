@@ -73,11 +73,11 @@ class ResServiceSubscreen extends StatelessWidget {
               const SizedBox(height: 20),
               CustomSmallBoldTitle(title: 'تفاصيل الحجز'.tr),
               const CartService(),
-              //const SizedBox(height: 20),
-              const PaymentTypeSelect(),
+              const SizedBox(height: 20),
               BillDetails(
                   resCost: controller.resCost, resTax: controller.resTax),
-              const SizedBox(height: 20),
+              const PaymentTypeSelect(),
+              const DisplayResPolicy(),
               GoHomeButton(
                 onTap: () {
                   var checkResOption = controller
@@ -163,6 +163,22 @@ class PaymentTypeSelect extends StatelessWidget {
                   print('paymentType: ${controller.paymentType}');
                 }),
       ),
+    );
+  }
+}
+
+class DisplayResPolicy extends StatelessWidget {
+  const DisplayResPolicy({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<BrandProfileController>(
+      builder: (controller) => Container(
+          padding: const EdgeInsets.all(15),
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              color: AppColors.gray, borderRadius: BorderRadius.circular(10)),
+          child: Text(controller.resPolicy.title ?? '')),
     );
   }
 }

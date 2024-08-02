@@ -78,13 +78,14 @@ class ResProductSubscreen extends StatelessWidget {
                 const SizedBox(height: 15),
                 CustomSmallBoldTitle(title: 'تفاصيل الطلب'.tr),
                 const CartProductBrandProfile(),
-                //const SizedBox(height: 20),
-                const PaymentTypeSelect(),
+                const SizedBox(height: 20),
                 BillDetails(
                   resCost: controller.resCost,
                   resTax: controller.resTax,
                 ),
-                const SizedBox(height: 20),
+                //const SizedBox(height: 20),
+                const PaymentTypeSelect(),
+                const DisplayResPolicy(),
                 controller.withInvitation
                     ? GoHomeButton(
                         onTap: () {
