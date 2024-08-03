@@ -24,7 +24,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                           children: [
                             //SizedBox(height: Get.height * 0.1),
                             Text(
-                              'سيتم ارسال رمز التحقق الى بريدك الالكتروني',
+                              'سيتم ارسال رمز التحقق الى بريدك الالكتروني'.tr,
                               style: headline2,
                               textAlign: TextAlign.center,
                             ),
@@ -32,7 +32,7 @@ class ForgetPasswordScreen extends StatelessWidget {
 
                             const SizedBox(height: 20),
                             CustomButtonOne(
-                                textButton: 'التالي',
+                                textButton: 'التالي'.tr,
                                 onPressed: () async {
                                   await controller.sendVerifycode();
                                 }),

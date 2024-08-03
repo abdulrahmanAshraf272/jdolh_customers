@@ -55,7 +55,7 @@ class _FollowersAndFollowingScreenState
                   userName: controller.data[index].userUsername!,
                   image: controller.data[index].userImage!,
                   buttonText: controller.data[index].following!
-                      ? 'الغاء المتابعة'
+                      ? 'الغاء المتابعة'.tr
                       : 'متابعة'.tr,
                   buttonColor: controller.data[index].following!
                       ? AppColors.redButton

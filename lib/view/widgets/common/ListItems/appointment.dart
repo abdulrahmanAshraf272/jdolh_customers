@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
@@ -57,7 +58,7 @@ class AppointmentListItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AutoSizeText('حجز $brandName',
+                      AutoSizeText('${'حجز'.tr} $brandName',
                           maxLines: 1,
                           minFontSize: 15,
                           overflow: TextOverflow.ellipsis,
@@ -127,7 +128,7 @@ class AppointmentListItemNotApproved extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AutoSizeText(
-                        'حجز ${reservation.brandName}',
+                        '${'حجز'.tr} ${reservation.brandName}',
                         maxLines: 1,
                         minFontSize: 15,
                         overflow: TextOverflow.ellipsis,
@@ -143,7 +144,7 @@ class AppointmentListItemNotApproved extends StatelessWidget {
                         style: titleSmallGray,
                       ),
                       AutoSizeText(
-                        'مرسلة بواسطة ${reservation.username}',
+                        '${'مرسلة بواسطة'.tr} ${reservation.username}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style:

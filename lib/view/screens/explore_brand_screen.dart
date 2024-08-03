@@ -40,7 +40,7 @@ class _ExploreBrandScreenState extends State<ExploreBrandScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(
-        title: 'الأكثر زيارة خلال اسبوع',
+        title: 'الأكثر زيارة خلال اسبوع'.tr,
       ),
       body: Column(
         children: [

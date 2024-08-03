@@ -54,11 +54,11 @@ class FriendsActivitiesController extends GetxController {
   String appBarTitle() {
     switch (pageStatus) {
       case 0:
-        return 'نشاطات الاصدقاء';
+        return 'نشاطات الاصدقاء'.tr;
       case 1:
-        return 'التقييمات';
+        return 'التقييمات'.tr;
       case 2:
-        return 'النشاطات';
+        return 'النشاطات'.tr;
       default:
         return '';
     }

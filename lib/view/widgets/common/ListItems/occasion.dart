@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
@@ -149,7 +150,8 @@ Column _titleDataLocationFromWho(
     required String location,
     required String from,
     required int creator}) {
-  String headerText = creator == 0 ? 'مناسبة من $from' : 'مناسبة شخصية';
+  String headerText =
+      creator == 0 ? '${'مناسبة من'.tr} $from' : 'مناسبة شخصية'.tr;
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [

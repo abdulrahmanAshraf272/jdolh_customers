@@ -35,11 +35,11 @@ class LoginScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             //SizedBox(height: Get.height * 0.1),
-                            Text('تسجيل دخول', style: headline2),
+                            Text('تسجيل دخول'.tr, style: headline2),
                             SizedBox(height: Get.height * 0.06),
 
                             CustomTextFormAuthTwo(
-                              labelText: 'اسم المستخدم او البريد الالكتروني',
+                              labelText: 'اسم المستخدم او البريد الالكتروني'.tr,
                               valid: (val) {
                                 return validInput(
                                   val!,
@@ -56,7 +56,7 @@ class LoginScreen extends StatelessWidget {
                               visiblePasswordOnTap: () {
                                 controller.showPassword();
                               },
-                              labelText: 'كلمة السر',
+                              labelText: 'كلمة السر'.tr,
                               valid: (val) {
                                 return validInput(val!, 3, 100, 'password');
                               },
@@ -68,15 +68,15 @@ class LoginScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 20),
                             CustomButtonOne(
-                                textButton: 'تسجيل دخول',
+                                textButton: 'تسجيل دخول'.tr,
                                 onPressed: () async {
                                   await controller.login();
                                 }),
                             const SizedBox(height: 20),
                             HaveAccountQuestion(
                                 onPress: () => controller.goToSignUP(),
-                                text: "ليس لديك حساب؟",
-                                buttonText: 'انشاء حساب')
+                                text: "ليس لديك حساب؟".tr,
+                                buttonText: 'انشاء حساب'.tr)
                           ]),
                     ),
                   ),

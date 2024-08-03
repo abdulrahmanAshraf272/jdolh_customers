@@ -65,7 +65,7 @@ class PaymentController extends GetxController {
     var redirectUrl = await initiateEdfaPaymentByTamara();
     if (redirectUrl != null) {
       Get.to(() => WebviewScreen(
-          title: 'الدفع',
+          title: 'الدفع'.tr,
           url: redirectUrl,
           payment: 'Reservation',
           reservation: reservation,
@@ -89,7 +89,7 @@ class PaymentController extends GetxController {
     StatusRequest statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
-        CustomDialogs.success('تم الدفع');
+        CustomDialogs.success('تم الدفع'.tr);
         Get.offAllNamed(AppRouteName.paymentResult, arguments: {
           "res": reservation,
           "brand": brand,
@@ -97,7 +97,7 @@ class PaymentController extends GetxController {
         });
       } else {
         if (response['message'] == 'not enough money') {
-          CustomDialogs.failure('لا يوجد رصيد كاف');
+          CustomDialogs.failure('لا يوجد رصيد كافي'.tr);
         } else {
           CustomDialogs.failure();
         }

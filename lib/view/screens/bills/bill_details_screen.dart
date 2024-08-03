@@ -21,13 +21,13 @@ class BillDetailsScreen extends StatelessWidget {
       bottomNavigationBar: controller.bill.isOriginal == 1 &&
               controller.bill.billPaymentMethod == ''
           ? TwoOptionLargeButtons(
-              firstOption: 'دفع',
+              firstOption: 'دفع'.tr,
               onTapFirst: () => controller.onTapPay(),
-              secondOption: 'تقسيم الفاتورة',
+              secondOption: 'تقسيم الفاتورة'.tr,
               onTapSecond: () => controller.onTapDivideBill())
           : controller.bill.isOriginal == 0 &&
                   controller.bill.billPaymentMethod == ''
-              ? BottomButton(onTap: () => controller.onTapPay(), text: 'دفع')
+              ? BottomButton(onTap: () => controller.onTapPay(), text: 'دفع'.tr)
               : null,
       body: GetBuilder<BillDetailsController>(
         builder: (controller) => SingleChildScrollView(
@@ -38,8 +38,10 @@ class BillDetailsScreen extends StatelessWidget {
                     if (controller.paymentMethod != '')
                       Padding(
                         padding: const EdgeInsets.all(15.0),
-                        child: Text('طريقة الدفع: ${controller.paymentMethod}',
-                            style: titleMedium, textAlign: TextAlign.center),
+                        child: Text(
+                            '${'طريقة الدفع'.tr}: ${controller.paymentMethod}',
+                            style: titleMedium,
+                            textAlign: TextAlign.center),
                       ),
                     if (controller.bill.isOriginal == 0)
                       Padding(
@@ -56,7 +58,7 @@ class BillDetailsScreen extends StatelessWidget {
                             const SizedBox(height: 10),
                             Text(
                               textAlign: TextAlign.center,
-                              '${controller.bill.billAmount} ريال',
+                              '${controller.bill.billAmount} ${'ريال'.tr}',
                               style: titleLarge,
                             ),
                             const SizedBox(height: 10),

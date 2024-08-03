@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/group/edit_group_controller.dart';
-import 'package:jdolh_customers/controller/group/group_details_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
-import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_text.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
-import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/common/data_or_location_display_container.dart';
 
@@ -40,7 +36,7 @@ class EditGroupScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: CustomSmallBoldTitle(
-                    title: 'العنوان',
+                    title: 'العنوان'.tr,
                     topPadding: 20,
                     bottomPadding: 10,
                   ),
@@ -49,8 +45,8 @@ class EditGroupScreen extends StatelessWidget {
                     onTap: () {
                       controller.showGroupNameDialog(context);
                     },
-                    text: 'تعديل الاسم'),
-                SizedBox(width: 20)
+                    text: 'تعديل الاسم'.tr),
+                const SizedBox(width: 20)
               ],
             ),
             DateOrLocationDisplayContainer(
@@ -59,7 +55,7 @@ class EditGroupScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: CustomSmallBoldTitle(
-                    title: 'المضافين للمجموعة',
+                    title: 'المضافين للمجموعة'.tr,
                     topPadding: 20,
                     bottomPadding: 20,
                   ),
@@ -68,8 +64,8 @@ class EditGroupScreen extends StatelessWidget {
                     onTap: () {
                       controller.onTapAddMembers();
                     },
-                    text: 'أضف للمجموعة'),
-                SizedBox(width: 20)
+                    text: 'أضف للمجموعة'.tr),
+                const SizedBox(width: 20)
               ],
             ),
             HandlingDataView(
@@ -103,7 +99,7 @@ AppBar _appBarWithTextButton({required void Function() onTapLeave}) {
   return AppBar(
     centerTitle: true,
     title: Text(
-      'المجموعة',
+      'المجموعة'.tr,
       style: TextStyle(
         fontWeight: FontWeight.w600,
         fontSize: 18.sp,
@@ -112,13 +108,13 @@ AppBar _appBarWithTextButton({required void Function() onTapLeave}) {
     ),
     leading: IconButton(
       onPressed: () => Get.back(),
-      icon: Icon(Icons.arrow_back_ios, color: AppColors.white),
+      icon: const Icon(Icons.arrow_back_ios, color: AppColors.white),
     ),
     actions: [
       TextButton(
           onPressed: onTapLeave,
           child: Text(
-            'حذف',
+            'حذف'.tr,
             style: titleSmall.copyWith(color: AppColors.redButton),
           ))
     ],

@@ -63,28 +63,34 @@ class SignUpController extends GetxController {
   }
 
   theVerifycodeWillSendToEmailBottomSheet() {
-    Get.bottomSheet(Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      height: Get.height * 0.4,
-      decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-          color: Colors.white,
-          boxShadow: [boxShadow1]),
-      child: Column(
-        children: [
-          Text('سوف يتم ارسال رمز التأكيد عبر البريد الالكتروني',
-              style: titleMedium),
-          const SizedBox(height: 20),
-          GoHomeButton(text: 'حسنا', onTap: () => signUp())
-        ],
-      ),
-    ));
+    if (phoneNumber2.text == '') {
+      return Get.rawSnackbar(message: 'من فضلك ادخل رقم الجوال'.tr);
+    }
+    var formdata = formstate.currentState;
+    if (formdata!.validate()) {
+      Get.bottomSheet(Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        height: Get.height * 0.4,
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+            color: Colors.white,
+            boxShadow: [boxShadow1]),
+        child: Column(
+          children: [
+            Text('سوف يتم ارسال رمز التأكيد عبر البريد الالكتروني'.tr,
+                style: titleMedium),
+            const SizedBox(height: 20),
+            GoHomeButton(text: 'حسنا'.tr, onTap: () => signUp())
+          ],
+        ),
+      ));
+    }
   }
 
   signUp() async {
     if (phoneNumber2.text == '') {
-      return Get.rawSnackbar(message: 'من فضلك ادخل رقم الجوال');
+      return Get.rawSnackbar(message: 'من فضلك ادخل رقم الجوال'.tr);
     }
     var formdata = formstate.currentState;
     if (formdata!.validate()) {
@@ -114,21 +120,21 @@ class SignUpController extends GetxController {
           // goToVerifycode();
         } else if (response['message'] == 'username exist') {
           Get.defaultDialog(
-            title: 'تنبيه',
-            middleText: "اسم المستخدم مستعمل, من فضلك اختر اسم اخر",
-            textCancel: 'حسنا',
+            title: 'تنبيه'.tr,
+            middleText: "اسم المستخدم مستعمل, من فضلك اختر اسم اخر".tr,
+            textCancel: 'حسنا'.tr,
           );
         } else if (response['message'] == "phone exist") {
           Get.defaultDialog(
-            title: 'تنبيه',
-            middleText: "الحساب موجود بالفعل,قم بتسجيل الدخول",
-            textCancel: 'حسنا',
+            title: 'تنبيه'.tr,
+            middleText: "الحساب موجود بالفعل,قم بتسجيل الدخول".tr,
+            textCancel: 'حسنا'.tr,
           );
         } else if (response['message'] == "email exist") {
           Get.defaultDialog(
-            title: 'تنبيه',
-            middleText: "الحساب موجود بالفعل,قم بتسجيل الدخول",
-            textCancel: 'حسنا',
+            title: 'تنبيه'.tr,
+            middleText: "الحساب موجود بالفعل,قم بتسجيل الدخول".tr,
+            textCancel: 'حسنا'.tr,
           );
         } else {
           CustomDialogs.failure();

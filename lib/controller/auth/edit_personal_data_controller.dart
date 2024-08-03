@@ -75,25 +75,25 @@ class EditPersonalDataController extends GetxController {
         if (response['status'] == 'success') {
           User user = User.fromJson(response['data']);
           myServices.setUserData(user);
-          CustomDialogs.success('تم تعديل البيانات');
+          CustomDialogs.success('تم تعديل البيانات'.tr);
           //Get.back();
           Get.offNamed(AppRouteName.mainScreen, arguments: {'page': 3});
         } else if (response['message'] == 'username exist') {
           Get.defaultDialog(
-            title: 'تنبيه',
-            middleText: "اسم المستخدم مستعمل, من فضلك اختر اسم اخر",
-            textCancel: 'حسنا',
+            title: 'تنبيه'.tr,
+            middleText: "اسم المستخدم مستعمل, من فضلك اختر اسم اخر".tr,
+            textCancel: 'حسنا'.tr,
           );
         } else if (response['message'] == "phone exist") {
           Get.defaultDialog(
-            title: 'تنبيه',
-            middleText: "الحساب موجود بالفعل,قم بتسجيل الدخول",
-            textCancel: 'الغاء',
+            title: 'تنبيه'.tr,
+            middleText: "الحساب موجود بالفعل".tr,
+            textCancel: 'الغاء'.tr,
           );
         } else if (response['message'] == "email exist") {
           Get.defaultDialog(
-            title: 'تنبيه',
-            middleText: "الحساب موجود بالفعل,قم بتسجيل الدخول",
+            title: 'تنبيه'.tr,
+            middleText: "الحساب موجود بالفعل".tr,
           );
         } else {
           Get.back();

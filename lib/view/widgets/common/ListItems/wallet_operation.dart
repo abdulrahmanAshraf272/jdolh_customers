@@ -26,19 +26,19 @@ class _WalletOperationListItemState extends State<WalletOperationListItem> {
   @override
   void initState() {
     if (widget.transaction.transType == 'deposit') {
-      transType = 'شحن';
+      transType = 'شحن'.tr;
     } else if (widget.transaction.transType == 'withdrawal') {
-      transType = 'خصم';
+      transType = 'خصم'.tr;
     } else if (widget.transaction.transType == 'R') {
-      transType = 'حجز';
+      transType = 'حجز'.tr;
     } else if (widget.transaction.transType == 'RB') {
-      transType = 'حجز و فاتورة';
+      transType = 'حجز و فاتورة'.tr;
     } else if (widget.transaction.transType == 'B') {
-      transType = 'فاتورة';
+      transType = 'فاتورة'.tr;
     } else if (widget.transaction.transType == 'transferTo') {
-      transType = 'تحويله الى ${widget.transaction.username}';
+      transType = '${'تحويله الى'.tr} ${widget.transaction.username}';
     } else if (widget.transaction.transType == 'transferFrom') {
-      transType = 'تحويله من ${widget.transaction.username}';
+      transType = '${'تحويله من'.tr} ${widget.transaction.username}';
     }
 
     if (widget.transaction.process == 'decrease') {
@@ -67,7 +67,7 @@ class _WalletOperationListItemState extends State<WalletOperationListItem> {
               children: [
                 Text(transType, style: titleMedium),
                 AutoSizeText(
-                  'بتاريخ: ${widget.transaction.createtime}',
+                  '${'بتاريخ:'.tr} ${widget.transaction.createtime}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: titleSmallGray,

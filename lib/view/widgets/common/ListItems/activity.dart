@@ -102,8 +102,8 @@ class _ActivityListItemState extends State<ActivityListItem> {
                           ),
                           children: [
                         widget.cardStatus == 2
-                            ? const TextSpan(text: 'قمت ')
-                            : const TextSpan(text: 'قام '),
+                            ? TextSpan(text: 'قمت '.tr)
+                            : TextSpan(text: 'قام '.tr),
                         if (widget.cardStatus == 0)
                           TextSpan(
                               text: '${widget.activity.username} ',
@@ -115,10 +115,10 @@ class _ActivityListItemState extends State<ActivityListItem> {
                               )),
                         TextSpan(
                           text: widget.activity.type == 'rate'
-                              ? 'بتقييم '
+                              ? 'بتقييم '.tr
                               : widget.activity.type == 'checkin'
-                                  ? 'بتسجيل وصول '
-                                  : 'بتسجيل وصول ',
+                                  ? 'بتسجيل وصول '.tr
+                                  : 'بتسجيل وصول '.tr,
                         ),
                         TextSpan(
                             text: widget.activity.placeName,

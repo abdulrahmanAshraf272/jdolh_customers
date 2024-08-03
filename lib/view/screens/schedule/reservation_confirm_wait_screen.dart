@@ -40,7 +40,7 @@ class ReservationConfirmWaitScreen extends StatelessWidget {
           )),
       floatingActionButton: GoHomeButton(
           onTap: () => controller.onTapConfirmReservation(),
-          text: 'تأكيد الحجز'),
+          text: 'تأكيد الحجز'.tr),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: GetBuilder<ReservationConfirmWaitController>(
           builder: (controller) => SingleChildScrollView(
@@ -72,7 +72,7 @@ class ReservationConfirmWaitScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(20),
                     child: Row(
                       children: [
-                        Text('المقاعد الاضافية: ',
+                        Text('المقاعد الاضافية: '.tr,
                             style: TextStyle(
                               fontWeight: FontWeight.w800,
                               fontSize: 14.sp,
@@ -91,8 +91,8 @@ class ReservationConfirmWaitScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15),
                       child: LargeToggleButtons(
                         optionOne:
-                            'المدعوين (${controller.resInvitors.length})',
-                        optionTwo: 'تفاصيل الطلب',
+                            '${'المدعوين'.tr} (${controller.resInvitors.length})',
+                        optionTwo: 'تفاصيل الطلب'.tr,
                         onTapOne: () => controller.changeSubscreen(true),
                         onTapTwo: () => controller.changeSubscreen(false),
                       ),
@@ -118,7 +118,7 @@ class PriceWillPayedExplain extends StatelessWidget {
     String txt = '';
     if (reservation.resPaymentType == 'R') {
       txt =
-          'المبلغ الذي تم تقسيمه والمراد دفعه هو\n رسوم الحجز: ${reservation.resResCost! + reservation.resResTax!} ريال\n وقيمة الفاتورة تدفع عند الوصول';
+          '${'المبلغ الذي تم تقسيمه والمراد دفعه هو'.tr}\n ${'رسوم الحجز:'.tr} ${reservation.resResCost! + reservation.resResTax!} ريال\n ${'وقيمة الفاتورة تدفع عند الوصول'.tr}';
     } else {
       txt =
           'المبلغ الذي تم تقسيمه والمراد دفعه هو\n رسوم الحجز الفاتورة: ${reservation.resTotalPrice} ريال';
@@ -147,13 +147,13 @@ class HoldReservationTimer extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'من فضلك قم بتأكيد الحجز قبل انتهاء مدة التعليق المسموحة',
+            'من فضلك قم بتأكيد الحجز قبل انتهاء مدة التعليق المسموحة'.tr,
             textAlign: TextAlign.center,
             style: titleMedium,
           ),
           const SizedBox(height: 12),
           Text(
-            'الوقت المتبقي',
+            'الوقت المتبقي'.tr,
             style: titleSmall,
           ),
           const SizedBox(height: 12),
@@ -161,7 +161,7 @@ class HoldReservationTimer extends StatelessWidget {
             int minutes = controller.remainingTime.value ~/ 60;
             int seconds = controller.remainingTime.value % 60;
             return Text(
-              '$minutes دقيقة و $seconds ثانية',
+              '$minutes ${'دقيقة'.tr} ${'و'.tr} $seconds ${'ثانية'.tr}',
               style: titleLarge,
             );
           }),
@@ -183,7 +183,7 @@ class ResInvitorsStatus extends StatelessWidget {
               children: [
                 const SizedBox(height: 15),
                 CustomButton(
-                    onTap: () => controller.getInvitors(), text: 'تحديث'),
+                    onTap: () => controller.getInvitors(), text: 'تحديث'.tr),
                 const SizedBox(height: 10),
                 ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
@@ -204,11 +204,11 @@ class InvitorStatusListItem extends StatelessWidget {
   String displayResInvitorType(int? type) {
     switch (type) {
       case 0:
-        return '( يدفع رسومه فقط )';
+        return '( يدفع رسومه فقط )'.tr;
       case 1:
-        return '( تقسيم رسوم الحجز )';
+        return '( تقسيم رسوم الحجز )'.tr;
       case 2:
-        return '( معزوم )';
+        return '( معزوم )'.tr;
       default:
         return '';
     }
@@ -241,23 +241,23 @@ class InvitorStatusListItem extends StatelessWidget {
               ),
               resinvitor.status == 0
                   ? Text(
-                      'غير مؤكد',
+                      'غير مؤكد'.tr,
                       style: titleSmall.copyWith(color: Colors.grey),
                     )
                   : resinvitor.status == 1
                       ? Text(
-                          'مؤكد',
+                          'مؤكد'.tr,
                           style: titleSmall.copyWith(color: Colors.green),
                         )
                       : resinvitor.status == 2
                           ? Text(
-                              'رفض',
+                              'رفض'.tr,
                               style: titleSmall.copyWith(
                                   color: AppColors.redButton),
                             )
                           : resinvitor.userid == resinvitor.creatorid
                               ? Text(
-                                  'المدير',
+                                  'المدير'.tr,
                                   style: titleSmall.copyWith(
                                       color: AppColors.secondaryColor),
                                 )
@@ -267,7 +267,7 @@ class InvitorStatusListItem extends StatelessWidget {
           const SizedBox(height: 5),
           Row(
             children: [
-              Text('الرسوم: ',
+              Text('${'الرسوم'.tr}: ',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp)),
               Text('${resinvitor.cost!.toStringAsFixed(2)} ريال',

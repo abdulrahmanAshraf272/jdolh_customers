@@ -13,7 +13,7 @@ class AllBchsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(AllBchsController());
     return Scaffold(
-      appBar: customAppBar(title: 'الفروع'),
+      appBar: customAppBar(title: 'الفروع'.tr),
       body: GetBuilder<AllBchsController>(
           builder: (controller) => HandlingDataView(
                 statusRequest: controller.statusRequest,

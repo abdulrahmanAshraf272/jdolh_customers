@@ -32,7 +32,7 @@ class ResetPasswordController extends GetxController {
           if (response['status'] == 'success') {
             goToSuccessScreen();
           } else {
-            Get.rawSnackbar(message: "حدث خطأ حاول مرة اخرى");
+            Get.rawSnackbar(message: "حدث خطأ حاول مرة اخرى".tr);
           }
         } //else => will be hendled by HandlingDataView.
       }
@@ -43,7 +43,7 @@ class ResetPasswordController extends GetxController {
     if (password.text == checkMatchPassword.text) {
       return true;
     }
-    Get.rawSnackbar(message: 'الحقلين غير متطابقين, اعد ادخال كلمة المرور');
+    Get.rawSnackbar(message: 'الحقلين غير متطابقين, اعد ادخال كلمة المرور'.tr);
     return false;
   }
 

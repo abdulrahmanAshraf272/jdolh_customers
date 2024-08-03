@@ -29,7 +29,7 @@ class ResetPasswordScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           //SizedBox(height: Get.height * 0.1),
-                          Text('من فضلك اكتب كلمة السر الجديدة',
+                          Text('من فضلك اكتب كلمة السر الجديدة'.tr,
                               textAlign: TextAlign.center, style: headline2),
                           SizedBox(height: Get.height * 0.06),
 
@@ -38,7 +38,7 @@ class ResetPasswordScreen extends StatelessWidget {
                             visiblePasswordOnTap: () {
                               controller.showPassword();
                             },
-                            labelText: 'كلمة السر',
+                            labelText: 'كلمة السر'.tr,
                             valid: (val) {
                               return validInput(val!, 5, 100, 'password');
                             },
@@ -50,7 +50,7 @@ class ResetPasswordScreen extends StatelessWidget {
                             visiblePasswordOnTap: () {
                               controller.showPassword();
                             },
-                            labelText: 'اعد ادخال كلمة السر',
+                            labelText: 'اعد ادخال كلمة السر'.tr,
                             valid: (val) {
                               return validInput(val!, 5, 100, 'password');
                             },
@@ -60,7 +60,7 @@ class ResetPasswordScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 20),
                           CustomButtonOne(
-                              textButton: 'حفظ',
+                              textButton: 'حفظ'.tr,
                               onPressed: () async {
                                 await controller.resetPassword();
                               }),

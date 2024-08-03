@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/group/create_group_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
-import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
@@ -20,10 +18,10 @@ class CreateGroupScreen extends StatelessWidget {
     Get.put(CreateGroupController());
     return GetBuilder<CreateGroupController>(builder: (controller) {
       return Scaffold(
-        appBar: customAppBar(title: 'انشاء مجموعة'),
+        appBar: customAppBar(title: 'انشاء مجموعة'.tr),
         floatingActionButton: BottomButton(
           onTap: () => controller.createGroup(),
-          text: 'انشاء',
+          text: 'إنشاء'.tr,
           buttonColor: AppColors.secondaryColor,
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -32,18 +30,18 @@ class CreateGroupScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CustomSmallBoldTitle(
-                title: 'العنوان',
+                title: 'العنوان'.tr,
                 topPadding: 20,
                 bottomPadding: 10,
               ),
               CustomTextField(
                   textEditingController: controller.groupName,
-                  hintText: 'عنوان المجموعة'),
+                  hintText: 'عنوان المجموعة'.tr),
               Row(
                 children: [
                   Expanded(
                     child: CustomSmallBoldTitle(
-                      title: 'المضافين للمجموعة',
+                      title: 'المضافين للمجموعة'.tr,
                       topPadding: 20,
                       bottomPadding: 20,
                     ),
@@ -52,7 +50,7 @@ class CreateGroupScreen extends StatelessWidget {
                       onTap: () {
                         controller.onTapAddMembers();
                       },
-                      text: 'أضف للمجموعة'),
+                      text: 'أضف للمجموعة'.tr),
                   const SizedBox(width: 20)
                 ],
               ),
@@ -81,7 +79,7 @@ class CreateGroupScreen extends StatelessWidget {
                           textAlign: TextAlign.center,
                           text: TextSpan(children: [
                             TextSpan(
-                              text: 'المجموعة فارغة!\n',
+                              text: '${'المجموعة فارغة!'.tr}\n',
                               style: TextStyle(
                                   color: AppColors.black.withOpacity(0.5),
                                   fontSize: 16,
@@ -89,7 +87,7 @@ class CreateGroupScreen extends StatelessWidget {
                                   fontFamily: 'Cairo'),
                             ),
                             TextSpan(
-                                text: 'اضف بعد الاصدقاء',
+                                text: 'اضف بعد الاصدقاء'.tr,
                                 style: TextStyle(
                                     color: AppColors.black.withOpacity(0.4),
                                     fontSize: 14,

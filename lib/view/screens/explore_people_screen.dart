@@ -33,7 +33,7 @@ class _ExplorePeopleScreenState extends State<ExplorePeopleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(
-        title: 'الأكثر تقييم خلال اسبوع',
+        title: 'الأكثر تقييما خلال اسبوع'.tr,
       ),
       body: Column(
         children: [

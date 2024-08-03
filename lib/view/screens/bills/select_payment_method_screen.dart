@@ -17,11 +17,11 @@ class SelectPaymentMethodScreen extends StatelessWidget {
       appBar:
           customAppBar(title: '${'فاتورة رقم'.tr} ${controller.bill.billId}'),
       bottomNavigationBar:
-          BottomButton(onTap: () => controller.onTapPay(), text: 'دفع'),
+          BottomButton(onTap: () => controller.onTapPay(), text: 'دفع'.tr),
       body: Column(
         children: [
           const SizedBox(height: 20),
-          const CustomTitle(title: 'طريقة الدفع'),
+          CustomTitle(title: 'طريقة الدفع'.tr),
           const SizedBox(height: 10),
           PaymentMethodsToggle(
               onTapCash: () => controller.selectedMethod = 'cash',
@@ -61,16 +61,16 @@ class _PaymentMethodsToggleState extends State<PaymentMethodsToggle> {
       child: Column(
         children: [
           if (widget.onTapCash != null)
-            option(1, 'الدفع في الفرع', widget.onTapCash!,
+            option(1, 'الدفع في الفرع'.tr, widget.onTapCash!,
                 'assets/icons/cash.png'),
           if (widget.onTapCash != null) const SizedBox(height: 10),
-          option(2, 'الدفع بالبطاقة', widget.onTapCredit,
+          option(2, 'الدفع بالبطاقة'.tr, widget.onTapCredit,
               'assets/icons/credit.png'),
           const SizedBox(height: 10),
-          option(3, 'الدفع بالمحفظة', widget.onTapWallet,
+          option(3, 'الدفع بالمحفظة'.tr, widget.onTapWallet,
               'assets/icons/wallet.png'),
           const SizedBox(height: 10),
-          option(4, 'قسطها على تمارا', widget.onTapTamara,
+          option(4, 'قسطها على تمارا'.tr, widget.onTapTamara,
               'assets/icons/tamara.png'),
         ],
       ),

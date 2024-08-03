@@ -44,7 +44,7 @@ class _ExploreCheckinScreenState extends State<ExploreCheckinScreen> {
           if (value is List<Friend>)
             {
               Get.to(() => FollowersAndFollowingScreen(
-                  title: 'المتواجدين حالياً', data: value))
+                  title: 'المتواجدين حالياً'.tr, data: value))
             }
           else
             {CustomDialogs.failure()}
@@ -87,7 +87,7 @@ class _ExploreCheckinScreenState extends State<ExploreCheckinScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(
-        title: 'الأكثر تسجيل وصول خلال ساعتين',
+        title: 'الأكثر تسجيل وصول خلال ساعتين'.tr,
       ),
       body: Column(
         children: [

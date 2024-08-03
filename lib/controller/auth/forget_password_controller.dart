@@ -22,7 +22,8 @@ class ForgetPasswordController extends GetxController {
       } else {
         Get.rawSnackbar(
             message:
-                'حدث خطأ,ارجع وتأكد من كتابتك لاسم المستخدم او الايميل بشكل صحيح');
+                'حدث خطأ,ارجع وتأكد من كتابتك لاسم المستخدم او الايميل بشكل صحيح'
+                    .tr);
       }
     } //else => will be hendled by HandlingDataView.
   }

@@ -35,17 +35,17 @@ class _SuccessOperationState extends State<SuccessOperation> {
             Center(
                 child: Icon(Icons.check_circle_outline,
                     size: 150.w, color: AppColors.secondaryColor)),
-            Text('تهانيا!', style: headline4),
+            Text('تهانيا!'.tr, style: headline4),
             const SizedBox(height: 15),
             Text(
                 resetPassword
-                    ? 'تم تغيير كلمة السر بنجاح'
-                    : 'تمت انشاء الحساب بنجاح',
+                    ? 'تم تغيير كلمة السر بنجاح'.tr
+                    : 'تمت انشاء الحساب بنجاح'.tr,
                 style: TextStyle(
                     fontSize: 16, color: Colors.black.withOpacity(0.5))),
             const Spacer(),
             CustomButtonOne(
-                textButton: 'ابدأ',
+                textButton: 'ابدأ'.tr,
                 onPressed: () {
                   if (resetPassword) {
                     Get.offAllNamed(AppRouteName.login);

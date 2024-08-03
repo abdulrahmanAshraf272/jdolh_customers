@@ -15,7 +15,7 @@ class DisplayLocationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(DisplayLocationController());
     return Scaffold(
-      appBar: customAppBar(title: 'الموقع'),
+      appBar: customAppBar(title: 'الموقع'.tr),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           controller.goToMyCurrentLocation();

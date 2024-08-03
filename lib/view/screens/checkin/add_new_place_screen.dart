@@ -19,10 +19,10 @@ class AddNewPlaceScreen extends StatelessWidget {
     Get.put(AddNewPlaceController());
     return GetBuilder<AddNewPlaceController>(
         builder: (controller) => Scaffold(
-              appBar: customAppBar(title: 'إضافة مكان'),
+              appBar: customAppBar(title: 'إضافة مكان'.tr),
               floatingActionButton: BottomButton(
                 onTap: () => controller.onTapConfirm(),
-                text: 'تأكيد',
+                text: 'تأكيد'.tr,
                 buttonColor: AppColors.secondaryColor,
               ),
               floatingActionButtonLocation:
@@ -31,23 +31,23 @@ class AddNewPlaceScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
-                    const CustomSmallBoldTitle(
-                        title: 'اسم المكان', bottomPadding: 10),
+                    CustomSmallBoldTitle(
+                        title: 'اسم المكان'.tr, bottomPadding: 10),
                     CustomTextField(
                         textEditingController: controller.placeName,
-                        hintText: 'اضف اسم المكان'),
+                        hintText: 'اضف اسم المكان'.tr),
                     const SizedBox(height: 20),
-                    const CustomSmallBoldTitle(title: 'عنوان المكان'),
+                    CustomSmallBoldTitle(title: 'عنوان المكان'.tr),
                     DateOrLocationDisplayContainer(
                         hintText: controller.placeLocation == ''
-                            ? 'حدد موقع المكان'
+                            ? 'حدد موقع المكان'.tr
                             : controller.placeLocation,
                         iconData: Icons.place,
                         onTap: () {
                           controller.goToAddLocation();
                         }),
                     const SizedBox(height: 20),
-                    const CustomSmallBoldTitle(title: 'نوع المكان'),
+                    CustomSmallBoldTitle(title: 'نوع المكان'.tr),
                     CustomDropdownButton()
                   ],
                 ),
@@ -78,16 +78,16 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
 
   final List<String> items = [
     '---',
-    'مطعم',
-    'كافيه',
-    'مكان عام',
-    'ملاهي',
-    'جيم',
-    'مكان سياحي',
-    'سوبر ماركت',
-    'مول',
-    'محل ملابس',
-    'اخر'
+    'مطعم'.tr,
+    'كافيه'.tr,
+    'مكان عام'.tr,
+    'ملاهي'.tr,
+    'جيم'.tr,
+    'مكان سياحي'.tr,
+    'سوبر ماركت'.tr,
+    'مول'.tr,
+    'محل ملابس'.tr,
+    'اخر'.tr
   ];
 
   @override

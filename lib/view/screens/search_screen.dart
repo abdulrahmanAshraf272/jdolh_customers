@@ -23,12 +23,12 @@ class SearchScreen extends StatelessWidget {
               onChaneged: (value) => controller.seachOnTap(value),
               autoFocus: true,
               hintText: controller.isPersonSearch
-                  ? 'اكتب اسم الشخص'
-                  : 'اكتب اسم المتجر',
+                  ? 'اكتب اسم الشخص'.tr
+                  : 'اكتب اسم المتجر'.tr,
             ),
             LargeToggleButtons(
-                optionOne: 'اشخاص',
-                optionTwo: 'اماكن',
+                optionOne: 'اشخاص'.tr,
+                optionTwo: 'اماكن'.tr,
                 onTapOne: () => controller.activePersonSearch(),
                 onTapTwo: () => controller.inactivePersonSearch()),
             HandlingDataView(

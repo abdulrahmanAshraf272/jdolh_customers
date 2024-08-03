@@ -1,10 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
-import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_name_image.dart';
 
 class PersonWithButtonAndStatus extends StatelessWidget {
   final String name;
@@ -100,7 +100,7 @@ class PersonWithButtonAndStatus extends StatelessWidget {
                   TextButton(
                       onPressed: onTap,
                       child: Text(
-                        buttonText,
+                        buttonText.tr,
                         style: titleSmall2.copyWith(color: buttonColor),
                       ))
                 ],

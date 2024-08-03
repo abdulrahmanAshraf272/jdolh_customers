@@ -39,12 +39,12 @@ class ResRejected extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('تم رفض طلبك'),
+        Text('تم رفض طلبك'.tr),
         const SizedBox(height: 20),
         Text(controller.rejectionReason),
         const SizedBox(height: 40),
         GoHomeButton(
-            text: 'الرئيسية',
+            text: 'الرئيسية'.tr,
             onTap: () {
               Get.toNamed(AppRouteName.mainScreen);
             })
@@ -68,10 +68,10 @@ class ResApproved extends StatelessWidget {
             child: Icon(Icons.check_circle_outline,
                 size: 150.w, color: AppColors.secondaryColor)),
         const SizedBox(height: 20),
-        const Text('تم قبول طلبك!'),
+        Text('تم قبول طلبك!'.tr),
         const SizedBox(height: 40),
         GoHomeButton(
-            text: 'التالي',
+            text: 'التالي'.tr,
             onTap: () {
               controller.gotoPayment();
             })
@@ -94,7 +94,7 @@ class Waiting extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'برجاء الانتظار حتى تتم مراجعة بيانات الحجز',
+                  'برجاء الانتظار حتى تتم مراجعة بيانات الحجز'.tr,
                   style: titleMedium,
                 ),
                 const SizedBox(height: 20),
@@ -105,7 +105,7 @@ class Waiting extends StatelessWidget {
                     onPressed: () {
                       controller.getRes();
                     },
-                    child: const Text('تحديث الصفحة')),
+                    child: Text('تحديث الصفحة'.tr)),
                 const SizedBox(height: 20),
                 if (controller.statusRequest == StatusRequest.loading)
                   const CircularProgressIndicator()

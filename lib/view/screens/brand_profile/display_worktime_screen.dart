@@ -12,12 +12,12 @@ class DisplayWorktimeScreen extends StatelessWidget {
     Get.put(DisplayWorktimeController());
     return GetBuilder<DisplayWorktimeController>(
         builder: (controller) => Scaffold(
-              appBar: customAppBar(title: 'اوقات عمل الفرع'),
+              appBar: customAppBar(title: 'اوقات عمل الفرع'.tr),
               body: SingleChildScrollView(
                 child: Column(children: [
                   const SizedBox(height: 10),
                   DayWorkTimeDisplayer(
-                    day: 'السبت',
+                    day: 'السبت'.tr,
                     timeFromP1:
                         controller.displayTime(controller.satFromP1, context),
                     timeToP1:
@@ -30,7 +30,7 @@ class DisplayWorktimeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   DayWorkTimeDisplayer(
-                    day: 'الاحد',
+                    day: 'الاحد'.tr,
                     timeFromP1:
                         controller.displayTime(controller.sunFromP1, context),
                     timeToP1:
@@ -42,7 +42,7 @@ class DisplayWorktimeScreen extends StatelessWidget {
                     checkboxInit: controller.isSunOff,
                   ),
                   DayWorkTimeDisplayer(
-                    day: 'الاثنين',
+                    day: 'الاثنين'.tr,
                     timeFromP1:
                         controller.displayTime(controller.monFromP1, context),
                     timeToP1:
@@ -54,7 +54,7 @@ class DisplayWorktimeScreen extends StatelessWidget {
                     checkboxInit: controller.isMonOff,
                   ),
                   DayWorkTimeDisplayer(
-                    day: 'الثلاثاء',
+                    day: 'الثلاثاء'.tr,
                     timeFromP1:
                         controller.displayTime(controller.tuesFromP1, context),
                     timeToP1:
@@ -66,7 +66,7 @@ class DisplayWorktimeScreen extends StatelessWidget {
                     checkboxInit: controller.isTuesOff,
                   ),
                   DayWorkTimeDisplayer(
-                    day: 'الاربعاء',
+                    day: 'الاربعاء'.tr,
                     timeFromP1:
                         controller.displayTime(controller.wedFromP1, context),
                     timeToP1:
@@ -78,7 +78,7 @@ class DisplayWorktimeScreen extends StatelessWidget {
                     checkboxInit: controller.isWedOff,
                   ),
                   DayWorkTimeDisplayer(
-                    day: 'الخميس',
+                    day: 'الخميس'.tr,
                     timeFromP1:
                         controller.displayTime(controller.thursFromP1, context),
                     timeToP1:
@@ -90,7 +90,7 @@ class DisplayWorktimeScreen extends StatelessWidget {
                     checkboxInit: controller.isThursOff,
                   ),
                   DayWorkTimeDisplayer(
-                    day: 'الجمعة',
+                    day: 'الجمعة'.tr,
                     timeFromP1:
                         controller.displayTime(controller.friFromP1, context),
                     timeToP1:

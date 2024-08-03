@@ -17,7 +17,7 @@ class CheckinScreen extends StatelessWidget {
     Get.put(CheckinController());
     return GetBuilder<CheckinController>(builder: (controller) {
       return Scaffold(
-          appBar: customAppBar(title: 'تسجيل الوصول'),
+          appBar: customAppBar(title: 'تسجيل الوصول'.tr),
           body: Center(
             child: SingleChildScrollView(
               child: HandlingDataView(
@@ -47,7 +47,7 @@ class CheckinScreen extends StatelessWidget {
                                 ),
                             GoHomeButton(
                               onTap: () => controller.goToAddNewPlace(),
-                              text: 'اضافة مكان',
+                              text: 'اضافة مكان'.tr,
                             ),
                             const SizedBox(height: 20),
                           ],

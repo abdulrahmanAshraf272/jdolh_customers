@@ -38,7 +38,7 @@ class SearchAppBar extends StatelessWidget {
                     ))
                 : const SizedBox(),
             Text(
-              'بحث',
+              'بحث'.tr,
               style: TextStyle(color: Colors.white, fontSize: 14.sp),
             ),
             Expanded(
@@ -57,7 +57,7 @@ class SearchAppBar extends StatelessWidget {
                   onChanged: onChaneged,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    hintText: hintText,
+                    hintText: hintText.tr,
                     hintStyle: const TextStyle(fontSize: 14),
                     border: InputBorder.none,
                   ),

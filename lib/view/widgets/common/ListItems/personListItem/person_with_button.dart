@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
@@ -89,7 +90,7 @@ class PersonWithButtonListItem extends StatelessWidget {
                   TextButton(
                       onPressed: isThisMe ? null : onTap,
                       child: Text(
-                        isThisMe ? '' : buttonText,
+                        isThisMe ? '' : buttonText.tr,
                         style: titleSmall2.copyWith(color: buttonColor),
                       ))
                 ],

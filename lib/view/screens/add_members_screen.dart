@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/add_members_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
-import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/view/widgets/add_group_list_item.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
@@ -16,7 +15,7 @@ class AddMembersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(AddMembersController());
     return Scaffold(
-        appBar: customAppBar(title: 'اضافة اصدقاء'),
+        appBar: customAppBar(title: 'اضافة اصدقاء'.tr),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: GetBuilder<AddMembersController>(
             builder: (controller) => Column(
@@ -26,7 +25,7 @@ class AddMembersScreen extends StatelessWidget {
                     if (controller.withGroups) const AllGroups(),
                     CustomTextField(
                       textEditingController: controller.searchController,
-                      hintText: 'البحث في قائمة الأصدقاء',
+                      hintText: 'البحث في قائمة الأصدقاء'.tr,
                       iconData: Icons.search,
                       onChange: (value) => controller.updateList(value),
                     ),

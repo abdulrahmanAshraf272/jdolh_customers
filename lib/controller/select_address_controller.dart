@@ -176,7 +176,7 @@ class SelectAddressController extends GetxController {
     searchStatusRequest = StatusRequest.loading;
     update();
     var response = await googleMapsService.getSearchSuggestations(
-        country: 'us',
+        country: 'SA',
         lat: myCurrentLatLng.latitude.toString(),
         lng: myCurrentLatLng.longitude.toString(),
         input: input,

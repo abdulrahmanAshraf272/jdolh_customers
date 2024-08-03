@@ -17,12 +17,12 @@ class PaymentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(PaymentController());
     return Scaffold(
-      appBar: customAppBar(title: 'الدفع'),
+      appBar: customAppBar(title: 'الدفع'.tr),
       floatingActionButton: BottomButton(
           onTap: () {
             controller.onTapPay();
           },
-          text: 'تأكيد'),
+          text: 'تأكيد'.tr),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Container(
           width: Get.width,
@@ -38,7 +38,7 @@ class PaymentScreen extends StatelessWidget {
                     title: 'رسوم الحجز'.tr,
                     subtitle: controller.resPolicyText,
                     price:
-                        '${controller.reservation.resResCost!.toStringAsFixed(2)} ريال',
+                        '${controller.reservation.resResCost!.toStringAsFixed(2)} ${'ريال'.tr}',
                   ),
                   const SizedBox(height: 20),
                   IconWithTitleAndSubtitle(
@@ -47,7 +47,7 @@ class PaymentScreen extends StatelessWidget {
                     title: 'قيمة الفاتورة'.tr,
                     subtitle: controller.billPolicyText,
                     price:
-                        '${controller.reservation.resBillCost!.toStringAsFixed(2)} ريال',
+                        '${controller.reservation.resBillCost!.toStringAsFixed(2)} ${'ريال'.tr}',
                   ),
                   SelectPaymentMethod(),
                   Divider(
@@ -76,7 +76,7 @@ class SelectPaymentMethod extends StatelessWidget {
             color: AppColors.gray, borderRadius: BorderRadius.circular(10)),
         child: Column(
           children: [
-            Text('طريقة الدفع', style: titleMedium),
+            Text('طريقة الدفع'.tr, style: titleMedium),
             const SizedBox(height: 20),
             PaymentMethodsToggle(
                 onTapCredit: () => controller.paymentMethod = 'credit',

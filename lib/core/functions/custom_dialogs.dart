@@ -13,7 +13,7 @@ abstract class CustomDialogs {
       ..textColor = Colors.white // Black for text (default or your preference)
       ..loadingStyle = EasyLoadingStyle.custom;
 
-    EasyLoading.showSuccess(title);
+    EasyLoading.showSuccess(title.tr);
   }
 
   static failure([String title = 'حدث خطأ']) {
@@ -26,7 +26,7 @@ abstract class CustomDialogs {
       ..maskType = EasyLoadingMaskType.none
       ..loadingStyle = EasyLoadingStyle.custom;
 
-    EasyLoading.showError(title);
+    EasyLoading.showError(title.tr);
   }
 
   static loading([String title = 'برجاء الانتظار...']) {
@@ -39,10 +39,10 @@ abstract class CustomDialogs {
           AppColors.primaryColor // Black for text (default or your preference)
       ..loadingStyle = EasyLoadingStyle.custom;
 
-    EasyLoading.show(status: title);
+    EasyLoading.show(status: title.tr);
   }
 
-  static dissmissLoading([String title = 'حدث خطأ']) {
+  static dissmissLoading() {
     EasyLoading.dismiss();
   }
 

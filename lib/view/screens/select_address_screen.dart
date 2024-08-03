@@ -18,7 +18,7 @@ class SelectAddressScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(SelectAddressController());
     return Scaffold(
-      appBar: customAppBar(title: 'تحديد الموقع'),
+      appBar: customAppBar(title: 'تحديد الموقع'.tr),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           controller.goToMyCurrentLocation();
@@ -55,7 +55,7 @@ class SelectAddressScreen extends StatelessWidget {
                     right: 120.w,
                     left: 120.w,
                     child: GoHomeButton(
-                      text: 'حفظ',
+                      text: 'حفظ'.tr,
                       onTap: () {
                         controller.onTapSave();
                       },
@@ -74,7 +74,7 @@ Widget buildFloatingSearchBar(BuildContext context) {
       FloatingSearchBarController();
   return GetBuilder<SelectAddressController>(
       builder: (controller) => FloatingSearchBar(
-            hint: 'بحث...',
+            hint: 'بحث...'.tr,
             controller: floatingSearchBarController,
             margins: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),

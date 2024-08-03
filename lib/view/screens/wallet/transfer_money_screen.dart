@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
@@ -40,26 +39,26 @@ class TranferMoneyScreen extends StatelessWidget {
                     textEditingController: controller.amount,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'من فضلك ادخل المبلغ';
+                        return 'من فضلك ادخل المبلغ'.tr;
                       }
 
                       // Check for leading zeros
                       if (value.startsWith('0') &&
                           value.length > 1 &&
                           !value.startsWith('0.')) {
-                        return 'رقم غير صالح';
+                        return 'رقم غير صالح'.tr;
                       }
 
                       // Check for valid decimal format
                       if (value.contains(',')) {
-                        return 'رقم غير صالح';
+                        return 'رقم غير صالح'.tr;
                       }
 
                       return null;
                     },
                   ),
                   const SizedBox(height: 10),
-                  Text('ريال'),
+                  Text('ريال'.tr),
                   const SizedBox(height: 20),
                   SelectUser(
                       onTapAdd: () => controller.onTapAddMembers(),
@@ -95,7 +94,7 @@ class SelectUser extends StatelessWidget {
         const SizedBox(height: 10),
         CustomButton(
           onTap: onTapAdd,
-          text: user == null ? 'اختر المستخدم' : 'تغيير المستخدم',
+          text: user == null ? 'اختر المستخدم'.tr : 'تغيير المستخدم'.tr,
           size: 1.2,
         )
       ],

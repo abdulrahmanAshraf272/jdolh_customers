@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,11 +6,10 @@ import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
-import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button_and_status.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_textfield.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/common/data_or_location_display_container.dart';
@@ -21,18 +19,18 @@ class EditOccasionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    dataSavedSuccessfuly() {
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.success,
-        animType: AnimType.rightSlide,
-        title: 'تم حفظ البيانات',
-        btnOkText: 'حسنا',
-        btnOkOnPress: () {
-          Get.back();
-        },
-      ).show();
-    }
+    // dataSavedSuccessfuly() {
+    //   AwesomeDialog(
+    //     context: context,
+    //     dialogType: DialogType.success,
+    //     animType: AnimType.rightSlide,
+    //     title: 'تم حفظ البيانات',
+    //     btnOkText: 'حسنا',
+    //     btnOkOnPress: () {
+    //       Get.back();
+    //     },
+    //   ).show();
+    // }
 
     Get.put(EditOccasionController());
     return GetBuilder<EditOccasionController>(
@@ -43,10 +41,10 @@ class EditOccasionScreen extends StatelessWidget {
                 onTap: () async {
                   var result = await controller.editOccasion();
                   if (result == true) {
-                    dataSavedSuccessfuly();
+                    CustomDialogs.success('تم الحفظ'.tr);
                   }
                 },
-                text: 'حفظ',
+                text: 'حفظ'.tr,
                 buttonColor: AppColors.secondaryColor,
               ),
               floatingActionButtonLocation:
@@ -55,23 +53,23 @@ class EditOccasionScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
-                    const CustomSmallBoldTitle(title: 'عنوان المناسبة'),
+                    CustomSmallBoldTitle(title: 'عنوان المناسبة'.tr),
                     const SizedBox(height: 10),
                     CustomTextField(
                         textEditingController: controller.occasionTitle,
-                        hintText: 'مثال: عشاء, عيد ميلاد, ..'),
+                        hintText: 'مثال: عشاء, عيد ميلاد, ..'.tr),
                     const SizedBox(height: 10),
-                    const CustomSmallBoldTitle(title: 'تاريخ المناسبة'),
+                    CustomSmallBoldTitle(title: 'تاريخ المناسبة'.tr),
                     DateOrLocationDisplayContainer(
                       hintText: controller.selectedDateFormatted ??
-                          'اختر تاريخ المناسبة',
+                          'اختر تاريخ المناسبة'.tr,
                       iconData: Icons.date_range,
                       onTap: () {
                         controller.selectDate(context);
                       },
                     ),
                     const SizedBox(height: 10),
-                    const CustomSmallBoldTitle(title: 'وقت المناسبة'),
+                    CustomSmallBoldTitle(title: 'وقت المناسبة'.tr),
                     DateOrLocationDisplayContainer(
                       hintText: controller.timeInAmPm(),
                       iconData: Icons.date_range,
@@ -80,26 +78,26 @@ class EditOccasionScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 10),
-                    const CustomSmallBoldTitle(title: 'الموقع'),
+                    CustomSmallBoldTitle(title: 'الموقع'.tr),
                     DateOrLocationDisplayContainer(
                         hintText: controller.occasionLocation,
                         iconData: Icons.place,
                         onTap: () {
                           controller.goToAddLocation();
                         }),
-                    const CustomSmallBoldTitle(title: 'رابط الموقع'),
+                    CustomSmallBoldTitle(title: 'رابط الموقع'.tr),
                     const SizedBox(height: 10),
                     CustomTextField(
                         textEditingController: controller.locationLink,
-                        hintText: 'يمكنك اضافة رابط الموقع من خرائط جوجل'),
+                        hintText: 'يمكنك اضافة رابط الموقع من خرائط جوجل'.tr),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 20),
                       child: Row(
                         children: [
-                          const Expanded(
+                          Expanded(
                             child: CustomSmallBoldTitle(
-                              title: 'المدعوين للمناسبة',
+                              title: 'المدعوين للمناسبة'.tr,
                               topPadding: 20,
                               bottomPadding: 20,
                               rightPdding: 0,
@@ -110,7 +108,7 @@ class EditOccasionScreen extends StatelessWidget {
                               onTap: () {
                                 controller.onTapAddMembers();
                               },
-                              text: 'إضافة مدعوين'),
+                              text: 'إضافة مدعوين'.tr),
                         ],
                       ),
                     ),
@@ -146,7 +144,8 @@ class EditOccasionScreen extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                   text: TextSpan(children: [
                                     TextSpan(
-                                      text: 'لا يوجد مدعويين للمناسبة!\n',
+                                      text:
+                                          '${'لا يوجد اصدقاء في المناسبة!'.tr}\n',
                                       style: TextStyle(
                                           color:
                                               AppColors.black.withOpacity(0.5),
@@ -155,7 +154,7 @@ class EditOccasionScreen extends StatelessWidget {
                                           fontFamily: 'Cairo'),
                                     ),
                                     TextSpan(
-                                        text: 'اضف بعد الاصدقاء',
+                                        text: 'اضف بعد الاصدقاء'.tr,
                                         style: TextStyle(
                                             color: AppColors.black
                                                 .withOpacity(0.4),
@@ -175,7 +174,7 @@ AppBar _appBarWithTextButton({required void Function() onTapLeave}) {
   return AppBar(
     centerTitle: true,
     title: Text(
-      'المجموعة',
+      'المجموعة'.tr,
       style: TextStyle(
         fontWeight: FontWeight.w600,
         fontSize: 18.sp,
@@ -184,13 +183,13 @@ AppBar _appBarWithTextButton({required void Function() onTapLeave}) {
     ),
     leading: IconButton(
       onPressed: () => Get.back(),
-      icon: Icon(Icons.arrow_back_ios, color: AppColors.white),
+      icon: const Icon(Icons.arrow_back_ios, color: AppColors.white),
     ),
     actions: [
       TextButton(
           onPressed: onTapLeave,
           child: Text(
-            'حذف',
+            'حذف'.tr,
             style: titleSmall.copyWith(color: AppColors.redButton),
           ))
     ],

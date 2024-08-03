@@ -52,9 +52,9 @@ class VerifycodeController extends GetxController {
         statusRequest = StatusRequest.none;
         update();
         Get.defaultDialog(
-          title: 'تنبيه',
-          middleText: "الرمز الذي ادخلته غير صحيح!",
-          textCancel: 'حسنا',
+          title: 'تنبيه'.tr,
+          middleText: "الرمز الذي ادخلته غير صحيح!".tr,
+          textCancel: 'حسنا'.tr,
         );
       }
     }
@@ -78,9 +78,9 @@ class VerifycodeController extends GetxController {
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
-        Get.rawSnackbar(message: "تم ارسال الرمز بنجاح!");
+        Get.rawSnackbar(message: "تم ارسال الرمز بنجاح!".tr);
       } else {
-        Get.rawSnackbar(message: "حدث خطأ حاول مرة اخرى");
+        Get.rawSnackbar(message: "حدث خطأ حاول مرة اخرى".tr);
       }
     } //else => will be hendled by HandlingDataView.
     remainingSeconds.value = 60;

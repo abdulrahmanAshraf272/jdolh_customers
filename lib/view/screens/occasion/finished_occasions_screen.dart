@@ -15,7 +15,7 @@ class FinishedOccasionsScreen extends StatelessWidget {
 
     return GetBuilder<FinishedOccasionsController>(
         builder: (controller) => Scaffold(
-            appBar: customAppBar(title: 'المناسبات السابقة'),
+            appBar: customAppBar(title: 'المناسبات السابقة'.tr),
             body: GetBuilder<FinishedOccasionsController>(
                 builder: (controller) => RefreshIndicator(
                       onRefresh: () async {
@@ -27,7 +27,7 @@ class FinishedOccasionsScreen extends StatelessWidget {
                             child: HandlingDataRequest(
                               statusRequest: controller.statusRequest,
                               widget: controller.occasionsToDisplay.isEmpty
-                                  ? Center(child: Text('لا توجد مناسبات'))
+                                  ? Center(child: Text('لا توجد مناسبات'.tr))
                                   : ListView.builder(
                                       //physics: const BouncingScrollPhysics(),
                                       itemCount:

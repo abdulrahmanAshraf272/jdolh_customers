@@ -22,7 +22,7 @@ class SelectPaymentMethodController extends GetxController {
 
   onTapPay() {
     if (selectedMethod == '') {
-      Get.rawSnackbar(message: 'من فضلك قم باختيار طريقة الدفع');
+      Get.rawSnackbar(message: 'من فضلك قم باختيار طريقة الدفع'.tr);
       return;
     }
 
@@ -86,11 +86,11 @@ class SelectPaymentMethodController extends GetxController {
             routeName: '/displayPayment',
             title: 'تم دفع فاتورة',
             body: 'فاتورة رقم ${bill.billId} من حجز رقم ${bill.billResid}');
-        CustomDialogs.success('تم دفع الفاتورة');
+        CustomDialogs.success('تم دفع الفاتورة'.tr);
         Get.until((route) => route.isFirst);
       } else {
         if (response['message'] == 'not enough money') {
-          CustomDialogs.failure('لا يوجد رصيد كافي');
+          CustomDialogs.failure('لا يوجد رصيد كافي'.tr);
         } else {
           CustomDialogs.failure();
         }
@@ -107,7 +107,7 @@ class SelectPaymentMethodController extends GetxController {
     var redirectUrl = await initiateEdfaPaymentByTamara(orderId);
     if (redirectUrl != null) {
       Get.to(() => WebviewScreen(
-            title: 'الدفع',
+            title: 'الدفع'.tr,
             url: redirectUrl,
             payment: 'Bill',
             orderId: orderId,
@@ -124,7 +124,7 @@ class SelectPaymentMethodController extends GetxController {
     if (redirectUrl != null) {
       print('shit');
       Get.to(() => WebviewScreen(
-            title: 'الدفع',
+            title: 'الدفع'.tr,
             url: redirectUrl,
             payment: 'Bill',
             orderId: orderId,

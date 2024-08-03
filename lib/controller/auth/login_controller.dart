@@ -49,10 +49,10 @@ class LoginController extends GetxController {
           }
         } else {
           if (response['message'] == "The password is not correct") {
-            Get.rawSnackbar(message: 'كلمة السر غير صحيحة');
+            Get.rawSnackbar(message: 'كلمة السر غير صحيحة'.tr);
           } else {
             Get.rawSnackbar(
-                message: 'اسم المستخدم او البريد الالكتروني غير صحيح');
+                message: 'اسم المستخدم او البريد الالكتروني غير صحيح'.tr);
           }
         }
       } else {
@@ -81,7 +81,7 @@ class LoginController extends GetxController {
 
   goToForgetPassword() {
     if (usernameOrEmail.text.isEmpty) {
-      Get.rawSnackbar(message: "من فضلك ادخل الايميل او اسم المستخدم");
+      Get.rawSnackbar(message: "من فضلك ادخل الايميل او اسم المستخدم".tr);
     } else {
       Get.toNamed(AppRouteName.forgetPassword,
           arguments: {"email": usernameOrEmail.text, 'resetPassword': 1});

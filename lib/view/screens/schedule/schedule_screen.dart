@@ -53,13 +53,13 @@ class ScheduleScreen extends StatelessWidget {
                       children: [
                         Expanded(
                             child: Text(
-                                'الحجوزات القادمة: ${controller.reservationComming.length}',
+                                '${'الحجوزات القادمة:'.tr} ${controller.reservationComming.length}',
                                 style: titleSmall)),
                         TextButton(
                             onPressed: () =>
                                 controller.displayAllCommingReservations(),
                             child: Text(
-                              'عرض الكل',
+                              'عرض الكل'.tr,
                               style: TextStyle(
                                   color: AppColors.secondaryColor,
                                   fontSize: 11.sp),
@@ -121,10 +121,10 @@ class DisplayEmptyResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return toDayCount == 0 && allDaysCount == 0
-        ? Center(child: Text('لا توجد حجوزات قادمة'))
+        ? Center(child: Text('لا توجد حجوزات قادمة'.tr))
         : toDayCount == 0 && allDaysCount != 0
-            ? Center(child: Text('لا توجد حجوزات في هذا اليوم'))
-            : SizedBox();
+            ? Center(child: Text('لا توجد حجوزات في هذا اليوم'.tr))
+            : const SizedBox();
   }
 }
 

@@ -31,7 +31,7 @@ class BillPaymentResultScreen extends StatelessWidget {
                                 size: 150.h, color: AppColors.secondaryColor)),
                         const SizedBox(height: 10),
                         Text(
-                          'تمت عملية الدفع بنجاح',
+                          'تمت عملية الدفع بنجاح'.tr,
                           style: titleLarge,
                         ),
                         const SizedBox(height: 10),

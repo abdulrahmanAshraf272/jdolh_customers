@@ -44,14 +44,13 @@ class PaymentFailed extends StatelessWidget {
           size: 100,
         ),
         Text(
-          'عملية دفع غير ناجحة',
+          textAlign: TextAlign.center,
+          'عملية دفع غير ناجحة'.tr,
           style: titleLarge,
         ),
         const SizedBox(height: 30),
         GoHomeButton(onTap: () {
-          final controller = Get.put(PaymentResultController());
-          controller.payByCredit();
-          //Get.offAllNamed(AppRouteName.mainScreen);
+          Get.offAllNamed(AppRouteName.mainScreen);
         })
       ],
     );
@@ -77,11 +76,15 @@ class ReservationConfirmed extends StatelessWidget {
                   size: 150.h, color: AppColors.secondaryColor)),
           const SizedBox(height: 10),
           Text(
-            'تهانينا, تم تأكيد الحجز',
+            textAlign: TextAlign.center,
+            'تهانينا, تم تأكيد الحجز'.tr,
             style: titleLarge,
           ),
           const SizedBox(height: 10),
-          Text('شكراً لاختيارك جدولة', style: titleMedium),
+          Text(
+              textAlign: TextAlign.center,
+              'شكراً لاختيارك جدولة'.tr,
+              style: titleMedium),
           const SizedBox(height: 10),
           const Divider(thickness: 1, endIndent: 20, indent: 20),
           const SizedBox(height: 10),
@@ -98,7 +101,7 @@ class ReservationConfirmed extends StatelessWidget {
           const SizedBox(height: 20),
           DisplayDetails(
             title:
-                'وقت الحجز: ${controller.reservation.resDate} - الساعة: ${controller.reservationTime}',
+                '${'وقت الحجز'.tr}: ${controller.reservation.resDate} - ${'الساعة'.tr}: ${controller.reservationTime}',
             color: AppColors.gray,
             onTap: () {},
           ),
@@ -108,7 +111,7 @@ class ReservationConfirmed extends StatelessWidget {
             children: [
               Expanded(
                 child: DisplayDetails(
-                  title: 'مشاركة عنوان الفرع',
+                  title: 'مشاركة عنوان الفرع'.tr,
                   color: AppColors.secondaryColor300,
                   onTap: () => controller.onTapShareLocation(),
                 ),
@@ -116,7 +119,7 @@ class ReservationConfirmed extends StatelessWidget {
               const SizedBox(width: 7),
               Expanded(
                 child: DisplayDetails(
-                  title: 'عرض على الخريطة',
+                  title: 'عرض على الخريطة'.tr,
                   color: AppColors.secondaryColor300,
                   onTap: () => controller.onTapDisplayLocation(),
                 ),

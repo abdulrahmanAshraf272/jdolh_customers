@@ -148,9 +148,9 @@ class _ItemOptionWidgetState extends State<ItemOptionWidget> {
           ),
           const SizedBox(height: 5),
           if (widget.itemOption.isMultiselect == 0)
-            const Text(
-              'اختر 1',
-              style: TextStyle(fontSize: 12),
+            Text(
+              'اختر 1'.tr,
+              style: const TextStyle(fontSize: 12),
             ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,16 +216,16 @@ class IsBasicText extends StatelessWidget {
               : Colors.grey.withOpacity(0.1),
           borderRadius: BorderRadius.circular(30)),
       child: isBasic == 1
-          ? const Text(
-              'مطلوب',
-              style: TextStyle(
+          ? Text(
+              'مطلوب'.tr,
+              style: const TextStyle(
                   color: AppColors.secondaryColor,
                   fontSize: 10,
                   fontWeight: FontWeight.bold),
             )
-          : const Text(
-              'اختياري',
-              style: TextStyle(
+          : Text(
+              'اختياري'.tr,
+              style: const TextStyle(
                   color: Colors.grey,
                   fontSize: 10,
                   fontWeight: FontWeight.bold),

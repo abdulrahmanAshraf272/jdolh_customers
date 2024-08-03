@@ -87,43 +87,46 @@ class HeaderContainer extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10),
+            child: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: AutoSizeText(
+                        '$fractionPart.',
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontSize: 20.sp,
+                            color: AppColors.textDark,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  Flexible(
                     child: AutoSizeText(
-                      '$fractionPart.',
+                      integerPart,
                       maxLines: 1,
                       style: TextStyle(
-                          fontSize: 20.sp,
+                          fontSize: 40.sp,
                           color: AppColors.textDark,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                ),
-                Flexible(
-                  child: AutoSizeText(
-                    integerPart,
-                    maxLines: 1,
-                    style: TextStyle(
-                        fontSize: 40.sp,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12, right: 3, left: 3),
+                    child: Text(
+                      'ريال'.tr,
+                      style: const TextStyle(
+                        fontSize: 14,
                         color: AppColors.textDark,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 12, right: 3, left: 3),
-                  child: Text(
-                    'ريال'.tr,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textDark,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Text('رصيد المحفظة'.tr, style: titleSmall),

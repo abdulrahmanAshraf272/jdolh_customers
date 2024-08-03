@@ -89,13 +89,14 @@ class PaymentTypeText extends StatelessWidget {
                 children: [
                   TextSpan(
                       text:
-                          'رسوم الحجز: ${reservation.resResCost! + reservation.resResTax!} ريال  '),
+                          '${'رسوم الحجز:'.tr} ${reservation.resResCost! + reservation.resResTax!} ريال  '),
                   reservation.resResPayed == 1
-                      ? const TextSpan(
-                          text: 'مدفوع', style: TextStyle(color: Colors.green))
-                      : const TextSpan(
-                          text: 'غير مدفوع',
-                          style: TextStyle(color: Colors.red))
+                      ? TextSpan(
+                          text: 'مدفوع'.tr,
+                          style: const TextStyle(color: Colors.green))
+                      : TextSpan(
+                          text: 'غير مدفوع'.tr,
+                          style: const TextStyle(color: Colors.red))
                 ]),
           ),
           const SizedBox(height: 10),
@@ -106,18 +107,19 @@ class PaymentTypeText extends StatelessWidget {
                 children: [
                   TextSpan(
                       text:
-                          'قيمة الفاتورة: ${reservation.resBillCost! + reservation.resBillTax!} ريال  '),
+                          '${'قيمة الفاتورة:'.tr} ${reservation.resBillCost! + reservation.resBillTax!} ريال  '),
                   reservation.resBillPayed == 1
-                      ? const TextSpan(
-                          text: 'مدفوع', style: TextStyle(color: Colors.green))
-                      : const TextSpan(
-                          text: 'غير مدفوع',
-                          style: TextStyle(color: Colors.red))
+                      ? TextSpan(
+                          text: 'مدفوع'.tr,
+                          style: const TextStyle(color: Colors.green))
+                      : TextSpan(
+                          text: 'غير مدفوع'.tr,
+                          style: const TextStyle(color: Colors.red))
                 ]),
           ),
           const SizedBox(height: 15),
           Text(
-            'شامل ضريبة القيمة المضافة',
+            'شامل ضريبة القيمة المضافة'.tr,
             style: titleSmall,
           ),
         ],

@@ -1,31 +1,21 @@
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/auth/forget_password_controller.dart';
-import 'package:jdolh_customers/controller/bills/bill_payment_result_controller.dart';
-import 'package:jdolh_customers/controller/brand_profile/add_res_invitors_controller.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/middleware/my_middleware.dart';
-import 'package:jdolh_customers/test_payment.dart';
-import 'package:jdolh_customers/test_screen.dart';
-import 'package:jdolh_customers/test_screen2.dart';
 import 'package:jdolh_customers/view/screens/add_members_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/edit_personal_data_screen.dart';
 import 'package:jdolh_customers/view/screens/bills/bill_details_screen.dart';
 import 'package:jdolh_customers/view/screens/bills/bill_payment_result_screen.dart';
 import 'package:jdolh_customers/view/screens/bills/divide_bill_screen.dart';
 import 'package:jdolh_customers/view/screens/bills/select_payment_method_screen.dart';
-import 'package:jdolh_customers/view/screens/brand_profile/add_res_invitors_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/all_bchs_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/display_worktime_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/set_res_time_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/wait_for_approve_screen.dart';
-import 'package:jdolh_customers/view/screens/checkin/add_members_checkin_screen.dart';
 import 'package:jdolh_customers/view/screens/checkin/add_new_place_screen.dart';
 import 'package:jdolh_customers/view/screens/checkin/checkin_confirm_screen.dart';
 import 'package:jdolh_customers/view/screens/checkin/checkin_screen.dart';
 import 'package:jdolh_customers/view/screens/display_location_screen.dart';
 
-import 'package:jdolh_customers/view/screens/appt_details_screen.dart';
-import 'package:jdolh_customers/view/screens/appt_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/login_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/reset_password_screen.dart';
 import 'package:jdolh_customers/view/screens/auth/forget_password_screen.dart';
@@ -41,7 +31,6 @@ import 'package:jdolh_customers/view/screens/notifications_screen.dart';
 import 'package:jdolh_customers/view/screens/occasion/create_occasion_screen.dart';
 import 'package:jdolh_customers/view/screens/explore_brand_screen.dart';
 import 'package:jdolh_customers/view/screens/explore_people_screen.dart';
-import 'package:jdolh_customers/view/screens/followers_and_following_screen.dart';
 import 'package:jdolh_customers/view/screens/friends_activities_screen.dart';
 import 'package:jdolh_customers/view/screens/groups/edit_group_screen.dart';
 import 'package:jdolh_customers/view/screens/groups/group_details_screen.dart';
@@ -61,7 +50,6 @@ import 'package:jdolh_customers/view/screens/person_profile_screen.dart';
 import 'package:jdolh_customers/view/screens/res_archive_details_screen.dart';
 import 'package:jdolh_customers/view/screens/res_archive_screen.dart';
 import 'package:jdolh_customers/view/screens/res_occasion_screen.dart';
-import 'package:jdolh_customers/view/screens/reservation_done_screen.dart';
 import 'package:jdolh_customers/view/screens/reservation_search_screen.dart';
 import 'package:jdolh_customers/view/screens/schedule/reservation_confirm_wait_screen.dart';
 import 'package:jdolh_customers/view/screens/schedule/reservation_details_screen.dart';
@@ -240,12 +228,6 @@ List<GetPage> routes = [
   ),
 
   GetPage(
-    name: AppRouteName.appt,
-    page: () => const ApptScreen(),
-  ),
-  GetPage(
-      name: AppRouteName.apptDetails, page: () => const ApptDetailsScreen()),
-  GetPage(
     name: AppRouteName.bills,
     page: () => const BillsScreen(),
   ),
@@ -330,10 +312,7 @@ List<GetPage> routes = [
     name: AppRouteName.myProfile,
     page: () => const MyProfileScreen(),
   ),
-  GetPage(
-    name: AppRouteName.reservationDone,
-    page: () => const ReservationDoneScreen(),
-  ),
+
   GetPage(
     name: AppRouteName.reservation,
     page: () => const ReservationSearchScreen(),

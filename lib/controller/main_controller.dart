@@ -5,25 +5,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
-import 'package:jdolh_customers/core/constants/strings.dart';
-import 'package:jdolh_customers/core/functions/dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/location_services.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/my_profile.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
-import 'package:jdolh_customers/data/models/occasion.dart';
-import 'package:jdolh_customers/data/models/person_with_follow_state.dart';
-import 'package:jdolh_customers/view/screens/appt_details_screen.dart';
-import 'package:jdolh_customers/view/screens/appt_screen.dart';
-import 'package:jdolh_customers/view/screens/occasion/create_occasion_screen.dart';
-import 'package:jdolh_customers/view/screens/followers_and_following_screen.dart';
 import 'package:jdolh_customers/view/screens/home_screen.dart';
 import 'package:jdolh_customers/view/screens/more_screen.dart';
-import 'package:jdolh_customers/view/screens/occasion/occasions_screen.dart';
 import 'package:jdolh_customers/view/screens/res_occasion_screen.dart';
 import 'package:jdolh_customers/view/screens/reservation_search_screen.dart';
-import 'package:jdolh_customers/view/screens/schedule/schedule_screen.dart';
 
 class MainController extends GetxController {
   // late bool serviceEnabled;

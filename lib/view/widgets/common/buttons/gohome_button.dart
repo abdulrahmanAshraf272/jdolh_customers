@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 
@@ -32,7 +33,7 @@ class GoHomeButton extends StatelessWidget {
           width: width.w,
           alignment: Alignment.center,
           child: Text(
-            text,
+            text.tr,
             style: titleMedium.copyWith(color: textColor),
           ),
         ),

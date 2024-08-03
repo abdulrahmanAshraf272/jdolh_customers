@@ -19,10 +19,10 @@ class DivideBillScreen extends StatelessWidget {
     const Color textColor2 = Color(0xFF5c5c5d);
     final controller = Get.put(DivideBillController());
     return Scaffold(
-      appBar: customAppBar(title: 'تقسيم فاتورة'),
+      appBar: customAppBar(title: 'تقسيم الفاتورة'.tr),
       floatingActionButton: GoHomeButton(
         onTap: () => controller.onTapDivideBill(),
-        text: 'تقسيم الفاتورة',
+        text: 'تقسيم الفاتورة'.tr,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: GetBuilder<DivideBillController>(
@@ -32,7 +32,7 @@ class DivideBillScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'المجموع مع الضريبة(${controller.taxPercent}%)',
+                      '${'المجموع مع الضريبة'.tr} (${controller.taxPercent}%)',
                       style: TextStyle(color: textColor2, fontSize: 12.sp),
                     ),
                     const SizedBox(height: 15),
@@ -44,18 +44,19 @@ class DivideBillScreen extends StatelessWidget {
                     controller.members.isEmpty
                         ? Text(
                             textAlign: TextAlign.center,
-                            'قم باختيار الاصدقاء الذي ترغب بمشاركة قيمة الفاتورة معهم',
+                            'قم باختيار الاصدقاء الذي ترغب بمشاركة قيمة الفاتورة معهم'
+                                .tr,
                             style: titleMedium)
                         : Text(
                             textAlign: TextAlign.center,
-                            'ستقسم قيمة الفاتورة على ${controller.members.length + 1} افراد\n انت و ${controller.members.length} من اصدقائك\nرسوم الفرد: ${controller.calculatePriceForEach().toStringAsFixed(2)} ريال',
+                            '${'ستقسم قيمة الفاتورة على'.tr} ${controller.members.length + 1} ${'افراد'.tr}\n ${'انت و'.tr} ${controller.members.length} ${'من اصدقائك'.tr}\n${'رسوم الفرد'.tr}: ${controller.calculatePriceForEach().toStringAsFixed(2)} ${'ريال'}',
                             style: titleMedium),
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        const Expanded(
+                        Expanded(
                           child: CustomSmallBoldTitle(
-                            title: 'الأصدقاء',
+                            title: 'الأصدقاء'.tr,
                             bottomPadding: 20,
                           ),
                         ),
@@ -63,7 +64,7 @@ class DivideBillScreen extends StatelessWidget {
                             onTap: () {
                               controller.onTapAddMembers();
                             },
-                            text: 'إضافة اصدقاء'),
+                            text: 'إضافة اصدقاء'.tr),
                       ],
                     ),
                     const SizedBox(height: 10),

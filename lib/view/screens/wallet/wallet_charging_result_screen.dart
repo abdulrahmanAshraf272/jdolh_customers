@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/wallet/wallet_charging_result_controller.dart';
@@ -33,16 +32,20 @@ class WalletChargingResultScreen extends StatelessWidget {
                                       color: AppColors.secondaryColor)),
                               const SizedBox(height: 10),
                               Text(
-                                '${'تهانينا, تم شحن مبلغ'.tr} ${controller.amount} ريال',
+                                textAlign: TextAlign.center,
+                                '${'تهانينا, تم شحن مبلغ'.tr} ${controller.amount} ${'ريال'.tr}',
                                 style: titleLarge,
                               ),
                               const SizedBox(height: 10),
                               Text(
+                                textAlign: TextAlign.center,
                                 '${'رصيدك الان'.tr} ${controller.newBalance} ${'ريال'.tr}',
                                 style: headline4,
                               ),
                               const SizedBox(height: 10),
-                              Text('شكراً لاختيارك جدولة'.tr,
+                              Text(
+                                  textAlign: TextAlign.center,
+                                  'شكراً لاختيارك جدولة'.tr,
                                   style: titleMedium),
                               const SizedBox(height: 20),
                               GoHomeButton(onTap: () {
@@ -51,7 +54,7 @@ class WalletChargingResultScreen extends StatelessWidget {
                             ],
                           ),
                         )
-                      : Center(child: const PaymentFailed())))),
+                      : const Center(child: PaymentFailed())))),
     );
   }
 }

@@ -18,7 +18,8 @@ onClickNotificationOnTerminated() async {
 }
 
 onClickNotificatoinOnBackground() {
-  FirebaseMessaging.onMessageOpenedApp.listen(handlingClickedNotification);
+  FirebaseMessaging.onMessageOpenedApp
+      .listen(handlingClickedNotificationInBackground);
 }
 
 //This function is stream, so it must added in place when the app is just started
@@ -91,6 +92,23 @@ Future<void> handlingClickedNotification(RemoteMessage remoteMessage) async {
       }
     }
   }
+}
+
+Future<void> handlingClickedNotificationInBackground(
+    RemoteMessage remoteMessage) async {
+  // if (remoteMessage.data.isNotEmpty) {
+  //   String? routeName = remoteMessage.data['routeName'];
+  //   dynamic objectId = remoteMessage.data['objectId'];
+  //   if (routeName != null && routeName != '') {
+  //     try {
+  //       if (routeName == AppRouteName.waitForApprove) return;
+
+  //       Get.toNamed(routeName, arguments: objectId);
+  //     } catch (e) {
+  //       throw 'error happend when try to go to selected screen ,$e';
+  //     }
+  //   }
+  // }
 }
 
 saveNotificationInDB(RemoteMessage remoteMessage) async {

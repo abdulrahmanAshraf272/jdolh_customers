@@ -23,13 +23,14 @@ class VerifycodeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const SizedBox(height: 20),
-                      Text('رمز التحقق',
+                      Text('رمز التحقق'.tr,
                           textAlign: TextAlign.center, style: headline2),
                       const SizedBox(height: 10),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 25),
                         child: Text(
-                            'من فضلك ادخل الرمز المكون من 6 خانات الذي تم ارسلة عبر بريدك الالكتروني ',
+                            'من فضلك ادخل الرمز المكون من 6 خانات الذي تم ارسلة عبر بريدك الالكتروني'
+                                .tr,
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.bodyLarge),
                       ),
@@ -51,7 +52,7 @@ class VerifycodeScreen extends StatelessWidget {
                       Obx(
                         () => Text(
                           textAlign: TextAlign.center,
-                          'الوقت المتبقي لاعادة الارسال : ${controller.remainingSeconds.value} ثانية',
+                          '${'الوقت المتبقي لاعادة الارسال'.tr} : ${controller.remainingSeconds.value} ${'ثانية'.tr}',
                           style: const TextStyle(
                               fontSize: 14, color: AppColors.redText),
                         ),
@@ -61,7 +62,7 @@ class VerifycodeScreen extends StatelessWidget {
                           onPressed: () {
                             controller.resendVerifycode();
                           },
-                          child: Text('اعادة ارسال الكود؟',
+                          child: Text('اعادة ارسال الكود؟'.tr,
                               style: TextStyle(
                                   color: controller.resendVerifycodeButtonActive
                                       ? AppColors.secondaryColor

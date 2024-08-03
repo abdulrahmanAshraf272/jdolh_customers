@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 
@@ -39,7 +40,7 @@ class GroupListItem extends StatelessWidget {
                       children: [
                         Text(groupName, style: titleMedium),
                         AutoSizeText(
-                          'تاريخ الإنشاء: $dateCreate',
+                          '${'تاريخ الإنشاء:'.tr} $dateCreate',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: titleSmallGray,
@@ -49,7 +50,7 @@ class GroupListItem extends StatelessWidget {
                   ),
                   isCreator == 1
                       ? Text(
-                          'مدير',
+                          'مدير'.tr,
                           style: titleSmall.copyWith(
                               color: AppColors.secondaryColor),
                         )

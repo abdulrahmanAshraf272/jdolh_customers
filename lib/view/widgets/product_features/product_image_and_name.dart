@@ -105,7 +105,7 @@ class Price extends StatelessWidget {
         ? const SizedBox()
         : itemPrice == itemPriceAfterDiscount
             ? Text(
-                '$itemPrice ريال',
+                '$itemPrice ${'ريال'.tr}',
                 style: const TextStyle(
                     color: AppColors.secondaryColor,
                     fontSize: 16,
@@ -114,14 +114,14 @@ class Price extends StatelessWidget {
             : Column(
                 children: [
                   Text(
-                    '$itemPriceAfterDiscount ريال',
+                    '$itemPriceAfterDiscount ${'ريال'.tr}',
                     style: const TextStyle(
                         color: AppColors.secondaryColor,
                         fontSize: 16,
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    '$itemPrice ريال',
+                    '$itemPrice ${'ريال'.tr}',
                     style: const TextStyle(
                       decoration: TextDecoration.lineThrough,
                       color: Colors.grey,

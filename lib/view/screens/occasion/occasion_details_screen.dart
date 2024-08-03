@@ -3,10 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/occasion/occasion_details_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
-import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
-import 'package:jdolh_customers/core/functions/formatDateTime.dart';
 import 'package:jdolh_customers/core/functions/open_url_link.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_text.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/confirm_refuse_buttons.dart';
@@ -23,7 +21,7 @@ class OccasionDetailsScreen extends StatelessWidget {
     return GetBuilder<OccasionDetailsController>(
         builder: (controller) => Scaffold(
             appBar: controller.occasionSelected == null
-                ? customAppBar(title: 'تفاصيل المناسبة')
+                ? customAppBar(title: 'تفاصيل المناسبة'.tr)
                 : _appBarWithTextButton(
                     onTapLeave: () => controller.onTapLeaveOccasion(),
                     acceptStatus: controller.occasionSelected!.acceptstatus!,
@@ -48,7 +46,7 @@ class OccasionDetailsScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             const SizedBox(height: 20),
-                            const CustomSmallBoldTitle(title: 'عنوان المناسبة'),
+                            CustomSmallBoldTitle(title: 'عنوان المناسبة'.tr),
                             const SizedBox(height: 10),
                             DateOrLocationDisplayContainer(
                                 hintText:
@@ -56,7 +54,7 @@ class OccasionDetailsScreen extends StatelessWidget {
                                 iconData: Icons.date_range,
                                 onTap: () {}),
                             const SizedBox(height: 10),
-                            const CustomSmallBoldTitle(title: 'تاريخ المناسبة'),
+                            CustomSmallBoldTitle(title: 'تاريخ المناسبة'.tr),
                             DateOrLocationDisplayContainer(
                                 hintText:
                                     controller.occasionSelected!.occasionDate ??
@@ -64,17 +62,17 @@ class OccasionDetailsScreen extends StatelessWidget {
                                 iconData: Icons.date_range,
                                 onTap: () {}),
                             const SizedBox(height: 10),
-                            const CustomSmallBoldTitle(title: 'وقت المناسبة'),
+                            CustomSmallBoldTitle(title: 'وقت المناسبة'.tr),
                             DateOrLocationDisplayContainer(
                                 hintText: controller.timeInAmPm(),
                                 iconData: Icons.date_range,
                                 onTap: () {}),
-                            const CustomSmallBoldTitle(title: 'الموقع'),
+                            CustomSmallBoldTitle(title: 'الموقع'.tr),
                             DateOrLocationDisplayContainer(
                                 hintText: controller.occasionLocation,
                                 iconData: Icons.place,
                                 onTap: () {}),
-                            const CustomSmallBoldTitle(title: 'رابط الموقع'),
+                            CustomSmallBoldTitle(title: 'رابط الموقع'.tr),
                             DateOrLocationDisplayContainer(
                                 hintText: controller.occasionLocationLink,
                                 iconData: Icons.link,
@@ -82,7 +80,7 @@ class OccasionDetailsScreen extends StatelessWidget {
                                   openUrlLink(controller.occasionLocationLink);
                                 }),
                             CustomSmallBoldTitle(
-                              title: 'المضافين للمناسبة',
+                              title: 'المضافين للمناسبة'.tr,
                               topPadding: 20,
                               bottomPadding: 20,
                             ),
@@ -119,7 +117,7 @@ class OccasionDetailsScreen extends StatelessWidget {
                                           text: TextSpan(children: [
                                             TextSpan(
                                               text:
-                                                  'لا يوجد مدعويين للمناسبة!\n',
+                                                  '${'لا يوجد اصدقاء في المناسبة!'.tr}\n',
                                               style: TextStyle(
                                                   color: AppColors.black
                                                       .withOpacity(0.5),
@@ -128,7 +126,7 @@ class OccasionDetailsScreen extends StatelessWidget {
                                                   fontFamily: 'Cairo'),
                                             ),
                                             TextSpan(
-                                                text: 'اضف بعد الاصدقاء',
+                                                text: 'اضف بعد الاصدقاء'.tr,
                                                 style: TextStyle(
                                                     color: AppColors.black
                                                         .withOpacity(0.4),

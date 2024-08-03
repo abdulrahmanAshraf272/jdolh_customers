@@ -34,18 +34,18 @@ class TransferMoneyController extends GetxController {
     var formdata = formKey.currentState;
     if (formdata!.validate()) {
       if (selectedUser == null) {
-        Get.rawSnackbar(message: 'من فضلك اختر المستخدم');
+        Get.rawSnackbar(message: 'من فضلك اختر المستخدم'.tr);
         return;
       } else if (amount.text == '0') {
-        Get.rawSnackbar(message: 'من فضلك حدد المبلغ الذي تريد تحويله');
+        Get.rawSnackbar(message: 'من فضلك حدد المبلغ الذي تريد تحويله'.tr);
         return;
       }
 
       sweetBottomSheet(
           context: context,
-          title: 'تحويل رصيد',
+          title: 'تحويل رصيد'.tr,
           desc:
-              'هل تريد تحويل مبلغ ${amount.text} ريال الى ${selectedUser!.userName} ؟'
+              '${'هل تريد تحويل مبلغ'.tr} ${amount.text} ${'ريال'.tr} ${'الى'.tr} ${selectedUser!.userName} ؟'
                   .tr,
           confirmButtonText: 'تأكيد'.tr,
           onTapConfirm: () {
@@ -71,10 +71,10 @@ class TransferMoneyController extends GetxController {
     StatusRequest statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
-        CustomDialogs.success('تم تحويل المبلغ');
+        CustomDialogs.success('تم تحويل المبلغ'.tr);
         Get.back(result: true);
       } else if (response['message'] == 'not enough money') {
-        CustomDialogs.failure('لا يوجد رصيد كافي');
+        CustomDialogs.failure('لا يوجد رصيد كافي'.tr);
       } else {
         CustomDialogs.failure();
       }

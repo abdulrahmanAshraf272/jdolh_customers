@@ -41,19 +41,19 @@ class _WalletChargingScreenState extends State<WalletChargingScreen> {
                     textEditingController: controller.amount,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'من فضلك ادخل المبلغ';
+                        return 'من فضلك ادخل المبلغ'.tr;
                       }
 
                       // Check for leading zeros
                       if (value.startsWith('0') &&
                           value.length > 1 &&
                           !value.startsWith('0.')) {
-                        return 'رقم غير صالح';
+                        return 'رقم غير صالح'.tr;
                       }
 
                       // Check for valid decimal format
                       if (value.contains(',')) {
-                        return 'رقم غير صالح';
+                        return 'رقم غير صالح'.tr;
                       }
 
                       return null;

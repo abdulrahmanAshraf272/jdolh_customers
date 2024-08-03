@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/group/groups_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
-import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/group.dart';
 import 'package:jdolh_customers/view/widgets/common/appBarWithButtonCreate.dart';
 
@@ -18,8 +17,8 @@ class GroupsScreen extends StatelessWidget {
           appBar: appBarWithButtonCreate(
               onTapCreate: () => controller.onTapCreateGroup(),
               onTapBack: () => Get.back(),
-              title: 'المجموعات',
-              buttonText: 'انشاء مجموعة'),
+              title: 'المجموعات'.tr,
+              buttonText: 'انشاء مجموعة'.tr),
           body: RefreshIndicator(
             onRefresh: () async {
               await controller.getAllGroups();
@@ -31,7 +30,7 @@ class GroupsScreen extends StatelessWidget {
                     child: HandlingDataView(
                   statusRequest: controller.statusRequest,
                   widget: controller.groups.isEmpty
-                      ? const Center(child: Text('لا توجد مجموعات'))
+                      ? Center(child: Text('لا توجد مجموعات'.tr))
                       : ListView.builder(
                           //physics: const BouncingScrollPhysics(),
                           padding: const EdgeInsets.only(bottom: 30, top: 20),

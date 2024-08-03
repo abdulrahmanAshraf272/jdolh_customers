@@ -6,7 +6,7 @@ validInput(String val, int min, int max, [String type = '']) {
   }
   if (type == 'username') {
     if (!GetUtils.isUsername(val)) {
-      return 'اسم مستخدم غير صالح, مثال":@ahmed.ali44'.tr;
+      return 'اسم مستخدم غير صالح, مثال"ahmed_ali22'.tr;
     }
   }
   if (type == 'email') {

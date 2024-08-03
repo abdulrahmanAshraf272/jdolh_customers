@@ -1,8 +1,6 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:jdolh_customers/controller/group/create_group_controller.dart';
 import 'package:jdolh_customers/controller/occasion/create_occasion_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
@@ -36,12 +34,12 @@ class CreateOccasionScreen extends StatelessWidget {
     Get.put(CreateOccasionController());
     return GetBuilder<CreateOccasionController>(
         builder: (controller) => Scaffold(
-              appBar: customAppBar(title: 'انشاء مناسبة'),
+              appBar: customAppBar(title: 'انشاء مناسبة'.tr),
               floatingActionButton: BottomButton(
                 onTap: () async {
                   controller.createOccasion();
                 },
-                text: 'انشاء',
+                text: 'انشاء'.tr,
                 buttonColor: AppColors.secondaryColor,
               ),
               floatingActionButtonLocation:
@@ -50,23 +48,23 @@ class CreateOccasionScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
-                    const CustomSmallBoldTitle(title: 'عنوان المناسبة'),
+                    CustomSmallBoldTitle(title: 'عنوان المناسبة'.tr),
                     const SizedBox(height: 10),
                     CustomTextField(
                         textEditingController: controller.occasionTitle,
-                        hintText: 'مثال: عشاء, عيد ميلاد, ..'),
+                        hintText: 'مثال: عشاء, عيد ميلاد, ..'.tr),
                     const SizedBox(height: 10),
-                    const CustomSmallBoldTitle(title: 'تاريخ المناسبة'),
+                    CustomSmallBoldTitle(title: 'تاريخ المناسبة'.tr),
                     DateOrLocationDisplayContainer(
                       hintText: controller.selectedDateFormatted ??
-                          'اختر تاريخ المناسبة',
+                          'اختر تاريخ المناسبة'.tr,
                       iconData: Icons.date_range,
                       onTap: () {
                         controller.selectDate(context);
                       },
                     ),
                     const SizedBox(height: 10),
-                    const CustomSmallBoldTitle(title: 'وقت المناسبة'),
+                    CustomSmallBoldTitle(title: 'وقت المناسبة'.tr),
                     DateOrLocationDisplayContainer(
                       hintText: controller.timeInAmPm(),
                       iconData: Icons.date_range,
@@ -75,20 +73,20 @@ class CreateOccasionScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 10),
-                    const CustomSmallBoldTitle(title: 'الموقع'),
+                    CustomSmallBoldTitle(title: 'الموقع'.tr),
                     DateOrLocationDisplayContainer(
                         hintText: controller.occasionLocation == ''
-                            ? 'حدد موقع المناسبة'
+                            ? 'حدد موقع المناسبة'.tr
                             : controller.occasionLocation,
                         iconData: Icons.place,
                         onTap: () {
                           controller.goToAddLocation();
                         }),
-                    const CustomSmallBoldTitle(title: 'رابط الموقع'),
+                    CustomSmallBoldTitle(title: 'رابط الموقع'.tr),
                     const SizedBox(height: 10),
                     CustomTextField(
                         textEditingController: controller.locationLink,
-                        hintText: 'يمكنك اضافة رابط الموقع من خرائط جوجل'),
+                        hintText: 'يمكنك اضافة رابط الموقع من خرائط جوجل'.tr),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 10),
@@ -96,7 +94,7 @@ class CreateOccasionScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: CustomSmallBoldTitle(
-                              title: 'المدعوين للمناسبة',
+                              title: 'المدعوين للمناسبة'.tr,
                               topPadding: 20,
                               bottomPadding: 20,
                               rightPdding: 0,
@@ -106,7 +104,7 @@ class CreateOccasionScreen extends StatelessWidget {
                               onTap: () {
                                 controller.onTapAddMembers();
                               },
-                              text: 'إضافة مدعوين'),
+                              text: 'إضافة مدعوين'.tr),
                         ],
                       ),
                     ),
@@ -136,7 +134,8 @@ class CreateOccasionScreen extends StatelessWidget {
                                     textAlign: TextAlign.center,
                                     text: TextSpan(children: [
                                       TextSpan(
-                                        text: 'لا يوجد اصدقاء في المناسبة!\n',
+                                        text:
+                                            '${'لا يوجد اصدقاء في المناسبة!'.tr}\n',
                                         style: TextStyle(
                                             color: AppColors.black
                                                 .withOpacity(0.7),
@@ -145,14 +144,14 @@ class CreateOccasionScreen extends StatelessWidget {
                                             fontFamily: 'Cairo'),
                                       ),
                                       TextSpan(
-                                          text: 'اضف بعد الاصدقاء',
+                                          text: 'اضف بعد الاصدقاء'.tr,
                                           style: TextStyle(
                                               color: AppColors.black
                                                   .withOpacity(0.4),
                                               fontSize: 14,
                                               fontFamily: 'Cairo'))
                                     ]))
-                                : SizedBox(),
+                                : const SizedBox(),
                           ),
                   ],
                 ),

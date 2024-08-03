@@ -48,34 +48,43 @@ class SignupScreen extends StatelessWidget {
                                       color: AppColors.primaryColor,
                                     )),
                                 const SizedBox(height: 20),
-                                Text('إنشاء حساب جديد', style: headline2),
+                                Text('إنشاء حساب جديد'.tr, style: headline2),
                                 const SizedBox(height: 20),
                                 AvatarImageHolder(
                                   onTap: () => controller.uploadImage(),
                                   selectedImage: controller.selectedImage,
                                 ),
                                 CustomTextFormAuthTwo(
-                                  labelText: 'الاسم الاول',
+                                  labelText: 'الاسم الاول'.tr,
                                   valid: (val) => firstNameValidInput(val!),
                                   iconData: Icons.person,
                                   textEditingController: controller.firstName,
                                 ),
                                 CustomTextFormAuthTwo(
-                                  labelText: 'اسم العائلة',
+                                  labelText: 'اسم العائلة'.tr,
                                   valid: (val) => firstNameValidInput(val!),
                                   iconData: Icons.person,
                                   textEditingController: controller.lastName,
                                 ),
                                 CustomTextFormAuthTwo(
-                                  labelText: 'اسم المستخدم',
+                                  labelText: 'اسم المستخدم'.tr,
                                   valid: (val) =>
                                       validInput(val!, 2, 50, 'username'),
                                   iconData: Icons.person,
                                   textEditingController: controller.username,
                                 ),
-
+                                Text(
+                                  'استخدم اسم مميز لا يحتوي على مسافة او علامة @'
+                                      .tr,
+                                  style: titleSmallGray,
+                                ),
+                                Text(
+                                  'اسماء متاحة مثل: ahmed.ali22, khalid_ali, ali2022'
+                                      .tr,
+                                  style: titleSmallGray,
+                                ),
                                 CustomTextFormAuthTwo(
-                                  labelText: 'البريد الإلكتروني',
+                                  labelText: 'البريد الإلكتروني'.tr,
                                   keyboardType: TextInputType.emailAddress,
                                   valid: (val) {
                                     return validInput(val!, 5, 100, 'email');
@@ -89,7 +98,7 @@ class SignupScreen extends StatelessWidget {
                                   visiblePasswordOnTap: () {
                                     controller.showPassword();
                                   },
-                                  labelText: 'الرقم السري',
+                                  labelText: 'كلمة السر'.tr,
                                   valid: (val) {
                                     return validInput(val!, 5, 100, 'password');
                                   },
@@ -113,15 +122,15 @@ class SignupScreen extends StatelessWidget {
                                     controller.gender = 2;
                                   },
                                 ),
-                                const CustomSmallTitle(
-                                    title: 'المدينة', rightPdding: 0),
+                                CustomSmallTitle(
+                                    title: 'المدينة'.tr, rightPdding: 0),
                                 CustomDropdown(
                                   items: cities,
                                   horizontalMargin: 0,
                                   verticalMargin: 10,
                                   withInitValue: true,
                                   //width: Get.width / 2.2,
-                                  title: 'اختر المدينة',
+                                  title: 'اختر المدينة'.tr,
                                   onChanged: (String? value) {
                                     // Handle selected value
                                     controller.city = value!;
@@ -140,15 +149,15 @@ class SignupScreen extends StatelessWidget {
                                 // ),
                                 const SizedBox(height: 20),
                                 CustomButtonOne(
-                                    textButton: 'إنشاء حساب',
+                                    textButton: 'إنشاء حساب'.tr,
                                     onPressed: () async {
                                       await controller
                                           .theVerifycodeWillSendToEmailBottomSheet();
                                     }),
                                 HaveAccountQuestion(
                                     onPress: () => controller.goToLogin(),
-                                    text: "لديك حساب بالفعل؟",
-                                    buttonText: 'تسجيل دخول')
+                                    text: "لديك حساب بالفعل؟".tr,
+                                    buttonText: 'تسجيل دخول'.tr)
                               ]),
                         ),
                       ),

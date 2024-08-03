@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -6,7 +5,6 @@ import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/controller/auth/edit_personal_data_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/functions/valid_input.dart';
 import 'package:jdolh_customers/view/widgets/auth/custom_textform_auth.dart';
@@ -21,22 +19,9 @@ class EdtiPersonalDataScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    dataSavedSuccessfuly() {
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.success,
-        animType: AnimType.rightSlide,
-        title: 'تم حفظ البيانات',
-        btnOkText: 'حسنا',
-        btnOkOnPress: () {
-          Get.offAllNamed(AppRouteName.mainScreen, arguments: {"page": 3});
-        },
-      ).show();
-    }
-
     Get.put(EditPersonalDataController());
     return Scaffold(
-      appBar: customAppBar(title: 'البيانات الشخصية'),
+      appBar: customAppBar(title: 'البيانات الشخصية'.tr),
       body: GetBuilder<EditPersonalDataController>(
           builder: (controller) => HandlingDataView(
                 statusRequest: controller.statusRequest,
@@ -61,26 +46,26 @@ class EdtiPersonalDataScreen extends StatelessWidget {
                                       : '${ApiLinks.customerImage}/${controller.networkImage}',
                                 ),
                                 CustomTextFormAuthTwo(
-                                  labelText: 'الاسم الاول',
+                                  labelText: 'الاسم الاول'.tr,
                                   valid: (val) => firstNameValidInput(val!),
                                   iconData: Icons.person,
                                   textEditingController: controller.firstName,
                                 ),
                                 CustomTextFormAuthTwo(
-                                  labelText: 'اسم العائلة',
+                                  labelText: 'اسم العائلة'.tr,
                                   valid: (val) => firstNameValidInput(val!),
                                   iconData: Icons.person,
                                   textEditingController: controller.lastName,
                                 ),
                                 CustomTextFormAuthTwo(
-                                  labelText: 'اسم المستخدم',
+                                  labelText: 'اسم المستخدم'.tr,
                                   valid: (val) =>
                                       validInput(val!, 2, 50, 'username'),
                                   iconData: Icons.person,
                                   textEditingController: controller.username,
                                 ),
                                 CustomTextFormAuthTwo(
-                                  labelText: 'البريد الإلكتروني',
+                                  labelText: 'البريد الإلكتروني'.tr,
                                   keyboardType: TextInputType.emailAddress,
                                   valid: (val) {
                                     return validInput(val!, 5, 100, 'email');
@@ -104,8 +89,8 @@ class EdtiPersonalDataScreen extends StatelessWidget {
                                   },
                                   initialValue: controller.gender,
                                 ),
-                                const CustomSmallTitle(
-                                    title: 'المدينة', rightPdding: 0),
+                                CustomSmallTitle(
+                                    title: 'المدينة'.tr, rightPdding: 0),
                                 CustomDropdown(
                                   items: cities,
                                   horizontalMargin: 0,
@@ -122,7 +107,7 @@ class EdtiPersonalDataScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 20),
                                 CustomButtonOne(
-                                    textButton: 'حفظ',
+                                    textButton: 'حفظ'.tr,
                                     onPressed: () {
                                       controller.editPersonalData();
                                     }),
@@ -187,7 +172,7 @@ class _GenderSelectionState extends State<GenderSelection> {
               ),
               alignment: Alignment.center,
               child: Text(
-                'ذكر',
+                'ذكر'.tr,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 10.sp,
@@ -213,7 +198,7 @@ class _GenderSelectionState extends State<GenderSelection> {
                 color: selectedOption == 2 ? firstColor : null,
               ),
               child: Text(
-                'انثى',
+                'انثى'.tr,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 10.sp,

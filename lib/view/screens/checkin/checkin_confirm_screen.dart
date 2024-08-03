@@ -19,10 +19,10 @@ class CheckinConfirmScreen extends StatelessWidget {
     Get.put(CheckinConfirmController());
     return GetBuilder<CheckinConfirmController>(
         builder: (controller) => Scaffold(
-              appBar: customAppBar(title: 'تسجيل وصول'),
+              appBar: customAppBar(title: 'تسجيل وصول'.tr),
               floatingActionButton: BottomButton(
                 onTap: () => controller.checkin(context),
-                text: 'تأكيد',
+                text: 'تأكيد'.tr,
                 buttonColor: AppColors.secondaryColor,
               ),
               floatingActionButtonLocation:
@@ -39,7 +39,7 @@ class CheckinConfirmScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     CustomTextField(
                         textEditingController: controller.comment,
-                        hintText: 'ما هو رأيك في المكان؟'),
+                        hintText: 'ما هو رأيك في المكان؟'.tr),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 0, vertical: 20),
@@ -47,7 +47,7 @@ class CheckinConfirmScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: CustomSmallBoldTitle(
-                              title: 'اضافة اصدقاء',
+                              title: 'اضافة اصدقاء'.tr,
                               topPadding: 20,
                               bottomPadding: 20,
                             ),
@@ -56,7 +56,7 @@ class CheckinConfirmScreen extends StatelessWidget {
                               onTap: () {
                                 controller.onTapAddMembers();
                               },
-                              text: 'أضافة'),
+                              text: 'إضافة'.tr),
                           SizedBox(width: 20)
                         ],
                       ),
@@ -85,7 +85,7 @@ class CheckinConfirmScreen extends StatelessWidget {
                                 textAlign: TextAlign.center,
                                 text: TextSpan(children: [
                                   TextSpan(
-                                    text: 'اذا كنت مع اصدقائك\n',
+                                    text: '${'اذا كنت مع اصدقائك'.tr}\n',
                                     style: TextStyle(
                                         color: AppColors.black.withOpacity(0.7),
                                         fontSize: 16,
@@ -93,7 +93,7 @@ class CheckinConfirmScreen extends StatelessWidget {
                                         fontFamily: 'Cairo'),
                                   ),
                                   TextSpan(
-                                      text: 'يمنك تسجيل الوصول لهم ايضا',
+                                      text: 'يمنك تسجيل الوصول لهم ايضا'.tr,
                                       style: TextStyle(
                                           color:
                                               AppColors.black.withOpacity(0.4),

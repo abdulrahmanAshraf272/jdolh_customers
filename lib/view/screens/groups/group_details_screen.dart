@@ -25,14 +25,14 @@ class GroupDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CustomSmallBoldTitle(
-              title: 'العنوان',
+              title: 'العنوان'.tr,
               topPadding: 20,
               bottomPadding: 10,
             ),
             DateOrLocationDisplayContainer(
                 hintText: controller.groupSelected.groupName!),
             CustomSmallBoldTitle(
-              title: 'المضافين للمجموعة',
+              title: 'المضافين للمجموعة'.tr,
               topPadding: 20,
               bottomPadding: 20,
             ),
@@ -48,7 +48,7 @@ class GroupDetails extends StatelessWidget {
                     userName: controller.groupMembers[index].userUsername!,
                     image: controller.groupMembers[index].userImage!,
                     endText: controller.groupMembers[index].creator == 1
-                        ? 'منشئ'
+                        ? 'مدير'.tr
                         : '',
                     onTapCard: () => controller.onTapPersonCard(index),
                   ),
@@ -67,7 +67,7 @@ AppBar _appBarWithTextButton({required void Function() onTapLeave}) {
   return AppBar(
     centerTitle: true,
     title: Text(
-      'المجموعة',
+      'المجموعة'.tr,
       style: TextStyle(
         fontWeight: FontWeight.w600,
         fontSize: 18.sp,
@@ -76,13 +76,13 @@ AppBar _appBarWithTextButton({required void Function() onTapLeave}) {
     ),
     leading: IconButton(
       onPressed: () => Get.back(),
-      icon: Icon(Icons.arrow_back_ios, color: AppColors.white),
+      icon: const Icon(Icons.arrow_back_ios, color: AppColors.white),
     ),
     actions: [
       TextButton(
           onPressed: onTapLeave,
           child: Text(
-            'مغادرة',
+            'مغادرة'.tr,
             style: titleSmall.copyWith(color: AppColors.redButton),
           ))
     ],

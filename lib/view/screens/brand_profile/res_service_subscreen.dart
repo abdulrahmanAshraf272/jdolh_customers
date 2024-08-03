@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/brand_profile_controller.dart';
 import 'package:jdolh_customers/controller/brand_profile/cart_controller.dart';
-import 'package:jdolh_customers/controller/brand_profile/reservation/res_parent_controller.dart';
 import 'package:jdolh_customers/controller/brand_profile/reservation/res_service_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
@@ -150,8 +149,8 @@ class PaymentTypeSelect extends StatelessWidget {
             ? Text(controller.billPolicy.title ?? '')
             : CustomToggleButtonsOneOption(
                 horizontalDirection: false,
-                firstOption: 'دفع رسوم الحجز والفاتورة',
-                secondOption: 'دفع رسوم الحجز فقط و دفع الفاتورة عند الوصول',
+                firstOption: 'دفع رسوم الحجز والفاتورة'.tr,
+                secondOption: 'دفع رسوم الحجز فقط و دفع الفاتورة عند الوصول'.tr,
                 onTapOne: () {
                   controller.paymentType = 'RB';
                   print('shit');
