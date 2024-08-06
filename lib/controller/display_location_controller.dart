@@ -58,7 +58,7 @@ class DisplayLocationController extends GetxController {
     final GoogleMapController newMapController = await mapController.future;
     cameraPosition = CameraPosition(
       target: latLng,
-      zoom: 18,
+      zoom: 16,
     );
     newMapController
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
@@ -87,7 +87,6 @@ class DisplayLocationController extends GetxController {
   }
 
   setMarkAndCamerDisplayGivenLocation(LatLng latLng) {
-    marker.add(Marker(markerId: const MarkerId("1"), position: latLng));
     changeCameraPosition(latLng);
     statusRequest = StatusRequest.success;
     update();
@@ -97,7 +96,16 @@ class DisplayLocationController extends GetxController {
   void onInit() {
     super.onInit();
     mapController = Completer<GoogleMapController>();
-    LatLng latLng = Get.arguments;
-    setMarkAndCamerDisplayGivenLocation(latLng);
+    if (Get.arguments is LatLng) {
+      LatLng latLng = Get.arguments;
+      marker.add(Marker(markerId: const MarkerId("1"), position: latLng));
+      setMarkAndCamerDisplayGivenLocation(latLng);
+    } else if (Get.arguments is List<Marker>) {
+      marker = Get.arguments;
+      LatLng latLng = marker[0].position;
+      statusRequest = StatusRequest.success;
+      update();
+      changeCameraPosition(latLng);
+    }
   }
 }

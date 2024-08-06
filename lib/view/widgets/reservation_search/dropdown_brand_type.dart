@@ -41,8 +41,8 @@ class _DropdownBrandTypesState extends State<DropdownBrandTypes> {
                   isExpanded: true,
                   hint: AutoSizeText(
                     controller.statusRequestType == StatusRequest.loading
-                        ? 'برجاء الانتظار ..'
-                        : 'حدد نوع المتجر',
+                        ? 'برجاء الانتظار ..'.tr
+                        : 'حدد نوع المتجر'.tr,
                     maxLines: 1,
                     minFontSize: 1,
                     style: titleSmall.copyWith(color: AppColors.gray600),

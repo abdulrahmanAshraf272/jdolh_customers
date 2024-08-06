@@ -11,57 +11,67 @@ import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 onTapDisplayLocation(Occasion occasion) {
   String occasionLocation = occasion.occasionLocation ?? '';
   String occasionLocationLink = occasion.locationLink ?? '';
-  if (occasionLocation != '' && occasionLocationLink != '') {
-    Get.bottomSheet(Container(
-      padding: const EdgeInsets.all(20),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-        color: AppColors.gray,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'اختر طريقة عرض الموقع',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14.sp,
-              color: AppColors.textDark,
-            ),
-          ),
-          const SizedBox(height: 20),
-          GoHomeButton(
-              onTap: () {
-                openUrlLink(occasionLocationLink);
-              },
-              text: 'تطبيق Googel Maps',
-              width: Get.width - 40,
-              height: 38.h),
-          const SizedBox(height: 10),
-          GoHomeButton(
-              onTap: () {
-                goToDisplayLocation(occasion);
-              },
-              text: 'روية الموقع هنا',
-              width: Get.width - 40,
-              height: 38.h),
-        ],
-      ),
-    ));
-  } else if (occasionLocation != '') {
-    goToDisplayLocation(occasion);
-  } else if (occasionLocationLink != '') {
-    //the occasion only have location link
+  if (occasionLocationLink != '') {
     openUrlLink(occasionLocationLink);
+  } else if (occasionLocation != '') {
+    double lat = double.parse(occasion.occasionLat!);
+    double lng = double.parse(occasion.occasionLong!);
+    openLocationInGoogleMaps(lat, lng);
   } else {
-    //the occasion doesn't have location nor location link
     Get.rawSnackbar(message: 'لم يتم تحديد مكان المناسبة');
   }
-}
 
-goToDisplayLocation(Occasion occasion) {
-  double lat = double.parse(occasion.occasionLat!);
-  double lng = double.parse(occasion.occasionLong!);
-  Get.toNamed(AppRouteName.diplayLocation, arguments: LatLng(lat, lng));
+//   if (occasionLocation != '' && occasionLocationLink != '') {
+//     Get.bottomSheet(Container(
+//       padding: const EdgeInsets.all(20),
+//       decoration: const BoxDecoration(
+//         borderRadius: BorderRadius.only(
+//             topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+//         color: AppColors.gray,
+//       ),
+//       child: Column(
+//         mainAxisSize: MainAxisSize.min,
+//         children: [
+//           Text(
+//             'اختر طريقة عرض الموقع',
+//             style: TextStyle(
+//               fontWeight: FontWeight.bold,
+//               fontSize: 14.sp,
+//               color: AppColors.textDark,
+//             ),
+//           ),
+//           const SizedBox(height: 20),
+//           GoHomeButton(
+//               onTap: () {
+//                 openUrlLink(occasionLocationLink);
+//               },
+//               text: 'تطبيق Googel Maps',
+//               width: Get.width - 40,
+//               height: 38.h),
+//           const SizedBox(height: 10),
+//           GoHomeButton(
+//               onTap: () {
+//                 goToDisplayLocation(occasion);
+//               },
+//               text: 'روية الموقع هنا',
+//               width: Get.width - 40,
+//               height: 38.h),
+//         ],
+//       ),
+//     ));
+//   } else if (occasionLocation != '') {
+//     goToDisplayLocation(occasion);
+//   } else if (occasionLocationLink != '') {
+//     //the occasion only have location link
+//     openUrlLink(occasionLocationLink);
+//   } else {
+//     //the occasion doesn't have location nor location link
+//     Get.rawSnackbar(message: 'لم يتم تحديد مكان المناسبة');
+//   }
+// }
+
+// goToDisplayLocation(Occasion occasion) {
+//   double lat = double.parse(occasion.occasionLat!);
+//   double lng = double.parse(occasion.occasionLong!);
+//   Get.toNamed(AppRouteName.diplayLocation, arguments: LatLng(lat, lng));
 }

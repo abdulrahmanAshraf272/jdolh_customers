@@ -5,6 +5,13 @@ class BillsData {
   Crud crud;
   BillsData(this.crud);
 
+  getAvailablePaymentMethods(String bchid) async {
+    var response =
+        await crud.postData(ApiLinks.getAvailablePaymentMethods, {"bchid": bchid});
+
+    return response.fold((l) => l, (r) => r);
+  }
+
   createBill(
       {required String resid,
       required String userid,

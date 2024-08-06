@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 
@@ -34,12 +35,12 @@ class AddressTitle extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8)),
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.pin_drop_outlined,
                         size: 18,
                       ),
-                      SizedBox(width: 3),
-                      Text('عرض على الخريطة', style: titleSmall2),
+                      const SizedBox(width: 3),
+                      Text('عرض على الخريطة'.tr, style: titleSmall2),
                     ],
                   ),
                 ),

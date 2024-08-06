@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/strings.dart';
@@ -32,6 +33,22 @@ class ReservationSearchController extends GetxController {
 
   List<Brand> brands = [];
   List<Bch> bchs = [];
+
+  onTapDisplayOnTap() {
+    if (bchs.isNotEmpty) {
+      List<Marker> markers = [];
+      for (int i = 0; i < bchs.length; i++) {
+        double lat = double.parse(bchs[i].bchLat!);
+        double lng = double.parse(bchs[i].bchLng!);
+        LatLng latLng = LatLng(lat, lng);
+
+        Marker marker = Marker(markerId: MarkerId("$i"), position: latLng);
+        markers.add(marker);
+      }
+
+      Get.toNamed(AppRouteName.diplayLocation, arguments: markers);
+    }
+  }
 
   bool isHomeServices = false;
   setIsHomeService(bool value) {

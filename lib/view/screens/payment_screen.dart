@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/payment_controller.dart';
+import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/screens/bills/select_payment_method_screen.dart';
@@ -20,6 +21,7 @@ class PaymentScreen extends StatelessWidget {
       appBar: customAppBar(title: 'الدفع'.tr),
       floatingActionButton: BottomButton(
           onTap: () {
+            //controller.getAvailablePaymentMethods();
             controller.onTapPay();
           },
           text: 'تأكيد'.tr),
@@ -69,23 +71,37 @@ class SelectPaymentMethod extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PaymentController>(
-      builder: (controller) => Container(
-        padding: const EdgeInsets.all(15),
-        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-        decoration: BoxDecoration(
-            color: AppColors.gray, borderRadius: BorderRadius.circular(10)),
-        child: Column(
-          children: [
-            Text('طريقة الدفع'.tr, style: titleMedium),
-            const SizedBox(height: 20),
-            PaymentMethodsToggle(
-                onTapCredit: () => controller.paymentMethod = 'credit',
-                onTapWallet: () => controller.paymentMethod = 'wallet',
-                onTapTamara: () => controller.paymentMethod = 'tamara')
-          ],
-        ),
-      ),
-    );
+        builder: (controller) => HandlingDataView(
+              statusRequest: controller.statusRequest,
+              widget: Container(
+                padding: const EdgeInsets.all(15),
+                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                decoration: BoxDecoration(
+                    color: AppColors.gray,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  children: [
+                    Text('طريقة الدفع'.tr, style: titleMedium),
+                    const SizedBox(height: 20),
+                    PaymentMethodsToggle(
+                      onTapCash: null,
+                      onTapCredit: controller.creditEligible
+                          ? () => controller.paymentMethod = 'credit'
+                          : null,
+                      onTapWallet: controller.creditEligible
+                          ? () => controller.paymentMethod = 'wallet'
+                          : null,
+                      onTapTamara: controller.tamaraEligible
+                          ? () => controller.paymentMethod = 'tamara'
+                          : null,
+                      onTapTabby: controller.tabbyEligible
+                          ? () => controller.paymentMethod = 'tabby'
+                          : null,
+                    )
+                  ],
+                ),
+              ),
+            ));
   }
 }
 

@@ -21,3 +21,14 @@ Future<void> openContactApp(String phoneNumber) async {
     throw 'Could not launch $url';
   }
 }
+
+void openLocationInGoogleMaps(double lat, double lng) async {
+  String googleMapsUrl =
+      "https://www.google.com/maps/search/?api=1&query=$lat,$lng";
+
+  if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
+    await launchUrl(Uri.parse(googleMapsUrl));
+  } else {
+    throw 'Could not open the map.';
+  }
+}

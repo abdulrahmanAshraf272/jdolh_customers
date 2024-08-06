@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
 
@@ -14,7 +15,7 @@ class SearchButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(13),
         child: BottomButton(
           onTap: onTap,
-          text: 'بحث',
+          text: 'بحث'.tr,
           buttonColor: AppColors.secondaryColor,
         ),
       ),

@@ -5,9 +5,11 @@ import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/services/services.dart';
+import 'package:jdolh_customers/data/data_source/remote/bills.dart';
 import 'package:jdolh_customers/data/data_source/remote/payment.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
 import 'package:jdolh_customers/data/models/brand.dart';
+import 'package:jdolh_customers/data/models/payment_method.dart';
 import 'package:jdolh_customers/data/models/policy.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
 import 'package:jdolh_customers/view/screens/webview_screen.dart';
@@ -36,6 +38,69 @@ class PaymentController extends GetxController {
 
   double discount = 0;
 
+  bool cashEligible = false;
+  bool creditEligible = false;
+  bool tamaraEligible = false;
+  bool tabbyEligible = false;
+
+  StatusRequest statusRequest = StatusRequest.none;
+  BillsData billsData = BillsData(Get.find());
+
+  List<PaymentMethod> availablePaymentMethods = [];
+
+  getAvailablePaymentMethods() async {
+    statusRequest = StatusRequest.loading;
+    var response = await billsData
+        .getAvailablePaymentMethods(reservation.resBchid.toString());
+    statusRequest = handlingData(response);
+    print('statusRequies: $statusRequest');
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        List data = response['data'];
+        print('bchid :${reservation.resBchid}');
+        availablePaymentMethods =
+            data.map((element) => PaymentMethod.fromJson(element)).toList();
+        checkPaymentMethodsEligible();
+      } else {
+        statusRequest = StatusRequest.failure;
+        print('failure message: ${response['message']}');
+      }
+    }
+    update();
+  }
+
+  checkPaymentMethodsEligible() {
+    //1- credit
+    //2- تقسيط
+    //3- cash
+    //4- tamara
+    //5- tabby
+    for (int i = 0; i < availablePaymentMethods.length; i++) {
+      int methodId = availablePaymentMethods[i].id!;
+      if (methodId == 1) {
+        if (availablePaymentMethods[i].isActive == 1) {
+          creditEligible = true;
+        }
+      } else if (methodId == 2) {
+        for (int j = 0; j < availablePaymentMethods.length; j++) {
+          if (availablePaymentMethods[j].id == 4) {
+            if (availablePaymentMethods[j].isActive == 1) {
+              tamaraEligible = true;
+            }
+          } else if (availablePaymentMethods[j].id == 5) {
+            if (availablePaymentMethods[j].isActive == 1) {
+              tabbyEligible = true;
+            }
+          }
+        }
+      } else if (methodId == 3) {
+        if (availablePaymentMethods[i].isActive == 1) {
+          cashEligible = true;
+        }
+      }
+    }
+  }
+
   onTapPay() {
     if (paymentMethod == 'credit') {
       payByCredit();
@@ -43,7 +108,13 @@ class PaymentController extends GetxController {
       payByWallet();
     } else if (paymentMethod == 'tamara') {
       payTamara();
+    } else if (paymentMethod == 'tabby') {
+      payTabby();
     }
+  }
+
+  payTabby() {
+    reservation.paymentMethod = 'TABBY';
   }
 
   payByCredit() async {
@@ -231,6 +302,8 @@ class PaymentController extends GetxController {
     if (reservation.resResPolicy == 1 && reservation.resPaymentType == 'RB') {
       discount = reservation.resResCost! + reservation.resResTax!;
     }
+
+    getAvailablePaymentMethods();
 
     super.onInit();
   }

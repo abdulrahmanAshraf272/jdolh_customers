@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
@@ -80,7 +81,7 @@ class CartListItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '$duration دقيقة',
+                  '$duration ${'دقيقة'.tr}',
                   style: titleSmall2,
                 )
               ],
@@ -90,7 +91,7 @@ class CartListItem extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Text(
-              '$price ريال',
+              '$price ${'ريال'.tr}',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 12.sp,
@@ -101,9 +102,10 @@ class CartListItem extends StatelessWidget {
           const SizedBox(width: 5),
           TextButton(
               onPressed: onTapDelete,
-              child: const Text(
-                'إزالة',
-                style: TextStyle(color: AppColors.redButton, fontSize: 12),
+              child: Text(
+                'إزالة'.tr,
+                style:
+                    const TextStyle(color: AppColors.redButton, fontSize: 12),
               )),
         ],
       ),

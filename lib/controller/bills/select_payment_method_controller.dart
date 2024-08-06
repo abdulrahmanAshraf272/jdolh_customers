@@ -9,6 +9,7 @@ import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/bills.dart';
 import 'package:jdolh_customers/data/data_source/remote/payment.dart';
 import 'package:jdolh_customers/data/models/bill.dart';
+import 'package:jdolh_customers/data/models/payment_method.dart';
 import 'package:jdolh_customers/view/screens/webview_screen.dart';
 
 class SelectPaymentMethodController extends GetxController {
@@ -17,8 +18,67 @@ class SelectPaymentMethodController extends GetxController {
   PaymentData paymentData = PaymentData(Get.find());
   MyServices myServices = Get.find();
   BillsData billsData = BillsData(Get.find());
-
   String selectedMethod = '';
+  StatusRequest statusRequest = StatusRequest.none;
+
+  bool cashEligible = false;
+  bool creditEligible = false;
+  bool tamaraEligible = false;
+  bool tabbyEligible = false;
+  bool payActive = false;
+
+  List<PaymentMethod> availablePaymentMethods = [];
+
+  getAvailablePaymentMethods() async {
+    statusRequest = StatusRequest.loading;
+    var response =
+        await billsData.getAvailablePaymentMethods(bill.billBchId.toString());
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        List data = response['data'];
+        availablePaymentMethods =
+            data.map((element) => PaymentMethod.fromJson(element)).toList();
+        checkPaymentMethodsEligible();
+      } else {
+        statusRequest = StatusRequest.failure;
+        print('failure message: ${response['message']}');
+      }
+    }
+    update();
+  }
+
+  checkPaymentMethodsEligible() {
+    //1- credit
+    //2- تقسيط
+    //3- cash
+    //4- tamara
+    //5- tabby
+    for (int i = 0; i < availablePaymentMethods.length; i++) {
+      int methodId = availablePaymentMethods[i].id!;
+      if (methodId == 1) {
+        if (availablePaymentMethods[i].isActive == 1) {
+          creditEligible = true;
+        }
+      } else if (methodId == 2) {
+        for (int j = 0; j < availablePaymentMethods.length; j++) {
+          if (availablePaymentMethods[j].id == 4) {
+            if (availablePaymentMethods[j].isActive == 1) {
+              tamaraEligible = true;
+            }
+          } else if (availablePaymentMethods[j].id == 5) {
+            if (availablePaymentMethods[j].isActive == 1) {
+              tabbyEligible = true;
+            }
+          }
+        }
+      } else if (methodId == 3) {
+        if (availablePaymentMethods[i].isActive == 1) {
+          cashEligible = true;
+        }
+      }
+    }
+  }
 
   onTapPay() {
     if (selectedMethod == '') {
@@ -29,18 +89,32 @@ class SelectPaymentMethodController extends GetxController {
     switch (selectedMethod) {
       case 'cash':
         payCash();
+        payActive = true;
         break;
       case 'credit':
         payCredit();
+        payActive = true;
         break;
       case 'wallet':
         payWallet();
+        payActive = true;
         break;
       case 'tamara':
         payTamara();
+        payActive = true;
+        break;
+      case 'tabby':
+        payActive = false; //false until it is eligible to pay by tabby
+        preScoringTabby();
         break;
     }
   }
+
+  preScoringTabby() {
+    //if status =  created -> eligible then payActive= true;
+  }
+
+  payTabby() {}
 
   payCash() async {
     CustomDialogs.loading();
@@ -226,6 +300,7 @@ class SelectPaymentMethodController extends GetxController {
       bill = Get.arguments['bill'];
       orderDesc = Get.arguments['orderDesc'];
     }
+    getAvailablePaymentMethods();
     super.onInit();
   }
 }

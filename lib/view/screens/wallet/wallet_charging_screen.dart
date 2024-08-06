@@ -68,29 +68,6 @@ class _WalletChargingScreenState extends State<WalletChargingScreen> {
                     style: const TextStyle(color: Colors.red),
                   ),
                   const SizedBox(height: 20),
-                  // CustomTitle(
-                  //   title: 'طريقة الدفع',
-                  //   bottomPadding: 10,
-                  // ),
-                  // ListView.builder(
-                  //     physics: const NeverScrollableScrollPhysics(),
-                  //     shrinkWrap: true,
-                  //     padding: EdgeInsets.symmetric(horizontal: 20),
-                  //     scrollDirection: Axis.vertical,
-                  //     itemCount: paymentMethodsOptions.length,
-                  //     itemBuilder: (context, index) => GestureDetector(
-                  //         onTap: () {
-                  //           setState(() {
-                  //             selectedPaymentMethod = index;
-                  //           });
-                  //         },
-                  //         child: ToggleButtonItem(
-                  //           index: index,
-                  //           selectedIndex: selectedIndex,
-                  //           text: paymentMethodsOptions[index],
-                  //           fontSize: 13,
-                  //           svgIconPath: paymentMethodsOptionsIcons[index],
-                  //         ))),
                   const Spacer(),
                   BottomButton(
                       onTap: () => controller.onTapChargeWallet(),

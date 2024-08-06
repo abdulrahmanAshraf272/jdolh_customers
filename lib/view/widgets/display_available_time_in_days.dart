@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_toggle_general.dart';
@@ -47,7 +48,7 @@ class DayWorkTimeDisplayer extends StatelessWidget {
             const Spacer(),
             CustomToggleGeneral(
               onTap: () {},
-              title: 'أجازة',
+              title: 'أجازة'.tr,
               initialValue: checkboxInit,
               isClickable: false,
             ),
@@ -59,15 +60,14 @@ class DayWorkTimeDisplayer extends StatelessWidget {
           indent: 30,
         ),
         isThereP2
-            ? const CustomSmallTitle(title: 'الفترة الاولى', rightPdding: 30)
+            ? CustomSmallTitle(title: 'الفترة الاولى'.tr, rightPdding: 30)
             : const SizedBox(),
         FromToTimeDisplayer(timeFrom: timeFromP1, timeTo: timeToP1),
         const SizedBox(height: 20),
         isThereP2
             ? Column(
                 children: [
-                  const CustomSmallTitle(
-                      title: 'الفترة الثانية (اختياري)', rightPdding: 30),
+                  CustomSmallTitle(title: 'الفترة الثانية'.tr, rightPdding: 30),
                   FromToTimeDisplayer(timeFrom: timeFromP2, timeTo: timeToP2),
                   const SizedBox(height: 20)
                 ],
@@ -93,14 +93,14 @@ class FromToTimeDisplayer extends StatelessWidget {
       children: [
         const SizedBox(width: 30),
         Text(
-          'من',
+          'من'.tr,
           maxLines: 1,
           style: titleMedium,
         ),
         SmallTimeDisplayer(timeText: timeFrom),
         const SizedBox(width: 20),
         Text(
-          'الى',
+          'الى'.tr,
           maxLines: 1,
           style: titleMedium,
         ),

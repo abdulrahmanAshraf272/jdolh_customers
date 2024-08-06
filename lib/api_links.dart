@@ -252,4 +252,9 @@ class ApiLinks {
       '$server/jdolh_customers/bill/divide_bill.php';
   static const String createBill =
       '$server/jdolh_customers/bill/create_bill.php';
+  static const String getAvailablePaymentMethods =
+      '$server/jdolh_customers/bill/get_available_payment_methods.php';
+
+  //Tabby
+  static const String tabbyCheckout = 'https://api.tabby.ai/api/v2/checkout';
 }

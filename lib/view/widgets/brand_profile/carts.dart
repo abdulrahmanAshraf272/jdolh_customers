@@ -80,7 +80,7 @@ class ListIsEmptyText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String message =
-        isService ? 'قم باضافة بعض المنتجات' : 'قم باضافة بعض الخدمات';
+        isService ? 'قم باضافة بعض المنتجات'.tr : 'قم باضافة بعض الخدمات'.tr;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -90,7 +90,7 @@ class ListIsEmptyText extends StatelessWidget {
               textAlign: TextAlign.center,
               text: TextSpan(children: [
                 TextSpan(
-                  text: 'السلة فارغة !\n',
+                  text: '${'السلة فارغة!'.tr}\n',
                   style: TextStyle(
                       color: AppColors.black.withOpacity(0.7),
                       fontSize: 16,

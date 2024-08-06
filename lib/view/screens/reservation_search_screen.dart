@@ -76,7 +76,7 @@ class ReservationSearchScreen extends StatelessWidget {
                     AddressTitle(
                         addressTitle:
                             '${'النتائج-'.tr} ${controller.brands.length}',
-                        onTap: () {}),
+                        onTap: () => controller.onTapDisplayOnTap()),
                     HandlingDataView(
                       statusRequest: controller.statusRequest,
                       widget: ListView.builder(

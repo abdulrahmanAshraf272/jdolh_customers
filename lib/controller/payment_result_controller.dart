@@ -4,6 +4,7 @@ import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/convert_time_to_arabic.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
+import 'package:jdolh_customers/core/functions/open_url_link.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/bills.dart';
 import 'package:jdolh_customers/data/data_source/remote/payment.dart';
@@ -33,7 +34,8 @@ class PaymentResultController extends GetxController {
     if (reservation.bchLat != null) {
       double lat = double.parse(reservation.bchLat!);
       double lng = double.parse(reservation.bchLng!);
-      Get.toNamed(AppRouteName.diplayLocation, arguments: LatLng(lat, lng));
+      openLocationInGoogleMaps(lat, lng);
+      //Get.toNamed(AppRouteName.diplayLocation, arguments: LatLng(lat, lng));
     }
   }
 
