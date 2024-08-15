@@ -56,12 +56,13 @@ class ItemsDetailsController extends GetxController {
   }
 
   addCart() async {
+    double pricePerOne = totalPrice / quantity;
     CustomDialogs.loading();
     var response = await cartData.addCart(
         userid: myServices.getUserid(),
         bchid: bch.bchId.toString(),
         itemid: item.itemsId.toString(),
-        price: itemPriceAfterDiscount.toString(),
+        price: pricePerOne.toString(),
         totalPrice: totalPrice.toString(),
         discount: discountAmount.toString(),
         desc: desc,
@@ -154,9 +155,9 @@ class ItemsDetailsController extends GetxController {
   }
 
   getItemOptionsWithElements() async {
-    if (item.itemsWithOptions == 0) {
-      return;
-    }
+    // if (item.itemsWithOptions == 0) {
+    //   return;
+    // }
     statusRequest = StatusRequest.loading;
     update();
     var response = await brandSearchData.getItemOptionsWithElements(
@@ -166,8 +167,6 @@ class ItemsDetailsController extends GetxController {
       if (response['status'] == 'success') {
         print('success');
         parseData(response);
-      } else {
-        statusRequest = StatusRequest.failure;
       }
     }
     update();

@@ -6,6 +6,15 @@ import 'package:jdolh_customers/core/class/crud.dart';
 class SignupData {
   Crud crud;
   SignupData(this.crud);
+  deleteAccount({
+    required String email,
+  }) async {
+    var response = await crud.postData(ApiLinks.deleteAccount, {
+      "email": email,
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
 
   postData(String name, String username, String password, String email,
       String phone, String gender, String city, File? file) async {

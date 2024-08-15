@@ -70,16 +70,19 @@ class SearchScreenController extends GetxController {
 
   seachOnTap(String? value) {
     // getPeopleSearchedFor(value);
+
     if (value != null) {
+      value = value.toLowerCase();
       if (isPersonSearch) {
         usersSearched = allUsers
             .where((element) =>
-                element.userUsername!.contains(value) ||
-                element.userName!.contains(value))
+                element.userUsername!.toLowerCase().contains(value!) ||
+                element.userName!.toLowerCase().contains(value))
             .toList();
       } else {
         brandAndBchSearched = brandAndBch
-            .where((element) => element.brandStoreName!.contains(value))
+            .where((element) =>
+                element.brandStoreName!.toLowerCase().contains(value!))
             .toList();
       }
 

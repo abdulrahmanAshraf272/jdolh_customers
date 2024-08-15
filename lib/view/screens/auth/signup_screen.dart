@@ -26,7 +26,7 @@ class SignupScreen extends StatelessWidget {
       body: SafeArea(
           child: PopScope(
         canPop: false,
-        onPopInvoked: (didPop) => alertExitAppNew(),
+        onPopInvoked: (didPop) => didPop ? alertExitAppNew() : null,
         child: GetBuilder<SignUpController>(
             builder: (controller) => HandlingDataView(
                   statusRequest: controller.statusRequest,
@@ -69,12 +69,12 @@ class SignupScreen extends StatelessWidget {
                                 CustomTextFormAuthTwo(
                                   labelText: 'اسم المستخدم'.tr,
                                   valid: (val) =>
-                                      validInput(val!, 2, 50, 'username'),
+                                      validInputUsername(val!, 4, 50),
                                   iconData: Icons.person,
                                   textEditingController: controller.username,
                                 ),
                                 Text(
-                                  'استخدم اسم مميز لا يحتوي على مسافة او علامة @'
+                                  'استخدم اسم مميز اكبر من 4 خانات ولا يحتوي على مسافة او علامة @'
                                       .tr,
                                   style: titleSmallGray,
                                 ),

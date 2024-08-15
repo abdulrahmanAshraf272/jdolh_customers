@@ -86,6 +86,7 @@ class HomeScreen extends StatelessWidget {
                         ? Center(child: Text('لا توجد حجوزات قريبة'.tr))
                         : ListView.builder(
                             shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: controller.reservation.length > 3
                                 ? 3
                                 : controller.reservation.length,
@@ -131,7 +132,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     if (controller.brands.isNotEmpty)
                       CustomTitle(
-                        title: 'الأكثر زيارة خلال اسبوع'.tr,
+                        title: 'الأكثر زيارة خلال الاسبوع'.tr,
                         bottomPadding: 5,
                         onTap: () {
                           controller.gotoExploreBrand();
@@ -144,7 +145,7 @@ class HomeScreen extends StatelessWidget {
                           child: ListView.builder(
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
-                            physics: const BouncingScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             itemCount: controller.brands.length,
                             itemBuilder: (context, index) => BrandExploreListItem(
@@ -166,9 +167,9 @@ class HomeScreen extends StatelessWidget {
                         height: 120.h,
                         child: ListView.builder(
                             shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.horizontal,
                             padding: const EdgeInsets.symmetric(horizontal: 10),
-                            physics: const BouncingScrollPhysics(),
                             itemCount: controller.topCheckin.length,
                             itemBuilder: (context, index) =>
                                 ExploreCheckinListItem(
@@ -190,7 +191,7 @@ class HomeScreen extends StatelessWidget {
                             shrinkWrap: true,
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             scrollDirection: Axis.horizontal,
-                            physics: const BouncingScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: controller.topRate.length,
                             itemBuilder: (context, index) =>
                                 PersonExploreListItem(

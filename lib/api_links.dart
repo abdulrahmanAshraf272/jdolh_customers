@@ -30,6 +30,8 @@ class ApiLinks {
       '$server/jdolh_customers/auth/forget_password.php';
   static const String resetPassword =
       '$server/jdolh_customers/auth/reset_password.php';
+  static const String deleteAccount =
+      '$server/jdolh_customers/auth/delete_account.php';
 
   static const String searchPerson =
       '$server/jdolh_customers/search_person.php';
@@ -164,6 +166,9 @@ class ApiLinks {
       '$server/jdolh_customers/res/reject_invitation.php';
   static const String acceptInvitation =
       '$server/jdolh_customers/res/accept_invitation.php';
+
+  static const String getResLocation =
+      '$server/jdolh_brands/res/get_res_location.php';
 
   // ===== Rate ======//
   static const String addRate = '$server/jdolh_customers/rate/add_rate.php';

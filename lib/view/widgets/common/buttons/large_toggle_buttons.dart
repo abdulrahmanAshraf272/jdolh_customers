@@ -9,6 +9,7 @@ class LargeToggleButtons extends StatefulWidget {
   final int? displayNumber;
   final Function() onTapOne;
   final Function() onTapTwo;
+
   final bool twoColors;
   const LargeToggleButtons(
       {super.key,
@@ -75,6 +76,74 @@ class _LargeToggleButtonsState extends State<LargeToggleButtons> {
                 widget.optionTwo,
                 style: titleMedium.copyWith(
                     color: selectedOption == 2
+                        ? AppColors.white
+                        : AppColors.textDark),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class LargeToggleButtonsBrandProfile extends StatelessWidget {
+  final String optionOne;
+  final String optionTwo;
+  final int optionSelected;
+  final Function() onTapOne;
+  final Function() onTapTwo;
+
+  final bool twoColors;
+  const LargeToggleButtonsBrandProfile(
+      {super.key,
+      required this.optionOne,
+      required this.optionTwo,
+      required this.onTapOne,
+      required this.onTapTwo,
+      required this.optionSelected,
+      this.twoColors = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: InkWell(
+            onTap: () {
+              onTapOne();
+            },
+            child: Container(
+              height: 44.h,
+              color: optionSelected == 0
+                  ? AppColors.secondaryColor
+                  : AppColors.gray,
+              alignment: Alignment.center,
+              child: Text(
+                optionOne,
+                style: titleMedium.copyWith(
+                    color: optionSelected == 0
+                        ? AppColors.white
+                        : AppColors.textDark),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: InkWell(
+            onTap: () {
+              onTapTwo();
+            },
+            child: Container(
+              height: 44.h,
+              color: optionSelected == 1
+                  ? AppColors.secondaryColor
+                  : AppColors.gray,
+              alignment: Alignment.center,
+              child: Text(
+                optionTwo,
+                style: titleMedium.copyWith(
+                    color: optionSelected == 1
                         ? AppColors.white
                         : AppColors.textDark),
               ),

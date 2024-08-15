@@ -30,7 +30,7 @@ class ReservationSearchScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     LargeToggleButtons(
-                        optionOne: 'حجز تقليدي'.tr,
+                        optionOne: 'حجز'.tr,
                         optionTwo: 'خدمات منزلية'.tr,
                         onTapOne: () => controller.setIsHomeService(false),
                         onTapTwo: () => controller.setIsHomeService(true)),

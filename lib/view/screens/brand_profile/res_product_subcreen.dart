@@ -95,7 +95,10 @@ class ResProductSubscreen extends StatelessWidget {
                             warningDialog(checkResOption);
                             return;
                           }
-                          controller.onTapCreateReservationWithInvitors();
+
+                          if (controller.checkInvitorsWithinLimitation()) {
+                            controller.onTapCreateReservationWithInvitors();
+                          }
                         },
                         text: 'ارسال الدعوات'.tr,
                       )
@@ -107,7 +110,9 @@ class ResProductSubscreen extends StatelessWidget {
                             warningDialog(checkResOption);
                             return;
                           }
-                          controller.onTapConfirmRes();
+                          if (controller.checkInvitorsWithinLimitation()) {
+                            controller.onTapConfirmRes();
+                          }
                         },
                         text: 'تأكيد الحجز'.tr,
                       ),

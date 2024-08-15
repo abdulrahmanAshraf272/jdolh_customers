@@ -161,6 +161,24 @@ class ReservationSearchController extends GetxController {
     brandTypes = typesJson.map((e) => BrandType.fromJson(e)).toList();
     brandSubtypes = subtypesJson.map((e) => BrandSubtype.fromJson(e)).toList();
 
+    // ======= Remove types is not using ======= //
+    List typesInUsingJson = response['typesInUsing'];
+    print(typesInUsingJson);
+    print(typesJson);
+    List<BrandType> typesInUsing =
+        typesInUsingJson.map((element) => BrandType.fromJson(element)).toList();
+    List<BrandType> temp = [];
+    for (int i = 0; i < brandTypes.length; i++) {
+      for (int j = 0; j < typesInUsing.length; j++) {
+        if (brandTypes[i].type == typesInUsing[j].type) {
+          temp.add(brandTypes[i]);
+          print('type in using: ${brandTypes[i].type}');
+        }
+      }
+    }
+
+    brandTypes = List.of(temp);
+
     brandTypesWithoutProduct
         .addAll(brandTypes.where((element) => element.isService == 1));
 
@@ -171,6 +189,21 @@ class ReservationSearchController extends GetxController {
     }
 
     update();
+  }
+
+  removeBrandTypesInUsing(response) {
+    List typesInUsingJson = response['typesInUsing'];
+
+    List<BrandType> typesInUsing =
+        typesInUsingJson.map((element) => BrandType.fromJson(element)).toList();
+
+    for (int i = 0; i < brandTypes.length; i++) {
+      for (int j = 0; j < typesInUsing.length; j++) {
+        if (brandTypes[i].type == typesInUsing[j].type) {
+          print('type in using: ${brandTypes[i].type}');
+        }
+      }
+    }
   }
 
   setSelectedBrandType(String? value) {

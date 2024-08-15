@@ -42,3 +42,21 @@ String? firstNameValidInput(String value) {
   }
   return null;
 }
+
+validInputUsername(String val, int min, int max) {
+  if (val.isEmpty) {
+    return "الحقل فارغ!".tr;
+  }
+
+  if (!GetUtils.isUsername(val)) {
+    return 'اسم مستخدم غير صالح, مثال"ahmed_ali22'.tr;
+  }
+
+  if (val.length < min) {
+    return "لا يمكن ان يكون اسم المستخدم اقل من $min خانات";
+  }
+
+  if (val.length > max) {
+    return "لا يمكن ان يكون اسم المستخدم اكبر من $min خانات";
+  }
+}

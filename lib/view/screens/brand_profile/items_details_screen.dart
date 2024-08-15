@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/items_details_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
+import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/data/models/ioption_element.dart';
 import 'package:jdolh_customers/data/models/item_option.dart';
@@ -18,12 +19,15 @@ class ItemsDetailsScreen extends StatelessWidget {
     Get.put(ItemsDetailsController());
     return GetBuilder<ItemsDetailsController>(
         builder: (controller) => Scaffold(
-              floatingActionButton: PriceAndConfirmReservationButton(
-                onTap: () {
-                  controller.onTapAddToCart();
-                },
-                price: controller.totalPrice.toString(),
-              ),
+              floatingActionButton:
+                  controller.statusRequest != StatusRequest.loading
+                      ? PriceAndConfirmReservationButton(
+                          onTap: () {
+                            controller.onTapAddToCart();
+                          },
+                          price: controller.totalPrice.toString(),
+                        )
+                      : null,
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
               body: Column(

@@ -147,7 +147,7 @@ class SignUpController extends GetxController {
     Get.offAllNamed(AppRouteName.login);
   }
 
-  goToVerifycode() {
+  goToVerifycode() async {
     Get.offNamed(AppRouteName.verifyCode,
         arguments: {"email": email.text, 'resetPassword': 0});
   }

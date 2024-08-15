@@ -35,7 +35,7 @@ class BillsScreen extends StatelessWidget {
                           widget: controller.billsToDisplay.isEmpty &&
                                   controller.displayPayedBills == 0
                               ? Center(
-                                  child: Text('لا توجد فواتير غبر مدفوعة'.tr))
+                                  child: Text('لا توجد فواتير غير مدفوعة'.tr))
                               : controller.billsToDisplay.isEmpty &&
                                       controller.displayPayedBills == 1
                                   ? Center(

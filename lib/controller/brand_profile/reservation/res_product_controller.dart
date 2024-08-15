@@ -107,6 +107,26 @@ class ResProductController extends ResParentController {
     update();
   }
 
+  bool checkInvitorsWithinLimitation() {
+    //Make sure the min and max invitor
+    if (resDetails.invitorMin != 0 && resDetails.invitorMin != null) {
+      if (resInvitors.length < resDetails.invitorMin!) {
+        Get.rawSnackbar(
+            message:
+                'العدد الادنى للأشخاص للحجز في هذا المكان هو ${resDetails.invitorMin}');
+        return false;
+      }
+    } else if (resDetails.invitorMax != 0 && resDetails.invitorMax != null) {
+      if (resInvitors.length > resDetails.invitorMax!) {
+        Get.rawSnackbar(
+            message:
+                'العدد الاقصى للأشخاص للحجز في هذا المكان هو ${resDetails.invitorMax}');
+        return false;
+      }
+    }
+    return true;
+  }
+
   onTapCreateReservationWithInvitors() async {
     if (checkAllFeilds()) {
       // 1- Calculate each invitor bill

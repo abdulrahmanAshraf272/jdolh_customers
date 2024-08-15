@@ -88,12 +88,12 @@ class ResHomeServicesSubscreen extends StatelessWidget {
           const SizedBox(height: 15),
           CustomTextField(
               textEditingController: controller.floor,
-              textInputType: TextInputType.number,
+              //textInputType: TextInputType.number,
               labelText: 'رقم الدور'.tr),
           const SizedBox(height: 15),
           CustomTextField(
               textEditingController: controller.apartment,
-              textInputType: TextInputType.number,
+              //textInputType: TextInputType.number,
               labelText: 'رقم الشقة'.tr),
           const SizedBox(height: 20),
           CustomSmallBoldTitle(title: 'تفاصيل الحجز'.tr),

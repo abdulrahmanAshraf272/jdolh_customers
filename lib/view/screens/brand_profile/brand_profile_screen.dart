@@ -10,6 +10,7 @@ import 'package:jdolh_customers/view/widgets/brand_profile/categories.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/desc_branchesButton_workTime.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/header.dart';
 import 'package:jdolh_customers/view/widgets/brand_profile/items_to_display.dart';
+import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/large_toggle_buttons.dart';
 
 class BrandProfileScreen extends StatelessWidget {
@@ -17,12 +18,18 @@ class BrandProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(BrandProfileController());
-    return Scaffold(
-      //appBar: customAppBar(title: controller.brand.brandStoreName ?? ''),
-      body: GetBuilder<BrandProfileController>(
-        builder: (controller) =>
-            controller.statusRequest != StatusRequest.success
+    final controller = Get.put(BrandProfileController());
+    return GetBuilder<BrandProfileController>(
+        builder: (controller) => Scaffold(
+            floatingActionButton: controller.subscreen == 0
+                ? GoHomeButton(
+                    onTap: () => controller.displayResSubscreen(),
+                    text: 'التالي'.tr,
+                  )
+                : null,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            body: controller.statusRequest != StatusRequest.success
                 ? HandlingDataView2(statusRequest: controller.statusRequest)
                 : SingleChildScrollView(
                     child: Column(
@@ -39,26 +46,35 @@ class BrandProfileScreen extends StatelessWidget {
                           onTapWorktime: () => controller.gotoDisplayWorktime(),
                           onTapBchs: () => controller.goDisplayAllBchs(),
                         ),
-                        LargeToggleButtons(
+                        LargeToggleButtonsBrandProfile(
                             optionOne: controller.brand.brandIsService == 1
                                 ? 'الخدمات'.tr
                                 : 'القائمة'.tr,
                             optionTwo: 'تفاصيل الحجز'.tr,
+                            optionSelected: controller.subscreen == 0 ? 0 : 1,
                             onTapOne: () => controller.diplayItemsSubscreen(),
                             onTapTwo: () => controller.displayResSubscreen()),
+                        // LargeToggleButtons(
+                        //     optionOne: controller.brand.brandIsService == 1
+                        //         ? 'الخدمات'.tr
+                        //         : 'القائمة'.tr,
+                        //     optionTwo: 'تفاصيل الحجز'.tr,
+                        //     onTapOne: () => controller.diplayItemsSubscreen(),
+                        //     onTapTwo: () => controller.displayResSubscreen()),
                         controller.subscreen == 0
                             ? const Column(
-                                children: [Categories(), ItemsToDisplay()],
+                                children: [
+                                  Categories(),
+                                  ItemsToDisplay(),
+                                ],
                               )
                             : controller.subscreen == 1
                                 ? const ResProductSubscreen()
                                 : controller.subscreen == 2
                                     ? const ResServiceSubscreen()
-                                    : const ResHomeServicesSubscreen()
+                                    : const ResHomeServicesSubscreen(),
                       ],
                     ),
-                  ),
-      ),
-    );
+                  )));
   }
 }

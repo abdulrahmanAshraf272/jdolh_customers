@@ -8,6 +8,7 @@ import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
+import 'package:jdolh_customers/view/widgets/common/custom_textfield.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 
 class MyContactsScreen extends StatelessWidget {
@@ -31,6 +32,13 @@ class MyContactsScreen extends StatelessWidget {
                 : SingleChildScrollView(
                     child: Column(
                       children: [
+                        const SizedBox(height: 20),
+                        CustomTextField(
+                          textEditingController: controller.searchController,
+                          hintText: 'البحث في قائمة الأصدقاء'.tr,
+                          iconData: Icons.search,
+                          onChange: (value) => controller.updateList(value),
+                        ),
                         ListView.builder(
                           physics: const BouncingScrollPhysics(),
                           padding: const EdgeInsets.only(bottom: 30, top: 10),

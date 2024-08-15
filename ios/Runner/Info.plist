@@ -61,9 +61,9 @@
 		<false/>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
+			<string>sms</string>
 			<string>tel</string>
 		</array>
-		
 		<!-- Location usage descriptions -->
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>نحن بحاجة إلى موقعك لتقديم خدمات أفضل.</string>

@@ -15,12 +15,14 @@ import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
 import 'package:jdolh_customers/data/models/res_invitors.dart';
+import 'package:jdolh_customers/data/models/res_location.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 import 'package:sweetsheet/sweetsheet.dart';
 
 class ReservationDetailsController extends GetxController {
   StatusRequest statusGetInvitors = StatusRequest.none;
+  StatusRequest statusResLocation = StatusRequest.none;
   List<Resinvitors> resInvitors = [];
   StatusRequest statusRequest = StatusRequest.none;
   ResData resData = ResData(Get.find());
@@ -34,6 +36,31 @@ class ReservationDetailsController extends GetxController {
   String customerPhone = '';
 
   bool phoneNumberValid = false;
+
+  ResLocation? resLocation;
+
+  onTapDisplayHomeLocation() {
+    if (resLocation != null) {
+      double lat = double.parse(resLocation!.reslocationLat!);
+      double lng = double.parse(resLocation!.reslocationLng!);
+      openLocationInGoogleMaps(lat, lng);
+    }
+  }
+
+  getResLocation() async {
+    statusResLocation = StatusRequest.loading;
+    update();
+    var response =
+        await resData.getResLocation(resid: reservation.resId.toString());
+    statusResLocation = handlingData(response);
+    if (statusResLocation == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        resLocation = ResLocation.fromJson(response['data']);
+        print(response);
+      }
+    }
+    update();
+  }
 
   onTapCancelReservation(BuildContext context) {
     sweetBottomSheet(
@@ -114,13 +141,15 @@ class ReservationDetailsController extends GetxController {
   onTapDisplayLocation() {
     String location = reservation.bchLocation ?? '';
     String locationLink = reservation.bchLocationLink ?? '';
+    print('location: $location');
+    print('location Link: $locationLink');
 
-    if (locationLink == '') {
-      goToDisplayLocation();
-      return;
-    }
+    // if (locationLink == '') {
+    //   goToDisplayLocation();
+    //   return;
+    // }
 
-    if (location != '' && locationLink != '') {
+    if (location != '') {
       Get.bottomSheet(Container(
         padding: const EdgeInsets.all(20),
         decoration: const BoxDecoration(
@@ -142,7 +171,7 @@ class ReservationDetailsController extends GetxController {
             const SizedBox(height: 20),
             GoHomeButton(
                 onTap: () {
-                  openUrlLink(locationLink);
+                  openLocation();
                 },
                 text: 'تطبيق Googel Maps',
                 width: Get.width - 40,
@@ -158,6 +187,20 @@ class ReservationDetailsController extends GetxController {
           ],
         ),
       ));
+    }
+  }
+
+  openLocation() {
+    String location = reservation.bchLocation ?? '';
+    String locationLink = reservation.bchLocationLink ?? '';
+    if (locationLink != '') {
+      openUrlLink(locationLink);
+    } else if (location != '') {
+      double lat = double.parse(reservation.bchLat!);
+      double lng = double.parse(reservation.bchLng!);
+      openLocationInGoogleMaps(lat, lng);
+    } else {
+      Get.rawSnackbar(message: 'لم يتم تحديد مكان الفرع');
     }
   }
 
@@ -208,6 +251,8 @@ class ReservationDetailsController extends GetxController {
       if (reservation.resWithInvitors == 1) {
         getInvitors();
       }
+
+      if (reservation.resIsHomeService == 1) getResLocation();
 
       resTime = displayResTime(reservation.resTime!);
     }

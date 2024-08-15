@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
@@ -19,6 +20,7 @@ class Contacts {
 }
 
 class MyContactsController extends GetxController {
+  TextEditingController searchController = TextEditingController();
   StatusRequest statusRequest = StatusRequest.none;
   ValuesController valuesController = Get.put(ValuesController());
   FollowUnfollowData followUnfollowData = FollowUnfollowData(Get.find());
@@ -26,6 +28,34 @@ class MyContactsController extends GetxController {
   List<Friend> users = [];
   List<Contacts> contacts = [];
   bool readContact = true;
+
+  List<Friend> usersBeforeFilter = [];
+  List<Contacts> contactsBeforeFilter = [];
+
+  void updateList(String value) {
+    value = value.toLowerCase();
+    contacts = contactsBeforeFilter
+        .where((element) => element.name.toLowerCase().contains(value))
+        .toList();
+    users = usersBeforeFilter
+        .where((element) =>
+            element.userUsername!.toLowerCase().contains(value) ||
+            element.userName!.toLowerCase().contains(value))
+        .toList();
+    update();
+  }
+
+  // void updateList(String value) {
+  //   contacts = contactsBeforeFilter
+  //       .where((element) => element.name.contains(value))
+  //       .toList();
+  //   users = usersBeforeFilter
+  //       .where((element) =>
+  //           element.userUsername!.contains(value) ||
+  //           element.userName!.contains(value))
+  //       .toList();
+  //   update();
+  // }
 
   Future<List<Contacts>> getContacts() async {
     // Request permission to access contacts
@@ -122,6 +152,8 @@ class MyContactsController extends GetxController {
         users = responseJsonData.map((e) => Friend.fromJson(e)).toList();
         removeUsersNotExistInMyContact();
         removeContactsExistInJdolh();
+
+        usersBeforeFilter = List.of(users);
       } else {
         statusRequest = StatusRequest.failure;
       }
@@ -152,6 +184,8 @@ class MyContactsController extends GetxController {
       statusRequest = StatusRequest.loading;
       update();
       contacts = await getContacts();
+      contactsBeforeFilter = List.of(contacts);
+
       await getAllUsers();
       statusRequest = StatusRequest.success;
       update();

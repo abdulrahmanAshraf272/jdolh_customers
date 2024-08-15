@@ -5,6 +5,13 @@ class ResData {
   Crud crud;
   ResData(this.crud);
 
+  getResLocation({required String resid}) async {
+    var response =
+        await crud.postData(ApiLinks.getResLocation, {"resid": resid});
+
+    return response.fold((l) => l, (r) => r);
+  }
+
   changeHoldStatus({required String resid, required String status}) async {
     var response = await crud.postData(
         ApiLinks.changeHoldStatus, {"resid": resid, "status": status});

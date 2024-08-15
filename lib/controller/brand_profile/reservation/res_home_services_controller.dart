@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jdolh_customers/controller/brand_profile/reservation/res_parent_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
 
@@ -20,13 +21,12 @@ class ResHomeServicesController extends ResParentController {
 
   onTapConfirmRes() async {
     if (checkAllFeilds()) {
-      statusRequest = StatusRequest.loading;
-      update();
+      CustomDialogs.loading();
       var result = await createRes();
       if (result is Reservation) {
         Reservation res = result;
         var addLocationResult = await addResLocation(res.resId!);
-        update();
+        CustomDialogs.dissmissLoading();
         if (addLocationResult == true) {
           //clear cart beacause it's not null any more , it take the resid = id of res just created.
           //brandProfileController.carts.clear();

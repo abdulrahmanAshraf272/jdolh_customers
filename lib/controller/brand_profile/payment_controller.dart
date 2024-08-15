@@ -18,7 +18,7 @@ class PaymentController extends GetxController {
   num tax = 0;
   num price = 0;
 
-  String paymentMethod = 'credit';
+  String paymentMethod = '';
   PaymentData paymentData = PaymentData(Get.find());
   ResData resData = ResData(Get.find());
   MyServices myServices = Get.find();
@@ -110,6 +110,8 @@ class PaymentController extends GetxController {
       payTamara();
     } else if (paymentMethod == 'tabby') {
       payTabby();
+    } else {
+      Get.rawSnackbar(message: 'من فضلك اختر طريقة الدفع');
     }
   }
 
@@ -300,7 +302,12 @@ class PaymentController extends GetxController {
     }
 
     if (reservation.resResPolicy == 1 && reservation.resPaymentType == 'RB') {
-      discount = reservation.resResCost! + reservation.resResTax!;
+      //To make sure resCost is not bigger than billCost
+      //if resCost = 100 and billCost is 25, the payment will be 25 - 100 = -75 which is not posible
+      double resTotalCost = reservation.resResCost!;
+      if (resTotalCost < reservation.resBillCost!) {
+        discount = resTotalCost;
+      }
     }
 
     getAvailablePaymentMethods();

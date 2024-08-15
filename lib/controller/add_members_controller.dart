@@ -29,10 +29,11 @@ class AddMembersController extends GetxController {
   }
 
   void updateList(String value) {
+    value = value.toLowerCase();
     following = followingBeforeFiltered
         .where((element) =>
-            element.userUsername!.contains(value) ||
-            element.userName!.contains(value))
+            element.userUsername!.toLowerCase().contains(value) ||
+            element.userName!.toLowerCase().contains(value))
         .toList();
     update();
   }
