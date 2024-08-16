@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/data/models/res_location.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
@@ -29,7 +30,7 @@ class DisplayResLocation extends StatelessWidget {
               children: [
                 Align(
                     alignment: Alignment.center,
-                    child: Text('العنوان',
+                    child: Text('العنوان'.tr,
                         style: TextStyle(
                           //fontWeight: FontWeight.w700,
                           fontSize: 16.sp,
@@ -40,32 +41,27 @@ class DisplayResLocation extends StatelessWidget {
                     alignment: Alignment.center,
                     child: CustomButton(
                       onTap: onTapDisplayLocation,
-                      text: 'عرض على الخريطة',
+                      text: 'عرض على الخريطة'.tr,
                     )),
                 const SizedBox(height: 15),
                 DataTextRow(
-                  title: 'الحي',
-                  value: resLocation!.reslocationHood ?? '',
-                ),
-                const SizedBox(height: 5),
-                DataTextRow(
-                  title: 'الشارع',
-                  value: resLocation!.reslocationStreet ?? '',
-                ),
-                const SizedBox(height: 5),
-                DataTextRow(
-                  title: 'المبنى',
-                  value: resLocation!.reslocationBuilding ?? '',
-                ),
-                const SizedBox(height: 5),
-                DataTextRow(
-                  title: 'الدور',
+                  title: 'المدينة'.tr,
                   value: resLocation!.reslocationFloor ?? '',
                 ),
                 const SizedBox(height: 5),
                 DataTextRow(
-                  title: 'الشقة',
+                  title: 'الحي'.tr,
                   value: resLocation!.reslocationHood ?? '',
+                ),
+                const SizedBox(height: 5),
+                DataTextRow(
+                  title: 'الشارع'.tr,
+                  value: resLocation!.reslocationStreet ?? '',
+                ),
+                const SizedBox(height: 5),
+                DataTextRow(
+                  title: 'معلومات اضافية'.tr,
+                  value: resLocation!.reslocationBuilding ?? '',
                 ),
                 const SizedBox(height: 5),
               ],

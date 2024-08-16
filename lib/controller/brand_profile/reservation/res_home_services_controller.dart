@@ -65,7 +65,7 @@ class ResHomeServicesController extends ResParentController {
         lng: myLatLng!.longitude.toString(),
         location: myLocation,
         hood: hood.text,
-        street: hood.text,
+        street: street.text,
         building: building.text,
         floor: floor.text,
         apartment: apartment.text);
@@ -102,18 +102,18 @@ class ResHomeServicesController extends ResParentController {
       Get.rawSnackbar(message: 'من فضلك قم بكتابة اسم الشارع'.tr);
       return false;
     }
-    if (building.text == '') {
-      Get.rawSnackbar(message: 'من فضلك قم بكتابة اسم او رقم البرج'.tr);
-      return false;
-    }
+    // if (building.text == '') {
+    //   Get.rawSnackbar(message: 'من فضلك قم بكتابة اسم او رقم البرج'.tr);
+    //   return false;
+    // }
     if (floor.text == '') {
-      Get.rawSnackbar(message: 'من فضلك قم بكتابة رقم الدور'.tr);
+      Get.rawSnackbar(message: 'من فضلك قم بكتابة اسم المدينة'.tr);
       return false;
     }
-    if (apartment.text == '') {
-      Get.rawSnackbar(message: 'من فضلك قم بكتابة رقم الشقة'.tr);
-      return false;
-    }
+    // if (apartment.text == '') {
+    //   Get.rawSnackbar(message: 'من فضلك قم بكتابة رقم الشقة'.tr);
+    //   return false;
+    // }
     return true;
   }
 
@@ -143,6 +143,10 @@ class ResHomeServicesController extends ResParentController {
       myLocation =
           '${placemarks[0].street}, ${placemarks[0].locality}, ${placemarks[0].country}';
       print('myLocation ====> $myLocation');
+      street.text = placemarks[0].street ?? '';
+
+      hood.text = placemarks[0].subLocality ?? '';
+      floor.text = placemarks[0].locality ?? '';
       update();
     } else {
       print('no location selected');

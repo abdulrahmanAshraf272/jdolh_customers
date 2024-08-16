@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/reservation/res_home_services_controller.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/res_service_subscreen.dart';
@@ -76,6 +77,11 @@ class ResHomeServicesSubscreen extends StatelessWidget {
           CustomSmallBoldTitle(title: 'العنوان'.tr),
           const SizedBox(height: 10),
           CustomTextField(
+              textEditingController: controller.floor,
+              //textInputType: TextInputType.number,
+              labelText: 'المدينة'.tr),
+          const SizedBox(height: 10),
+          CustomTextField(
               textEditingController: controller.hood, labelText: 'اسم الحي'.tr),
           const SizedBox(height: 15),
           CustomTextField(
@@ -84,17 +90,7 @@ class ResHomeServicesSubscreen extends StatelessWidget {
           const SizedBox(height: 15),
           CustomTextField(
               textEditingController: controller.building,
-              labelText: 'اسم البرج'.tr),
-          const SizedBox(height: 15),
-          CustomTextField(
-              textEditingController: controller.floor,
-              //textInputType: TextInputType.number,
-              labelText: 'رقم الدور'.tr),
-          const SizedBox(height: 15),
-          CustomTextField(
-              textEditingController: controller.apartment,
-              //textInputType: TextInputType.number,
-              labelText: 'رقم الشقة'.tr),
+              labelText: 'معلومات اضافية (اختياري)'.tr),
           const SizedBox(height: 20),
           CustomSmallBoldTitle(title: 'تفاصيل الحجز'.tr),
           const CartService(),
@@ -103,7 +99,7 @@ class ResHomeServicesSubscreen extends StatelessWidget {
           const PaymentTypeSelect(),
           const DisplayResPolicy(),
           GoHomeButton(
-            onTap: () {
+            onTap: () async {
               var checkResOption =
                   controller.checkAllItemsAvailableWithinResOptionSelected();
               if (checkResOption != true) {

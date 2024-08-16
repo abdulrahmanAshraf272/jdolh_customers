@@ -447,6 +447,11 @@ class MyTranslation extends Translations {
           'من': 'من',
           'اوقات العمل': 'اوقات العمل',
           'الأكثر زيارة خلال الاسبوع': 'الأكثر زيارة خلال الاسبوع',
+
+          'معلومات اضافية (اختياري)': 'معلومات اضافية (اختياري)',
+          'الحي': 'الحي',
+          'الشارع': 'الشارع',
+          'معلومات اضافية': 'معلومات اضافية',
         },
         'en': {
           // ========  Language ===========//
@@ -896,7 +901,11 @@ class MyTranslation extends Translations {
           'الفترة الثانية': 'Second period',
           'من': 'from',
           'اوقات العمل': 'Working hours',
-          'الأكثر زيارة خلال الاسبوع': 'Most visited during the week'
+          'الأكثر زيارة خلال الاسبوع': 'Most visited during the week',
+          'معلومات اضافية (اختياري)': 'Additional information (optional)',
+          'الحي': 'neighbourhood',
+          'الشارع': 'street',
+          'معلومات اضافية': 'Additional information'
         }
       };
 }
