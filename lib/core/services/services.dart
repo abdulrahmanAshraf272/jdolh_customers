@@ -24,6 +24,14 @@ class MyServices extends GetxService {
     return this;
   }
 
+  setPaymentMethods(String method) {
+    sharedPreferences.setString("paymentMethod", method);
+  }
+
+  String getPaymentMethods() {
+    return sharedPreferences.getString("paymentMethod") ?? 'CREDIT';
+  }
+
   setUserData(User user) {
     sharedPreferences.setString("name", user.userName ?? '');
     sharedPreferences.setString("username", user.userUsername ?? '');

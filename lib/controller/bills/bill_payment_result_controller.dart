@@ -10,6 +10,7 @@ class BillPaymentResultController extends GetxController {
   late Bill bill;
   late String orderId;
   BillsData billsData = BillsData(Get.find());
+  double amountWithoutTax = 0;
 
   String result = '';
 
@@ -20,7 +21,7 @@ class BillPaymentResultController extends GetxController {
     var response = await billsData.payBillCredit(
         orderId: orderId,
         billId: bill.billId.toString(),
-        amountWithoutTax: bill.billAmountWithoutTax.toString(),
+        amountWithoutTax: amountWithoutTax.toString(),
         tax: bill.billTaxAmount.toString(),
         totalAmount: bill.billAmount.toString(),
         resId: bill.billResid.toString(),
@@ -51,6 +52,14 @@ class BillPaymentResultController extends GetxController {
     if (Get.arguments != null) {
       bill = Get.arguments['bill'];
       orderId = Get.arguments['orderId'];
+
+      amountWithoutTax = double.parse(bill.billAmountWithoutTax!) -
+          double.parse(bill.billDiscount!);
+      print('before discount: ${bill.billAmountWithoutTax}');
+
+      print('discount: ${bill.billDiscount}');
+      print('amountWithoutTax: $amountWithoutTax');
+
       checkPaymentResult();
     }
 

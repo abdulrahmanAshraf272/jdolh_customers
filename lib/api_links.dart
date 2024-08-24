@@ -166,6 +166,8 @@ class ApiLinks {
       '$server/jdolh_customers/res/reject_invitation.php';
   static const String acceptInvitation =
       '$server/jdolh_customers/res/accept_invitation.php';
+  static const String confirmRes =
+      '$server/jdolh_customers/res/confirm_res.php';
 
   static const String getResLocation =
       '$server/jdolh_brands/res/get_res_location.php';

@@ -297,7 +297,7 @@ class DataTextRow extends StatelessWidget {
         Expanded(
           child: AutoSizeText(
             maxLines: 1,
-            '$value $endText',
+            value != '' ? '$value $endText' : '-',
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         )

@@ -3,12 +3,13 @@ class ResLocation {
   int? reslocationResid;
   int? reslocationUserid;
   String? reslocationLocation;
+  String? reslocationCity;
   String? reslocationLat;
   String? reslocationLng;
   String? reslocationHood;
   String? reslocationStreet;
-  String? reslocationBuilding;
-  String? reslocationFloor;
+  String? reslocationShortAddress;
+  String? reslocationAdditionalInfo;
   String? reslocationApartment;
 
   ResLocation(
@@ -16,12 +17,13 @@ class ResLocation {
       this.reslocationResid,
       this.reslocationUserid,
       this.reslocationLocation,
+      this.reslocationCity,
       this.reslocationLat,
       this.reslocationLng,
       this.reslocationHood,
       this.reslocationStreet,
-      this.reslocationBuilding,
-      this.reslocationFloor,
+      this.reslocationShortAddress,
+      this.reslocationAdditionalInfo,
       this.reslocationApartment});
 
   ResLocation.fromJson(Map<String, dynamic> json) {
@@ -29,12 +31,13 @@ class ResLocation {
     reslocationResid = json['reslocation_resid'];
     reslocationUserid = json['reslocation_userid'];
     reslocationLocation = json['reslocation_location'];
+    reslocationCity = json['reslocation_city'];
     reslocationLat = json['reslocation_lat'];
     reslocationLng = json['reslocation_lng'];
     reslocationHood = json['reslocation_hood'];
     reslocationStreet = json['reslocation_street'];
-    reslocationBuilding = json['reslocation_building'];
-    reslocationFloor = json['reslocation_floor'];
+    reslocationShortAddress = json['reslocation_shortAddress'];
+    reslocationAdditionalInfo = json['reslocation_additionalInfo'];
     reslocationApartment = json['reslocation_apartment'];
   }
 }

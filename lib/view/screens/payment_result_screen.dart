@@ -89,7 +89,7 @@ class ReservationConfirmed extends StatelessWidget {
           const Divider(thickness: 1, endIndent: 20, indent: 20),
           const SizedBox(height: 10),
           Text(
-            '${controller.brand.brandStoreName}',
+            '${controller.reservation.brandName}',
             style: titleLarge,
           ),
           const SizedBox(height: 10),

@@ -2,11 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
-	
 		<!-- webview -->
 		<key>io.flutter.embedded_views_preview</key>
 		<string>YES</string>
-
 		<key>NSContactsUsageDescription</key>
 		<string>نحن بحاجة إلى الوصول إلى جهات الاتصال الخاصة بك لدعوتهم.</string>
 		<key>LSApplicationQueriesSchemes</key>
@@ -69,11 +67,9 @@
 		<string>نحن بحاجة إلى موقعك لتقديم خدمات أفضل.</string>
 		<key>NSLocationAlwaysUsageDescription</key>
 		<string>نحن بحاجة إلى موقعك لتقديم خدمات أفضل.</string>
-
 		<!--Access to photos -->
 		<key>NSPhotoLibraryUsageDescription</key>
-        <string>نحتاج إلى الوصول إلى مكتبة الصور الخاصة بك لتحميل الصور.</string>
-
+		<string>نحتاج إلى الوصول إلى مكتبة الصور الخاصة بك لتحميل الصور.</string>
 		<!-- App Transport Security settings -->
 		<key>NSAppTransportSecurity</key>
 		<dict>

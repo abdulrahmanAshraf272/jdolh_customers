@@ -9,6 +9,7 @@ import 'package:jdolh_customers/core/notification/notification_sender/reservatio
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/cart.dart';
 import 'package:jdolh_customers/data/data_source/remote/home_services.dart';
+import 'package:jdolh_customers/data/data_source/remote/payment.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
 import 'package:jdolh_customers/data/data_source/remote/resDetails.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
@@ -98,9 +99,144 @@ class ResParentController extends GetxController {
   }
 
   createRes() async {
-    double totalPriceWithTax =
-        cartController.totalPrice + cartController.billTax + resCost + resTax;
-    //
+    if (checkConditions()) {
+      double totalPriceWithTax =
+          cartController.totalPrice + cartController.billTax + resCost + resTax;
+      int totalDuration = getTotalDuration();
+
+      var response = await resData.createRes(
+          paymentType: brandProfileController.paymentType,
+          userid: myServices.getUserid(),
+          bchid: bchid.toString(),
+          brandid: brandid.toString(),
+          date: selectedDate,
+          time: selectedTime,
+          duration: totalDuration.toString(),
+          billCost: cartController.totalPrice.toStringAsFixed(2),
+          billTax: cartController.billTax.toStringAsFixed(2),
+          resCost: resCost.toStringAsFixed(2),
+          resTax: resTax.toStringAsFixed(2),
+          totalPrice: totalPriceWithTax.toStringAsFixed(2),
+          billPolicy: billPolicy.toString(),
+          resPolicy: resPolicy.toString(),
+          isHomeService: brandProfileController.isHomeServices ? '1' : '0',
+          withInvitores: '0',
+          resOption: selectedResOption.resoptionsTitle!,
+          status: reviewRes == 0 ? '1' : '0');
+      statusRequest = handlingData(response);
+      print('create reservation $statusRequest');
+      if (statusRequest == StatusRequest.success) {
+        if (response['status'] == 'success') {
+          print('create reservation succeed');
+          reservation = Reservation.fromJson(response['data']);
+
+          reservation = injectBrandAndBchDataInReservationsObject(reservation);
+
+          //send Notification
+          if (reviewRes == 0) {
+            reservationNotification.sendReserveNotification(
+                bchid, selectedDate, reservation.resId!);
+          } else {
+            reservationNotification.sendReserveRequistNotification(
+                bchid, selectedDate, reservation.resId!);
+          }
+
+          return reservation;
+        } else {
+          statusRequest = StatusRequest.failure;
+        }
+      }
+    }
+  }
+
+  onTapConfirmRes() async {
+    CustomDialogs.loading();
+    var reservation = await createRes();
+    CustomDialogs.dissmissLoading();
+    if (reservation != null) {
+      navigateToPaymentOrWaitForApprove();
+    }
+  }
+
+  navigateToPaymentOrWaitForApprove() {
+    cartController.clearCart();
+
+    if (checkIfNoCostToPay() == true) {
+      return;
+    }
+
+    if (reviewRes == 0) {
+      Get.offNamed(AppRouteName.payment, arguments: {
+        "res": reservation,
+        "resPolicy": brandProfileController.resPolicy,
+        "billPolicy": brandProfileController.billPolicy,
+      });
+    } else {
+      Get.offNamed(AppRouteName.waitForApprove, arguments: {
+        "res": reservation,
+        "resPolicy": brandProfileController.resPolicy,
+        "billPolicy": brandProfileController.billPolicy,
+      });
+    }
+  }
+
+  bool checkIfNoCostToPay() {
+    if (reviewRes == 0) {
+      if ((brandProfileController.paymentType == 'R' && resCost == 0) ||
+          (brandProfileController.paymentType == 'RB' &&
+              resCost == 0 &&
+              cartController.totalPrice == 0)) {
+        Get.offNamed(AppRouteName.paymentResult,
+            arguments: {"res": reservation, "paymentMethod": 'wallet'});
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool checkConditions() {
+    if (cartController.carts.isEmpty) {
+      Get.rawSnackbar(message: 'السلة فارغة!'.tr);
+      return false;
+    }
+    if (selectedDate == '') {
+      Get.rawSnackbar(message: 'من فضلك اختر وقت الحجز'.tr);
+      return false;
+    }
+    if (checkAllItemsAvailableWithinResOptionSelected() == false) {
+      return false;
+    }
+
+    return true;
+  }
+
+  bool checkAllItemsAvailableWithinResOptionSelected() {
+    List<dynamic> resItemsId = selectedResOption.itemsRelated!;
+    List<Cart> carts = cartController.carts;
+    for (int i = 0; i < carts.length; i++) {
+      if (!resItemsId.contains(carts[i].itemsId)) {
+        String warningMessage =
+            '${carts[i].itemsTitle} ${'غير متوفر ضمن تفضيل'.tr} ${selectedResOption.resoptionsTitle}\n ${'قم بإزالة'.tr} ${carts[i].itemsTitle} ${'او قم بتغيير التفضيل'.tr}';
+        Get.rawSnackbar(
+            message: warningMessage, duration: const Duration(seconds: 4));
+        return false;
+      }
+    }
+    return true;
+  }
+
+  Reservation injectBrandAndBchDataInReservationsObject(
+      Reservation reservation) {
+    reservation.brandLogo = brandProfileController.brand.brandLogo;
+    reservation.bchContactNumber = brandProfileController.bch.bchContactNumber;
+    reservation.brandName = brandProfileController.brand.brandStoreName;
+    reservation.bchLocation = brandProfileController.bch.bchLocation;
+    reservation.bchLat = brandProfileController.bch.bchLat;
+    reservation.bchLng = brandProfileController.bch.bchLng;
+    return reservation;
+  }
+
+  int getTotalDuration() {
     int duration = 0;
     if (brandProfileController.brand.brandIsService == 0) {
       //if product => duration is saved in resOption
@@ -109,96 +245,7 @@ class ResParentController extends GetxController {
       //if service => get the total duration from all items in cart
       duration = cartController.totalServiceDuration;
     }
-
-    var response = await resData.createRes(
-        paymentType: brandProfileController.paymentType,
-        userid: myServices.getUserid(),
-        bchid: bchid.toString(),
-        brandid: brandid.toString(),
-        date: selectedDate,
-        time: selectedTime,
-        duration: duration.toString(),
-        billCost: cartController.totalPrice.toStringAsFixed(2),
-        billTax: cartController.billTax.toStringAsFixed(2),
-        resCost: resCost.toStringAsFixed(2),
-        resTax: resTax.toStringAsFixed(2),
-        totalPrice: totalPriceWithTax.toStringAsFixed(2),
-        billPolicy: billPolicy.toString(),
-        resPolicy: resPolicy.toString(),
-        isHomeService: brandProfileController.isHomeServices ? '1' : '0',
-        withInvitores: '0',
-        resOption: selectedResOption.resoptionsTitle!,
-        status: reviewRes == 0 ? '1' : '0');
-    statusRequest = handlingData(response);
-    print('create reservation $statusRequest');
-    if (statusRequest == StatusRequest.success) {
-      if (response['status'] == 'success') {
-        print('create reservation succeed');
-        reservation = Reservation.fromJson(response['data']);
-
-        reservation.bchLocation = brandProfileController.bch.bchLocation;
-        reservation.bchLat = brandProfileController.bch.bchLat;
-        reservation.bchLng = brandProfileController.bch.bchLng;
-
-        //send Notification
-        if (reviewRes == 0) {
-          reservationNotification.sendReserveNotification(
-              bchid, selectedDate, reservation.resId!);
-        } else {
-          reservationNotification.sendReserveRequistNotification(
-              bchid, selectedDate, reservation.resId!);
-        }
-
-        return reservation;
-      } else {
-        statusRequest = StatusRequest.failure;
-      }
-    }
-  }
-
-  onTapConfirmRes() async {
-    if (cartController.carts.isEmpty) {
-      Get.rawSnackbar(message: 'السلة فارغة!'.tr);
-      return;
-    }
-    if (selectedDate == '') {
-      Get.rawSnackbar(message: 'من فضلك اختر وقت الحجز'.tr);
-      return;
-    }
-    CustomDialogs.loading();
-    var reservation = await createRes();
-    CustomDialogs.dissmissLoading();
-    if (reservation != null) {
-      if (reviewRes == 0) {
-        Get.offNamed(AppRouteName.payment, arguments: {
-          "res": reservation,
-          "resPolicy": brandProfileController.resPolicy,
-          "billPolicy": brandProfileController.billPolicy,
-          "brand": brandProfileController.brand
-        });
-      } else {
-        Get.offNamed(AppRouteName.waitForApprove, arguments: {
-          "res": reservation,
-          "resPolicy": brandProfileController.resPolicy,
-          "billPolicy": brandProfileController.billPolicy,
-          "brand": brandProfileController.brand
-        });
-      }
-    }
-  }
-
-  checkAllItemsAvailableWithinResOptionSelected() {
-    List<dynamic> resItemsId = selectedResOption.itemsRelated!;
-    List<Cart> carts = cartController.carts;
-    for (int i = 0; i < carts.length; i++) {
-      if (!resItemsId.contains(carts[i].itemsId)) {
-        String warningMessage =
-            '${carts[i].itemsTitle} ${'غير متوفر ضمن تفضيل'.tr} ${selectedResOption.resoptionsTitle}\n ${'قم بإزالة'.tr} ${carts[i].itemsTitle} ${'او قم بتغيير التفضيل'.tr}';
-        print(warningMessage);
-        return warningMessage;
-      }
-    }
-    return true;
+    return duration;
   }
 
   // onTapConfirmReservation() {

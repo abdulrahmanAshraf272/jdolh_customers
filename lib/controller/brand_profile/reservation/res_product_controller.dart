@@ -181,14 +181,7 @@ class ResProductController extends ResParentController {
     double totalPriceWithTax =
         cartController.totalPrice + cartController.billTax + resCost + resTax;
     //
-    int duration = 0;
-    if (brandProfileController.brand.brandIsService == 0) {
-      //if product => duration is saved in resOption
-      duration = brandProfileController.selectedResOption.resoptionsDuration!;
-    } else {
-      //if service => get the total duration from all items in cart
-      duration = cartController.totalServiceDuration;
-    }
+    int totalDuration = getTotalDuration();
 
     //To Calculate creator price
     double totalPrice;
@@ -208,7 +201,7 @@ class ResProductController extends ResParentController {
         brandid: brandid.toString(),
         date: selectedDate,
         time: selectedTime,
-        duration: duration.toString(),
+        duration: totalDuration.toString(),
         billCost: cartController.totalPrice.toStringAsFixed(2),
         billTax: cartController.billTax.toStringAsFixed(2),
         resCost: resCost.toStringAsFixed(2),
@@ -228,13 +221,8 @@ class ResProductController extends ResParentController {
       if (response['status'] == 'success') {
         print('create reservation succeed');
         reservation = Reservation.fromJson(response['data']);
-        reservation.brandLogo = brandProfileController.brand.brandLogo;
-        reservation.bchContactNumber =
-            brandProfileController.bch.bchContactNumber;
-        reservation.brandName = brandProfileController.brand.brandStoreName;
-        reservation.bchLocation = brandProfileController.bch.bchLocation;
-        reservation.bchLat = brandProfileController.bch.bchLat;
-        reservation.bchLng = brandProfileController.bch.bchLng;
+
+        reservation = injectBrandAndBchDataInReservationsObject(reservation);
         return reservation;
       }
     }
@@ -278,6 +266,10 @@ class ResProductController extends ResParentController {
 
   gotoReservationConfirmWait() {
     cartController.clearCart();
+    if (checkIfNoCostToPay() == true) {
+      return;
+    }
+
     for (Resinvitors invitror in resInvitors) {
       invitror.status = 0;
     }
@@ -298,17 +290,11 @@ class ResProductController extends ResParentController {
       "reviewRes": reviewRes,
       "resPolicy": brandProfileController.resPolicy,
       "billPolicy": brandProfileController.billPolicy,
-      "brand": brandProfileController.brand
     });
   }
 
   bool checkAllFeilds() {
-    if (cartController.carts.isEmpty) {
-      Get.rawSnackbar(message: 'السلة فارغة!'.tr);
-      return false;
-    }
-    if (selectedDate == '') {
-      Get.rawSnackbar(message: 'من فضلك اختر وقت الحجز'.tr);
+    if (checkConditions() == false) {
       return false;
     }
     if (resInvitors.isEmpty) {

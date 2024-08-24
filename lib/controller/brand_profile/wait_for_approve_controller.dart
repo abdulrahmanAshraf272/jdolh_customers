@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
+import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
-import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
 import 'package:jdolh_customers/data/models/policy.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
@@ -19,7 +19,6 @@ class WaitForApproveController extends GetxController {
   List<Cart> carts = [];
   late Policy resPolicy;
   late Policy billPolicy;
-  late Brand brand;
 
   getRes() async {
     // statusRequest = StatusRequest.loading;
@@ -45,16 +44,88 @@ class WaitForApproveController extends GetxController {
     update();
   }
 
-  gotoPayment() {
-    print('location: ${reservation.bchLocation}');
-    print('lat: ${reservation.bchLat}');
-    print('lng: ${reservation.bchLng}');
+  goHomeAfterDeleteRes() async {
+    deleteRes();
+    goHomeScreen();
+  }
+
+  deleteRes() async {
+    var response =
+        await resData.deleteReservation(resid: reservation.resId.toString());
+    StatusRequest statusDelete = handlingData(response);
+    if (statusDelete == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('delete reservation done successfuly');
+      } else {
+        print('delete reservation failed: ${response['message']}');
+      }
+    } else {
+      print('delete res failed: $statusDelete');
+    }
+  }
+
+  Future<bool> confirmRes() async {
+    int resPayed = 0;
+    int billPayed = 0;
+    int status = 3;
+    if (reservation.resPaymentType == 'R' && reservation.resResCost == 0) {
+      resPayed = 1;
+    } else if (reservation.resPaymentType == 'RB' &&
+        reservation.resResCost == 0 &&
+        reservation.resBillCost == 0) {
+      resPayed = 1;
+      billPayed = 1;
+    }
+    print('resPayed: $resPayed');
+    print('billPayed: $billPayed');
+    CustomDialogs.loading();
+    var response = await resData.confirmRes(
+        resid: reservation.resId.toString(),
+        status: status.toString(),
+        resPayed: resPayed.toString(),
+        billPayed: billPayed.toString());
+    CustomDialogs.dissmissLoading();
+
+    StatusRequest statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('confirm res is done successfuly');
+        return true;
+      } else {
+        print('failure: ${response['message']}');
+      }
+    }
+    return false;
+  }
+
+  goHomeScreen() {
+    Get.offAllNamed(AppRouteName.mainScreen);
+  }
+
+  gotoPayment() async {
+    if (await checkIfNoCostToPay() == true) {
+      return;
+    }
+
     Get.offNamed(AppRouteName.payment, arguments: {
       "res": reservation,
       "resPolicy": resPolicy,
       "billPolicy": billPolicy,
-      "brand": brand
     });
+  }
+
+  Future<bool> checkIfNoCostToPay() async {
+    if ((reservation.resPaymentType == 'R' && reservation.resResCost == 0) ||
+        (reservation.resPaymentType == 'RB' &&
+            reservation.resResCost == 0 &&
+            reservation.resBillCost == 0)) {
+      await confirmRes();
+      Get.offNamed(AppRouteName.paymentResult,
+          arguments: {"res": reservation, "paymentMethod": 'wallet'});
+      return true;
+    }
+
+    return false;
   }
 
   @override
@@ -63,7 +134,8 @@ class WaitForApproveController extends GetxController {
       reservation = Get.arguments['res'];
       resPolicy = Get.arguments['resPolicy'];
       billPolicy = Get.arguments['billPolicy'];
-      brand = Get.arguments['brand'];
+
+      getRes();
     } else {
       print('reserved nothing from previus screen');
     }

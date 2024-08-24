@@ -9,6 +9,15 @@ List<Resinvitors> calInvitorsBills(
   double priceForEach = 0;
   int noOfPeopleWillPay = 1;
 
+  //IF there is no Cost ,the res is free, then everyone معزوم
+  if (totalPrice == 0) {
+    for (int i = 0; i < resInvitors.length; i++) {
+      resInvitors[i].type = 2;
+      resInvitors[i].cost = 0;
+    }
+    return resInvitors;
+  }
+
   for (int i = 0; i < resInvitors.length; i++) {
     if (resInvitors[i].type == 1) {
       noOfPeopleWillPay += 1;

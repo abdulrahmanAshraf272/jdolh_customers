@@ -5,6 +5,21 @@ class ResData {
   Crud crud;
   ResData(this.crud);
 
+  confirmRes(
+      {required String resid,
+      required String status,
+      required String resPayed,
+      required String billPayed}) async {
+    var response = await crud.postData(ApiLinks.confirmRes, {
+      "resid": resid,
+      "status": status,
+      "resPayed": resPayed,
+      "billPayed": billPayed
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
+
   getResLocation({required String resid}) async {
     var response =
         await crud.postData(ApiLinks.getResLocation, {"resid": resid});
@@ -125,10 +140,11 @@ class ResData {
       required String location,
       required String lat,
       required String lng,
+      required String city,
       required String hood,
       required String street,
-      required String building,
-      required String floor,
+      required String shortAddress,
+      required String additionalInfo,
       required String apartment}) async {
     var response = await crud.postData(ApiLinks.addResLocation, {
       "resid": resid,
@@ -136,10 +152,11 @@ class ResData {
       "location": location,
       "lat": lat,
       "lng": lng,
+      "city": city,
       "hood": hood,
       "street": street,
-      "building": building,
-      "floor": floor,
+      "shortAddress": shortAddress,
+      "additionalInfo": additionalInfo,
       "apartment": apartment,
     });
 

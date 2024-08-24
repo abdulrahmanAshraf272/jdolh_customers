@@ -13,45 +13,25 @@ class ResHomeServicesController extends ResParentController {
   //ValuesController valuesController = Get.put(ValuesController());
   LatLng? myLatLng;
   String myLocation = '';
+  TextEditingController city = TextEditingController();
   TextEditingController hood = TextEditingController();
   TextEditingController street = TextEditingController();
-  TextEditingController building = TextEditingController();
-  TextEditingController floor = TextEditingController();
+  TextEditingController shortAddress = TextEditingController();
+  TextEditingController additionalInfo = TextEditingController();
   TextEditingController apartment = TextEditingController();
 
-  onTapConfirmRes() async {
+  onTapConfirmResHomeService() async {
     if (checkAllFeilds()) {
       CustomDialogs.loading();
       var result = await createRes();
       if (result is Reservation) {
-        Reservation res = result;
-        var addLocationResult = await addResLocation(res.resId!);
+        Reservation reservations = result;
+        var addLocationResult = await addResLocation(reservations.resId!);
         CustomDialogs.dissmissLoading();
         if (addLocationResult == true) {
-          //clear cart beacause it's not null any more , it take the resid = id of res just created.
-          //brandProfileController.carts.clear();
-          print('location: ${brandProfileController.bch.bchLat}');
-          print('lat: ${brandProfileController.bch.bchLat}');
-          print('lng: ${brandProfileController.bch.bchLng}');
-          res.bchLocation = brandProfileController.bch.bchLocation;
-          res.bchLat = brandProfileController.bch.bchLat;
-          res.bchLng = brandProfileController.bch.bchLng;
+          reservations = injectBrandAndBchDataInReservationsObject(reservation);
 
-          if (homeServices.reviewRes == 0) {
-            Get.offNamed(AppRouteName.payment, arguments: {
-              "res": res,
-              "resPolicy": brandProfileController.resPolicy,
-              "billPolicy": brandProfileController.billPolicy,
-              "brand": brandProfileController.brand
-            });
-          } else {
-            Get.offNamed(AppRouteName.waitForApprove, arguments: {
-              "res": res,
-              "resPolicy": brandProfileController.resPolicy,
-              "billPolicy": brandProfileController.billPolicy,
-              "brand": brandProfileController.brand
-            });
-          }
+          navigateToPaymentOrWaitForApprove();
         }
       }
     }
@@ -64,10 +44,11 @@ class ResHomeServicesController extends ResParentController {
         lat: myLatLng!.latitude.toString(),
         lng: myLatLng!.longitude.toString(),
         location: myLocation,
+        city: city.text,
         hood: hood.text,
         street: street.text,
-        building: building.text,
-        floor: floor.text,
+        shortAddress: shortAddress.text,
+        additionalInfo: additionalInfo.text,
         apartment: apartment.text);
     statusRequest = handlingData(response);
     print('add res location $statusRequest');
@@ -106,7 +87,7 @@ class ResHomeServicesController extends ResParentController {
     //   Get.rawSnackbar(message: 'من فضلك قم بكتابة اسم او رقم البرج'.tr);
     //   return false;
     // }
-    if (floor.text == '') {
+    if (city.text == '') {
       Get.rawSnackbar(message: 'من فضلك قم بكتابة اسم المدينة'.tr);
       return false;
     }
@@ -146,7 +127,7 @@ class ResHomeServicesController extends ResParentController {
       street.text = placemarks[0].street ?? '';
 
       hood.text = placemarks[0].subLocality ?? '';
-      floor.text = placemarks[0].locality ?? '';
+      city.text = placemarks[0].locality ?? '';
       update();
     } else {
       print('no location selected');

@@ -46,7 +46,7 @@ class DisplayResLocation extends StatelessWidget {
                 const SizedBox(height: 15),
                 DataTextRow(
                   title: 'المدينة'.tr,
-                  value: resLocation!.reslocationFloor ?? '',
+                  value: resLocation!.reslocationCity ?? '',
                 ),
                 const SizedBox(height: 5),
                 DataTextRow(
@@ -60,8 +60,18 @@ class DisplayResLocation extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 DataTextRow(
+                  title: 'رقم المنزل'.tr,
+                  value: resLocation!.reslocationApartment ?? '',
+                ),
+                const SizedBox(height: 5),
+                DataTextRow(
+                  title: 'العنوان الوطني المختصر'.tr,
+                  value: resLocation!.reslocationShortAddress ?? '',
+                ),
+                const SizedBox(height: 5),
+                DataTextRow(
                   title: 'معلومات اضافية'.tr,
-                  value: resLocation!.reslocationBuilding ?? '',
+                  value: resLocation!.reslocationAdditionalInfo ?? '',
                 ),
                 const SizedBox(height: 5),
               ],

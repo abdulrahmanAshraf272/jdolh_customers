@@ -1,14 +1,11 @@
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
-import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/convert_time_to_arabic.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/open_url_link.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/bills.dart';
 import 'package:jdolh_customers/data/data_source/remote/payment.dart';
-import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -20,7 +17,6 @@ class PaymentResultController extends GetxController {
   PaymentData paymentData = PaymentData(Get.find());
   MyServices myServices = Get.find();
   late Reservation reservation;
-  late Brand brand;
   String result = '';
 
   onTapShareLocation() async {
@@ -40,6 +36,8 @@ class PaymentResultController extends GetxController {
   }
 
   payByCredit() async {
+    String paymentMothod = myServices.getPaymentMethods();
+
     String orderId;
     num price;
     num tax;
@@ -63,28 +61,16 @@ class PaymentResultController extends GetxController {
       discount = reservation.resResCost! + reservation.resResTax!;
     }
 
-    print('orderId: $orderId');
-    print('resid: $resId');
-    print('brandBouquetId: ${brand.brandBouquet.toString()}');
-    print('brandid: ${brand.brandId}');
-    print('paymentType: ${reservation.resPaymentType}');
-    print('userid: ${myServices.getUserid()}');
-    print('amount: ${(price + tax - discount).toString()}');
-    print('taxAmount: $tax');
-    print('paymentMethod: ${reservation.paymentMethod}');
-    print('discount: $discount');
-
     statusRequest = StatusRequest.loading;
     var response = await paymentData.payByCredit(
         orderId: orderId,
         resid: resId.toString(),
-        brandBouquetId: brand.brandBouquet.toString(),
-        brandid: brand.brandId.toString(),
+        brandid: reservation.resBrandid.toString(),
         paymentType: reservation.resPaymentType!,
         userid: myServices.getUserid(),
         amount: (price + tax - discount).toString(),
         taxAmount: tax.toString(),
-        paymentMethod: reservation.paymentMethod!,
+        paymentMethod: paymentMothod,
         discount: discount.toString());
     statusRequest = handlingData(response);
     print('statusRequies: $statusRequest');
@@ -106,7 +92,6 @@ class PaymentResultController extends GetxController {
   void onInit() {
     if (Get.arguments != null) {
       reservation = Get.arguments['res'];
-      brand = Get.arguments['brand'];
       paymentMethod = Get.arguments['paymentMethod'];
 
       reservationTime = convertTimeToArabic(reservation.resTime!);

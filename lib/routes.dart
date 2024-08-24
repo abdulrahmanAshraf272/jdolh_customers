@@ -47,6 +47,8 @@ import 'package:jdolh_customers/view/screens/occasion/occasions_screen.dart';
 import 'package:jdolh_customers/view/screens/payment_result_screen.dart';
 import 'package:jdolh_customers/view/screens/payment_screen.dart';
 import 'package:jdolh_customers/view/screens/person_profile_screen.dart';
+import 'package:jdolh_customers/view/screens/rates_and_scheduled/rates_screen.dart';
+import 'package:jdolh_customers/view/screens/rates_and_scheduled/scheduled_users_screen.dart';
 import 'package:jdolh_customers/view/screens/res_archive_details_screen.dart';
 import 'package:jdolh_customers/view/screens/res_archive_screen.dart';
 import 'package:jdolh_customers/view/screens/res_occasion_screen.dart';
@@ -179,13 +181,21 @@ List<GetPage> routes = [
     page: () => const ExploreCheckinScreen(),
   ),
   GetPage(
-    name: AppRouteName.allBchs,
-    page: () => const AllBchsScreen(),
-  ),
+      name: AppRouteName.allBchs,
+      page: () => const AllBchsScreen(),
+      popGesture: true),
   // GetPage(
   //   name: AppRouteName.addMembersCheckin,
   //   page: () => const AddMembersCheckinScreen(),
   // ),
+  GetPage(
+    name: AppRouteName.rates,
+    page: () => const RatesScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.scheduledUsers,
+    page: () => const ScheduledUsersScreen(),
+  ),
   GetPage(
     name: AppRouteName.signUp,
     page: () => const SignupScreen(),

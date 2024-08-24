@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/wait_for_approve_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/gohome_button.dart';
 import 'package:lottie/lottie.dart';
@@ -43,11 +42,9 @@ class ResRejected extends StatelessWidget {
         const SizedBox(height: 20),
         Text(controller.rejectionReason),
         const SizedBox(height: 40),
-        GoHomeButton(
-            text: 'الرئيسية'.tr,
-            onTap: () {
-              Get.toNamed(AppRouteName.mainScreen);
-            })
+        GoHomeButton(onTap: () {
+          controller.goHomeAfterDeleteRes();
+        })
       ],
     );
   }
@@ -93,11 +90,16 @@ class Waiting extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'برجاء الانتظار حتى تتم مراجعة بيانات الحجز'.tr,
-                  style: titleMedium,
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: Text(
+                    'طلبك الان قيد المراجعة من قبل المتجر, سيتم ارسال اشعار اليك عند الموافقة على طلبك'
+                        .tr,
+                    textAlign: TextAlign.center,
+                    style: titleMedium,
+                  ),
                 ),
-                const SizedBox(height: 20),
                 Lottie.asset('assets/icons/loading2.json',
                     width: Get.width * 0.5),
                 const SizedBox(height: 50),
@@ -108,7 +110,9 @@ class Waiting extends StatelessWidget {
                     child: Text('تحديث الصفحة'.tr)),
                 const SizedBox(height: 20),
                 if (controller.statusRequest == StatusRequest.loading)
-                  const CircularProgressIndicator()
+                  const CircularProgressIndicator(),
+                const SizedBox(height: 10),
+                GoHomeButton(onTap: () => controller.goHomeScreen())
               ],
             ));
   }

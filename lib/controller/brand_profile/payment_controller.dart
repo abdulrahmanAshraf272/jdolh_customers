@@ -8,7 +8,6 @@ import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/bills.dart';
 import 'package:jdolh_customers/data/data_source/remote/payment.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
-import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/payment_method.dart';
 import 'package:jdolh_customers/data/models/policy.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
@@ -28,8 +27,6 @@ class PaymentController extends GetxController {
   String billPolicyText = '';
   late Policy resPolicy;
   late Policy billPolicy;
-
-  late Brand brand;
 
   double resCost = 0;
   double billCost = 0;
@@ -120,29 +117,31 @@ class PaymentController extends GetxController {
   }
 
   payByCredit() async {
-    reservation.paymentMethod = 'CREDIT';
+    //reservation.paymentMethod = 'CREDIT';
+    myServices.setPaymentMethods('CREDIT');
     var redirectUrl = await initiateEdfaPayment();
     if (redirectUrl != null) {
       print('shit');
       Get.to(() => WebviewScreen(
-          title: 'الدفع',
-          url: redirectUrl,
-          payment: 'Reservation',
-          reservation: reservation,
-          brand: brand));
+            title: 'الدفع',
+            url: redirectUrl,
+            payment: 'Reservation',
+            reservation: reservation,
+          ));
     }
   }
 
   payTamara() async {
-    reservation.paymentMethod = 'TAMARA';
+    //reservation.paymentMethod = 'TAMARA';
+    myServices.setPaymentMethods('TAMARA');
     var redirectUrl = await initiateEdfaPaymentByTamara();
     if (redirectUrl != null) {
       Get.to(() => WebviewScreen(
-          title: 'الدفع'.tr,
-          url: redirectUrl,
-          payment: 'Reservation',
-          reservation: reservation,
-          brand: brand));
+            title: 'الدفع'.tr,
+            url: redirectUrl,
+            payment: 'Reservation',
+            reservation: reservation,
+          ));
     }
   }
 
@@ -150,8 +149,7 @@ class PaymentController extends GetxController {
     CustomDialogs.loading();
     var response = await paymentData.payByWallet(
         resid: reservation.resId.toString(),
-        brandBouquetId: brand.brandBouquet.toString(),
-        brandid: brand.brandId.toString(),
+        brandid: reservation.resBrandid.toString(),
         paymentType: reservation.resPaymentType!,
         userid: myServices.getUserid(),
         amount: (price + tax - discount).toStringAsFixed(2),
@@ -163,11 +161,8 @@ class PaymentController extends GetxController {
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         CustomDialogs.success('تم الدفع'.tr);
-        Get.offAllNamed(AppRouteName.paymentResult, arguments: {
-          "res": reservation,
-          "brand": brand,
-          "paymentMethod": 'wallet'
-        });
+        Get.offAllNamed(AppRouteName.paymentResult,
+            arguments: {"res": reservation, "paymentMethod": 'wallet'});
       } else {
         if (response['message'] == 'not enough money') {
           CustomDialogs.failure('لا يوجد رصيد كافي'.tr);
@@ -269,7 +264,6 @@ class PaymentController extends GetxController {
       reservation = Get.arguments['res'];
       resPolicy = Get.arguments['resPolicy'];
       billPolicy = Get.arguments['billPolicy'];
-      brand = Get.arguments['brand'];
 
       resPolicyText = resPolicy.title ?? '';
       billPolicyText = billPolicy.title ?? '';

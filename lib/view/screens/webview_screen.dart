@@ -67,7 +67,6 @@ class _WebviewScreenState extends State<WebviewScreen> {
               if (widget.payment == 'Reservation') {
                 Get.offAllNamed(AppRouteName.paymentResult, arguments: {
                   "res": widget.reservation,
-                  "brand": widget.brand,
                   "paymentMethod": 'credit'
                 });
               } else if (widget.payment == 'Wallet') {

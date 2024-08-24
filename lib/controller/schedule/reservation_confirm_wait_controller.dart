@@ -10,7 +10,6 @@ import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/open_url_link.dart';
 import 'package:jdolh_customers/data/data_source/remote/res.dart';
-import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
 import 'package:jdolh_customers/data/models/policy.dart';
 import 'package:jdolh_customers/data/models/res_invitors.dart';
@@ -31,7 +30,6 @@ class ReservationConfirmWaitController extends GetxController {
   bool isConfirm = false;
   late Policy resPolicy;
   late Policy billPolicy;
-  late Brand brand;
 
   changeSubscreen(bool displayResInvitor) {
     displayResInvitorsPart = displayResInvitor;
@@ -56,7 +54,6 @@ class ReservationConfirmWaitController extends GetxController {
           "res": reservation,
           "resPolicy": resPolicy,
           "billPolicy": billPolicy,
-          "brand": brand
         });
       }
     } else {
@@ -68,7 +65,6 @@ class ReservationConfirmWaitController extends GetxController {
           "res": reservation,
           "resPolicy": resPolicy,
           "billPolicy": billPolicy,
-          "brand": brand
         });
       }
     }
@@ -242,7 +238,6 @@ class ReservationConfirmWaitController extends GetxController {
 
       resPolicy = Get.arguments['resPolicy'];
       billPolicy = Get.arguments['billPolicy'];
-      brand = Get.arguments['brand'];
     }
     _startTimer();
     resTime = displayResTime(reservation.resTime!);

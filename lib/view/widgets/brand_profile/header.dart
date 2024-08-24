@@ -13,8 +13,10 @@ class BrandProfileHeader extends StatelessWidget {
   final int followingNo;
   final int ratesNo;
   final double averageRate;
-  final int resNo;
+  final int scheduledNo;
   final void Function() onTapFollow;
+  final void Function() onTapScheduled;
+  final void Function() onTapRates;
   const BrandProfileHeader(
       {super.key,
       required this.onTapFollow,
@@ -22,7 +24,9 @@ class BrandProfileHeader extends StatelessWidget {
       required this.followingNo,
       required this.ratesNo,
       required this.averageRate,
-      required this.resNo});
+      required this.scheduledNo,
+      required this.onTapScheduled,
+      required this.onTapRates});
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +70,11 @@ class BrandProfileHeader extends StatelessWidget {
                                     controller.brand.brandIsVerified ?? 0,
                                 followrsNo: followingNo)),
                         BrandScheduledAndRating(
-                          scheduledNo: resNo,
+                          scheduledNo: scheduledNo,
                           ratedBy: ratesNo,
                           rate: averageRate,
+                          onTapRates: onTapRates,
+                          onTapScheduled: onTapScheduled,
                         ),
                         //TODO: Edit Follow widget, not responsive
                         const SizedBox(width: 7),

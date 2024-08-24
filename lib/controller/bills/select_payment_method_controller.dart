@@ -26,6 +26,7 @@ class SelectPaymentMethodController extends GetxController {
   bool tamaraEligible = false;
   bool tabbyEligible = false;
   bool payActive = false;
+  double amountWithoutTax = 0;
 
   List<PaymentMethod> availablePaymentMethods = [];
 
@@ -145,7 +146,7 @@ class SelectPaymentMethodController extends GetxController {
     var response = await billsData.payBillWallet(
         userId: bill.billUserid.toString(),
         billId: bill.billId.toString(),
-        amountWithoutTax: bill.billAmountWithoutTax.toString(),
+        amountWithoutTax: amountWithoutTax.toString(),
         tax: bill.billTaxAmount.toString(),
         totalAmount: bill.billAmount.toString(),
         resId: bill.billResid.toString(),
@@ -166,6 +167,7 @@ class SelectPaymentMethodController extends GetxController {
         if (response['message'] == 'not enough money') {
           CustomDialogs.failure('لا يوجد رصيد كافي'.tr);
         } else {
+          print(response);
           CustomDialogs.failure();
         }
       }
@@ -300,6 +302,10 @@ class SelectPaymentMethodController extends GetxController {
       bill = Get.arguments['bill'];
       orderDesc = Get.arguments['orderDesc'];
     }
+
+    amountWithoutTax = double.parse(bill.billAmountWithoutTax!) -
+        double.parse(bill.billDiscount!);
+
     getAvailablePaymentMethods();
     super.onInit();
   }

@@ -8,8 +8,8 @@ import 'package:jdolh_customers/data/data_source/remote/cart.dart';
 import 'package:jdolh_customers/data/models/cart.dart';
 
 class CartController extends GetxController {
-  int bchid;
-  CartController(this.bchid);
+  //int bchid;
+  CartController();
 
   StatusRequest statusRequest = StatusRequest.none;
   BrandProfileController brandProfileController = Get.find();
@@ -107,7 +107,7 @@ class CartController extends GetxController {
     }
   }
 
-  getCart() async {
+  getCart(int bchid) async {
     statusRequest = StatusRequest.loading;
     update();
     var response = await cartData.getCart(
@@ -126,6 +126,7 @@ class CartController extends GetxController {
   }
 
   parseCart(response) {
+    carts.clear();
     List cartListJson = response['data'];
     carts = cartListJson.map((e) => Cart.fromJson(e)).toList();
   }

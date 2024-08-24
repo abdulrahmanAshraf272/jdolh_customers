@@ -79,12 +79,6 @@ class ResServiceSubscreen extends StatelessWidget {
               const DisplayResPolicy(),
               GoHomeButton(
                 onTap: () {
-                  var checkResOption = controller
-                      .checkAllItemsAvailableWithinResOptionSelected();
-                  if (checkResOption != true) {
-                    warningDialog(checkResOption);
-                    return;
-                  }
                   controller.onTapConfirmRes();
                 },
                 text: 'تأكيد الحجز'.tr,

@@ -74,22 +74,21 @@ class AllGroups extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AddMembersController>(
-        builder: (controller) => HandlingDataView(
-            statusRequest: controller.statusRequestGroups,
-            widget: controller.groups.isNotEmpty
-                ? SizedBox(
-                    height: 100.h,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: controller.groups.length,
-                        itemBuilder: (context, index) => AddGroupListItem(
-                              groupName:
-                                  controller.groups[index].groupName ?? '',
-                              groupColor: getRandomColor(index),
-                              isAdd: true,
-                              onTap: () => controller.onTapAddGroup(index),
-                            )),
-                  )
-                : const SizedBox()));
+        builder: (controller) => controller.groups.isNotEmpty
+            ? HandlingDataView(
+                statusRequest: controller.statusRequestGroups,
+                widget: SizedBox(
+                  height: 100.h,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.groups.length,
+                      itemBuilder: (context, index) => AddGroupListItem(
+                            groupName: controller.groups[index].groupName ?? '',
+                            groupColor: getRandomColor(index),
+                            isAdd: true,
+                            onTap: () => controller.onTapAddGroup(index),
+                          )),
+                ))
+            : SizedBox());
   }
 }

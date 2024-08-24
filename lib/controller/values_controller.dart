@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
 import 'package:jdolh_customers/data/models/person_with_follow_state.dart';

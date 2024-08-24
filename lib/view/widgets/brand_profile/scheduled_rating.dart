@@ -7,43 +7,54 @@ class BrandScheduledAndRating extends StatelessWidget {
   final int scheduledNo;
   final int ratedBy;
   final double rate;
+  final void Function() onTapRates;
+  final void Function() onTapScheduled;
   const BrandScheduledAndRating({
     super.key,
     required this.scheduledNo,
     required this.rate,
     required this.ratedBy,
+    required this.onTapRates,
+    required this.onTapScheduled,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: [
-            Text(
-              '$scheduledNo مجدولين',
-              style: titleSmall3Gray.copyWith(color: AppColors.secondaryColor),
-            ),
-            Icon(
-              Icons.person,
-              color: AppColors.secondaryColor,
-              size: 20,
-            )
-          ],
+        GestureDetector(
+          onTap: onTapScheduled,
+          child: Row(
+            children: [
+              Text(
+                '$scheduledNo مجدولين',
+                style:
+                    titleSmall3Gray.copyWith(color: AppColors.secondaryColor),
+              ),
+              Icon(
+                Icons.person,
+                color: AppColors.secondaryColor,
+                size: 20,
+              )
+            ],
+          ),
         ),
         Spacer(),
-        Row(
-          children: [
-            Text(
-              '$ratedBy تقييم',
-              style: titleSmall3Gray,
-            ),
-            SizedBox(width: 3),
-            Rating(
-              rating: rate,
-              textColor: Colors.white.withOpacity(0.7),
-            )
-          ],
+        GestureDetector(
+          onTap: onTapRates,
+          child: Row(
+            children: [
+              Text(
+                '$ratedBy تقييم',
+                style: titleSmall3Gray,
+              ),
+              const SizedBox(width: 3),
+              Rating(
+                rating: rate,
+                textColor: Colors.white.withOpacity(0.7),
+              )
+            ],
+          ),
         ),
       ],
     );

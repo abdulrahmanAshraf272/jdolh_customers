@@ -7,6 +7,7 @@ import 'package:jdolh_customers/data/models/bch.dart';
 import 'package:jdolh_customers/data/models/brand.dart';
 
 class AllBchsController extends GetxController {
+  bool isHomeServices = false;
   late int brandid;
   StatusRequest statusRequest = StatusRequest.none;
   BrandSearchData brandSearchData = BrandSearchData(Get.find());
@@ -14,10 +15,21 @@ class AllBchsController extends GetxController {
   List<Bch> bchs = [];
 
   onTapCard(int index) {
-    Get.offNamed(AppRouteName.brandProfile, arguments: {
-      "brand": brands[index],
-      "bch": bchs[index],
-    });
+    print('bchid : ${bchs[index].bchId}');
+    //return;
+    //Get.back();
+    //Get.until((route) => Get.currentRoute == AppRouteName.mainScreen);
+    //Get.offAllNamed(AppRouteName.mainScreen);
+
+    Get.back(result: {"brand": brands[index], "bch": bchs[index]});
+
+    // Get.back();
+    // Get.back();
+    // Get.toNamed(AppRouteName.brandProfile, arguments: {
+    //   "brand": brands[index],
+    //   "bch": bchs[index],
+    //   "isHomeService": isHomeServices
+    // });
   }
 
   getAllBchs() async {
@@ -45,7 +57,8 @@ class AllBchsController extends GetxController {
   @override
   void onInit() {
     if (Get.arguments != null) {
-      brandid = Get.arguments;
+      brandid = Get.arguments['brandid'];
+      isHomeServices = Get.arguments['isHomeService'];
     }
     getAllBchs();
     super.onInit();

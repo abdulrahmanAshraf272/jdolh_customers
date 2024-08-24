@@ -1,6 +1,4 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/reservation/res_home_services_controller.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/res_service_subscreen.dart';
@@ -17,16 +15,6 @@ class ResHomeServicesSubscreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    warningDialog(String message) {
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.warning,
-        animType: AnimType.rightSlide,
-        title: 'تنبيه'.tr,
-        desc: message,
-      ).show();
-    }
-
     Get.put(ResHomeServicesController());
     return GetBuilder<ResHomeServicesController>(builder: (controller) {
       return Column(
@@ -77,7 +65,7 @@ class ResHomeServicesSubscreen extends StatelessWidget {
           CustomSmallBoldTitle(title: 'العنوان'.tr),
           const SizedBox(height: 10),
           CustomTextField(
-              textEditingController: controller.floor,
+              textEditingController: controller.city,
               //textInputType: TextInputType.number,
               labelText: 'المدينة'.tr),
           const SizedBox(height: 10),
@@ -89,7 +77,15 @@ class ResHomeServicesSubscreen extends StatelessWidget {
               labelText: 'اسم الشارع'.tr),
           const SizedBox(height: 15),
           CustomTextField(
-              textEditingController: controller.building,
+              textEditingController: controller.apartment,
+              labelText: 'رقم المنزل (اختياري)'.tr),
+          const SizedBox(height: 15),
+          CustomTextField(
+              textEditingController: controller.shortAddress,
+              labelText: 'العنوان الوطني المختصر (اختياري)'.tr),
+          const SizedBox(height: 15),
+          CustomTextField(
+              textEditingController: controller.additionalInfo,
               labelText: 'معلومات اضافية (اختياري)'.tr),
           const SizedBox(height: 20),
           CustomSmallBoldTitle(title: 'تفاصيل الحجز'.tr),
@@ -100,13 +96,7 @@ class ResHomeServicesSubscreen extends StatelessWidget {
           const DisplayResPolicy(),
           GoHomeButton(
             onTap: () async {
-              var checkResOption =
-                  controller.checkAllItemsAvailableWithinResOptionSelected();
-              if (checkResOption != true) {
-                warningDialog(checkResOption);
-                return;
-              }
-              controller.onTapConfirmRes();
+              controller.onTapConfirmResHomeService();
             },
             text: 'تأكيد الحجز'.tr,
           ),

@@ -86,36 +86,21 @@ class ResProductSubscreen extends StatelessWidget {
                 //const SizedBox(height: 20),
                 const PaymentTypeSelect(),
                 const DisplayResPolicy(),
-                controller.withInvitation
-                    ? GoHomeButton(
-                        onTap: () {
-                          var checkResOption = controller
-                              .checkAllItemsAvailableWithinResOptionSelected();
-                          if (checkResOption != true) {
-                            warningDialog(checkResOption);
-                            return;
-                          }
+                GoHomeButton(
+                  onTap: () {
+                    if (controller.checkInvitorsWithinLimitation()) {
+                      if (controller.withInvitation) {
+                        controller.onTapCreateReservationWithInvitors();
+                      } else {
+                        controller.onTapConfirmRes();
+                      }
+                    }
+                  },
+                  text: controller.withInvitation
+                      ? 'ارسال الدعوات'.tr
+                      : 'تأكيد الحجز'.tr,
+                ),
 
-                          if (controller.checkInvitorsWithinLimitation()) {
-                            controller.onTapCreateReservationWithInvitors();
-                          }
-                        },
-                        text: 'ارسال الدعوات'.tr,
-                      )
-                    : GoHomeButton(
-                        onTap: () {
-                          var checkResOption = controller
-                              .checkAllItemsAvailableWithinResOptionSelected();
-                          if (checkResOption != true) {
-                            warningDialog(checkResOption);
-                            return;
-                          }
-                          if (controller.checkInvitorsWithinLimitation()) {
-                            controller.onTapConfirmRes();
-                          }
-                        },
-                        text: 'تأكيد الحجز'.tr,
-                      ),
                 const SizedBox(height: 20),
               ],
             ));

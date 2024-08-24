@@ -452,6 +452,13 @@ class MyTranslation extends Translations {
           'الحي': 'الحي',
           'الشارع': 'الشارع',
           'معلومات اضافية': 'معلومات اضافية',
+
+          'العنوان الوطني المختصر': 'العنوان الوطني المختصر',
+          'رقم المنزل': 'رقم المنزل',
+          'العنوان الوطني المختصر (اختياري)':
+              'العنوان الوطني المختصر (اختياري)',
+          'رقم المنزل (اختياري)': 'رقم المنزل (اختياري)',
+          'حجوزات معلقة': 'حجوزات معلقة'
         },
         'en': {
           // ========  Language ===========//
@@ -905,7 +912,13 @@ class MyTranslation extends Translations {
           'معلومات اضافية (اختياري)': 'Additional information (optional)',
           'الحي': 'neighbourhood',
           'الشارع': 'street',
-          'معلومات اضافية': 'Additional information'
+          'معلومات اضافية': 'Additional information',
+          'العنوان الوطني المختصر': 'National Abbreviated Address',
+          'رقم المنزل': 'house number',
+          'العنوان الوطني المختصر (اختياري)':
+              'National short address (optional)',
+          'رقم المنزل (اختياري)': 'House number (optional)',
+          'حجوزات معلقة': 'Suspended Reservations'
         }
       };
 }

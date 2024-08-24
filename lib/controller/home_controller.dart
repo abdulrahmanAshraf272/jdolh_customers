@@ -13,6 +13,7 @@ import 'package:jdolh_customers/data/models/bch.dart';
 import 'package:jdolh_customers/data/models/brand.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
 import 'package:jdolh_customers/data/models/occasion.dart';
+import 'package:jdolh_customers/data/models/policy.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
 import 'package:jdolh_customers/data/models/top_checkin.dart';
 
@@ -32,6 +33,8 @@ class HomeController extends GetxController {
   List<Bch> bchs = [];
 
   List<Reservation> reservation = [];
+
+  List<Reservation> suspendedReservation = [];
 
   List<Occasion> occasionsToDisplay = [];
 
@@ -88,11 +91,33 @@ class HomeController extends GetxController {
         parseTopRes(response);
         parseOccasion(response);
         parseReservations(response);
+        parseSuspendedReservations(response);
       } else {
         print('failure');
       }
     }
     update();
+  }
+
+  goToWaitApprovalScreen(int index) {
+    Policy resPolicy = Policy(
+        id: suspendedReservation[index].resResPolicy,
+        title: suspendedReservation[index].resPolicyTitle);
+    Policy billPolicy = Policy(
+        id: suspendedReservation[index].resBillPolicy,
+        title: suspendedReservation[index].billPolicyTitle);
+
+    Get.toNamed(AppRouteName.waitForApprove, arguments: {
+      "res": suspendedReservation[index],
+      "resPolicy": resPolicy,
+      "billPolicy": billPolicy
+    });
+  }
+
+  parseSuspendedReservations(response) {
+    suspendedReservation.clear();
+    List data = response['suspendedRes'];
+    suspendedReservation = data.map((e) => Reservation.fromJson(e)).toList();
   }
 
   parseReservations(response) {

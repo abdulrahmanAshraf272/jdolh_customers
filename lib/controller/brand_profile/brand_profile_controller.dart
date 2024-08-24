@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/cart_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/reservation/res_home_services_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/reservation/res_parent_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/reservation/res_product_controller.dart';
+import 'package:jdolh_customers/controller/brand_profile/reservation/res_service_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
@@ -15,6 +19,8 @@ import 'package:jdolh_customers/data/models/categories.dart';
 import 'package:jdolh_customers/data/models/item.dart';
 import 'package:jdolh_customers/data/models/policy.dart';
 import 'package:jdolh_customers/data/models/resOption.dart';
+import 'package:jdolh_customers/data/models/user.dart';
+import 'package:jdolh_customers/data/models/user_rate.dart';
 
 class BrandProfileController extends GetxController {
   String paymentType = '';
@@ -44,6 +50,9 @@ class BrandProfileController extends GetxController {
   List<Item> itemsToDisplay = [];
   int selectedIndexCategory = 0;
 
+  List<UserRate> rates = [];
+  List<User> scheduledUsers = [];
+
   List<ResOption> resOptions = [];
   List<String> resOptionsTitles = [];
   late ResOption selectedResOption;
@@ -59,8 +68,38 @@ class BrandProfileController extends GetxController {
   late BchWorktime bchWorktime;
   bool isFollowing = false;
 
-  goDisplayAllBchs() {
-    Get.offNamed(AppRouteName.allBchs, arguments: brand.brandId);
+  onTapRates() {
+    Get.toNamed(AppRouteName.rates, arguments: rates);
+  }
+
+  onTapScheduled() {
+    Get.toNamed(AppRouteName.scheduledUsers, arguments: scheduledUsers);
+  }
+
+  goDisplayAllBchs() async {
+    final result = await Get.toNamed(AppRouteName.allBchs,
+        arguments: {"brandid": brand.brandId, "isHomeService": isHomeServices});
+    if (result != null) {
+      changeBch(result);
+    }
+  }
+
+  changeBch(result) {
+    statusRequest = StatusRequest.loading;
+    update();
+
+    brand = result['brand'];
+    bch = result['bch'];
+    bch.bchBrandid = brand.brandId;
+    subscreen = 0;
+    if (isHomeServices) {
+      Get.delete<ResHomeServicesController>();
+    } else if (brand.brandIsService == 1) {
+      Get.delete<ResServiceConltroller>();
+    } else {
+      Get.delete<ResProductController>();
+    }
+    getBch();
   }
 
   selectResOption(String resOptionTitle) {
@@ -78,8 +117,8 @@ class BrandProfileController extends GetxController {
       subscreen = 1;
     }
     update();
-    CartController cartController = Get.put(CartController(bch.bchId!));
-    cartController.getCart();
+    CartController cartController = Get.put(CartController());
+    cartController.getCart(bch.bchId!);
   }
 
   diplayItemsSubscreen() {
@@ -131,6 +170,7 @@ class BrandProfileController extends GetxController {
   }
 
   parseData(response) {
+    resetData();
     //=== Policies ===//
     resPolicy = Policy.fromJsonRes(response['policies']);
     billPolicy = Policy.fromJsonBill(response['policies']);
@@ -141,6 +181,14 @@ class BrandProfileController extends GetxController {
     } else {
       paymentType = 'RB';
     }
+
+    // ==== Rates ====//
+    List ratesData = response['rates'];
+    rates = ratesData.map((e) => UserRate.fromJson(e)).toList();
+
+    //==== Scheduled ====/
+    List scheduledUsersData = response['scheduledUsers'];
+    scheduledUsers = scheduledUsersData.map((e) => User.fromJson(e)).toList();
 
     //=== ResOption ===//
     List resOptionsJson = response['resOptions'];
@@ -234,6 +282,8 @@ class BrandProfileController extends GetxController {
         }
       }
     }
+
+    print('bchid: ${bch.bchId}');
   }
 
   getBrandBch(int bchid) async {
@@ -256,6 +306,16 @@ class BrandProfileController extends GetxController {
     }
     update();
     print('======$statusRequest');
+  }
+
+  resetData() {
+    resOptions.clear();
+    resOptionsTitles.clear();
+    items.clear();
+    itemsToDisplay.clear();
+    categories.clear();
+    rates.clear();
+    scheduledUsers.clear();
   }
 
   @override

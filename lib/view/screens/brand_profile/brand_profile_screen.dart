@@ -35,12 +35,15 @@ class BrandProfileScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         BrandProfileHeader(
-                            isFollowing: controller.isFollowing,
-                            followingNo: controller.followingNo,
-                            ratesNo: controller.ratesNo,
-                            averageRate: controller.averageRate,
-                            resNo: controller.resNo,
-                            onTapFollow: () => controller.followUnfollow()),
+                          isFollowing: controller.isFollowing,
+                          followingNo: controller.followingNo,
+                          ratesNo: controller.rates.length,
+                          averageRate: controller.averageRate,
+                          scheduledNo: controller.scheduledUsers.length,
+                          onTapFollow: () => controller.followUnfollow(),
+                          onTapRates: () => controller.onTapRates(),
+                          onTapScheduled: () => controller.onTapScheduled(),
+                        ),
                         DescAndBranshedButtonAndWorkTime(
                           desc: controller.bch.bchDesc ?? '',
                           onTapWorktime: () => controller.gotoDisplayWorktime(),

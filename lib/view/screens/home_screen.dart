@@ -12,6 +12,7 @@ import 'package:jdolh_customers/view/widgets/common/ListItems/appointment.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/brand_explore.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/occasion.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/person_explore.dart';
+import 'package:jdolh_customers/view/widgets/common/ListItems/suspended_reservation_list_item.dart';
 import 'package:jdolh_customers/view/widgets/common/custom_title.dart';
 import 'package:jdolh_customers/view/widgets/explore_checkin_list_item.dart';
 import 'package:jdolh_customers/view/widgets/home/custom_ads.dart';
@@ -39,6 +40,24 @@ class HomeScreen extends StatelessWidget {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const CustomAds(),
+                    if (controller.suspendedReservation.isNotEmpty)
+                      CustomTitle(
+                        title: 'حجوزات معلقة'.tr,
+                        bottomPadding: 5,
+                        topPadding: 20,
+                      ),
+                    if (controller.suspendedReservation.isNotEmpty)
+                      ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: controller.suspendedReservation.length,
+                          itemBuilder: (context, index) =>
+                              SuspendedReservationListItem(
+                                reservation:
+                                    controller.suspendedReservation[index],
+                                onTap: () =>
+                                    controller.goToWaitApprovalScreen(index),
+                              )),
                     CustomTitle(
                       title: 'مناسبات قريبة'.tr,
                       onTap: () {

@@ -8,7 +8,6 @@ class PaymentData {
   payByCredit(
       {required String orderId,
       required String resid,
-      required String brandBouquetId,
       required String brandid,
       required String paymentType,
       required String userid,
@@ -19,7 +18,6 @@ class PaymentData {
     var response = await crud.postData(ApiLinks.payByCredit, {
       "orderId": orderId,
       "resid": resid,
-      "brandBouquetId": brandBouquetId,
       "brandid": brandid,
       "paymentType": paymentType,
       "userid": userid,
@@ -34,7 +32,6 @@ class PaymentData {
 
   payByWallet(
       {required String resid,
-      required String brandBouquetId,
       required String brandid,
       required String paymentType,
       required String userid,
@@ -43,7 +40,6 @@ class PaymentData {
       required String discount}) async {
     var response = await crud.postData(ApiLinks.payByWallet, {
       "resid": resid,
-      "brandBouquetId": brandBouquetId,
       "brandid": brandid,
       "paymentType": paymentType,
       "userid": userid,

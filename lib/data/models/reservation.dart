@@ -47,6 +47,9 @@ class Reservation {
 
   String? paymentMethod;
 
+  String? resPolicyTitle;
+  String? billPolicyTitle;
+
   Reservation(
       {this.resId,
       this.resPaymentType,
@@ -86,7 +89,9 @@ class Reservation {
       this.creator,
       this.invitorStatus,
       this.invitorAmount,
-      this.paymentMethod});
+      this.paymentMethod,
+      this.resPolicyTitle,
+      this.billPolicyTitle});
 
   Reservation.fromJson(Map<String, dynamic> json) {
     resId = json['res_id'];
@@ -135,5 +140,8 @@ class Reservation {
     if (json['amount'] != null) {
       invitorAmount = double.parse(json['amount']);
     }
+
+    resPolicyTitle = json['respolicy_title'];
+    billPolicyTitle = json['billpolicy_title'];
   }
 }

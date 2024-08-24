@@ -90,4 +90,7 @@ class AppRouteName {
   static const selectPaymentMethod = '/selectPaymentMethod';
   static const billPaymentResult = '/billPaymentResult';
   static const divideBill = '/divideBill';
+
+  static const rates = '/rates';
+  static const scheduledUsers = '/scheduledUsers';
 }
