@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/checkin/checkin_confirm_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/view/screens/checkin/checkin_screen.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
@@ -75,7 +74,7 @@ class CheckinConfirmScreen extends StatelessWidget {
                               onTap: () => controller.removeMember(index),
                               onTapCard: () {},
                               buttonColor: AppColors.redButton,
-                              buttonText: textRemove,
+                              buttonText: 'إزالة'.tr,
                             ),
                             // Add separatorBuilder
                           )

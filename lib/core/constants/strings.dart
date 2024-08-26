@@ -2,26 +2,25 @@
 
 const String GOOGLE_MAPS_API_KEY = 'AIzaSyAGgfliZLRN6OE4sP5EGuwQv3ZWQPzaEGo';
 
-const textConfirmReservation = 'تأكيد الحجز';
-const textSendInvication = 'ارسال دعوة';
-// const textFollow = 'متابعة';
-// const textUnfollow = 'الغاء المتابعة';
-const textBranches = 'الفروع';
-// const textFollowers = 'المتابعين';
-// const textFollowing = 'المتابعون';
-const textAdd = 'إضافة';
-const textRemove = 'إزالة';
-const textAccept = 'قبول';
-const textReject = 'اعتذار';
-const textOpenLocation = 'فتح الموقع';
-const textConfirmAttend = 'مؤكد';
-const textSuspendAttend = 'لم يتم التأكيد';
-const textCreator = 'منشئ';
-const textRejectAttend = 'اعتذر';
-const pleaseWait = 'برجاء الانتظار...';
-const errorHappend = 'حدث خطأ';
+// const textConfirmReservation = 'تأكيد الحجز';
+// const textSendInvication = 'ارسال دعوة';
+// // const textFollow = 'متابعة';
+// // const textUnfollow = 'الغاء المتابعة';
+// const textBranches = 'الفروع';
+// // const textFollowers = 'المتابعين';
+// // const textFollowing = 'المتابعون';
+// const textAdd = 'إضافة';
+// const textRemove = 'إزالة';
 
-const creatAccount = 'إنشاء حساب جديد';
+// const textOpenLocation = 'فتح الموقع';
+// const textConfirmAttend = 'مؤكد';
+// const textSuspendAttend = 'لم يتم التأكيد';
+// const textCreator = 'منشئ';
+// const textRejectAttend = 'اعتذر';
+// const pleaseWait = 'برجاء الانتظار...';
+// const errorHappend = 'حدث خطأ';
+
+// const creatAccount = 'إنشاء حساب جديد';
 
 const List<String> cities = [
   'الرياض',

@@ -34,6 +34,7 @@ class PaymentController extends GetxController {
   String orderId = '';
 
   double discount = 0;
+  String customerWalletBalance = '0.00';
 
   bool cashEligible = false;
   bool creditEligible = false;
@@ -47,12 +48,14 @@ class PaymentController extends GetxController {
 
   getAvailablePaymentMethods() async {
     statusRequest = StatusRequest.loading;
-    var response = await billsData
-        .getAvailablePaymentMethods(reservation.resBchid.toString());
+    var response = await billsData.getAvailablePaymentMethods(
+        bchid: reservation.resBchid.toString(), userid: myServices.getUserid());
     statusRequest = handlingData(response);
     print('statusRequies: $statusRequest');
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
+        customerWalletBalance = response['walletBalance'];
+
         List data = response['data'];
         print('bchid :${reservation.resBchid}');
         availablePaymentMethods =

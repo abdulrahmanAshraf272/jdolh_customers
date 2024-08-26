@@ -63,10 +63,10 @@ class ResHomeServicesController extends ResParentController {
   }
 
   bool checkAllFeilds() {
-    if (cartController.carts.isEmpty) {
-      Get.rawSnackbar(message: 'السلة فارغة!'.tr);
-      return false;
-    }
+    // if (cartController.carts.isEmpty) {
+    //   Get.rawSnackbar(message: 'السلة فارغة!'.tr);
+    //   return false;
+    // }
     if (selectedDate == '') {
       Get.rawSnackbar(message: 'من فضلك اختر وقت الحجز'.tr);
       return false;

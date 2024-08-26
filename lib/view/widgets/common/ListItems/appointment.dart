@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/api_links.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
-import 'package:jdolh_customers/core/functions/convert_time_to_arabic.dart';
+import 'package:jdolh_customers/core/functions/convert_time_to_am_pm.dart';
 import 'package:jdolh_customers/data/models/reservation.dart';
 
 class AppointmentListItem extends StatelessWidget {
@@ -27,6 +27,7 @@ class AppointmentListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.secondaryLightCardAppointment,
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -64,7 +65,15 @@ class AppointmentListItem extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: titleMedium),
                       AutoSizeText(
-                        '$bchCity $dateTime',
+                        dateTime,
+                        textDirection: TextDirection.ltr,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: titleSmallGray,
+                      ),
+                      AutoSizeText(
+                        bchCity,
+                        textDirection: TextDirection.ltr,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: titleSmallGray,
@@ -95,6 +104,7 @@ class AppointmentListItemNotApproved extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.redLight,
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -138,7 +148,8 @@ class AppointmentListItemNotApproved extends StatelessWidget {
                             color: AppColors.textDark),
                       ),
                       AutoSizeText(
-                        '${reservation.resDate} - ${convertTimeToArabic(reservation.resTime)}',
+                        '${reservation.resDate} ${timeInAmPm(reservation.resTime!)}',
+                        textDirection: TextDirection.ltr,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: titleSmallGray,

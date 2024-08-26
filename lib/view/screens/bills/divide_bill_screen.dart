@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/bills/divide_bill_controller.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
@@ -82,7 +81,7 @@ class DivideBillScreen extends StatelessWidget {
                           onTap: () => controller.onTapRemoveMember(index),
                           onTapCard: () {},
                           buttonColor: AppColors.redButton,
-                          buttonText: textRemove,
+                          buttonText: 'إزالة'.tr,
                         ),
                         // Add separatorBuilder
                       ),

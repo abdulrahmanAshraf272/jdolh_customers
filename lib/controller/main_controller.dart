@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jdolh_customers/controller/appointments_controller.dart';
 import 'package:jdolh_customers/controller/values_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
@@ -10,8 +11,10 @@ import 'package:jdolh_customers/core/functions/location_services.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/my_profile.dart';
 import 'package:jdolh_customers/data/models/friend.dart';
+import 'package:jdolh_customers/view/screens/appointments_screen.dart';
 import 'package:jdolh_customers/view/screens/home_screen.dart';
 import 'package:jdolh_customers/view/screens/more_screen.dart';
+import 'package:jdolh_customers/view/screens/occasion/occasions_screen.dart';
 import 'package:jdolh_customers/view/screens/res_occasion_screen.dart';
 import 'package:jdolh_customers/view/screens/reservation_search_screen.dart';
 
@@ -32,12 +35,17 @@ class MainController extends GetxController {
   int currentPage = 0;
   List<Widget> listPage = [
     const HomeScreen(),
-    const ResOccasionScreen(),
+    //const OccasionsScreen(),
+    const AppointmentsScreen(),
     const ReservationSearchScreen(),
     const MoreScreen()
   ];
+
   @override
   changePage(int i) {
+    if (currentPage != 1) {
+      Get.delete<AppointmentsController>();
+    }
     currentPage = i;
     update();
   }

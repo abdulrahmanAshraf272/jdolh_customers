@@ -5,9 +5,10 @@ class BillsData {
   Crud crud;
   BillsData(this.crud);
 
-  getAvailablePaymentMethods(String bchid) async {
-    var response =
-        await crud.postData(ApiLinks.getAvailablePaymentMethods, {"bchid": bchid});
+  getAvailablePaymentMethods(
+      {required String bchid, required String userid}) async {
+    var response = await crud.postData(ApiLinks.getAvailablePaymentMethods,
+        {"bchid": bchid, "userid": userid});
 
     return response.fold((l) => l, (r) => r);
   }

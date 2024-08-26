@@ -92,6 +92,7 @@ class ResHomeServicesSubscreen extends StatelessWidget {
           const CartService(),
           const SizedBox(height: 20),
           BillDetails(resCost: controller.resCost, resTax: controller.resTax),
+          ReservationCondition(condistion: controller.reservationCondition),
           const PaymentTypeSelect(),
           const DisplayResPolicy(),
           GoHomeButton(

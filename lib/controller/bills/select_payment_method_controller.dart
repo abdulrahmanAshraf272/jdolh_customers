@@ -21,6 +21,8 @@ class SelectPaymentMethodController extends GetxController {
   String selectedMethod = '';
   StatusRequest statusRequest = StatusRequest.none;
 
+  String customerWalletBalance = '0.00';
+
   bool cashEligible = false;
   bool creditEligible = false;
   bool tamaraEligible = false;
@@ -32,11 +34,13 @@ class SelectPaymentMethodController extends GetxController {
 
   getAvailablePaymentMethods() async {
     statusRequest = StatusRequest.loading;
-    var response =
-        await billsData.getAvailablePaymentMethods(bill.billBchId.toString());
+    var response = await billsData.getAvailablePaymentMethods(
+        bchid: bill.billBchId.toString(), userid: myServices.getUserid());
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
+        customerWalletBalance = response['walletBalance'];
+
         List data = response['data'];
         availablePaymentMethods =
             data.map((element) => PaymentMethod.fromJson(element)).toList();

@@ -123,7 +123,7 @@ class CreateOccasionScreen extends StatelessWidget {
                               onTap: () => controller.onTapRemoveMember(index),
                               onTapCard: () {},
                               buttonColor: AppColors.redButton,
-                              buttonText: textRemove,
+                              buttonText: 'إزالة'.tr,
                             ),
                             // Add separatorBuilder
                           )

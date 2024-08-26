@@ -55,7 +55,7 @@ class OccasionListItem extends StatelessWidget {
                     children: [
                       CustomButton(
                         onTap: onTapAccept,
-                        text: textAccept,
+                        text: 'قبول'.tr,
                         size: 1.15,
                         buttonColor: AppColors.secondaryColor,
                       ),
@@ -64,7 +64,7 @@ class OccasionListItem extends StatelessWidget {
                       ),
                       CustomButton(
                         onTap: onTapReject,
-                        text: textReject,
+                        text: 'اعتذار'.tr,
                         size: 1.15,
                         buttonColor: AppColors.redButton,
                       )
@@ -125,7 +125,7 @@ class OccasionAcceptedListItem extends StatelessWidget {
                   ),
                   CustomButton(
                     onTap: onTapOpenLocation,
-                    text: textOpenLocation,
+                    text: 'فتح الموقع'.tr,
                     size: 1.15,
                     buttonColor: AppColors.secondaryColor300,
                     textColor: AppColors.textDark,

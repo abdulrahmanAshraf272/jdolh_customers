@@ -8,6 +8,7 @@ import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 AppBar appBarWithButtonCreate(
     {required void Function() onTapCreate,
     required void Function() onTapBack,
+    bool withArrowBack = true,
     required String title,
     required String buttonText}) {
   return AppBar(
@@ -20,10 +21,12 @@ AppBar appBarWithButtonCreate(
         color: AppColors.white,
       ),
     ),
-    leading: IconButton(
-      onPressed: () => Get.back(),
-      icon: const Icon(Icons.arrow_back_ios, color: AppColors.white),
-    ),
+    leading: withArrowBack
+        ? IconButton(
+            onPressed: () => Get.back(),
+            icon: const Icon(Icons.arrow_back_ios, color: AppColors.white),
+          )
+        : null,
     actions: [
       Padding(
         padding: const EdgeInsets.all(9.0),

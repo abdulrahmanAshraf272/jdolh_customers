@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/occasion/occasions_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
+import 'package:jdolh_customers/core/functions/convert_time_to_am_pm.dart';
 import 'package:jdolh_customers/core/functions/occasion_display_location.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/occasion.dart';
 import 'package:jdolh_customers/view/widgets/common/appBarWithButtonCreate.dart';
@@ -23,16 +24,16 @@ class OccasionsScreen extends StatelessWidget {
                   buttonText: 'انشاء مناسبة'.tr),
               body: RefreshIndicator(
                 onRefresh: () async {
-                  await controller.refreshGetOccasions();
+                  await controller.getMyOccasion();
                 },
                 child: Column(
                   children: [
                     LargeToggleButtons(
                       optionOne: 'مناسبات قريبة'.tr,
-                      onTapOne: () => controller.inactiveNeedAprrove(),
+                      onTapOne: () => controller.changeNeedApproveValue(false),
                       optionTwo:
                           '${'بحاجة لموافقتك'.tr}(${controller.needApproveOccasionsNo})',
-                      onTapTwo: () => controller.activeNeedApprove(),
+                      onTapTwo: () => controller.changeNeedApproveValue(true),
                       twoColors: true,
                     ),
                     Expanded(
@@ -61,7 +62,7 @@ class OccasionsScreen extends StatelessWidget {
                                             .occasionsToDisplay[index]
                                             .occasionTitle!,
                                         date:
-                                            '${controller.occasionsToDisplay[index].occasionDate} ${controller.timeInAmPm(index)}',
+                                            '${controller.occasionsToDisplay[index].occasionDate} ${timeInAmPm(controller.occasionsToDisplay[index].occasionTime!)}',
                                         location: controller
                                             .occasionsToDisplay[index]
                                             .occasionLocation!,
@@ -87,7 +88,7 @@ class OccasionsScreen extends StatelessWidget {
                                             .occasionsToDisplay[index]
                                             .occasionTitle!,
                                         date:
-                                            '${controller.occasionsToDisplay[index].occasionDate} ${controller.timeInAmPm(index)}',
+                                            '${controller.occasionsToDisplay[index].occasionDate} ${timeInAmPm(controller.occasionsToDisplay[index].occasionTime!)}',
                                         location: controller
                                             .occasionsToDisplay[index]
                                             .occasionLocation!,

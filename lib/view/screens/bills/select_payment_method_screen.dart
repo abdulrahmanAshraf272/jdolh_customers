@@ -28,6 +28,7 @@ class SelectPaymentMethodScreen extends StatelessWidget {
                   CustomTitle(title: 'طريقة الدفع'.tr),
                   const SizedBox(height: 10),
                   PaymentMethodsToggle(
+                    customerWalletBalance: controller.customerWalletBalance,
                     onTapCash: controller.cashEligible
                         ? () => controller.selectedMethod = 'cash'
                         : null,
@@ -56,6 +57,7 @@ class PaymentMethodsToggle extends StatefulWidget {
   final void Function()? onTapWallet;
   final void Function()? onTapTamara;
   final void Function()? onTapTabby;
+  final String customerWalletBalance;
 
   const PaymentMethodsToggle(
       {super.key,
@@ -63,7 +65,8 @@ class PaymentMethodsToggle extends StatefulWidget {
       this.onTapCredit,
       this.onTapWallet,
       this.onTapTamara,
-      this.onTapTabby});
+      this.onTapTabby,
+      required this.customerWalletBalance});
 
   @override
   State<PaymentMethodsToggle> createState() => _PaymentMethodsToggleState();
@@ -74,7 +77,7 @@ class _PaymentMethodsToggleState extends State<PaymentMethodsToggle> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
           if (widget.onTapCash != null)
@@ -86,6 +89,14 @@ class _PaymentMethodsToggleState extends State<PaymentMethodsToggle> {
           if (widget.onTapWallet != null)
             option(3, 'الدفع بالمحفظة'.tr, widget.onTapWallet!,
                 'assets/icons/wallet.png'),
+          if (widget.onTapWallet != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Text('رصيدك: ${widget.customerWalletBalance} ريال',
+                  style: titleSmall.copyWith(
+                    color: Colors.green,
+                  )),
+            ),
           if (widget.onTapTamara != null)
             option(4, 'قسطها على تمارا'.tr, widget.onTapTamara!,
                 'assets/icons/tamara.png'),

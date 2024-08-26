@@ -75,6 +75,7 @@ class ResServiceSubscreen extends StatelessWidget {
               const SizedBox(height: 20),
               BillDetails(
                   resCost: controller.resCost, resTax: controller.resTax),
+              ReservationCondition(condistion: controller.reservationCondition),
               const PaymentTypeSelect(),
               const DisplayResPolicy(),
               GoHomeButton(
@@ -128,6 +129,28 @@ class BillDetails extends StatelessWidget {
   }
 }
 
+class ReservationCondition extends StatelessWidget {
+  final String condistion;
+  const ReservationCondition({super.key, required this.condistion});
+
+  @override
+  Widget build(BuildContext context) {
+    return condistion == ''
+        ? SizedBox()
+        : Container(
+            padding: const EdgeInsets.all(15),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            decoration: BoxDecoration(
+                color: AppColors.green.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(10)),
+            child: Text(
+              condistion,
+              textAlign: TextAlign.center,
+            ),
+          );
+  }
+}
+
 class PaymentTypeSelect extends StatelessWidget {
   const PaymentTypeSelect({super.key});
 
@@ -140,7 +163,8 @@ class PaymentTypeSelect extends StatelessWidget {
         decoration: BoxDecoration(
             color: AppColors.gray, borderRadius: BorderRadius.circular(10)),
         child: controller.billPolicy.id == 1 || controller.billPolicy.id == 4
-            ? Text(controller.billPolicy.title ?? '')
+            ? Text(controller.billPolicy.title ?? '',
+                textAlign: TextAlign.center)
             : CustomToggleButtonsOneOption(
                 horizontalDirection: false,
                 firstOption: 'دفع رسوم الحجز والفاتورة'.tr,
@@ -171,7 +195,8 @@ class DisplayResPolicy extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: BoxDecoration(
               color: AppColors.gray, borderRadius: BorderRadius.circular(10)),
-          child: Text(controller.resPolicy.title ?? '')),
+          child: Text(controller.resPolicy.title ?? '',
+              textAlign: TextAlign.center)),
     );
   }
 }

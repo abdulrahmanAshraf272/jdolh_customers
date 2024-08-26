@@ -73,7 +73,7 @@ class ReservationDetailsScreen extends StatelessWidget {
                               onTapDisplayLocation: () =>
                                   controller.onTapDisplayHomeLocation()),
                     PaymentTypeText(reservation: controller.reservation),
-                    const ResCartData(),
+                    if (controller.carts.isNotEmpty) const ResCartData(),
                     const SizedBox(height: 20),
                     BillDetails(reservation: controller.reservation),
                     const SizedBox(height: 20),

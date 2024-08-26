@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:jdolh_customers/controller/main_controller.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
@@ -126,10 +127,14 @@ class HomeController extends GetxController {
     List<Reservation> res =
         reservationData.map((e) => Reservation.fromJson(e)).toList();
     for (int i = 0; i < res.length; i++) {
-      if (res[i].resStatus == 3) {
-        //String datetime = '${res[i].resDate} ${res[i].resTime}';
+      // if (res[i].resStatus == 3) {
+      //   if (!isDatePassed(res[i].resDate!)) {
+      //     reservation.add(res[i]);
+      //   }
+      // }
 
-        if (!isDatePassed(res[i].resDate!)) {
+      if (res[i].resStatus == 3) {
+        if (res[i].creator == 1 || res[i].invitorStatus == 1) {
           reservation.add(res[i]);
         }
       }
@@ -230,13 +235,45 @@ class HomeController extends GetxController {
   //   }
   // }
 
+  gotoReservationDetails(int index) async {
+    final result;
+
+    if (reservation[index].resWithInvitors == 0) {
+      result = await Get.toNamed(AppRouteName.reservationDetails,
+          arguments: {"res": reservation[index]});
+    } else {
+      result = await Get.toNamed(AppRouteName.reservationWithInvitors,
+          arguments: {"res": reservation[index]});
+    }
+
+    if (result != null) {
+      getHomseScreenData();
+    }
+  }
+
+  onTapOccasionCard(int index) async {
+    final result;
+    if (occasionsToDisplay[index].creator == 1) {
+      result = await Get.toNamed(AppRouteName.editOccasion,
+          arguments: occasionsToDisplay[index]);
+    } else {
+      result = await Get.toNamed(AppRouteName.occasionDetails,
+          arguments: occasionsToDisplay[index]);
+    }
+
+    if (result != null) {
+      getHomseScreenData();
+    }
+  }
+
   gotoExploreBrand() {
     Get.toNamed(AppRouteName.exploreBrand,
         arguments: {"brands": brands, "bchs": bchs});
   }
 
-  gotoReservations() {
-    Get.toNamed(AppRouteName.schedule);
+  goToAppointments() {
+    MainController mainController = Get.put(MainController());
+    mainController.changePage(1);
   }
 
   gotoFriendsActivities() {
@@ -272,10 +309,6 @@ class HomeController extends GetxController {
       Get.toNamed(AppRouteName.brandProfile,
           arguments: {"fromActivity": true, "bchid": bchid});
     }
-  }
-
-  goToOccasionsScreen() {
-    Get.toNamed(AppRouteName.occasions);
   }
 
   increaseClickCount(int index) async {

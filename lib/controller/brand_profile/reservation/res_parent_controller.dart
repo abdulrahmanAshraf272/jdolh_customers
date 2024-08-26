@@ -39,6 +39,8 @@ class ResParentController extends GetxController {
   ResDetails resDetails = ResDetails();
   CartController cartController = Get.find();
 
+  String reservationCondition = '';
+
   int reviewRes = 0;
 
   List<ResOption> resOptions = [];
@@ -68,13 +70,13 @@ class ResParentController extends GetxController {
 
   void gotoSetResTime() async {
     print('shit');
-    if (cartController.carts.isEmpty) {
-      String message = brandProfileController.brand.brandIsService == 1
-          ? 'من فضلك قم بإضافة الخدمات ثم قم بتحديد وقت الحجز'.tr
-          : 'من فضلك قم بإضافة المنتجات ثم قم بتحديد وقت الحجز'.tr;
-      Get.rawSnackbar(message: message);
-      return;
-    }
+    // if (cartController.carts.isEmpty) {
+    //   String message = brandProfileController.brand.brandIsService == 1
+    //       ? 'من فضلك قم بإضافة الخدمات ثم قم بتحديد وقت الحجز'.tr
+    //       : 'من فضلك قم بإضافة المنتجات ثم قم بتحديد وقت الحجز'.tr;
+    //   Get.rawSnackbar(message: message);
+    //   return;
+    // }
     int timeout = 0;
     if (brandProfileController.isHomeServices == true) {
       timeout = homeServices.timeout ?? 0;
@@ -112,11 +114,11 @@ class ResParentController extends GetxController {
           date: selectedDate,
           time: selectedTime,
           duration: totalDuration.toString(),
-          billCost: cartController.totalPrice.toStringAsFixed(2),
-          billTax: cartController.billTax.toStringAsFixed(2),
-          resCost: resCost.toStringAsFixed(2),
-          resTax: resTax.toStringAsFixed(2),
-          totalPrice: totalPriceWithTax.toStringAsFixed(2),
+          billCost: cartController.totalPrice.toString(),
+          billTax: cartController.billTax.toString(),
+          resCost: resCost.toString(),
+          resTax: resTax.toString(),
+          totalPrice: totalPriceWithTax.toString(),
           billPolicy: billPolicy.toString(),
           resPolicy: resPolicy.toString(),
           isHomeService: brandProfileController.isHomeServices ? '1' : '0',
@@ -125,6 +127,7 @@ class ResParentController extends GetxController {
           status: reviewRes == 0 ? '1' : '0');
       statusRequest = handlingData(response);
       print('create reservation $statusRequest');
+      print('response: $response');
       if (statusRequest == StatusRequest.success) {
         if (response['status'] == 'success') {
           print('create reservation succeed');
@@ -195,10 +198,10 @@ class ResParentController extends GetxController {
   }
 
   bool checkConditions() {
-    if (cartController.carts.isEmpty) {
-      Get.rawSnackbar(message: 'السلة فارغة!'.tr);
-      return false;
-    }
+    // if (cartController.carts.isEmpty) {
+    //   Get.rawSnackbar(message: 'السلة فارغة!'.tr);
+    //   return false;
+    // }
     if (selectedDate == '') {
       Get.rawSnackbar(message: 'من فضلك اختر وقت الحجز'.tr);
       return false;
@@ -291,6 +294,8 @@ class ResParentController extends GetxController {
       if (response['status'] == 'success') {
         resDetails = ResDetails.fromJson(response['data']);
         reviewRes = resDetails.reviewRes!;
+
+        reservationCondition = resDetails.additionalInfo ?? '';
         print('resDetails timeout : ${resDetails.timeout}');
         print('success');
       } else {

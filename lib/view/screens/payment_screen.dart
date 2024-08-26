@@ -84,6 +84,7 @@ class SelectPaymentMethod extends StatelessWidget {
                     Text('طريقة الدفع'.tr, style: titleMedium),
                     const SizedBox(height: 20),
                     PaymentMethodsToggle(
+                      customerWalletBalance: controller.customerWalletBalance,
                       onTapCash: null,
                       onTapCredit: controller.creditEligible
                           ? () => controller.paymentMethod = 'credit'

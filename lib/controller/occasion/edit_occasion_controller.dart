@@ -8,7 +8,6 @@ import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/const_int.dart';
-import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/notification/notification_sender/occasion_notification.dart';
@@ -72,7 +71,7 @@ class EditOccasionController extends GetxController {
             occasionTitle.text,
             occasionSelected.occasionId!,
             "$selectedDateFormatted $selectedTimeFormatted");
-        Get.back();
+        Get.back(result: true);
       } else {
         Get.back();
       }
@@ -161,13 +160,13 @@ class EditOccasionController extends GetxController {
 
   String displayMemberStatus(int index) {
     if (members[index].creator == 1) {
-      return textCreator;
-    } else if (members[index].invitorStatus == 0) {
-      return textSuspendAttend;
+      return 'منشئ'.tr;
+    } else if (members[index].invitorStatus == 2) {
+      return 'اعتذر'.tr;
     } else if (members[index].invitorStatus == 1) {
-      return textConfirmAttend;
+      return 'مؤكد'.tr;
     } else {
-      return textRejectAttend;
+      return 'لم يتم التأكيد'.tr;
     }
   }
 
@@ -237,7 +236,7 @@ class EditOccasionController extends GetxController {
       if (response['status'] == 'success') {
         CustomDialogs.success('تم حذف المناسبة');
         occasionsController.myOccasions.remove(occasionSelected);
-        Get.back();
+        Get.back(result: true);
         //Delete group local
       } else {
         print('leave group failed');

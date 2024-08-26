@@ -83,6 +83,8 @@ class ResProductSubscreen extends StatelessWidget {
                   resCost: controller.resCost,
                   resTax: controller.resTax,
                 ),
+                ReservationCondition(
+                    condistion: controller.reservationCondition),
                 //const SizedBox(height: 20),
                 const PaymentTypeSelect(),
                 const DisplayResPolicy(),

@@ -6,6 +6,7 @@ import 'package:jdolh_customers/controller/home_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
+import 'package:jdolh_customers/core/functions/convert_time_to_am_pm.dart';
 import 'package:jdolh_customers/core/functions/occasion_display_location.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/activity.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/appointment.dart';
@@ -59,71 +60,105 @@ class HomeScreen extends StatelessWidget {
                                     controller.goToWaitApprovalScreen(index),
                               )),
                     CustomTitle(
-                      title: 'مناسبات قريبة'.tr,
+                      title: 'مواعيد قريبة'.tr,
                       onTap: () {
-                        controller.goToOccasionsScreen();
+                        controller.goToAppointments();
                       },
                       bottomPadding: 5,
                       topPadding: 10,
                     ),
-                    controller.occasionsToDisplay.isEmpty
-                        ? Center(child: Text('لا توجد مناسبات قريبة'.tr))
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: controller.occasionsToDisplay.length > 3
-                                ? 3
-                                : controller.occasionsToDisplay.length,
-                            itemBuilder: (context, index) =>
-                                OccasionAcceptedListItem(
-                                    from: controller.occasionsToDisplay[index]
-                                        .occasionUsername!,
-                                    title: controller.occasionsToDisplay[index]
-                                        .occasionTitle!,
-                                    date: controller.occasionsToDisplay[index]
-                                        .occasionDatecreated!,
-                                    location: controller
-                                        .occasionsToDisplay[index]
-                                        .occasionLocation!,
-                                    creator: controller
-                                        .occasionsToDisplay[index].creator!,
-                                    onTapOpenLocation: () {
-                                      onTapDisplayLocation(
-                                          controller.occasionsToDisplay[index]);
-                                    },
-                                    onTapCard: () =>
-                                        controller.goToOccasionsScreen())),
-                    CustomTitle(
-                      title: 'حجوزات قريبة'.tr,
-                      onTap: () {
-                        controller.gotoReservations();
-                      },
-                      bottomPadding: 5,
-                      topPadding: 10,
-                    ),
-                    controller.reservation.isEmpty
-                        ? Center(child: Text('لا توجد حجوزات قريبة'.tr))
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: controller.reservation.length > 3
-                                ? 3
-                                : controller.reservation.length,
-                            itemBuilder: (context, index) =>
-                                AppointmentListItem(
-                                    brandName: controller
-                                            .reservation[index].brandName ??
-                                        '',
-                                    brandLogo:
-                                        '${ApiLinks.logoImage}/${controller.reservation[index].brandLogo}',
-                                    bchCity:
-                                        controller.reservation[index].bchCity ??
-                                            '',
-                                    dateTime:
-                                        '${controller.reservation[index].resDate} ${controller.reservation[index].resTime}',
-                                    onTap: () {
-                                      controller.gotoReservations();
-                                    })),
+
+                    controller.occasionsToDisplay.isEmpty &&
+                            controller.reservation.isEmpty
+                        ? Center(child: Text('لا توجد مواعيد قريبة'.tr))
+                        : Column(
+                            children: [
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: controller.reservation.length > 3
+                                      ? 3
+                                      : controller.reservation.length,
+                                  itemBuilder: (context, index) =>
+                                      AppointmentListItem(
+                                          brandName: controller
+                                                  .reservation[index]
+                                                  .brandName ??
+                                              '',
+                                          brandLogo:
+                                              '${ApiLinks.logoImage}/${controller.reservation[index].brandLogo}',
+                                          bchCity: controller
+                                                  .reservation[index].bchCity ??
+                                              '',
+                                          dateTime:
+                                              '${controller.reservation[index].resDate} ${controller.reservation[index].resTime}',
+                                          onTap: () {
+                                            controller
+                                                .gotoReservationDetails(index);
+                                          })),
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount:
+                                      controller.occasionsToDisplay.length > 3
+                                          ? 3
+                                          : controller
+                                              .occasionsToDisplay.length,
+                                  itemBuilder: (context, index) =>
+                                      OccasionAcceptedListItem(
+                                          from: controller
+                                              .occasionsToDisplay[index]
+                                              .occasionUsername!,
+                                          title: controller
+                                              .occasionsToDisplay[index]
+                                              .occasionTitle!,
+                                          date:
+                                              '${controller.occasionsToDisplay[index].occasionDate} ${timeInAmPm(controller.occasionsToDisplay[index].occasionTime!)}',
+                                          location: controller
+                                              .occasionsToDisplay[index]
+                                              .occasionLocation!,
+                                          creator: controller
+                                              .occasionsToDisplay[index]
+                                              .creator!,
+                                          onTapOpenLocation: () {
+                                            onTapDisplayLocation(controller
+                                                .occasionsToDisplay[index]);
+                                          },
+                                          onTapCard: () => controller
+                                              .onTapOccasionCard(index))),
+                            ],
+                          ),
+                    // CustomTitle(
+                    //   title: 'حجوزات قريبة'.tr,
+                    //   onTap: () {
+                    //     controller.gotoReservations();
+                    //   },
+                    //   bottomPadding: 5,
+                    //   topPadding: 10,
+                    // ),
+                    // controller.reservation.isEmpty
+                    //     ? Center(child: Text('لا توجد حجوزات قريبة'.tr))
+                    //     : ListView.builder(
+                    //         shrinkWrap: true,
+                    //         physics: const NeverScrollableScrollPhysics(),
+                    //         itemCount: controller.reservation.length > 3
+                    //             ? 3
+                    //             : controller.reservation.length,
+                    //         itemBuilder: (context, index) =>
+                    //             AppointmentListItem(
+                    //                 brandName: controller
+                    //                         .reservation[index].brandName ??
+                    //                     '',
+                    //                 brandLogo:
+                    //                     '${ApiLinks.logoImage}/${controller.reservation[index].brandLogo}',
+                    //                 bchCity:
+                    //                     controller.reservation[index].bchCity ??
+                    //                         '',
+                    //                 dateTime:
+                    //                     '${controller.reservation[index].resDate} ${controller.reservation[index].resTime}',
+                    //                 onTap: () {
+                    //                   controller.gotoReservations();
+                    //                 })),
                     if (controller.friendsActivities.isNotEmpty)
                       CustomTitle(
                         title: 'نشاطات الأصدقاء'.tr,

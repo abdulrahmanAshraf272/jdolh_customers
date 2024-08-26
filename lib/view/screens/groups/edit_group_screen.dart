@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/group/edit_group_controller.dart';
 import 'package:jdolh_customers/core/class/handling_data_view.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
-import 'package:jdolh_customers/core/constants/strings.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/ListItems/personListItem/person_with_button.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/custom_button.dart';
@@ -82,7 +81,7 @@ class EditGroupScreen extends StatelessWidget {
                     onTap: () => controller.onTapRemoveMember(index),
                     onTapCard: () => controller.onTapPersonCard(index),
                     buttonColor: AppColors.redButton,
-                    buttonText: textRemove,
+                    buttonText: 'إزالة'.tr,
                   ),
                   // Add separatorBuilder
                 ),

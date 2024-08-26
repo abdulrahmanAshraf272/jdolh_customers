@@ -8,6 +8,7 @@ import 'package:jdolh_customers/core/constants/const_int.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
+import 'package:jdolh_customers/core/functions/is_date_passed.dart';
 import 'package:jdolh_customers/core/notification/notification_sender/occasion_notification.dart';
 import 'package:jdolh_customers/core/services/services.dart';
 import 'package:jdolh_customers/data/data_source/remote/occasions.dart';
@@ -21,74 +22,40 @@ class OccasionsController extends GetxController {
   TextEditingController excuse = TextEditingController();
 
   List<Occasion> occasionsToDisplay = [];
-  ///////
   List<Occasion> myOccasions = [];
   List<Occasion> acceptedOccasions = [];
   List<Occasion> suspendedOccasions = [];
 
   int needApproveOccasionsNo = 0;
-
-  onTapOccasionCard(int index) {
-    if (occasionsToDisplay[index].creator == 1) {
-      Get.toNamed(AppRouteName.editOccasion,
-              arguments: occasionsToDisplay[index])!
-          .then((value) => getMyOccasion());
-    } else {
-      // Get.toNamed(AppRouteName.occasionDetails,
-      //     arguments: occasionsToDisplay[index].occasionId);
-      Get.toNamed(AppRouteName.occasionDetails,
-              arguments: occasionsToDisplay[index])!
-          .then((value) {
-        if (needApprove) {
-          activeNeedApprove();
-        } else {
-          inactiveNeedAprrove();
-        }
-      });
-    }
-  }
-
-  ////
-
   bool needApprove = false;
 
-  refreshGetOccasions() async {
-    if (needApprove) {
-      activeNeedApprove();
+  onTapOccasionCard(int index) async {
+    final result;
+    if (occasionsToDisplay[index].creator == 1) {
+      result = await Get.toNamed(AppRouteName.editOccasion,
+          arguments: occasionsToDisplay[index]);
     } else {
-      inactiveNeedAprrove();
+      result = await Get.toNamed(AppRouteName.occasionDetails,
+          arguments: occasionsToDisplay[index]);
+    }
+
+    if (result != null) {
+      getMyOccasion();
     }
   }
 
-  activeNeedApprove() async {
-    await getMyOccasion();
-    needApprove = true;
-    occasionsToDisplay = List.from(suspendedOccasions);
-    update();
+  changeNeedApproveValue(bool displayNeedApprove) {
+    needApprove = displayNeedApprove;
+
+    resetAcceptedAndSuspendedList();
   }
 
-  inactiveNeedAprrove() async {
-    await getMyOccasion();
-    needApprove = false;
-    occasionsToDisplay = List.from(acceptedOccasions);
-    update();
+  onTapCreate() async {
+    final result = await Get.toNamed(AppRouteName.createOccasion);
+    if (result != null) {
+      getMyOccasion();
+    }
   }
-
-  onTapCreate() {
-    Get.toNamed(AppRouteName.createOccasion)!
-        .then((value) => resetAcceptedAndSuspendedList());
-  }
-
-  refreshScreen() {
-    inactiveNeedAprrove();
-    update();
-  }
-
-  // String displayFormateDateInCard(int index) {
-  //   String dateFormated =
-  //       formatDateTime(occasionsToDisplay[index].occasionDatetime.toString());
-  //   return dateFormated;
-  // }
 
   String formatDateTime(String inputDateTime) {
     DateTime dateTime = DateTime.parse(inputDateTime);
@@ -168,9 +135,7 @@ class OccasionsController extends GetxController {
           }
         }
 
-        occasionsToDisplay.remove(occasion);
-        needApproveOccasionsNo = occasionsToDisplay.length;
-        update();
+        getMyOccasion();
       } else {
         CustomDialogs.failure();
       }
@@ -180,7 +145,8 @@ class OccasionsController extends GetxController {
   }
 
   getMyOccasion() async {
-    startLoadingAndClearLists();
+    statusRequest = StatusRequest.loading;
+    update();
     var response = await occasionData
         .viewOccasions(myServices.sharedPreferences.getString("id")!);
     await Future.delayed(const Duration(seconds: lateDuration));
@@ -190,34 +156,28 @@ class OccasionsController extends GetxController {
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == 'success') {
         parsingDataFromJsonToDartList(response);
-        print('occasions: ${myOccasions.length}');
-      } else {
-        //statusRequest = StatusRequest.failure;
       }
     }
   }
 
-  startLoadingAndClearLists() {
-    statusRequest = StatusRequest.loading;
-    update();
-    myOccasions.clear();
-    occasionsToDisplay.clear();
-  }
-
   parsingDataFromJsonToDartList(response) {
+    myOccasions.clear();
+
     List responseOccasoins = response['data'];
     myOccasions = responseOccasoins.map((e) => Occasion.fromJson(e)).toList();
+
+    //Remove occasions in the past
+    myOccasions.removeWhere((element) => isDatePassed(element.occasionDate!));
+
     resetAcceptedAndSuspendedList();
   }
 
   resetAcceptedAndSuspendedList() {
+    occasionsToDisplay.clear();
     acceptedOccasions.clear();
     suspendedOccasions.clear();
 
-    List<Occasion> occasionInFuture =
-        filterAndOrderOccasionInFuture(myOccasions);
-
-    for (var element in occasionInFuture) {
+    for (var element in myOccasions) {
       if (element.acceptstatus == 1) {
         acceptedOccasions.add(element);
       } else if (element.acceptstatus == 0) {
@@ -225,49 +185,20 @@ class OccasionsController extends GetxController {
       }
     }
     needApproveOccasionsNo = suspendedOccasions.length;
-    needApprove = false;
-    occasionsToDisplay = List.from(acceptedOccasions);
-    update();
-  }
-
-  List<Occasion> filterAndOrderOccasionInFuture(List<Occasion> myOccasions) {
-    final now = DateTime.now();
-    List<Occasion> futureOccasions = [];
-
-    for (var occasion in myOccasions) {
-      DateTime occasionDateTime =
-          DateTime.parse('${occasion.occasionDate} ${occasion.occasionTime}');
-      if (occasionDateTime.isAfter(now)) {
-        futureOccasions.add(occasion);
-      }
+    // needApprove = false;
+    // occasionsToDisplay = List.from(acceptedOccasions);
+    // update();
+    if (needApprove) {
+      occasionsToDisplay = List.from(suspendedOccasions);
+    } else {
+      occasionsToDisplay = List.from(acceptedOccasions);
     }
-
-    futureOccasions.sort((a, b) {
-      DateTime aDateTime =
-          DateTime.parse('${a.occasionDate} ${a.occasionTime}');
-      DateTime bDateTime =
-          DateTime.parse('${b.occasionDate} ${b.occasionTime}');
-      return aDateTime.compareTo(bDateTime); // Sort sooner first
-    });
-
-    return futureOccasions;
-  }
-
-  String timeInAmPm(int index) {
-    String timeIn24 = occasionsToDisplay[index].occasionTime!;
-    final parts = timeIn24.split(':');
-    final hour = int.parse(parts[0]);
-    final minute = int.parse(parts[1]);
-
-    final dateTime = DateTime(0, 0, 0, hour, minute);
-    final formatter = DateFormat('h:mm a');
-    return formatter.format(dateTime);
+    update();
   }
 
   @override
   void onInit() async {
-    inactiveNeedAprrove();
-
+    getMyOccasion();
     super.onInit();
   }
 }

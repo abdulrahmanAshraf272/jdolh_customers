@@ -130,7 +130,7 @@ class EditOccasionScreen extends StatelessWidget {
                                     controller.onTapRemoveMember(index),
                                 onTapCard: () {},
                                 buttonColor: AppColors.redButton,
-                                buttonText: textRemove,
+                                buttonText: 'إزالة',
                                 invitorStatus:
                                     controller.displayMemberStatus(index),
                                 statusColor:

@@ -149,7 +149,7 @@ class CreateOccasionController extends GetxController {
               myServices.getImage(),
               newOccasion.occasionId!,
               "${newOccasion.occasionDate} ${newOccasion.occasionTime}");
-          Get.back();
+          Get.back(result: true);
         } else {
           CustomDialogs.failure();
         }

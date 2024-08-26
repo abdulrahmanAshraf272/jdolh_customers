@@ -5,8 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:jdolh_customers/core/class/status_request.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/app_routes_name.dart';
-import 'package:jdolh_customers/core/constants/const_int.dart';
-import 'package:jdolh_customers/core/constants/strings.dart';
+
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/core/functions/custom_dialogs.dart';
 import 'package:jdolh_customers/core/functions/handling_data_controller.dart';
@@ -67,13 +66,13 @@ class OccasionDetailsController extends GetxController {
 
   String displayMemberStatus(int index) {
     if (members[index].creator == 1) {
-      return textCreator;
+      return 'منشئ'.tr;
     } else if (members[index].invitorStatus == 2) {
-      return textRejectAttend;
+      return 'اعتذر'.tr;
     } else if (members[index].invitorStatus == 1) {
-      return textConfirmAttend;
+      return 'مؤكد'.tr;
     } else {
-      return textSuspendAttend;
+      return 'لم يتم التأكيد'.tr;
     }
   }
 
@@ -116,7 +115,7 @@ class OccasionDetailsController extends GetxController {
               myServices.getImage(),
               occasionSelected!.occasionTitle ?? '',
               excuse.text);
-          Get.back();
+          Get.back(result: true);
         },
         textConfirm: 'تأكيد',
         textCancel: 'الغاء',
@@ -131,7 +130,7 @@ class OccasionDetailsController extends GetxController {
         myServices.getName(),
         myServices.getImage(),
         occasionSelected!.occasionTitle!);
-    Get.back();
+    Get.back(result: true);
   }
 
   onTapRejectInvitation() async {
@@ -158,7 +157,7 @@ class OccasionDetailsController extends GetxController {
               myServices.getImage(),
               occasionSelected!.occasionTitle ?? '',
               excuse.text);
-          Get.back();
+          Get.back(result: true);
         },
         textConfirm: 'تأكيد',
         textCancel: 'الغاء',
