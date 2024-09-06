@@ -375,6 +375,7 @@ class AppointmentsController extends GetxController {
 
   @override
   void onInit() async {
+    getArabicDate(selectedDate);
     getAppointments();
     super.onInit();
   }

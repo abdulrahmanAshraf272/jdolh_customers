@@ -47,6 +47,7 @@ import 'package:jdolh_customers/view/screens/occasion/occasions_screen.dart';
 import 'package:jdolh_customers/view/screens/payment_result_screen.dart';
 import 'package:jdolh_customers/view/screens/payment_screen.dart';
 import 'package:jdolh_customers/view/screens/person_profile_screen.dart';
+import 'package:jdolh_customers/view/screens/rates_and_scheduled/bch_followers_screen.dart';
 import 'package:jdolh_customers/view/screens/rates_and_scheduled/rates_screen.dart';
 import 'package:jdolh_customers/view/screens/rates_and_scheduled/scheduled_users_screen.dart';
 import 'package:jdolh_customers/view/screens/res_archive_details_screen.dart';
@@ -191,6 +192,10 @@ List<GetPage> routes = [
   GetPage(
     name: AppRouteName.rates,
     page: () => const RatesScreen(),
+  ),
+  GetPage(
+    name: AppRouteName.bchFollowers,
+    page: () => const BchFollowersScreen(),
   ),
   GetPage(
     name: AppRouteName.scheduledUsers,

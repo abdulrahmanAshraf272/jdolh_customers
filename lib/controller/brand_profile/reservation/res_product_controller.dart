@@ -108,22 +108,33 @@ class ResProductController extends ResParentController {
   }
 
   bool checkInvitorsWithinLimitation() {
+    String extraSeatsValue = extraSeats.text.trim();
+    int seatsNo = 0;
+    if (extraSeatsValue != '') {
+      seatsNo = int.tryParse(extraSeatsValue) ?? 0;
+    }
+
+    int totalInvitors = resInvitors.length + seatsNo;
+
     //Make sure the min and max invitor
-    if (resDetails.invitorMin != 0 && resDetails.invitorMin != null) {
-      if (resInvitors.length < resDetails.invitorMin!) {
-        Get.rawSnackbar(
-            message:
-                'العدد الادنى للأشخاص للحجز في هذا المكان هو ${resDetails.invitorMin}');
-        return false;
-      }
-    } else if (resDetails.invitorMax != 0 && resDetails.invitorMax != null) {
-      if (resInvitors.length > resDetails.invitorMax!) {
-        Get.rawSnackbar(
-            message:
-                'العدد الاقصى للأشخاص للحجز في هذا المكان هو ${resDetails.invitorMax}');
-        return false;
+    if (resDetails.invitorMin != null && resDetails.invitorMax != null) {
+      if (resDetails.invitorMin! > 0) {
+        if (totalInvitors < resDetails.invitorMin!) {
+          Get.rawSnackbar(
+              message:
+                  'العدد الادنى للأشخاص للحجز في هذا المكان هو ${resDetails.invitorMin}');
+          return false;
+        }
+      } else if (resDetails.invitorMax != 0) {
+        if (totalInvitors > resDetails.invitorMax!) {
+          Get.rawSnackbar(
+              message:
+                  'العدد الاقصى للأشخاص للحجز في هذا المكان هو ${resDetails.invitorMax}');
+          return false;
+        }
       }
     }
+
     return true;
   }
 

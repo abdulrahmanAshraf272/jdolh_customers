@@ -20,6 +20,30 @@ class WaitForApproveController extends GetxController {
   late Policy resPolicy;
   late Policy billPolicy;
 
+  changeRejectStatusToSeen() async {
+    var response = await resData.changeResStatus(
+        resid: reservation.resId.toString(), status: '-2', rejectionReason: '');
+    StatusRequest statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('change rejected res to seend is done');
+      }
+    }
+  }
+
+  onTapDeleteRes() async {
+    CustomDialogs.loading();
+    var result = await deleteRes();
+    CustomDialogs.dissmissLoading();
+
+    if (result == true) {
+      CustomDialogs.success('تم الغاء الحجز'.tr);
+      goHomeScreen();
+    } else {
+      CustomDialogs.failure();
+    }
+  }
+
   getRes() async {
     // statusRequest = StatusRequest.loading;
     // update();
@@ -31,6 +55,7 @@ class WaitForApproveController extends GetxController {
       if (response['status'] == 'success') {
         Reservation result = Reservation.fromJson(response['data']);
         reservation.resStatus = result.resStatus;
+        reservation.resRejectionReason = result.resRejectionReason;
         print('status ${reservation.resStatus}');
         if (reservation.resStatus == 1) {
           approveStatus = ApproveStatus.approved;
@@ -49,18 +74,21 @@ class WaitForApproveController extends GetxController {
     goHomeScreen();
   }
 
-  deleteRes() async {
+  Future<bool> deleteRes() async {
     var response =
         await resData.deleteReservation(resid: reservation.resId.toString());
     StatusRequest statusDelete = handlingData(response);
     if (statusDelete == StatusRequest.success) {
       if (response['status'] == 'success') {
         print('delete reservation done successfuly');
+        return true;
       } else {
         print('delete reservation failed: ${response['message']}');
+        return false;
       }
     } else {
       print('delete res failed: $statusDelete');
+      return false;
     }
   }
 
@@ -99,6 +127,9 @@ class WaitForApproveController extends GetxController {
   }
 
   goHomeScreen() {
+    if (reservation.resStatus == 2) {
+      changeRejectStatusToSeen();
+    }
     Get.offAllNamed(AppRouteName.mainScreen);
   }
 

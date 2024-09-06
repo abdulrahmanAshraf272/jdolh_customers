@@ -39,6 +39,11 @@ class ReservationDetailsController extends GetxController {
 
   ResLocation? resLocation;
 
+  goToBchProfile() {
+    Get.toNamed(AppRouteName.brandProfile,
+        arguments: {"fromActivity": true, "bchid": reservation.resBchid});
+  }
+
   onTapDisplayHomeLocation() {
     if (resLocation != null) {
       double lat = double.parse(resLocation!.reslocationLat!);

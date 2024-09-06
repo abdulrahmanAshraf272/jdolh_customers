@@ -54,4 +54,12 @@ class BrandSearchData {
 
     return response.fold((l) => l, (r) => r);
   }
+
+  getBchFollowers({required String bchId}) async {
+    var response = await crud.postData(ApiLinks.getBchFollowers, {
+      "bchId": bchId,
+    });
+
+    return response.fold((l) => l, (r) => r);
+  }
 }

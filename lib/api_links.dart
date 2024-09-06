@@ -136,6 +136,8 @@ class ApiLinks {
       '$server/jdolh_brands/bch/get_resdetails.php';
 
   //===== Reservation =====//
+  static const String getBchFollowers =
+      '$server/jdolh_customers/get_brand/get_bch_followers.php';
   static const String addResLocation =
       '$server/jdolh_customers/res/add_res_location.php';
   static const String createRes = '$server/jdolh_customers/res/create_res.php';

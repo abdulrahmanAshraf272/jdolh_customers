@@ -93,4 +93,5 @@ class AppRouteName {
 
   static const rates = '/rates';
   static const scheduledUsers = '/scheduledUsers';
+  static const bchFollowers = '/bchFollowers';
 }

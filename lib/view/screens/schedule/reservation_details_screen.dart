@@ -31,7 +31,10 @@ class ReservationDetailsScreen extends StatelessWidget {
               body: SingleChildScrollView(
                 child: Column(
                   children: [
-                    BchDataHeader(reservation: controller.reservation),
+                    GestureDetector(
+                        onTap: () => controller.goToBchProfile(),
+                        child:
+                            BchDataHeader(reservation: controller.reservation)),
                     BchLocation(
                       reservation: controller.reservation,
                       onTapDisplayLocation: () =>

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jdolh_customers/core/constants/app_colors.dart';
 import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/widgets/common/rating.dart';
@@ -39,7 +40,7 @@ class BrandScheduledAndRating extends StatelessWidget {
             ],
           ),
         ),
-        Spacer(),
+        SizedBox(height: 8.sp),
         GestureDetector(
           onTap: onTapRates,
           child: Row(

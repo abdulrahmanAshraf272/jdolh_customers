@@ -14,6 +14,7 @@ class BrandProfileHeader extends StatelessWidget {
   final int ratesNo;
   final double averageRate;
   final int scheduledNo;
+  final void Function() onTapBchFollowers;
   final void Function() onTapFollow;
   final void Function() onTapScheduled;
   final void Function() onTapRates;
@@ -21,6 +22,7 @@ class BrandProfileHeader extends StatelessWidget {
       {super.key,
       required this.onTapFollow,
       required this.isFollowing,
+      required this.onTapBchFollowers,
       required this.followingNo,
       required this.ratesNo,
       required this.averageRate,
@@ -32,7 +34,7 @@ class BrandProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<BrandProfileController>(
         builder: (controller) => SizedBox(
-            height: Get.height * 0.27,
+            height: Get.height * 0.29,
             width: Get.width,
             child: Stack(
               children: [
@@ -54,31 +56,33 @@ class BrandProfileHeader extends StatelessWidget {
                   left: 0,
                   bottom: 0,
                   child: Container(
-                    color: Colors.black.withOpacity(0.4),
-                    height: Get.height * 0.1,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 12),
-                    child: Row(
-                      children: [
-                        Expanded(
+                      color: Colors.black.withOpacity(0.4),
+                      //height: Get.height * 0.12,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 12),
+                      child: Row(
+                        children: [
+                          Expanded(
                             child: BrandImageNameFollowers(
-                                brandName:
-                                    controller.brand.brandStoreName ?? '',
-                                logoImage:
-                                    '${ApiLinks.logoImage}/${controller.brand.brandLogo!}',
-                                isVerified:
-                                    controller.brand.brandIsVerified ?? 0,
-                                followrsNo: followingNo)),
-                        BrandScheduledAndRating(
-                          scheduledNo: scheduledNo,
-                          ratedBy: ratesNo,
-                          rate: averageRate,
-                          onTapRates: onTapRates,
-                          onTapScheduled: onTapScheduled,
-                        ),
-                        //TODO: Edit Follow widget, not responsive
-                        const SizedBox(width: 7),
-                        SizedBox(
+                              brandName: '${controller.brand.brandStoreName}',
+                              bchName:
+                                  '${controller.bch.bchBranchName}, ${controller.bch.bchCity} ',
+                              logoImage:
+                                  '${ApiLinks.logoImage}/${controller.brand.brandLogo!}',
+                              isVerified: controller.brand.brandIsVerified ?? 0,
+                              followrsNo: followingNo,
+                              onTapBchFollowers: onTapBchFollowers,
+                            ),
+                          ),
+                          BrandScheduledAndRating(
+                            scheduledNo: scheduledNo,
+                            ratedBy: ratesNo,
+                            rate: averageRate,
+                            onTapRates: onTapRates,
+                            onTapScheduled: onTapScheduled,
+                          ),
+                          const SizedBox(width: 7),
+                          SizedBox(
                             height: 35,
                             child: isFollowing
                                 ? CustomButton(
@@ -87,10 +91,12 @@ class BrandProfileHeader extends StatelessWidget {
                                     buttonColor: AppColors.redButton,
                                   )
                                 : CustomButton(
-                                    onTap: onTapFollow, text: 'المتابعة'))
-                      ],
-                    ),
-                  ),
+                                    onTap: onTapFollow,
+                                    text: 'المتابعة',
+                                  ),
+                          ),
+                        ],
+                      )),
                 ),
                 const Positioned(
                     top: 0,

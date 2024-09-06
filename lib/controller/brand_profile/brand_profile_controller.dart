@@ -68,6 +68,10 @@ class BrandProfileController extends GetxController {
   late BchWorktime bchWorktime;
   bool isFollowing = false;
 
+  onTapBchFollowers() {
+    Get.toNamed(AppRouteName.bchFollowers, arguments: bch.bchId);
+  }
+
   onTapRates() {
     Get.toNamed(AppRouteName.rates, arguments: rates);
   }

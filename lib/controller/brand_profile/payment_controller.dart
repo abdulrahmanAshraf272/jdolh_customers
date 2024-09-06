@@ -46,6 +46,26 @@ class PaymentController extends GetxController {
 
   List<PaymentMethod> availablePaymentMethods = [];
 
+  onTapBack() {
+    deleteRes();
+    Get.back();
+  }
+
+  deleteRes() async {
+    var response =
+        await resData.deleteReservation(resid: reservation.resId.toString());
+    StatusRequest statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      if (response['status'] == 'success') {
+        print('delete res done successfuly');
+      } else {
+        print('delete res failed');
+      }
+    } else {
+      print('delete res failed $statusRequest');
+    }
+  }
+
   getAvailablePaymentMethods() async {
     statusRequest = StatusRequest.loading;
     var response = await billsData.getAvailablePaymentMethods(

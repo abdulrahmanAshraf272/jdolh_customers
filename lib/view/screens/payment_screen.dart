@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:jdolh_customers/controller/brand_profile/payment_controller.dart';
@@ -9,7 +10,6 @@ import 'package:jdolh_customers/core/constants/text_syles.dart';
 import 'package:jdolh_customers/view/screens/bills/select_payment_method_screen.dart';
 import 'package:jdolh_customers/view/screens/brand_profile/res_service_subscreen.dart';
 import 'package:jdolh_customers/view/widgets/common/buttons/bottom_button.dart';
-import 'package:jdolh_customers/view/widgets/common/custom_appbar.dart';
 
 class PaymentScreen extends StatelessWidget {
   const PaymentScreen({super.key});
@@ -18,7 +18,21 @@ class PaymentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(PaymentController());
     return Scaffold(
-      appBar: customAppBar(title: 'الدفع'.tr),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'الدفع'.tr,
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 18.sp,
+            color: AppColors.white,
+          ),
+        ),
+        leading: IconButton(
+          onPressed: () => controller.onTapBack(),
+          icon: const Icon(Icons.arrow_back_ios, color: AppColors.white),
+        ),
+      ),
       floatingActionButton: BottomButton(
           onTap: () {
             //controller.getAvailablePaymentMethods();
