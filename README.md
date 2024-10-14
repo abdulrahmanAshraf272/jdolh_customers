@@ -1,7 +1,7 @@
 # About The App
 
 An electronic system for managing reservations for all types of stores, including restaurants, barber shops, beauty salons, etc.
-..
+
 It consists of 3 applications:
 
 - User application
