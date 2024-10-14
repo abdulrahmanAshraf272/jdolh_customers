@@ -8,6 +8,9 @@ class ApiLinks {
   static const String server = "https://www.jdolh.com/jdolh1";
   static const String test = "$server/test.php";
 
+  static const String getServerKey =
+      '$server/jdolh_customers/get_server_key.php';
+
   //=================== Images ================//
   static const String imagesBrands = '$server/jdolh_brands/upload';
   static const String logoImage = '$imagesBrands/logo';

@@ -151,18 +151,33 @@ class HomeController extends GetxController {
   parseAds(response) {
     ads.clear();
     List adsData = response['ads'];
-    List<Ad> adsBeforeFilter = adsData.map((e) => Ad.fromJson(e)).toList();
+    print('adsData: $adsData');
+    ads = adsData.map((e) => Ad.fromJson(e)).toList();
+    print('ads count: ${ads.length}');
 
-    for (int i = 0; i < adsBeforeFilter.length; i++) {
-      if (adsBeforeFilter[i].endData != null) {
-        if (!isDatePassed(adsBeforeFilter[i].endData!)) {
-          ads.add(adsBeforeFilter[i]);
-        }
-      } else {
-        //if endDate is null it means it is unlimited ad
-        ads.add(adsBeforeFilter[i]);
-      }
-    }
+    String userCity = myServices.getCity();
+
+    //remove if there is city specified and the city is not mine.
+    ads.removeWhere(
+        (element) => element.adsCity != userCity && element.adsCity != '');
+
+    //remove ads with passed date
+    ads.removeWhere(
+        (element) => element.endData != null && isDatePassed(element.endData!));
+
+    // //if not my city ,do not display the ad
+    // for (int i = 0; i < ads.length; i++) {
+    //   print('ads city: ${ads[i].adsCity}');
+    //   if (ads[i].adsCity == userCity) {
+    //     print('passed');
+    //   }
+
+    //   if (ads[i].adsCity == '') {
+    //     print('no city');
+    //   }
+    // }
+    // ads.removeWhere(
+    //     (element) => element.adsCity != userCity || element.adsCity != '');
   }
 
   parseTopCheckin(response) {
@@ -299,6 +314,9 @@ class HomeController extends GetxController {
   }
 
   onTapAd(int index) {
+    if (ads[index].bchId == -1 || ads[index].brandId == -1) {
+      return;
+    }
     increaseClickCount(index);
     gotoAdProfile(index);
   }

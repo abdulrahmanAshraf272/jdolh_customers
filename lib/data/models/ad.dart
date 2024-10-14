@@ -12,9 +12,10 @@ class Ad {
   int? unlimited;
   int? clickCount;
 
-  String? brandName;
-  String? bchName;
-  String? bchCity;
+  // String? brandName;
+  // String? bchName;
+  // String? bchCity;
+  String? adsCity;
 
   Ad(
       {this.adsId,
@@ -29,9 +30,10 @@ class Ad {
       this.unlimited,
       this.createDate,
       this.clickCount,
-      this.brandName,
-      this.bchName,
-      this.bchCity});
+      // this.brandName,
+      // this.bchName,
+      // this.bchCity,git s
+      this.adsCity});
 
   Ad.fromJson(Map<String, dynamic> json) {
     adsId = json['ads_id'];
@@ -47,8 +49,10 @@ class Ad {
     unlimited = json['ads_unlimited'];
     clickCount = json['ads_clickCount'];
 
-    brandName = json['brand_storeName'];
-    bchName = json['bch_branchName'];
-    bchCity = json['bch_city'];
+    // brandName = json['brand_storeName'];
+    // bchName = json['bch_branchName'];
+    // bchCity = json['bch_city'];
+
+    adsCity = json['ads_city'];
   }
 }

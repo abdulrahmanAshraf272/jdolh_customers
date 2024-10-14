@@ -45,6 +45,8 @@ class DivideBillController extends GetxController {
     double taxAmountForEach = double.parse(bill.billTaxAmount!) / membersNo;
     double amountForEach = double.parse(bill.billAmount!) / membersNo;
 
+    double discountForEach = double.parse(bill.billDiscount!) / membersNo;
+
     String allUsersIds = getMembersIds();
 
     print('members: $allUsersIds');
@@ -66,7 +68,8 @@ class DivideBillController extends GetxController {
         file: '',
         billId: bill.billId.toString(),
         vatNo: bill.billVatNo.toString(),
-        crNo: bill.billCrNo.toString());
+        crNo: bill.billCrNo.toString(),
+        discount: discountForEach.toString());
     CustomDialogs.dissmissLoading();
     StatusRequest statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {

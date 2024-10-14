@@ -104,7 +104,12 @@ class ResParentController extends GetxController {
     if (checkConditions()) {
       double totalPriceWithTax =
           cartController.totalPrice + cartController.billTax + resCost + resTax;
+
       int totalDuration = getTotalDuration();
+      //in case it is service(duration calculate by the services times) and the cart is empty
+      if (totalDuration == 0) {
+        totalDuration = 30;
+      }
 
       var response = await resData.createRes(
           paymentType: brandProfileController.paymentType,

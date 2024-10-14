@@ -58,7 +58,8 @@ class BillsData {
       required String file,
       required String billId,
       required String vatNo,
-      required String crNo}) async {
+      required String crNo,
+      required String discount}) async {
     var response = await crud.postData(ApiLinks.divideBill, {
       "resid": resid,
       "brandId": brandId,
@@ -71,7 +72,8 @@ class BillsData {
       "file": file,
       "billId": billId,
       "vatNo": vatNo,
-      "crNo": crNo
+      "crNo": crNo,
+      "discount": discount
     });
 
     return response.fold((l) => l, (r) => r);
